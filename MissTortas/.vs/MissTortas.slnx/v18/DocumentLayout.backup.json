@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|c:\\users\\rojas\\documents\\trabajofinalaus\\misstortas\\misstortasmid2\\textfile.ps1||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|solutionrelative:misstortasmid2\\textfile.ps1||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|c:\\users\\rojas\\documents\\trabajofinalaus\\misstortas\\misstortasmid2\\controllers\\bakerytaskcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|solutionrelative:misstortasmid2\\controllers\\bakerytaskcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|c:\\users\\rojas\\documents\\trabajofinalaus\\misstortas\\misstortasmid2\\entity\\dto\\bakerytaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|solutionrelative:misstortasmid2\\entity\\dto\\bakerytaskdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|c:\\users\\rojas\\documents\\trabajofinalaus\\misstortas\\misstortasmid2\\entity\\bakerytask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|solutionrelative:misstortasmid2\\entity\\bakerytask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|c:\\users\\rojas\\documents\\trabajofinalaus\\misstortas\\misstortasmid2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFA1A9C9-4754-A537-2844-8BABAD09AB7D}|MissTortasMid2\\MissTortasMid2.csproj|solutionrelative:misstortasmid2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TextFile.ps1",
+              "DocumentMoniker": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\TextFile.ps1",
+              "RelativeDocumentMoniker": "MissTortasMid2\\TextFile.ps1",
+              "ToolTip": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\TextFile.ps1",
+              "RelativeToolTip": "MissTortasMid2\\TextFile.ps1",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-24T22:52:55.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BakeryTaskDto.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Entity\\Dto\\BakeryTaskDto.cs",
+              "RelativeDocumentMoniker": "MissTortasMid2\\Entity\\Dto\\BakeryTaskDto.cs",
+              "ToolTip": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Entity\\Dto\\BakeryTaskDto.cs",
+              "RelativeToolTip": "MissTortasMid2\\Entity\\Dto\\BakeryTaskDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T22:43:38.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BakeryTaskController.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Controllers\\BakeryTaskController.cs",
+              "RelativeDocumentMoniker": "MissTortasMid2\\Controllers\\BakeryTaskController.cs",
+              "ToolTip": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Controllers\\BakeryTaskController.cs",
+              "RelativeToolTip": "MissTortasMid2\\Controllers\\BakeryTaskController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T18:18:46.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Program.cs",
+              "RelativeDocumentMoniker": "MissTortasMid2\\Program.cs",
+              "ToolTip": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Program.cs",
+              "RelativeToolTip": "MissTortasMid2\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T17:36:39.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BakeryTask.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Entity\\BakeryTask.cs",
+              "RelativeDocumentMoniker": "MissTortasMid2\\Entity\\BakeryTask.cs",
+              "ToolTip": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\Entity\\BakeryTask.cs",
+              "RelativeToolTip": "MissTortasMid2\\Entity\\BakeryTask.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T15:00:36.641Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
