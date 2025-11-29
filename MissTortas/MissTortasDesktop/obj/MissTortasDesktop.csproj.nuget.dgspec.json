@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj": {}
+    "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj": {
+    "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj",
+        "projectUniqueName": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj",
         "projectName": "MissTortasDesktop",
-        "projectPath": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj",
+        "projectPath": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\MissTortasDesktop.csproj",
         "packagesPath": "C:\\Users\\rojas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\obj\\",
+        "outputPath": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasDesktop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

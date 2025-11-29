@@ -359,11 +359,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\MissTortasMid2.csproj",
+      "projectUniqueName": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\MissTortasMid2.csproj",
       "projectName": "MissTortasMid2",
-      "projectPath": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\MissTortasMid2.csproj",
+      "projectPath": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\MissTortasMid2.csproj",
       "packagesPath": "C:\\Users\\rojas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rojas\\Documents\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\obj\\",
+      "outputPath": "C:\\Users\\rojas\\Documents\\Source\\TrabajoFinalAUS\\MissTortas\\MissTortasMid2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

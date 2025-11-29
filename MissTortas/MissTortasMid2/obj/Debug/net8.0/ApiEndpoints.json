@@ -44,5 +44,53 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "MissTortasMid2.Controllers.BakeryTaskController",
+    "Method": "GetTask",
+    "RelativePath": "tasks/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MissTortasMid2.Entity.BakeryTask",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MissTortasMid2.Controllers.BakeryTaskController",
+    "Method": "DeleteTask",
+    "RelativePath": "tasks/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   }
 ]
