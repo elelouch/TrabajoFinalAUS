@@ -8,3 +8,6 @@
 
 Cuando hay productos en falta, le dan prioridad a aquellos 
 que no se pudieron fabricar
+
+# Para casos de uso usar excel
+# Al realizar diagramas de bases de datos, no utilizar ID's para claves unicas
