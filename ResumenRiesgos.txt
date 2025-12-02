@@ -29,7 +29,7 @@ construir y ponen en peligro el proyecto o el producto. Se ramifican en varios m
 	2. Construir un producto que ya no encaje con la estrategia de la empresa. (Riesgo Estrategico)
 	3. Construir un producto que el equipo de ventas no sepa vender. (Riesgo de Ventas)
 	4. Perder el apoyo de los administradores debido a un cambio en el enfoque o en el personal (Riesgo Administrativo).
-	5. Perder el apoyo presupuestal o de personal(Riesgos Presupuestales)
+	5. Perder el apoyo presupuestal o de personal (Riesgos Presupuestales)
 - Conocidos: Riesgos que se pueden descubrir a traves de una evaluacion cuidadosa del plan de proyecto.
 Ejemplos: Fechas de entregas irreales, falta de requisitos documentados o ambito de software, pobre entorno de desarrollo).
 - Predecibles: Se extrapolan de la experiencia en proyectos anteriores.
