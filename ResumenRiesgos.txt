@@ -15,7 +15,7 @@ y *grado de perdida* asociadas con el riesgo.
 - LOC
 
 # Categorias de riesgos
-- *Riesgos de Proyecto*: Riesgos que desplazan el calendario del proyecto y
+- Riesgos de Proyecto: Riesgos que desplazan el calendario del proyecto y
 hacen que los costos aumenten. Estos identifican principalmente problemas 
 de presupuesto, calendario, personal, recursos, participantes y requisitos.
 - Riesgos Tecnicos: Riesgos que amenazan la calidad y temporalidad (tiempo de
@@ -23,7 +23,7 @@ uso) del software que se va a producir. Cuando estos se vuelven realidad,
 la implementacion puede volverse dificil o imposible. Problemas
 de disenio, implementacion, interfaz, verificacion y mantenimiento, ambiguedad
 en la especificacion, obsolencia tecnica y tecnologia de punta.
-- Riesgos empresariales: Amenazan la viabilidad del software que se va a
+- Riesgos Empresariales: Amenazan la viabilidad del software que se va a
 construir y ponen en peligro el proyecto o el producto. Se ramifican en varios mas.
 	1. Construir un producto excelente, que ya no se requiere. (Riesgo de mercado)
 	2. Construir un producto que ya no encaje con la estrategia de la empresa. (Riesgo Estrategico)
@@ -38,7 +38,7 @@ se atienden solicitudes de mantenimiento (hay que hacer cambios))
 - Impredecibles: No se pueden predecir. Comodin. 
 
 
-#Identificacion de riesgo
+# Identificacion de riesgo
 Consejo: Pensar en, Que puede salir mal?
 Intento sistematico por especificar las amenazas al plan de proyecto,
 esto es, estimaciones, calendario, carga de recursos, etc.
@@ -107,9 +107,9 @@ Pasos:
 	2. Categorizar el riesgo (segun su tipo, utilizar lo anterior).
 	3. Ingresar la probabilidad de ocurrencia (esta, se puede estimar individualmente por los miembros del equipo).
 	4. Categorizar el riesgo segun su impacto, se debe promediar el impacto del mismo en cada componente.
-	(Se puede utilizar la tabla de referencia del libro, esta esta basada en los components y promotores de riesgo)
+	(Se puede utilizar la tabla de referencia del libro, esta esta basada en los componentes y promotores de riesgo)
 	5. Ordenar por probabilidad e impacto.
-	6 (opcional). Realizar una linea de corte y solo dejar planes MMMR para los riesgos que esten por encima de la media.
+	6 (opcional). Realizar una linea de corte filtrando por () y solo dejar planes MMMR para los riesgos que esten por encima de la media.
 	
 ## Valoracion de impacto del riesgo
 ### Factores que afectan las probables consecuencias si ocurre un riesgo
