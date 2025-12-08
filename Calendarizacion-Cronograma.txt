@@ -1,0 +1,32 @@
+1 - Project Manager
+2 - Analistas
+2 - Desarrolladores
+2 - Tester
+
+
+# Calendarizacion
+La calendarizacion de un Proyecto de software es una accion que distribuye el esfuerzo de estimado a
+traves de la duracion planificada del Proyecto, asignando el esfuerzo a tareas especificas de ingenieria de software.
+
+## Principios Basicos
+- Compartimentalizacion: 
+	- El Proyecto debe compartimentalizarse en actividades y tareas manejables. 
+	- Para lograr la compartimentalizacion  se desglosan tanto el producto como el proceso. 
+
+- Interdependencia: 
+Debe determinarse la interdependencia de cada actividad o tarea compartimentalizadas. 
+Algunas tareas deben sucederse en secuencia, otras en paralelo.
+Algunas no pueden comenzar hasta que este disponible el producto operativo de otras.
+Otras pueden realizarse de manera independiente.
+
+- Validacion del esfuerzo:
+	- Todo Proyecto tiene un numero definido de personas en el equipo.
+	- Conforme ocurre la asignacion del tiempo, asegurarse que no se ha calendarizado mas que el numero de personal asignado.
+
+- Asignacion de tiempo:
+	- Cada tarea por calendar
+	- Cada tarea debe asignarsele una fecha de comienzo y conclusion, en funcion de las interdependencias
+
+Un cronograma esta compuesto por un conjunto de tareas.
+Basicamente, tengo que desglosar cada uno de los procesos en tareas?
+

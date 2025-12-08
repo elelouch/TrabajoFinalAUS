@@ -1,6 +1,0 @@
-1 - Project Manager
-2 - Analistas
-2 - Desarrolladores
-2 - Tester
-
-Realizar 2 casos de uso
