@@ -14,19 +14,49 @@ traves de la duracion planificada del Proyecto, asignando el esfuerzo a tareas e
 	- Para lograr la compartimentalizacion  se desglosan tanto el producto como el proceso. 
 
 - Interdependencia: 
-Debe determinarse la interdependencia de cada actividad o tarea compartimentalizadas. 
-Algunas tareas deben sucederse en secuencia, otras en paralelo.
-Algunas no pueden comenzar hasta que este disponible el producto operativo de otras.
-Otras pueden realizarse de manera independiente.
+	- Debe determinarse la interdependencia de cada actividad o tarea compartimentalizadas. 
+	- Algunas tareas deben sucederse en secuencia, otras en paralelo.
+	- Algunas no pueden comenzar hasta que este disponible el producto operativo de otras. 
+	Otras pueden realizarse de manera independiente.
 
 - Validacion del esfuerzo:
 	- Todo Proyecto tiene un numero definido de personas en el equipo.
 	- Conforme ocurre la asignacion del tiempo, asegurarse que no se ha calendarizado mas que el numero de personal asignado.
 
 - Asignacion de tiempo:
-	- Cada tarea por calendar
+	- Cada tarea por calendarizar, debe asignarsele cierto numero de unidades de trabajo (ej: persona-dias de esfuerzo)
 	- Cada tarea debe asignarsele una fecha de comienzo y conclusion, en funcion de las interdependencias
 
-Un cronograma esta compuesto por un conjunto de tareas.
-Basicamente, tengo que desglosar cada uno de los procesos en tareas?
+- Responsabilidades definidas:
+	- Cada tarea por calendarizar debe tener un miembro especifico.
 
+- Resultados definidos:
+	- Cada tarea que se calendarice, debe tener un resultado definido.
+	- Los productos operativos con frecuencia se combinan con productos operativos entregables.
+
+- Hitos definidos:
+	- Cada tarea o grupo de tareas debe asociarse con un hito de proyecto. Ese se logra cuando uno o mas productos operativos se revisan en su calidad y se aprueban
+
+
+
+## Definicion de un conjunto de tareas para el proyecto de software
+Coleccion de tareas de trabajo de ingenieria de software, hitos, productos operativos y filtros de acs que debe lograrse para completar un proyecto particular.
+Con la finalidad de desarrollar un calendario, el conjunto de tareas variara dependiendo de:
+	- Tipo de proyecto:
+	Reingenieria, mantenimiento, prueba de concepto, nueva aplicacion, mejora de aplicacion.
+	- Grador de rigor, determinado por:
+		- Numero de usuarios potenciales.
+		- Vitalidad de la mision (si, el proyecto requiere mision/objetivo).
+		- Longevidad de la aplicacion.
+		- Estabilidad de requerimientos.
+		- Facilidad de comunicacion cliente/desarrollador.
+		- Madurez de tecnologia aplicable.
+		- Restricciones de rendimiento.
+		- Caracteristicas incrustadas y no incrustadas.
+		- Personal de proyecto.
+		- Factores de reingenieria.
+
+### Cronograma
+Un cronograma esta compuesto por un conjunto de tareas.
+Luego se ingresa, esfuerzo, duracion y fecha de inicio para cada tarea.
+Basicamente, tengo que desglosar cada uno de los procesos en tareas?
