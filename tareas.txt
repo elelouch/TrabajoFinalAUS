@@ -1,0 +1,11 @@
+# Tipo de proyecto: Nueva aplicacion
+Este proyecto es completamente nuevo, sus expectativas son:
+	- Que pueda completar lo requerido por la pasteleria (especificado).
+	- Debe tenerse sumo cuidado a la hora de relevarse
+	- 
+
+
+[TODO] Ver en project libre como asignar tareas especificas a miembros del equipo
+
+# Tareas
+

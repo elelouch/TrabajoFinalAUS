@@ -59,4 +59,34 @@ Con la finalidad de desarrollar un calendario, el conjunto de tareas variara dep
 ### Cronograma
 Un cronograma esta compuesto por un conjunto de tareas.
 Luego se ingresa, esfuerzo, duracion y fecha de inicio para cada tarea.
+
+#### PERT (Program Evaluation and Review Technique)
+Metodo para analizar tareas relacionadas a completar un proyecto, particularmente, el tiempo requerido para completar cada tarea, y para identificar el tiempo minimo requerido para completar el proyecto.
+
+- Times defined by pert:
+	- optimistic(o): the minimum possible time.
+	- pessimistic time(p): the maximum possible time
+	- most likely time(m): the best estimate of the time required.
+	- expected time: The best estimate of the time required to accomplish an activity(te) or a path(TE).
+	te = (o + 4m + p) / 6
+	TE = sqrt(sumforeach(1,n, te[i]))
+	where te[i] is each task from the path.
+	- standard deviation of time (ote):
+	ote = (p - o) / 6
+	Ote = sqrt(sumforeach(1,n,ote[i] ^ 2))
+	
+
+#### Critical Path Method (CPM)
+Complementary to PERT. It calculates the minimum duration of the overall project.
+A critical path is determined by identifying the longest stretch of dependent activities and measuring the time required to complete them from start to finish.
+Construct a model of the project that includes:
+	- A list of all activities(tasks) required to complete the project.
+	- The time (duration) that each activity will take to complete.
+	- The dependencies between activities.
+	- Logical end points such as milestones or deliverable items.
+
+In this way
+	- Each milestone is a node.
+	- Each edge is an activity (which I suppose, has tasks)
+
 Basicamente, tengo que desglosar cada uno de los procesos en tareas?
