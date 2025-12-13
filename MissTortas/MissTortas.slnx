@@ -1,6 +1,3 @@
 <Solution>
-  <Project Path="MissTortasDesktop/MissTortasDesktop.csproj" />
-  <Project Path="MissTortasEngineIntegrationTesting/MissTortasEngineIntegrationTesting.csproj" Id="bf3e490f-9ca2-449d-904e-6218e35058e3" />
-  <Project Path="MissTortasEngineTest/MissTortasEngineTest.csproj" Id="e87c1c86-2207-4925-b66c-ab944eca8902" />
-  <Project Path="MissTortasMid2/MissTortasMid2.csproj" />
+  <Project Path="MissTortasEngine/MissTortasEngine.csproj" />
 </Solution>
