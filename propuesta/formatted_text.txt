@@ -1,7 +1,0 @@
-1 - La realización del pedido es trivial si el pedido es genérico. Si el pedido es personalizado, el encargado de atención al público debe asegurarse que el cliente provea instrucciones suficientes para poder llegar a una consultoría con el pastelero. Esto incluye dejar datos de contacto también, si es que no se dispone de tiempo.
-
-2 - La consultoría del Pastelero es una evaluación en base a su experiencia y en los recursos que disponga la pastelería. Este realiza un informe, breve o elaborado, generalmente de palabra. Este deja el veredicto final del precio del pedido.
-
-3 - Se realiza la solicitud del pago junto a una descripción breve del pedido, generalmente generado por un sistema de comandas que termina imprimiendo un ticket en papel. Este ticket es enviado mediante el canal de comunicación por foto (instagram o whatsapp) o es entregado en mano si el pedido es realizado en el acto.
-
-4 - El rechazo del pedido involucra informarle al cliente mediante el canal de comunicación utilizado, los motivos del rechazo del pedido.
