@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MissTortasEngine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98961383446d4b39ac92cb686e7458c8a634e1fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a74efe2347332a4fa5282ce87b7637f45ff2337")]
 [assembly: System.Reflection.AssemblyProductAttribute("MissTortasEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MissTortasEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
