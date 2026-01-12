@@ -2,7 +2,7 @@
 {
     public abstract class Category
     {
-        public abstract int Id { get; set; }
+        public abstract long Id { get; set; }
         public abstract string Name { get; set; }
         public abstract List<Category> ChildrenCategory { get; set; }
         public abstract bool IsFinal { get; set; }

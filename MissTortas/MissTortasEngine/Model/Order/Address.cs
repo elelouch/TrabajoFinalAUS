@@ -8,7 +8,7 @@ namespace MissTortasEngine.Model.Order
         public int Number { get; set; } = 0;
         public string Street { get; set; } = string.Empty;
         public required HomeType HomeType { get; set; }
-        public User User { get; set; }
+        public UserBase User { get; set; }
         public Address() { }
         
     }

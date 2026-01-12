@@ -1,6 +1,34 @@
-@MissTortasEngine_HostAddress = http://localhost:5120
+@MissTortasEngine_HostAddress = https://localhost:7199
 
 GET {{MissTortasEngine_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{MissTortasEngine_HostAddress}}/api/order
+Content-Type: application/json
+
+{
+  "id":0,
+  "description":"pedro"
+}
+
+###
+
+POST {{MissTortasEngine_HostAddress}}/api/order
+Content-Type: application/json
+
+{
+  //OrderBase
+}
+
+###
+
+POST {{MissTortasEngine_HostAddress}}/api/ordertype
+Content-Type: application/json
+
+{
+  name:"testing"
+}
 
 ###

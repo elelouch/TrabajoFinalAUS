@@ -3,36 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\security\\permissions\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\security\\permissions\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\security\\user\\userbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\security\\user\\userbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\misstortasenginecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\misstortasenginecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\misstortasengine.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\misstortasengine.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\controllers\\order\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\controllers\\order\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\product\\productcategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\product\\productcategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\controllers\\order\\ordertypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\controllers\\order\\ordertypecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\product\\productbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\product\\productbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\order\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\order\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\product\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\product\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\order\\orderbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\order\\orderbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\product\\saleproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\product\\saleproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\order\\ordertype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\order\\ordertype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\order\\orderpreparation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\order\\orderpreparation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\model\\order\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\model\\order\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|c:\\users\\rojas\\source\\repos\\trabajofinalaus\\misstortas\\misstortasengine\\misstortasengine.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{7171346F-9857-50D6-B7B4-3A0EAE4EC825}|MissTortasEngine\\MissTortasEngine.csproj|solutionrelative:misstortasengine\\misstortasengine.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,107 +54,154 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Permission.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Security\\Permissions\\Permission.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Security\\Permissions\\Permission.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Security\\Permissions\\Permission.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Security\\Permissions\\Permission.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:38:39.817Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserBase.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Security\\User\\UserBase.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Security\\User\\UserBase.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Security\\User\\UserBase.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Security\\User\\UserBase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:37:54.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MissTortasEngineContext.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\MissTortasEngineContext.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\MissTortasEngineContext.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\MissTortasEngineContext.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\MissTortasEngineContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:36:02.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "OrderBase.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderBase.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Order\\OrderBase.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderBase.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Order\\OrderBase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:33:08.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\Order\\OrderController.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Controllers\\Order\\OrderController.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\Order\\OrderController.cs",
+              "RelativeToolTip": "MissTortasEngine\\Controllers\\Order\\OrderController.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:31:10.844Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MissTortasEngine",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\MissTortasEngine.csproj",
-              "RelativeDocumentMoniker": "MissTortasEngine\\MissTortasEngine.csproj",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\MissTortasEngine.csproj",
-              "RelativeToolTip": "MissTortasEngine\\MissTortasEngine.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-01-01T19:41:57.233Z"
+              "DocumentIndex": 5,
+              "Title": "OrderDTO.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderDTO.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Order\\OrderDTO.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderDTO.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Order\\OrderDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T00:27:45.268Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MissTortasEngineContext.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\MissTortasEngineContext.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\MissTortasEngineContext.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\MissTortasEngineContext.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\MissTortasEngineContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAWAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Program.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Program.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Program.cs",
+              "RelativeToolTip": "MissTortasEngine\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T19:37:54.01Z",
+              "WhenOpened": "2026-01-11T20:29:59.182Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Category.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\Category.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Product\\Category.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\Category.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\Product\\Category.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAhAAAAAAAAAA==",
+              "Title": "OrderTypeController.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\Order\\OrderTypeController.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Controllers\\Order\\OrderTypeController.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\Order\\OrderTypeController.cs",
+              "RelativeToolTip": "MissTortasEngine\\Controllers\\Order\\OrderTypeController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAE8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T18:58:32.487Z"
+              "WhenOpened": "2026-01-11T19:42:58.42Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ProductCategory.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\ProductCategory.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Product\\ProductCategory.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\ProductCategory.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\Product\\ProductCategory.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T18:57:45.604Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "SaleProduct.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\SaleProduct.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Product\\SaleProduct.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\SaleProduct.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\Product\\SaleProduct.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-01T18:57:26.113Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProductBase.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\ProductBase.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Product\\ProductBase.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Product\\ProductBase.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\Product\\ProductBase.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-31T18:53:39.155Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "MissTortasEngine\\Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAswBUAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-31T18:53:08.597Z"
+              "DocumentIndex": 10,
+              "Title": "MissTortasEngine.http",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\MissTortasEngine.http",
+              "RelativeDocumentMoniker": "MissTortasEngine\\MissTortasEngine.http",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\MissTortasEngine.http",
+              "RelativeToolTip": "MissTortasEngine\\MissTortasEngine.http",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAUwBsAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2026-01-11T14:19:59.927Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "OrderStatus.cs",
-              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderStatus.cs",
-              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Order\\OrderStatus.cs",
-              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderStatus.cs",
-              "RelativeToolTip": "MissTortasEngine\\Model\\Order\\OrderStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "Title": "OrderType.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderType.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Order\\OrderType.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderType.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Order\\OrderType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-30T00:47:06.271Z"
+              "WhenOpened": "2026-01-10T23:46:53.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "OrderPreparation.cs",
+              "DocumentMoniker": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderPreparation.cs",
+              "RelativeDocumentMoniker": "MissTortasEngine\\Model\\Order\\OrderPreparation.cs",
+              "ToolTip": "C:\\Users\\rojas\\source\\repos\\TrabajoFinalAUS\\MissTortas\\MissTortasEngine\\Model\\Order\\OrderPreparation.cs",
+              "RelativeToolTip": "MissTortasEngine\\Model\\Order\\OrderPreparation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-10T23:46:44.741Z",
+              "EditorCaption": ""
             }
           ]
         }

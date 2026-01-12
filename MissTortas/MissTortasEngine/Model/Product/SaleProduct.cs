@@ -2,7 +2,7 @@
 {
     public class SaleProduct : ProductBase
     {
-        public override int Id { get; set; }
+        public override long Id { get; set; }
         public override string Name { get; set; } = string.Empty;
         public override string Description { get; set; } = string.Empty;
         public StockProduct StockProduct { get; set; }

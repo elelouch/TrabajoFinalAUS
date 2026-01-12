@@ -2,7 +2,7 @@
 {
     public class ProductCategory : Category
     {
-        public override int Id { get; set; }
+        public override long Id { get; set; }
         public override string Name { get; set; } = string.Empty;
         public override required List<Category> ChildrenCategory { get; set; }
         public override bool IsFinal { get; set; }
