@@ -4,6 +4,7 @@ namespace MissTortasEngine.Model.Order
 {
     public class OrderBase
     {
+        public long Id { get; set; }
         public string Description { get; set; } = string.Empty;
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public required OrderType OrderType;

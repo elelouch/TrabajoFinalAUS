@@ -8,6 +8,6 @@
         public DateTime EstimatedFinishedTime { get; set; }
         public DateTime AlternativeEstimatedFinishedTime { get; set; }
         public ConsultancyStatus Status { get; set; }
-        public required OrderDTO Order { get; set; }
+        public required OrderBase Order { get; set; }
     }
 }

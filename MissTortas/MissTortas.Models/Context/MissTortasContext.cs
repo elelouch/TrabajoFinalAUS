@@ -3,16 +3,16 @@ using MissTortasEngine.Model.Order;
 
 namespace MissTortasEngine.Model
 {
-    public class MissTortasEngineContext : DbContext
+    public class MissTortasContext : DbContext
     {
-        public MissTortasEngineContext(DbContextOptions options) : base(options)
+        public MissTortasContext(DbContextOptions options) : base(options)
         {
         }
 
-        protected MissTortasEngineContext()
+        protected MissTortasContext()
         {
         }
-        public DbSet<OrderDTO> OrderItems { get; set; }
+        public DbSet<OrderBase> OrderItems { get; set; }
         public DbSet<MissTortasEngine.Model.Order.OrderType> OrderTypes { get; set; } = default!;
         public DbSet<MissTortasEngine.Model.Security.User.UserBase> Users { get; set; } = default!;
     }

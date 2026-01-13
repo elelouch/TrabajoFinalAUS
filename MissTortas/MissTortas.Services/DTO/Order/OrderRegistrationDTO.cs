@@ -2,9 +2,8 @@
 
 namespace MissTortasEngine.Model.Order
 {
-    public class OrderDTO
+    public class OrderRegistrationDTO
     {
-        public long Id { get; set; }
         public string Description { get; set; } = string.Empty;
         public required long OrderType;
         public required long OrderManager { get; set; }

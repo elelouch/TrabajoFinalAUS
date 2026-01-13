@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MissTortasEngine.Model;
 using MissTortasEngine.Model.Order;
+using MissTortasEngine.Model.Security.User;
 
 namespace MissTortasEngine.Controllers.Order
 {
@@ -23,14 +24,14 @@ namespace MissTortasEngine.Controllers.Order
 
         // GET: api/Order
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrderItems()
+        public async Task<ActionResult<IEnumerable<OrderBase>>> GetOrderItems()
         {
             return await _context.OrderItems.ToListAsync();
         }
 
         // GET: api/Order/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDTO>> GetOrderBase(long id)
+        public async Task<ActionResult<OrderBase>> GetOrderBase(long id)
         {
             var orderBase = await _context.OrderItems.FindAsync(id);
 
@@ -45,7 +46,7 @@ namespace MissTortasEngine.Controllers.Order
         // PUT: api/Order/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderBase(long id, OrderDTO orderBase)
+        public async Task<IActionResult> PutOrderBase(long id, OrderBase orderBase)
         {
             if (id != orderBase.Id)
             {
@@ -76,13 +77,28 @@ namespace MissTortasEngine.Controllers.Order
         // POST: api/Order
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OrderDTO>> PostOrderBase(OrderDTO orderDto)
+        public async Task<ActionResult<OrderBase>> PostOrderBase(OrderRegistrationDTO orderDto)
         {
-            _context.
-            _context.OrderItems.Add(orderDto);
+            var orderType = await _context.OrderTypes.FindAsync(orderDto.OrderType);
+            if (orderType == null)
+            {
+                return NotFound("Order type not found");
+            }
+            var orderManager = await _context.Users.FindAsync(orderDto.OrderManager);
+            if (orderManager == null)
+            {
+                return NotFound("Order manager not found");
+            }
+            var client = await _context.Users.FindAsync(orderDto.OrderManager);
+            if (client == null)
+            {
+                return NotFound("Client not found");
+            }
+            var newOrder = new OrderBase { OrderType = orderType, OrderManager = orderManager, Client = client };
+            _context.OrderItems.Add(newOrder);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOrderBase), new { id = orderDto.Id }, orderDto);
+            return CreatedAtAction(nameof(GetOrderBase), new { id = newOrder.Id }, newOrder);
         }
 
         // DELETE: api/Order/5
