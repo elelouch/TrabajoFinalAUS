@@ -1,4 +1,4 @@
-﻿namespace MissTortasEngine.Model.Order
+namespace MissTortas.Models.Model.Order
 {
     public class OrderType
     {

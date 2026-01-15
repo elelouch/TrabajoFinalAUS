@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MissTortas.Models\MissTortas.Models.csproj" />
+  </ItemGroup>
+
 </Project>

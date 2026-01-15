@@ -1,6 +1,6 @@
-﻿using MissTortasEngine.Model.Security.User;
+using MissTortas.Models.Model.Security.User;
 
-namespace MissTortasEngine.Model.Order
+namespace MissTortas.Models.Model.Order
 {
     public class Address
     {

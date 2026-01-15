@@ -1,6 +1,6 @@
-﻿using MissTortasEngine.Model.Order;
+using MissTortas.Models.Model.Order;
 
-namespace MissTortasEngine.Model.Product.Product
+namespace MissTortas.Models.Model.Product.Product
 {
     public class PersonalizedProduct
     {

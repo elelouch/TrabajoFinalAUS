@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MissTortasEngine.Model.Order;
+using Microsoft.EntityFrameworkCore;
+using MissTortas.Models.Model.Order;
 
-namespace MissTortasEngine.Model
+namespace MissTortas.Models.Context
 {
     public class MissTortasContext : DbContext
     {
@@ -13,7 +13,7 @@ namespace MissTortasEngine.Model
         {
         }
         public DbSet<OrderBase> OrderItems { get; set; }
-        public DbSet<MissTortasEngine.Model.Order.OrderType> OrderTypes { get; set; } = default!;
-        public DbSet<MissTortasEngine.Model.Security.User.UserBase> Users { get; set; } = default!;
+        public DbSet<MissTortas.Models.Model.Order.OrderType> OrderTypes { get; set; } = default!;
+        public DbSet<MissTortas.Models.Model.Security.User.UserBase> Users { get; set; } = default!;
     }
 }

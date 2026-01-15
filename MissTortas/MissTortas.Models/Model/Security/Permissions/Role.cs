@@ -1,9 +1,9 @@
-﻿namespace MissTortasEngine.Model.Security.Permissions
+using Microsoft.AspNetCore.Identity;
+
+namespace MissTortas.Models.Model.Security.Permissions
 {
-    public class Role
+    public class Role : IdentityRole<long>
     {
-        public int Id { get; set; } 
-        public string Name { get; set; } = string.Empty;
         public DateTime LastTimeModified { get; set; }
         public bool Deleted { get; set; }
     }

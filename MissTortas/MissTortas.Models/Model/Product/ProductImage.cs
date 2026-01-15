@@ -1,4 +1,4 @@
-﻿namespace MissTortasEngine.Model.Product
+namespace MissTortas.Models.Model.Product
 {
     public class ProductImage
     {

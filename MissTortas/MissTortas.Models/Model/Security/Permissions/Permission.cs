@@ -1,4 +1,4 @@
-﻿namespace MissTortasEngine.Model.Security.Permissions
+namespace MissTortas.Models.Model.Security.Permissions
 {
     public enum Permission
     {

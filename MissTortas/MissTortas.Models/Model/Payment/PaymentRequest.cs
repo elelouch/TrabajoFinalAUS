@@ -1,4 +1,4 @@
-﻿namespace MissTortasEngine.Model.Payment
+namespace MissTortas.Models.Model.Payment
 {
     public class PaymentRequest
     {

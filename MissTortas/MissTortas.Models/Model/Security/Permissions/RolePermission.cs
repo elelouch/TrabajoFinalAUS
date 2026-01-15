@@ -1,6 +1,6 @@
-﻿using MissTortasEngine.Model.Product;
+using MissTortas.Models.Model.Product;
 
-namespace MissTortasEngine.Model.Security.Permissions
+namespace MissTortas.Models.Model.Security.Permissions
 {
     public class RoleCategoryPermission
     {

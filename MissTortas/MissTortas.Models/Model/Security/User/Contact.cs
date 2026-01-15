@@ -1,4 +1,4 @@
-﻿namespace MissTortasEngine.Model.Security.User
+namespace MissTortas.Models.Model.Security.User
 {
     public class Contact
     {
