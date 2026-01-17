@@ -1,4 +1,4 @@
-using MissTortas.Models.Model.Order;
+using MissTortas.Models.Order;
 using System;
 using System.Collections.Generic;
 using System.Text;
