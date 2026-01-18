@@ -16,5 +16,10 @@ namespace MissTortas.Models.Context
         public DbSet<OrderBase> OrderItems { get; set; }
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
         public DbSet<UserBase> Users { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserBase>().ToTable("User");
+        }
     }
 }

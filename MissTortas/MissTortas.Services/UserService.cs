@@ -11,7 +11,7 @@ using MissTortas.Models.Security.User;
 
 namespace MissTortas.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(IUserRepository userRepository) : Interfaces.IUserService
     {
         public async void DeleteUser(long id)
         {

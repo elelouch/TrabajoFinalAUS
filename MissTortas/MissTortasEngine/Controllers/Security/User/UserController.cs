@@ -10,14 +10,15 @@ using MissTortas.Engine;
 using MissTortas.Engine.DTO;
 using MissTortas.Services;
 using MissTortas.Services.DTO;
+using MissTortas.Services.Interfaces;
 
 namespace MissTortas.Engine.Controllers.Security.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController (UserService userService) : ControllerBase
+    public class UserController (IUserService userService) : ControllerBase
     {
-        private readonly UserService userService = userService;
+        private readonly IUserService userService = userService;
 
         // GET: api/User/5
         [HttpGet("{id}")]
