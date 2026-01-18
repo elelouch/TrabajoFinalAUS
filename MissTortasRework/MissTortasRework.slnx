@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MissTortas.Data/MissTortas.Data.csproj" Id="9509ae24-bdcb-49c3-8c91-ef061736d687" />
+  <Project Path="MissTortas.Engine/MissTortas.Engine.csproj" Id="dd83aecc-b923-4403-a53e-8fc7f1bc32ac" />
+  <Project Path="MissTortas.Services/MissTortas.Services.csproj" Id="d2511529-5717-4cae-a62b-a7ae42660ddd" />
+</Solution>
