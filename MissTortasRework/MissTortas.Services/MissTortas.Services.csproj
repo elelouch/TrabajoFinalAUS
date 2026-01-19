@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MissTortas.Data\MissTortas.Data.csproj" />
+  </ItemGroup>
+
 </Project>

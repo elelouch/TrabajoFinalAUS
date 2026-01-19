@@ -1,6 +1,4 @@
-﻿using MissTortas.Models.Security.User;
-
-namespace MissTortas.Services.DTO.Order
+﻿namespace MissTortas.Services.DTO.Order
 {
     public class OrderRegistrationDTO
     {

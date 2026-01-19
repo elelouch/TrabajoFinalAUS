@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MissTortas.Models.Repositories
+namespace MissTortas.Data.Repositories
 {
     public abstract class RepositoryCrud<TEntity>(DbContext dbContext): IRepositoryCrud<TEntity> where TEntity: class
     {
@@ -37,6 +37,11 @@ namespace MissTortas.Models.Repositories
         {
             var rowsAffected = await Context.SaveChangesAsync();
             return rowsAffected;
+        }
+
+        public virtual async Task<List<TEntity>> FindAllAsync()
+        {
+            return (await _dbSet.ToListAsync());
         }
     }
 }

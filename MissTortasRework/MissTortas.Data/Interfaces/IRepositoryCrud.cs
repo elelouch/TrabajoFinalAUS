@@ -12,5 +12,6 @@ namespace MissTortas.Data.Interfaces
         public void Delete(TEntity entity);
         public Task<TEntity?> FindAsync(long id);
         public Task<int> SaveChangesAsync();
+        public Task<List<TEntity>> FindAllAsync();
     }
 }

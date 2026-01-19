@@ -1,4 +1,4 @@
-﻿using MissTortas.Models.Security.User;
+﻿using MissTortas.Data.Entity.Security;
 using MissTortas.Services.DTO.User;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,10 @@ namespace MissTortas.Services.Interfaces
 {
     public interface IUserService
     {
-        public Task<UserBase> RegisterUserAsync(UserRegistrationDTO dto);
+        public Task<User> RegisterUserAsync(UserRegistrationDTO dto);
         public void DeleteUser(long id);
-        public Task<UserBase> LoginUser(UserLoginDTO dto);
-        public Task<UserBase> FindUser(long id);
+        public Task<User> LoginUserAsync(UserLoginDTO dto);
+        public Task<User> FindUserAsync(long id);
+        public Task<List<User>> AllUserAsync();
     }
 }

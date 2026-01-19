@@ -1,3 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using MissTortas.Data.Context;
+using MissTortas.Data.Interfaces;
+using MissTortas.Data.Repositories;
+using MissTortas.Services;
+using MissTortas.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+var connectionString = builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
+builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

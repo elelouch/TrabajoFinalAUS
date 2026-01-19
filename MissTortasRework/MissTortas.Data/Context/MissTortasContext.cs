@@ -4,7 +4,7 @@ using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Data.Context
 {
-    public class MissTortasContext : DbContext
+    public class MissTortasContext (DbContextOptions options) : DbContext (options)
     {
         public DbSet<Order> OrderItems { get; set; }
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
@@ -23,11 +23,6 @@ namespace MissTortas.Data.Context
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OrderType>().ToTable("OrderType");
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=MissTortasDevelopment;Integrated Security=True;Multiple Active Result Sets=True");
         }
     }
 }

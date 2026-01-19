@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using MissTortas.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Entity.Orders;
+using MissTortas.Data.Context;
 
-namespace MissTortas.Models.Repositories
+namespace MissTortas.Data.Repositories
 {
-    public class OrderRepository(DbContext context) : RepositoryCrud<Order>(context), IOrderRepository
+    public class OrderRepository(MissTortasContext context) : RepositoryCrud<Order>(context), IOrderRepository
     {
 
     }
