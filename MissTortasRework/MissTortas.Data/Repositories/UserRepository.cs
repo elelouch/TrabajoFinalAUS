@@ -11,9 +11,5 @@ namespace MissTortas.Data.Repositories
 {
     public class UserRepository(MissTortasContext context) : RepositoryCrud<User>(context), IUserRepository
     {
-        public async Task<User?> FindByUsernameOrEmailAsync(string username, string email)
-        {
-            return context.Users.Where(user => user.UserName == username || user.Email == email).FirstOrDefault();
-        }
     }
 }

@@ -4,6 +4,9 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Services.DTO;
 using System.Collections;
 using MissTortas.Services.DTO.User;
+using MissTortas.Engine.Validators;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 
 namespace MissTortas.Engine.Controllers
 {
@@ -12,6 +15,7 @@ namespace MissTortas.Engine.Controllers
     public class UserController(IUserService userService) : Controller
     {
         private readonly IUserService userService = userService;
+        
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> AllUser()
         {
@@ -24,15 +28,32 @@ namespace MissTortas.Engine.Controllers
 
             return Ok(allUserDTO);
         }
+
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUser(CreateUserDTO dto)
+        public async Task<ActionResult<UserDTO>> LoginUser(LoginUserDTO dto, IValidator<LoginUserDTO> validator)
         {
+            await validator.ValidateAndThrowAsync(dto);
+
+            await userService.LoginUserAsync(new UserLoginDTO
+            {
+               Username = dto.Username,
+               Password = dto.Password
+            });
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserDTO>> RegistarUser(CreateUserDTO dto, IValidator<CreateUserDTO> validator)
+        {
+            await validator.ValidateAndThrowAsync(dto);
+            
             var registerUser = await userService.RegisterUserAsync(new UserRegistrationDTO
             {
                 Username = dto.Username,
                 Password = dto.Password,
                 Email = dto.Email
             });
+
             var userDto = new UserDTO
             {
                 Id = registerUser.Id,

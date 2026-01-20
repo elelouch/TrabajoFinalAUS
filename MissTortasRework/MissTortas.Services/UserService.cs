@@ -11,13 +11,12 @@ using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(UserManager<User> userManager, SignInManager<User> signInManager) : IUserService
     {
         public async void DeleteUser(long id)
         {
-            var user = await userRepository.FindAsync(id) ?? throw new EntityNotFoundException($"The user {id} has not been found");
-            userRepository.Delete(user);
-            await userRepository.SaveChangesAsync();
+            var user = await userManager.FindByIdAsync(id.ToString()) ?? throw EntityNotFoundException("User doesn't exist");
+            await (userManager.DeleteAsync(user));
         }
 
         public async Task<User> RegisterUserAsync(UserRegistrationDTO dto)
@@ -46,9 +45,8 @@ namespace MissTortas.Services
                 throw new EntityNotFoundException("DTO shouldn't be null");
             }
             var user = await userRepository.FindByUsernameOrEmailAsync(dto.Username, dto.Username) ?? throw new EntityNotFoundException("User not found");
-            var passwordHasher = new PasswordHasher<User>();
-            var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash!, dto.Password);
-            if (verificationResult == PasswordVerificationResult.Failed)
+            var result = await signInManager.PasswordSignInAsync(user, dto.Password, false, true);
+            if (result.Succeeded)
             {
                 throw new PasswordException("Password is not correct");
             }
