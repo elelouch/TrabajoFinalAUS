@@ -7,19 +7,22 @@ using MissTortas.Services.DTO.User;
 using MissTortas.Engine.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using MissTortas.Data.Entity.Security;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MissTortas.Engine.Controllers
 {
     [Route("api/[controller]")]
     [ApiController()]
-    public class UserController(IUserService userService) : Controller
+    public class UserController(UserManager<User> userManager) : Controller
     {
-        private readonly IUserService userService = userService;
+        private readonly UserManager<User> userManager = userManager;
         
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> AllUser()
         {
-            var allUsers = await userService.AllUserAsync();
+            var allUsers = await userManager.Users.ToListAsync();
             var allUserDTO = new ArrayList(allUsers.Count);
             foreach (var user in allUsers)
             {
@@ -30,24 +33,38 @@ namespace MissTortas.Engine.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> LoginUser(LoginUserDTO dto, IValidator<LoginUserDTO> validator)
+        public async Task<ActionResult<UserDTO>> LoginUser(LoginUserDTO dto, IValidator<LoginUserDTO> validator, SignInManager<User> signInManager)
         {
             await validator.ValidateAndThrowAsync(dto);
-
-            await userService.LoginUserAsync(new UserLoginDTO
+            var user = await userManager.FindByNameAsync(dto.Username);
+            if (user is null)
             {
-               Username = dto.Username,
-               Password = dto.Password
-            });
-            return Ok();
+                return NotFound("User not found");
+            }
+            var result = await signInManager.PasswordSignInAsync(user, dto.Password, true, true);
+            if (result != Microsoft.AspNetCore.Identity.SignInResult.Success)
+            {
+                return Unauthorized("Wrong password");
+            }
+            var dtoRet = new UserDTO
+            {
+                Id = user.Id,
+                Username = user.UserName!
+            };
+            return Ok(dtoRet);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> RegistarUser(CreateUserDTO dto, IValidator<CreateUserDTO> validator)
+        public async Task<ActionResult<UserDTO>> RegisterUser(CreateUserDTO dto, IValidator<CreateUserDTO> validator)
         {
             await validator.ValidateAndThrowAsync(dto);
-            
-            var registerUser = await userService.RegisterUserAsync(new UserRegistrationDTO
+            var newUser = new User
+            {
+                Email = dto.Email,
+                UserName = dto.Username
+            };
+            userManager.CreateAsync(newUser, dto);
+            var registerUser = await userManager.RegisterUserAsync(new UserRegistrationDTO
             {
                 Username = dto.Username,
                 Password = dto.Password,
