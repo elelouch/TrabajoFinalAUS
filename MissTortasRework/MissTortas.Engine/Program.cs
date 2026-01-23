@@ -8,6 +8,7 @@ using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,14 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IValidator<CreateUserDTO>, CreateUserValidator>();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 10;
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireDigit = true;
+});
 
 //var requireAuthPolicy = new AuthorizationPolicyBuilder()
 //    .RequireAuthenticatedUser()

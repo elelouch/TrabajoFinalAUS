@@ -40,7 +40,7 @@ namespace MissTortas.Engine.Controllers
             if (user is null)
             {
                 return NotFound("User not found");
-            }
+            } 
             var result = await signInManager.PasswordSignInAsync(user, dto.Password, true, true);
             if (result != Microsoft.AspNetCore.Identity.SignInResult.Success)
             {
@@ -61,22 +61,20 @@ namespace MissTortas.Engine.Controllers
             var newUser = new User
             {
                 Email = dto.Email,
-                UserName = dto.Username
+                UserName = dto.Username,
+                Guid = Guid.NewGuid()
             };
-            userManager.CreateAsync(newUser, dto);
-            var registerUser = await userManager.RegisterUserAsync(new UserRegistrationDTO
+            var creation = await userManager.CreateAsync(newUser, dto.Password);
+            if (creation.Succeeded)
             {
-                Username = dto.Username,
-                Password = dto.Password,
-                Email = dto.Email
-            });
-
-            var userDto = new UserDTO
-            {
-                Id = registerUser.Id,
-                Username = registerUser.UserName!
-            };
-            return Ok(userDto);
+                var userDto = new UserDTO
+                {
+                    Id = newUser.Id,
+                    Username = newUser.UserName
+                };
+                return Ok(userDto);
+            }
+            return BadRequest(creation.Errors.First().Description); 
         }
     }
 }
