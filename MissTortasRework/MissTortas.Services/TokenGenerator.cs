@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using MissTortas.Data.Entity.Security;
+using MissTortas.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,12 +12,12 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace MissTortas.Services
 {
-    public class TokenGenerator
+    public class TokenGenerator : ITokenGenerator
     {
-        public string GenerateToken(User user)
+        public string GenerateToken(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = "VerySecureSymmetricKey".ToArray();
+            var key = "VerySecureSymmetricKeySaracatungueanos"u8.ToArray();
 
             var claims = new List<Claim>
             {
@@ -28,12 +29,13 @@ namespace MissTortas.Services
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(60),
-                Issuer = "elias",
-                Audience = "pedro",
+                Issuer = "https://localhost",
+                Audience = "https://localhost",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            tokenDescriptor.
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

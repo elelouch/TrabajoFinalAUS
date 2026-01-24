@@ -9,7 +9,7 @@ using MissTortas.Data.Context;
 
 namespace MissTortas.Data.Repositories
 {
-    public class UserRepository(MissTortasContext context) : RepositoryCrud<User>(context), IUserRepository
-    {
-    }
+    //public class UserRepository(MissTortasContext context) : RepositoryCrud<User>(context), IUserRepository
+    //{
+    //}
 }

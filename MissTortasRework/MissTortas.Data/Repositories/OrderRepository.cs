@@ -10,6 +10,5 @@ namespace MissTortas.Data.Repositories
 {
     public class OrderRepository(MissTortasContext context) : RepositoryCrud<Order>(context), IOrderRepository
     {
-
     }
 }

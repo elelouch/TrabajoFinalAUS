@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MissTortas.Data.Context
 {
-    public class MissTortasContext (DbContextOptions options) : IdentityDbContext<User, Role, long>(options)
+    public class MissTortasContext (DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
     {
         public DbSet<Order> OrderItems { get; set; }
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("User");
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("User");
             modelBuilder.Entity<Order>().ToTable("Order");
             modelBuilder.Entity<Order>()
                 .HasOne(order => order.Client)

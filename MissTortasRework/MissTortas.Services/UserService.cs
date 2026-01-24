@@ -11,7 +11,7 @@ using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Services
 {
-    public class UserService(UserManager<User> userManager, SignInManager<User> signInManager) : IUserService
-    {
-    }
+    //public class UserService(UserManager<User> userManager, SignInManager<User> signInManager) : IUserService
+    //{
+    //}
 }

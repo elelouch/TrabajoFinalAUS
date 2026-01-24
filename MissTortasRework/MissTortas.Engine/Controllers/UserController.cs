@@ -1,80 +1,81 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MissTortas.Engine.DTO;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.DTO;
 using System.Collections;
-using MissTortas.Services.DTO.User;
-using MissTortas.Engine.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using MissTortas.Data.Entity.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.Data;
+using MissTortas.Services;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MissTortas.Engine.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController()]
-    public class UserController(UserManager<User> userManager) : Controller
+    [ApiController]
+    public class UserController(UserManager<ApplicationUser> userManager,ITokenGenerator tokenGenerator,
+                SignInManager<ApplicationUser> signInManager) : Controller
     {
-        private readonly UserManager<User> userManager = userManager;
-        
+
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> AllUser()
+        public async Task<ActionResult<List<UserLoginDTO>>> AllUser()
         {
             var allUsers = await userManager.Users.ToListAsync();
             var allUserDTO = new ArrayList(allUsers.Count);
             foreach (var user in allUsers)
             {
-                allUserDTO.Add(new UserDTO { Id = user.Id, Username = user.UserName! });
+                allUserDTO.Add(new UserLoginDTO { Id = user.Id, Username = user.UserName! });
             }
 
             return Ok(allUserDTO);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> LoginUser(LoginUserDTO dto, IValidator<LoginUserDTO> validator, SignInManager<User> signInManager)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ActionResult<UserLoginDTO>> LoginUser(
+                LoginRequest request
+            )
         {
-            await validator.ValidateAndThrowAsync(dto);
-            var user = await userManager.FindByNameAsync(dto.Username);
+            var user = await userManager.FindByNameAsync(request.Email);
             if (user is null)
             {
                 return NotFound("User not found");
             } 
-            var result = await signInManager.PasswordSignInAsync(user, dto.Password, true, true);
+            var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
             if (result != Microsoft.AspNetCore.Identity.SignInResult.Success)
             {
                 return Unauthorized("Wrong password");
             }
-            var dtoRet = new UserDTO
+            var dtoRet = new DTO.UserLoginDTO
             {
                 Id = user.Id,
-                Username = user.UserName!
+                Username = user.UserName!,
+                AccessToken = tokenGenerator.GenerateToken(user)
             };
-            return Ok(dtoRet);
+            return dtoRet;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> RegisterUser(CreateUserDTO dto, IValidator<CreateUserDTO> validator)
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<UserLoginDTO>> RegisterUser(RegisterRequest request)
         {
-            await validator.ValidateAndThrowAsync(dto);
-            var newUser = new User
-            {
-                Email = dto.Email,
-                UserName = dto.Username,
-                Guid = Guid.NewGuid()
-            };
-            var creation = await userManager.CreateAsync(newUser, dto.Password);
+            var newUser = new ApplicationUser { Email = request.Email,UserName = request.Email,Guid = Guid.NewGuid() };
+            var creation = await userManager.CreateAsync(newUser, request.Password);
             if (creation.Succeeded)
             {
-                var userDto = new UserDTO
+                var userDto = new DTO.UserLoginDTO
                 {
                     Id = newUser.Id,
-                    Username = newUser.UserName
+                    Username = newUser.UserName,
+                    AccessToken = tokenGenerator.GenerateToken(newUser)
                 };
                 return Ok(userDto);
             }
-            return BadRequest(creation.Errors.First().Description); 
+            
+            return BadRequest(creation.Errors); 
         }
     }
 }
