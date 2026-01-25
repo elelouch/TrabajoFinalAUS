@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Engine.DTO.Products;
+using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 
 namespace MissTortas.Engine.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IProductService productService)
+    public class ProductController(IProductService productService, IValidator<CreateProductDTO> validator)
     {
         [HttpGet]
         public async Task<ActionResult<List<ProductDTO>>> GetAllProducts()
@@ -19,7 +21,14 @@ namespace MissTortas.Engine.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(CreateProductDTO dto)
         {
-            productService.CreateProduct()
+            await validator.ValidateAndThrowAsync(dto);
+            var productDto = new ProductCreateDTO
+            {
+                Name = dto.Name,
+                Description = dto.Description
+            };
+            var product = await productService.CreateProductAsync(productDto);
+            return ProductDTO.FromEntity(product);
         }
     }
 }

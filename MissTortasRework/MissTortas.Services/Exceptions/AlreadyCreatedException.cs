@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MissTortas.Services.Exceptions
 {
-    internal class UserAlreadyCreatedException(string message) : AlreadyCreatedException(message)
+    internal class AlreadyCreatedException(string message): Exception(message)
     {
     }
 }

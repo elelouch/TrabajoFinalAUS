@@ -14,7 +14,7 @@ namespace MissTortas.Engine.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrderType>>> AllOrderTypes()
         {
-            var orderTypes = await orderService.AllOrderTypesAsync();
+            var orderTypes = await orderService.AllOrderTypeAsync();
             return orderTypes;
         }
     }

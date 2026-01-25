@@ -199,6 +199,51 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("OrderType", (string)null);
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Product", (string)null);
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductDetail", (string)null);
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
@@ -308,6 +353,8 @@ namespace MissTortas.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("Email", "UserName");
+
                     b.ToTable("User", (string)null);
                 });
 
@@ -392,6 +439,17 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Products.Product", "Product")
+                        .WithOne("ProductDetail")
+                        .HasForeignKey("MissTortas.Data.Entity.Products.ProductDetail", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationRole", b =>
                 {
                     b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
@@ -402,6 +460,12 @@ namespace MissTortas.Data.Migrations
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
                 {
                     b.Navigation("Preparations");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
+                {
+                    b.Navigation("ProductDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationUser", b =>

@@ -1,8 +1,8 @@
 namespace MissTortas.Data.Entity.Products
 {
-    public class SaleProduct : Product
+    public class SaleProduct
     {
-        public required StockProduct StockProduct { get; set; }
-        public required ProductImage SaleImage { get; set; }
+        public required Product StockProduct { get; set; }
+        public required string SaleImagePath { get; set; }
     }
 }

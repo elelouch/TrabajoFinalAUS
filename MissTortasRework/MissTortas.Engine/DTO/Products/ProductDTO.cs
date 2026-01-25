@@ -15,7 +15,7 @@ namespace MissTortas.Engine.DTO.Products
             {
                 Id = product.Id,
                 Name = product.Name,
-                Description = product.Description
+                Description = product.ProductDetail.Description
             };
         }
 

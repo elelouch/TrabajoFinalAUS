@@ -11,6 +11,8 @@ using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
 using MissTortas.Engine.DTO;
+using MissTortas.Engine.DTO.Products;
+using MissTortas.Engine.Validators.Products;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 
@@ -23,11 +25,17 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
 builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
+// DI
+builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, MissTortasContext, long>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireNonAlphanumeric = true;
