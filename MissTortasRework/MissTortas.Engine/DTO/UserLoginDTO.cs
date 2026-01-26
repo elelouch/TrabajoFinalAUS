@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Engine.DTO
+﻿namespace MissTortas.Services.DTO
 {
     public class UserLoginDTO
     {

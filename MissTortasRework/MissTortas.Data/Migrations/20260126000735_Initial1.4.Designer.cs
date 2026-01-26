@@ -12,8 +12,8 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260125212701_InitialCreate1.3")]
-    partial class InitialCreate13
+    [Migration("20260126000735_Initial1.4")]
+    partial class Initial14
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,10 +205,7 @@ namespace MissTortas.Data.Migrations
             modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -232,7 +229,10 @@ namespace MissTortas.Data.Migrations
             modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -442,15 +442,15 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Products.Product", "Product")
-                        .WithOne("ProductDetail")
-                        .HasForeignKey("MissTortas.Data.Entity.Products.ProductDetail", "Id")
+                    b.HasOne("MissTortas.Data.Entity.Products.ProductDetail", "ProductDetail")
+                        .WithOne("Product")
+                        .HasForeignKey("MissTortas.Data.Entity.Products.Product", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductDetail");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationRole", b =>
@@ -465,10 +465,9 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Preparations");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
                 {
-                    b.Navigation("ProductDetail")
-                        .IsRequired();
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationUser", b =>

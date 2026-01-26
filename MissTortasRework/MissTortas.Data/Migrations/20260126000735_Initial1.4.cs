@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate13 : Migration
+    public partial class Initial14 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,18 +25,17 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "ProductDetail",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Quantity = table.Column<float>(type: "real", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.PrimaryKey("PK_ProductDetail", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,20 +66,21 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductDetail",
+                name: "Product",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Quantity = table.Column<float>(type: "real", nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductDetail", x => x.Id);
+                    table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductDetail_Product_Id",
+                        name: "FK_Product_ProductDetail_Id",
                         column: x => x.Id,
-                        principalTable: "Product",
+                        principalTable: "ProductDetail",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -358,7 +358,7 @@ namespace MissTortas.Data.Migrations
                 name: "OrderType");
 
             migrationBuilder.DropTable(
-                name: "ProductDetail");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -367,7 +367,7 @@ namespace MissTortas.Data.Migrations
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "ProductDetail");
 
             migrationBuilder.DropTable(
                 name: "User");

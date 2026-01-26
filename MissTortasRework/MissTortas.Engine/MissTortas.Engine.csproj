@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MissTortas.Services\MissTortas.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\Orders\" />
+  </ItemGroup>
+
 </Project>

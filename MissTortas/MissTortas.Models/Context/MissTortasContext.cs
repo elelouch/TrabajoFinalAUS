@@ -21,5 +21,11 @@ namespace MissTortas.Models.Context
         {
             modelBuilder.Entity<UserBase>().ToTable("User");
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Command Timeout=0");
+        }
     }
 }

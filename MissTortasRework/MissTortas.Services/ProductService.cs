@@ -36,5 +36,21 @@ namespace MissTortas.Services
         {
             return (await productRepository.FindAllAsync());
         }
+
+        public async Task<SaleProduct> CreateSaleProductAsync(SaleProductCreateDTO dto)
+        {
+            var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found"); ;
+            var saleProduct = new SaleProduct
+            {
+                StockProduct = product,
+                SalePrice = dto.SalePrice,
+                SaleQuantity = dto.SaleQuantity,
+                SaleDescription = dto.SaleDescription
+            };
+            await productRepository.InsertSaleProductAsync(saleProduct);
+            await productRepository.SaveChangesAsync();
+            return saleProduct;
+        }
+
     }
 }

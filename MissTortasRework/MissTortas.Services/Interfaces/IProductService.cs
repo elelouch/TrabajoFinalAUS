@@ -11,5 +11,6 @@ namespace MissTortas.Services.Interfaces
         public Task<List<Product>> FindAllAsync();
         public Task<Product> CreateProductAsync(ProductCreateDTO dto);
         public Task<Product?> FindProductByNameAsync(string name);
+        public Task<SaleProduct> CreateSaleProductAsync(SaleProductCreateDTO dto);
     }
 }

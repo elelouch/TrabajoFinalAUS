@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MissTortas.Engine.DTO
+namespace MissTortas.Services.DTO
 {
     public class CreateUserDTO
     {

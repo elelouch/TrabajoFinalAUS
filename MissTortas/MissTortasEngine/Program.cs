@@ -13,9 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<MissTortasContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found."))
-    );
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<MissTortasContext>();

@@ -16,5 +16,10 @@ namespace MissTortas.Data.Repositories
         {
             await context.ProductDetails.AddAsync(productDetail);
         }
+
+        public async Task InsertSaleProductAsync(SaleProduct saleProduct)
+        {
+            await context.SaleProducts.AddAsync(saleProduct);
+        }
     }
 }

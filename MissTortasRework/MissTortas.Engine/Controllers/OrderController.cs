@@ -5,7 +5,7 @@ using MissTortas.Data.Entity.Orders;
 using MissTortas.Services.Interfaces;
 using System.Collections;
 
-namespace MissTortas.Engine.Controllers
+namespace MissTortas.Services.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,5 +17,6 @@ namespace MissTortas.Engine.Controllers
             var orderTypes = await orderService.AllOrderTypeAsync();
             return orderTypes;
         }
+
     }
 }

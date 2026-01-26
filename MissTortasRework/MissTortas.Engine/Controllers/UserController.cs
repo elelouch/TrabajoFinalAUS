@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MissTortas.Engine.DTO;
+using MissTortas.Services.DTO;
 using MissTortas.Services.Interfaces;
 using System.Collections;
 using FluentValidation;
@@ -12,7 +12,7 @@ using MissTortas.Services;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MissTortas.Engine.Controllers
+namespace MissTortas.Services.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -12,6 +12,7 @@ namespace MissTortas.Data.Context
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
+        public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,9 +30,10 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<OrderType>().ToTable("OrderType");
 
             modelBuilder.Entity<Product>().ToTable("Product").HasIndex(p => new { p.Name }).IsUnique();
+
             modelBuilder.Entity<Product>().HasOne(p => p.ProductDetail)
                 .WithOne(pd => pd.Product)
-                .HasForeignKey<ProductDetail>(pd => pd.Id);
+                .HasForeignKey<Product>(p => p.Id);
 
             modelBuilder.Entity<ProductDetail>().ToTable("ProductDetail");
             
