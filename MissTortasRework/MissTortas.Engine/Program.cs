@@ -15,6 +15,8 @@ using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Validators.Products;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
+using MissTortas.Engine.DTO.Products;
+using MissTortas.Engine.Validators.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,7 @@ var connectionString = builder.Configuration.GetConnectionString("MissTortasCont
 builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
 // DI
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, MissTortasContext, long>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();

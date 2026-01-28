@@ -1,0 +1,8 @@
+﻿namespace MissTortas.Engine.DTO.Products
+{
+    public class CreateProductCategoryDTO
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+}

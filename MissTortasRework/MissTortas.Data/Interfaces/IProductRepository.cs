@@ -7,5 +7,7 @@ namespace MissTortas.Data.Interfaces
         public Task InsertProductDetailAsync(ProductDetail productDetail);
         public Task InsertSaleProductAsync(SaleProduct saleProduct);
         public Task<Product?> FindProductByNameAsync(string name);
+        public Task<IEnumerable<Product>> GetAllWithDetailAsync();
+        public Task<ProductCategory> GetProductCategory(long id);
     }
 }

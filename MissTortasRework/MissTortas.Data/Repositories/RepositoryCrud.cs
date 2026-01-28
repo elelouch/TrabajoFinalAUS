@@ -3,12 +3,13 @@ using MissTortas.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MissTortas.Data.Repositories
 {
-    public abstract class RepositoryCrud<TEntity>(DbContext dbContext): IRepositoryCrud<TEntity> where TEntity: class
+    public abstract class RepositoryCrud<TEntity>(DbContext dbContext) : IRepositoryCrud<TEntity> where TEntity : class
     {
         private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
         public DbContext Context { get; } = dbContext;
@@ -39,9 +40,6 @@ namespace MissTortas.Data.Repositories
             return rowsAffected;
         }
 
-        public virtual async Task<List<TEntity>> FindAllAsync()
-        {
-            return (await _dbSet.ToListAsync());
-        }
+        public async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
     }
 }

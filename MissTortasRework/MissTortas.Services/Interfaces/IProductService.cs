@@ -8,7 +8,8 @@ namespace MissTortas.Services.Interfaces
 {
     public interface IProductService
     {
-        public Task<List<Product>> FindAllAsync();
+        public Task<IEnumerable<Product>> AllAsync();
+        public Task<IEnumerable<Product>> AllWithDetailAsync();
         public Task<Product> CreateProductAsync(ProductCreateDTO dto);
         public Task<Product?> FindProductByNameAsync(string name);
         public Task<SaleProduct> CreateSaleProductAsync(SaleProductCreateDTO dto);

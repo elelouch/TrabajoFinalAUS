@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace MissTortas.Services.Controllers
 {
@@ -11,11 +13,37 @@ namespace MissTortas.Services.Controllers
     [ApiController]
     public class ProductController(IProductService productService, IValidator<CreateProductDTO> createProductValidator, IValidator<CreateSaleProductDTO> createSaleProductValidator)
     {
-        [HttpGet]
-        public async Task<ActionResult<List<ProductDTO>>> GetAllProducts()
+        [HttpPost]
+        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory (CreateProductCategoryDTO dto)
         {
-            var allProducts = await productService.FindAllAsync();
-            return ProductDTO.FromEntity(allProducts);
+            var productCategoryDto = new ProductCategoryCreateDTO()
+            {
+                Name = dto.Name,
+                Description = dto.Description
+            };
+
+            var productCategory = productService.CreateProductCategoryAsync(productCategoryDto);
+            return new ProductCategoryDTO { Id = productCategory.Id, Name = productCategory.Name };
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts(bool details)
+        {
+            if(details)
+            {
+                var wdetail = await productService.AllWithDetailAsync();
+                var retDetail = wdetail.Select(p => new ProductDTO 
+                { 
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.ProductDetail.Description 
+                }).ToList();
+                return retDetail;
+            }
+            var allProducts = await productService.AllAsync();
+            var ret = allProducts.Select(p => new ProductDTO { Id = p.Id, Name = p.Name }).ToList();
+            return ret;
         }
 
         [HttpPost]
@@ -27,8 +55,8 @@ namespace MissTortas.Services.Controllers
                 Name = dto.Name,
                 Description = dto.Description
             };
-            var product = await productService.CreateProductAsync(productDto);
-            return ProductDTO.FromEntity(product);
+            var p = await productService.CreateProductAsync(productDto);
+            return new ProductDTO { Id = p.Id, Name = p.Name };
         }
 
         [HttpPost("sale")]
@@ -42,9 +70,13 @@ namespace MissTortas.Services.Controllers
                 SaleQuantity = dto.SaleQuantity,
                 ProductId = dto.ProductId
             };
-            var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);    
-            
-            return SaleProductDTO.FromEntity(saleProduct);
+            var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
+            return new SaleProductDTO
+            {
+                Id = saleProduct.Id,
+                Price = saleProduct.SalePrice,
+                Quantity = saleProduct.SaleQuantity
+            };
         }
     }
 }

@@ -26,16 +26,15 @@ namespace MissTortas.Services
             {
                 throw new AlreadyCreatedException("Product with that name already created");
             }
-            var product = new Product { Name = dto.Name, ProductDetail = productDetail };
+            var productCategory = await productRepository.GetProductCategory(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
+            var product = new Product { Name = dto.Name, ProductDetail = productDetail, ProductCategory = productCategory};
             await productRepository.InsertAsync(product);
             await productRepository.SaveChangesAsync();
             return product;
         }
 
-        public async Task<List<Product>> FindAllAsync()
-        {
-            return (await productRepository.FindAllAsync());
-        }
+        public async Task<IEnumerable<Product>> AllAsync() => await productRepository.GetAllAsync();
+        public async Task<IEnumerable<Product>> AllWithDetailAsync() => await productRepository.GetAllWithDetailAsync();
 
         public async Task<SaleProduct> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
