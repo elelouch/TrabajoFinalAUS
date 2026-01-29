@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using MissTortas.Data.Entity.Orders;
-using MissTortas.Data.Entity.Security;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Data.Context
 {
@@ -13,12 +14,12 @@ namespace MissTortas.Data.Context
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
+        public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>().ToTable("User").HasIndex(u => new {u.Email, u.UserName});
-            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<ApplicationUser>().HasIndex(u => new {u.Email, u.UserName});
             modelBuilder.Entity<Order>()
                 .HasOne(order => order.Client)
                 .WithMany()
@@ -27,17 +28,25 @@ namespace MissTortas.Data.Context
                 .HasOne(order => order.OrderManager)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<OrderType>().ToTable("OrderType");
 
-            modelBuilder.Entity<Product>().ToTable("Product").HasIndex(p => new { p.Name }).IsUnique();
+            modelBuilder.Entity<Product>().HasIndex(p => new { p.Name }).IsUnique();
 
             modelBuilder.Entity<Product>().HasOne(p => p.ProductDetail)
                 .WithOne(pd => pd.Product)
                 .HasForeignKey<Product>(p => p.Id);
 
-            modelBuilder.Entity<ProductDetail>().ToTable("ProductDetail");
-            
-            modelBuilder.Entity<ProductDetail>().ToTable("ProductDetail");
+            modelBuilder.Entity<ProductCategory>()
+                .HasMany(pc => pc.Products)
+                .WithOne(p => p.ProductCategory);
+
+            modelBuilder.Entity<Product>().HasOne(p => p.ProductCategory)
+                .WithMany(pc => pc.Products);
+        }
+
+        // In your DbContext
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Conventions.Remove<TableNameFromDbSetConvention>();
         }
     }
 }

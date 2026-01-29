@@ -13,18 +13,31 @@ namespace MissTortas.Services.Controllers
     [ApiController]
     public class ProductController(IProductService productService, IValidator<CreateProductDTO> createProductValidator, IValidator<CreateSaleProductDTO> createSaleProductValidator)
     {
-        [HttpPost]
+        [HttpGet("category")]
+        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory(CreateProductCategoryDTO dto)
+        {
+           
+            var productCategoryDto = new ProductCategoryCreateDTO()
+            {
+                Name = dto.Name,
+                ParentId = dto.ParentId,
+                IsFinal = dto.IsFinal
+            };
+            var productCategory = await productService.CreateProductCategoryAsync(productCategoryDto);
+            return new ProductCategoryDTO { Id = productCategory.Id, Name = productCategory.Name };
+        }
+
+        [HttpPost("category")]
         public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory (CreateProductCategoryDTO dto)
         {
             var productCategoryDto = new ProductCategoryCreateDTO()
             {
                 Name = dto.Name,
-                Description = dto.Description
+                ParentId = dto.ParentId,
+                IsFinal = dto.IsFinal
             };
-
-            var productCategory = productService.CreateProductCategoryAsync(productCategoryDto);
+            var productCategory = await productService.CreateProductCategoryAsync(productCategoryDto);
             return new ProductCategoryDTO { Id = productCategory.Id, Name = productCategory.Name };
-
         }
 
         [HttpGet]

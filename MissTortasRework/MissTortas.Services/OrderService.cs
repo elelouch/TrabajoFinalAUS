@@ -11,7 +11,7 @@ namespace MissTortas.Services
     {
         public async Task<List<OrderType>> AllOrderTypeAsync()
         {
-            return (await orderRepository.FindAllOrderTypeAsync());
+            return (await orderRepository.GetAllOrderTypeAsync());
         }
     }
 }

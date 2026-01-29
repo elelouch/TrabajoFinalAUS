@@ -10,26 +10,22 @@ namespace MissTortas.Data.Repositories
         public DbSet<Product> productsSet = context.Products;
         public DbSet<ProductDetail> productsDetailSet = context.ProductDetails;
         public DbSet<SaleProduct> saleProductSet = context.SaleProducts;
+        public DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
 
-        public async Task<IEnumerable<Product>> GetAllWithDetailAsync()
-        {
-            return (await productsSet.Include(p => p.ProductDetail).ToListAsync());
-        }
+        public async Task<IEnumerable<Product>> GetAllWithDetailAsync() =>
+            await productsSet.Include(p => p.ProductDetail).ToListAsync();
 
-        public Task<Product?> FindProductByNameAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Product?> GetProductByNameAsync(string name) =>
+            await productsSet.Where(p => p.Name == name).FirstOrDefaultAsync();
 
-        public async Task InsertProductDetailAsync(ProductDetail productDetail)
-        {
-            await productsDetailSet.AddAsync(productDetail);
-        }
+        public async Task InsertProductDetailAsync(ProductDetail productDetail) => await productsDetailSet.AddAsync(productDetail);
 
-        public async Task InsertSaleProductAsync(SaleProduct saleProduct)
-        {
-            await saleProductSet.AddAsync(saleProduct);
-        }
+        public async Task InsertSaleProductAsync(SaleProduct saleProduct) => await saleProductSet.AddAsync(saleProduct);
 
+        public async Task<ProductCategory?> GetProductCategoryAsync(long id) => await productCategoriesSet.FindAsync(id);
+
+        public async Task InsertProductCategoryAsync(ProductCategory productCategory) => await productCategoriesSet.AddAsync(productCategory);
+
+        public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync() => await productCategoriesSet.ToListAsync();
     }
 }
