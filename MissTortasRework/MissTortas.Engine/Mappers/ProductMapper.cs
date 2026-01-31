@@ -1,5 +1,5 @@
 ﻿using MissTortas.Data.Entity.Products;
-using MissTortas.Engine.DTO.Products;
+using MissTortas.Services.DTO.Products;
 
 namespace MissTortas.Engine.Mappers
 {

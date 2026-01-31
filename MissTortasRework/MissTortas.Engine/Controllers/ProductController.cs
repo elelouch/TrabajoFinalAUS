@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Products;
-using MissTortas.Engine.DTO.Products;
-using MissTortas.Engine.Interfaces;
-using MissTortas.Engine.Mappers;
 using MissTortas.Services.DTO.Products;
 using System.Collections.Generic;
 
@@ -49,13 +46,7 @@ namespace MissTortas.Engine.Controllers
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             var wdetail = await productService.AllWithDetailAsync();
-            var retDetail = wdetail.Select(p => new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.ProductDetail.Description
-            }).ToList();
-            return retDetail;
+            return productMapper.ProductToDTO(wdetail, ["detail"]);
         }
 
         [HttpPost]

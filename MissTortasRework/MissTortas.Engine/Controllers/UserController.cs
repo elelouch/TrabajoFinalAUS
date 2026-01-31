@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MissTortas.Engine.DTO;
-using MissTortas.Engine.Interfaces;
 using System.Collections;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using MissTortas.Services.Mapper;
 
 namespace MissTortas.Engine.Controllers
 {

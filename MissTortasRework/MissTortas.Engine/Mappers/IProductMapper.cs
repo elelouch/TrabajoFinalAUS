@@ -1,6 +1,4 @@
-﻿using MissTortas.Data.Entity.Products;
-using MissTortas.Engine.DTO.Products;
-using MissTortas.Services.DTO.Products;
+﻿using MissTortas.Services.DTO.Products;
 
 namespace MissTortas.Engine.Mappers
 {
@@ -8,6 +6,6 @@ namespace MissTortas.Engine.Mappers
     {
         public ProductCategoryDTO ProductCategoryToDTO(ProductCategory pc);
         public List<ProductCategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> cats);
-        public ProductDTO ProductToDTO(IEnumerable<ProductCategory> cats);
+        public ProductDTO ProductToDTO(IEnumerable<ProductDTO> wdetail, IEnumerable<ProductCategory> cats);
     }
 }

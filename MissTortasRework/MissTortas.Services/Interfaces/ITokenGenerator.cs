@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Engine.Interfaces
+namespace MissTortas.Services.Mapper
 {
     public interface ITokenGenerator
     {

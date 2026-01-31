@@ -1,12 +1,13 @@
 ﻿using MissTortas.Data.Entity.Orders;
+using MissTortas.Services.DTO.Order;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Engine.Interfaces
+namespace MissTortas.Services.Interfaces
 {
     public interface IOrderService
     {
-        public Task<IEnumerable<OrderType>> AllOrderTypeAsync();
+        public Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync();
     }
 }

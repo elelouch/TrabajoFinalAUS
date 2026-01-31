@@ -14,10 +14,11 @@ using MissTortas.Engine.DTO;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Validators.Products;
 using MissTortas.Engine;
-using MissTortas.Engine.Interfaces;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Validators.Products;
 using MissTortas.Services;
+using MissTortas.Services.Mapper;
+using MissTortas.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
