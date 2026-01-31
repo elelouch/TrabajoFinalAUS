@@ -31,12 +31,14 @@ builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, MissTortasContext, long>>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 
 builder.Services.Configure<IdentityOptions>(options =>

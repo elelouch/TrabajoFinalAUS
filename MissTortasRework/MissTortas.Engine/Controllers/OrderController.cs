@@ -12,10 +12,11 @@ namespace MissTortas.Engine.Controllers
     public class OrderController(IOrderService orderService)
     {
         [HttpGet]
-        public async Task<ActionResult<List<OrderType>>> AllOrderTypes()
+        public async Task<ActionResult<IEnumerable<OrderType>>> AllOrderTypes()
         {
             var orderTypes = await orderService.AllOrderTypeAsync();
-            return orderTypes;
+            var ret = orderTypes.ToList();
+            return ret;
         }
 
     }

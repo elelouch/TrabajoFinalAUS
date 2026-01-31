@@ -10,9 +10,10 @@ namespace MissTortas.Data.Repositories
 {
     public class OrderRepository(MissTortasContext context) : RepositoryCrud<Order>(context), IOrderRepository
     {
-        public async Task<List<OrderType>> GetAllOrderTypeAsync()
+        public async Task<IEnumerable<OrderType>> GetAllOrderTypeAsync()
         {
             return (await context.OrderTypes.ToListAsync());
         }
+
     }
 }

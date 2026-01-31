@@ -7,6 +7,6 @@ namespace MissTortas.Services.Interfaces
 {
     public interface IOrderService
     {
-        public Task<List<OrderType>> AllOrderTypeAsync();
+        public Task<IEnumerable<OrderType>> AllOrderTypeAsync();
     }
 }

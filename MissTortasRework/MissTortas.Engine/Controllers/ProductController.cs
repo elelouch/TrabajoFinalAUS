@@ -7,24 +7,42 @@ using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace MissTortas.Services.Controllers
+namespace MissTortas.Engine.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController(IProductService productService, IValidator<CreateProductDTO> createProductValidator, IValidator<CreateSaleProductDTO> createSaleProductValidator)
     {
-        [HttpGet("category")]
-        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory(CreateProductCategoryDTO dto)
+        [HttpDelete("category/{id}")]
+        public async Task DeleteProductCategory(long id)
         {
-           
-            var productCategoryDto = new ProductCategoryCreateDTO()
+            await productService.DeleteProductCategory(id);
+            Ok();
+        }
+
+        [HttpGet("category")]
+        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory(bool includeParent)
+        {
+            
+            if(includeParent)
             {
-                Name = dto.Name,
-                ParentId = dto.ParentId,
-                IsFinal = dto.IsFinal
-            };
-            var productCategory = await productService.CreateProductCategoryAsync(productCategoryDto);
-            return new ProductCategoryDTO { Id = productCategory.Id, Name = productCategory.Name };
+                var categoriesWithParent = await productService.AllProductCategoriesWithParentAsync();
+                var wParentRet = categoriesWithParent.Select(c => new ProductCategoryDTO
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ParentId = c.Parent!.Id
+                }).ToList();
+                return wParentRet;
+            }
+
+            var categories = await productService.AllProductCategoriesAsync();
+            var ret = categories.Select(cat => new ProductCategoryDTO
+                {
+                    Id = cat.Id,
+                    Name = cat.Name
+                }).ToList();
+            return ret;
         }
 
         [HttpPost("category")]
@@ -41,9 +59,9 @@ namespace MissTortas.Services.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts(bool details)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts(bool includeDetails)
         {
-            if(details)
+            if(includeDetails)
             {
                 var wdetail = await productService.AllWithDetailAsync();
                 var retDetail = wdetail.Select(p => new ProductDTO 
@@ -91,5 +109,7 @@ namespace MissTortas.Services.Controllers
                 Quantity = saleProduct.SaleQuantity
             };
         }
+//       [HttpGet("sale")]
+//       public async Task<ActionResult<SaleProductDTO>>
     }
 }

@@ -27,5 +27,11 @@ namespace MissTortas.Data.Repositories
         public async Task InsertProductCategoryAsync(ProductCategory productCategory) => await productCategoriesSet.AddAsync(productCategory);
 
         public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync() => await productCategoriesSet.ToListAsync();
+
+        public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesWithParentAsync() =>
+            await productCategoriesSet.Include(s => s.Parent).ToListAsync();
+
+        public async Task DeleteProductCategory(ProductCategory cat) =>
+            productCategoriesSet.Remove(cat);
     }
 }
