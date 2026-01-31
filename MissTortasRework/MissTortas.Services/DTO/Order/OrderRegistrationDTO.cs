@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Services.DTO.Order
+﻿namespace MissTortas.Engine.DTO.Order
 {
     public class OrderRegistrationDTO
     {

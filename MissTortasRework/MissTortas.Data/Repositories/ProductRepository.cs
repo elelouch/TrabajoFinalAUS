@@ -33,5 +33,10 @@ namespace MissTortas.Data.Repositories
 
         public async Task DeleteProductCategory(ProductCategory cat) =>
             productCategoriesSet.Remove(cat);
+
+        public async Task<ProductCategory?> GetProductCategory(long id)
+        {
+            return (await productCategoriesSet.FindAsync(id));
+        }
     }
 }

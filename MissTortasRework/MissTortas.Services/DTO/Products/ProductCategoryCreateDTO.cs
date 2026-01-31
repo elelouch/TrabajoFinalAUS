@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.DTO.Products
+namespace MissTortas.Engine.DTO.Products
 {
     public class ProductCategoryCreateDTO
     {

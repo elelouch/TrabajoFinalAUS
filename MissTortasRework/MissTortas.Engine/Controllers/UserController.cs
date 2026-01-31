@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MissTortas.Services.DTO;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.DTO;
+using MissTortas.Engine.Interfaces;
 using System.Collections;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +8,12 @@ using MissTortas.Data.Entity.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
-using MissTortas.Services;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MissTortas.Services.Controllers
+namespace MissTortas.Engine.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController(UserManager<ApplicationUser> userManager,ITokenGenerator tokenGenerator,
                 SignInManager<ApplicationUser> signInManager) : Controller
@@ -49,7 +48,7 @@ namespace MissTortas.Services.Controllers
             {
                 return Unauthorized("Wrong password");
             }
-            var dtoRet = new DTO.UserLoginDTO
+            var dtoRet = new UserLoginDTO
             {
                 Id = user.Id,
                 Username = user.UserName!,
@@ -66,7 +65,7 @@ namespace MissTortas.Services.Controllers
             var creation = await userManager.CreateAsync(newUser, request.Password);
             if (creation.Succeeded)
             {
-                var userDto = new DTO.UserLoginDTO
+                var userDto = new UserLoginDTO
                 {
                     Id = newUser.Id,
                     Username = newUser.UserName,

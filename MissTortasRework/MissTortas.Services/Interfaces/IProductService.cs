@@ -1,10 +1,10 @@
 ﻿using MissTortas.Data.Entity.Products;
-using MissTortas.Services.DTO.Products;
+using MissTortas.Engine.DTO.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.Interfaces
+namespace MissTortas.Engine.Interfaces
 {
     public interface IProductService
     {

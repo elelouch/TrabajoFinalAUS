@@ -1,10 +1,10 @@
 ﻿using MissTortas.Data.Entity.Security;
-using MissTortas.Services.DTO.User;
+using MissTortas.Engine.DTO.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.Interfaces
+namespace MissTortas.Engine.Interfaces
 {
     public interface IUserService
     { 

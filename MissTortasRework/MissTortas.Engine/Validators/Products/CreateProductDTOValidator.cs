@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using MissTortas.Services.DTO.Products;
+using MissTortas.Engine.DTO.Products;
 
-namespace MissTortas.Services.Validators.Products
+namespace MissTortas.Engine.Validators.Products
 {
     public class CreateProductDTOValidator : AbstractValidator<CreateProductDTO>
     {

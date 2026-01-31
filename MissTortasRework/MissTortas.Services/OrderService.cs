@@ -1,11 +1,11 @@
 ﻿using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Interfaces;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services
+namespace MissTortas.Engine
 {
     public class OrderService(IOrderRepository orderRepository) : IOrderService
     {

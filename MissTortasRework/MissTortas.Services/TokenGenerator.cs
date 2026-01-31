@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using MissTortas.Data.Entity.Security;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,7 +10,7 @@ using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 
-namespace MissTortas.Services
+namespace MissTortas.Engine
 {
     public class TokenGenerator : ITokenGenerator
     {

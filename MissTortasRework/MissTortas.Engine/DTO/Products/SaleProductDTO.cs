@@ -1,5 +1,5 @@
 ﻿using MissTortas.Data.Entity.Products;
-using MissTortas.Services.DTO.Products;
+using MissTortas.Engine.DTO.Products;
 
 namespace MissTortas.Engine.DTO.Products
 {

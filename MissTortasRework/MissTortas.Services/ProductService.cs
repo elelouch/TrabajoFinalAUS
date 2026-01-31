@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Interfaces;
-using MissTortas.Services.DTO.Products;
-using MissTortas.Services.Exceptions;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.DTO.Products;
+using MissTortas.Engine.Exceptions;
+using MissTortas.Engine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services
+namespace MissTortas.Engine
 {
     public class ProductService(IProductRepository productRepository) : IProductService
     {
@@ -83,6 +83,7 @@ namespace MissTortas.Services
         {
             var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFound("Product category not found");
             await productRepository.DeleteProductCategory(pc);
+            await productRepository.SaveChangesAsync();
         }
     }
 }

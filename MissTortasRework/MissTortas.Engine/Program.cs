@@ -10,11 +10,11 @@ using MissTortas.Data.Context;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
-using MissTortas.Services.DTO;
-using MissTortas.Services.DTO.Products;
-using MissTortas.Services.Validators.Products;
-using MissTortas.Services;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.DTO;
+using MissTortas.Engine.DTO.Products;
+using MissTortas.Engine.Validators.Products;
+using MissTortas.Engine;
+using MissTortas.Engine.Interfaces;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Validators.Products;
 

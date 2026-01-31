@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MissTortas.Engine.DTO.Products;
-using MissTortas.Services.DTO.Products;
+using MissTortas.Engine.DTO.Products;
 
 namespace MissTortas.Engine.Validators.Products
 {

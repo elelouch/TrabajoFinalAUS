@@ -1,6 +1,6 @@
 ﻿using MissTortas.Data.Entity.Products;
 
-namespace MissTortas.Services.DTO.Products
+namespace MissTortas.Engine.DTO.Products
 {
     public class CreateProductDTO
     {

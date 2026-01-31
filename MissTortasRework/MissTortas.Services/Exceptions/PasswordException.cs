@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.Exceptions
+namespace MissTortas.Engine.Exceptions
 {
     public class PasswordException(string message): Exception(message)
     {

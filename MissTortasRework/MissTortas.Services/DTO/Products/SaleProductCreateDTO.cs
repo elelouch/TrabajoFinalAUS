@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Services.DTO.Products
+﻿namespace MissTortas.Engine.DTO.Products
 {
     public class SaleProductCreateDTO
     {

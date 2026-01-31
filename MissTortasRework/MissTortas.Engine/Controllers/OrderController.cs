@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Orders;
-using MissTortas.Services.Interfaces;
+using MissTortas.Engine.Interfaces;
 using System.Collections;
 
 namespace MissTortas.Engine.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class OrderController(IOrderService orderService)
     {
