@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Engine.DTO.Products;
-using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Interfaces;
 using MissTortas.Engine.Mappers;
+using MissTortas.Services.DTO.Products;
 using System.Collections.Generic;
 
 namespace MissTortas.Engine.Controllers
@@ -29,7 +29,7 @@ namespace MissTortas.Engine.Controllers
         public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
         {
             var categoriesWithParent = await productService.AllProductCategoriesWithParentAsync();
-            return productMapper.ProductCategory(categoriesWithParent);
+            return productMapper.ProductCategoryToDTO(categoriesWithParent);
         }
 
         [HttpPost("category")]
@@ -42,31 +42,20 @@ namespace MissTortas.Engine.Controllers
                 IsFinal = dto.IsFinal
             };
             var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
-            return new ProductCategoryDTO
-            {
-                Id = pc.Id,
-                Name = pc.Name,
-                ParentId = pc.Parent is null ? 0 : pc.Parent.Id
-            };
+            return productMapper.ProductCategoryToDTO(pc);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts(bool includeDetails)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
-            if (includeDetails)
+            var wdetail = await productService.AllWithDetailAsync();
+            var retDetail = wdetail.Select(p => new ProductDTO
             {
-                var wdetail = await productService.AllWithDetailAsync();
-                var retDetail = wdetail.Select(p => new ProductDTO
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.ProductDetail.Description
-                }).ToList();
-                return retDetail;
-            }
-            var allProducts = await productService.AllAsync();
-            var ret = allProducts.Select(p => new ProductDTO { Id = p.Id, Name = p.Name }).ToList();
-            return ret;
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.ProductDetail.Description
+            }).ToList();
+            return retDetail;
         }
 
         [HttpPost]

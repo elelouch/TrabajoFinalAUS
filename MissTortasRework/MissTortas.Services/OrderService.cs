@@ -9,7 +9,7 @@ namespace MissTortas.Engine
 {
     public class OrderService(IOrderRepository orderRepository) : IOrderService
     {
-        public async Task<IEnumerable<OrderType>> AllOrderTypeAsync()
+        public async Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync()
         {
             return (await orderRepository.GetAllOrderTypeAsync());
         }

@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Interfaces;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Exceptions;
 using MissTortas.Engine.Interfaces;
+using MissTortas.Services.DTO.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Engine
+namespace MissTortas.Services
 {
     public class ProductService(IProductRepository productRepository) : IProductService
     {
-        public async Task<Product?> GetProductByNameAsync(string name) =>
+        public async Task<ProductDTO?> GetProductByNameAsync(string name) =>
             await productRepository.GetProductByNameAsync(name);
 
-        public async Task<Product> CreateProductAsync(ProductCreateDTO dto)
+        public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
         {
             var productDetail = new ProductDetail { Description = dto.Description };
             await productRepository.InsertProductDetailAsync(productDetail);
@@ -39,7 +39,7 @@ namespace MissTortas.Engine
         public async Task<IEnumerable<Product>> AllAsync() => await productRepository.GetAllAsync();
         public async Task<IEnumerable<Product>> AllWithDetailAsync() => await productRepository.GetAllWithDetailAsync();
 
-        public async Task<SaleProduct> CreateSaleProductAsync(SaleProductCreateDTO dto)
+        public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
             var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found"); ;
             var saleProduct = new SaleProduct
@@ -53,7 +53,7 @@ namespace MissTortas.Engine
             await productRepository.SaveChangesAsync();
             return saleProduct;
         }
-        public async Task<ProductCategory> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
+        public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
             var parent = await productRepository.GetProductCategoryAsync(dto.ParentId);
             if (parent is not null && parent.IsFinal)
@@ -73,10 +73,10 @@ namespace MissTortas.Engine
             return productCategory;
         }
 
-        public async Task<IEnumerable<ProductCategory>> AllProductCategoriesAsync() =>
+        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesAsync() =>
             await productRepository.GetAllProductCategoriesAsync();
 
-        public async Task<IEnumerable<ProductCategory>> AllProductCategoriesWithParentAsync() =>
+        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesWithParentAsync() =>
             await productRepository.GetAllProductCategoriesWithParentAsync();
 
         public async Task DeleteProductCategory(long id)

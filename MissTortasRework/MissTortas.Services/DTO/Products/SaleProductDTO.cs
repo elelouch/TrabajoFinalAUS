@@ -1,7 +1,6 @@
 ﻿using MissTortas.Data.Entity.Products;
-using MissTortas.Engine.DTO.Products;
 
-namespace MissTortas.Engine.DTO.Products
+namespace MissTortas.Services.DTO.Products
 {
     public class SaleProductDTO
     {

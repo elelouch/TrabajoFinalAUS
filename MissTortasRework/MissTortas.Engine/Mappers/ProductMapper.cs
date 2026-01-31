@@ -5,7 +5,7 @@ namespace MissTortas.Engine.Mappers
 {
     public class ProductMapper : IProductMapper
     {
-        public ProductCategoryDTO ProductCategory(ProductCategory pc)
+        public ProductCategoryDTO ProductCategoryToDTO(ProductCategory pc)
         {
             return new ProductCategoryDTO
             {
@@ -14,9 +14,9 @@ namespace MissTortas.Engine.Mappers
                 ParentId = pc.Parent is null ? 0 : pc.Parent.Id
             };
         }
-        public List<ProductCategoryDTO> ProductCategory(IEnumerable<ProductCategory> cats)
+        public List<ProductCategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> cats)
         {
-            return [.. cats.Select(c => ProductCategory(c))];
+            return [.. cats.Select(c => ProductCategoryToDTO(c))];
         }
     }
 }

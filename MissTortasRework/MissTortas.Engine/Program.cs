@@ -17,6 +17,7 @@ using MissTortas.Engine;
 using MissTortas.Engine.Interfaces;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Validators.Products;
+using MissTortas.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
