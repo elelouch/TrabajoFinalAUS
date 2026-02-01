@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="DTO\Orders\" />
+    <Folder Include="Mappers\" />
   </ItemGroup>
 
 </Project>

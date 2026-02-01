@@ -3,7 +3,8 @@ using MissTortas.Services.DTO.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;
-namespace MissTortas.Services.Mapper
+
+namespace MissTortas.Services.Interfaces
 {
     public interface IProductService
     {

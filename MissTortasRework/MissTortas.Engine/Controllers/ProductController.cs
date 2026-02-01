@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Products;
+using MissTortas.Engine.DTO.Products;
 using MissTortas.Services.DTO.Products;
+using MissTortas.Services.Interfaces;
+using MissTortas.Services.Mapper;
 using System.Collections.Generic;
 
 namespace MissTortas.Engine.Controllers
@@ -12,8 +15,7 @@ namespace MissTortas.Engine.Controllers
     public class ProductController(
             IProductService productService,
             IValidator<CreateProductDTO> createProductValidator,
-            IValidator<CreateSaleProductDTO> createSaleProductValidator,
-            IProductMapper productMapper
+            IValidator<CreateSaleProductDTO> createSaleProductValidator
         )
     {
         [HttpDelete("category/{id}")]
@@ -25,8 +27,8 @@ namespace MissTortas.Engine.Controllers
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
         {
-            var categoriesWithParent = await productService.AllProductCategoriesWithParentAsync();
-            return productMapper.ProductCategoryToDTO(categoriesWithParent);
+            var ps = await productService.AllProductCategoriesWithParentAsync();
+            return ps.ToList();
         }
 
         [HttpPost("category")]
@@ -39,15 +41,15 @@ namespace MissTortas.Engine.Controllers
                 IsFinal = dto.IsFinal
             };
             var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
-            return productMapper.ProductCategoryToDTO(pc);
+            return pc;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
-            var wdetail = await productService.AllWithDetailAsync();
-            return productMapper.ProductToDTO(wdetail, ["detail"]);
-        }
+            var ps = await productService.AllWithDetailAsync();
+            return ps.ToList();
+        } 
 
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(CreateProductDTO dto)
@@ -59,7 +61,7 @@ namespace MissTortas.Engine.Controllers
                 Description = dto.Description
             };
             var p = await productService.CreateProductAsync(productDto);
-            return new ProductDTO { Id = p.Id, Name = p.Name };
+            return p;
         }
 
         [HttpPost("sale")]
@@ -74,14 +76,7 @@ namespace MissTortas.Engine.Controllers
                 ProductId = dto.ProductId
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
-            return new SaleProductDTO
-            {
-                Id = saleProduct.Id,
-                Price = saleProduct.SalePrice,
-                Quantity = saleProduct.SaleQuantity
-            };
+            return saleProduct;
         }
-        //       [HttpGet("sale")]
-        //       public async Task<ActionResult<SaleProductDTO>>
     }
 }

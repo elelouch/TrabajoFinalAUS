@@ -2,6 +2,7 @@
 using MissTortas.Data.Interfaces;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
+using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using System;
 using System.Collections.Generic;

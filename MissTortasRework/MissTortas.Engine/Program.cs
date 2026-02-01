@@ -14,8 +14,6 @@ using MissTortas.Engine.DTO;
 using MissTortas.Engine.DTO.Products;
 using MissTortas.Engine.Validators.Products;
 using MissTortas.Engine;
-using MissTortas.Engine.DTO.Products;
-using MissTortas.Engine.Validators.Products;
 using MissTortas.Services;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Interfaces;
@@ -29,6 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
 builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
+
 // DI
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
@@ -42,16 +41,12 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireDigit = true;
 });
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-})
-    .AddEntityFrameworkStores<MissTortasContext>()
-    .AddDefaultTokenProviders();
+    
 
 var requireAuthPolicy = new AuthorizationPolicyBuilder()
     .RequireAuthenticatedUser()
     .Build();
+
 builder.Services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
 
 builder.Services.AddAuthorization();

@@ -7,10 +7,8 @@ using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
 using MissTortas.Engine;
 using MissTortas.Services;
+using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,6 +22,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, MissTortasContext, long>>();
             services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<IProductMapper, ProductMapper>();
+            services.AddScoped<IOrderMapper, OrderMapper>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<MissTortasContext>()
+                .AddDefaultTokenProviders();
             return services;
         }
     }
