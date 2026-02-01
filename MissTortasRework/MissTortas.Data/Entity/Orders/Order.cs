@@ -10,7 +10,7 @@ namespace MissTortas.Data.Entity.Orders
         public required OrderType OrderType;
         public required ApplicationUser OrderManager { get; set; }
         public required ApplicationUser Client { get; set; }
-        public required List<OrderPreparation> Preparations { get; set; }
+        public required ICollection<OrderPreparation> Preparations { get; set; }
 
     }
 }

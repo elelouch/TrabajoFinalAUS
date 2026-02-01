@@ -12,6 +12,7 @@ namespace MissTortas.Services.Mapper
         {
             return new ProductCategoryDTO
             {
+                Id = product.Id,
                 ParentId = product.Parent?.Id ?? 0,
                 IsFinal = product.IsFinal,
                 Name = product.Name,

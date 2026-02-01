@@ -73,7 +73,7 @@ namespace MissTortas.Engine.Controllers
                 SalePrice = dto.SalePrice,
                 SaleDescription = dto.SaleDescription,
                 SaleQuantity = dto.SaleQuantity,
-                ProductId = dto.ProductId
+                ProductId = dto.StockProductId
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             return saleProduct;

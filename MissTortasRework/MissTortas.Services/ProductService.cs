@@ -22,7 +22,6 @@ namespace MissTortas.Services
             return null;
         }
 
-
         public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
         {
             var productDetail = new ProductDetail { Description = dto.Description };

@@ -16,6 +16,8 @@ namespace MissTortas.Data.Context
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
 
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,5 +50,6 @@ namespace MissTortas.Data.Context
         {
             configurationBuilder.Conventions.Remove<TableNameFromDbSetConvention>();
         }
+
     }
 }
