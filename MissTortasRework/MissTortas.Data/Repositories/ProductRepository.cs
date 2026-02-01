@@ -28,8 +28,7 @@ namespace MissTortas.Data.Repositories
 
         public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync()
         {
-            var categoriesTask = productCategoriesSet.Include(c => c.Children)
-                    .Include(c => c.Parent)
+            var categoriesTask = productCategoriesSet.Include(c => c.Parent)
                     .ToListAsync();
             return (await categoriesTask);
         }
