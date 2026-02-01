@@ -5,10 +5,15 @@ namespace MissTortas.Engine.Validators.Products
 {
     public class CreateProductDTOValidator : AbstractValidator<CreateProductDTO>
     {
+        public long MaxProductId = long.MaxValue - 1024;
+        public int NameMinLength = 3;
+        public int NameMaxLength = 256;
+        public int DescriptionMaxLength = 256;
         public CreateProductDTOValidator()
         {
-            RuleFor(createProduct => createProduct.Name).NotEmpty().Length(3, 256);
-            RuleFor(createProduct => createProduct.Description).MaximumLength(256);
+            RuleFor(createProduct => createProduct.Name).NotEmpty().Length(NameMinLength,NameMaxLength);
+            RuleFor(createProduct => createProduct.Description).MaximumLength(DescriptionMaxLength);
+            RuleFor(createProduct => createProduct.CategoryId).NotEmpty().InclusiveBetween(1,MaxProductId);
         }
     }
 }

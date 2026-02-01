@@ -8,5 +8,6 @@ namespace MissTortas.Data.Interfaces
     public interface IOrderRepository: IRepositoryCrud<Order>
     {
         public Task<IEnumerable<OrderType>> GetAllOrderTypeAsync();
+        public Task<Consultancy> FindConsultancyAsync(long id);
     }
 }

@@ -1,5 +1,8 @@
-﻿using MissTortas.Data.Entity.Products;
+﻿using Microsoft.AspNetCore.Identity;
+using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
+using MissTortas.Services.DTO.Order;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
@@ -10,7 +13,9 @@ using System.Text;
 
 namespace MissTortas.Services
 {
-    public class ProductService(IProductRepository productRepository, IProductMapper productMapper) : IProductService
+    public class ProductService(
+        IProductRepository productRepository,
+        IProductMapper productMapper) : IProductService
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
         {
@@ -99,6 +104,11 @@ namespace MissTortas.Services
             var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFound("Product category not found");
             await productRepository.DeleteProductCategory(pc);
             await productRepository.SaveChangesAsync();
+        }
+
+        public async Task SellProduct()
+        {
+            productRepository.
         }
     }
 }
