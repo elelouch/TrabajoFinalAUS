@@ -15,8 +15,9 @@ namespace MissTortas.Data.Context
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
+        public DbSet<Consultancy> Consultancies { get; set; } = default!;
+        public DbSet<OrderSaleProduct> AskedProducts { get; set; } = default!;
 
-        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,7 +45,7 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<Product>().HasOne(p => p.ProductCategory)
                 .WithMany(pc => pc.Products);
 
-            modelBuilder.Entity<Order>().HasMany(o => o.ProductsSold)
+            modelBuilder.Entity<Order>().HasMany(o => o.ProductsAsked)
                 .WithOne(ps => ps.Order);
 
             modelBuilder.Entity<Order>().HasMany(o => o.Preparations)

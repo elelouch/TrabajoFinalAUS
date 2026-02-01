@@ -54,13 +54,14 @@ namespace MissTortas.Services
 
         private async Task PlaceProductAsks(ICollection<AskedProductDTO> dtos, Order order)
         {
-            foreach (var dto in dtos)
+            var askedProducts = new List<OrderSaleProduct>(dtos.Count);
+            foreach (var d in dtos)
             {
-                var productForSale = await productRepository.FindSaleProductAsync(dto.SaleProductId) ?? throw new SaleProductNotFoundException("Product for sale not found");
-                var askedProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = dto.Quantity };
-                await orderRepository.InsertOrderSaleProductAsync(askedProduct);
+                var productForSale = await productRepository.FindSaleProductAsync(d.SaleProductId) ?? throw new SaleProductNotFoundException("Product for sale not found");
+                var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.Quantity };
+                askedProducts.Add(asked);
             }
-            await orderRepository.SaveChangesAsync();
+            await orderRepository.BulkInsertOrderSaleProductAsync(askedProducts);
         }
     }
 }

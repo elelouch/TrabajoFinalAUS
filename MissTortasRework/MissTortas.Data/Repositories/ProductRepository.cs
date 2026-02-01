@@ -41,5 +41,10 @@ namespace MissTortas.Data.Repositories
         {
             return (await productCategoriesSet.FindAsync(id));
         }
+
+        public async Task<SaleProduct?> FindSaleProductAsync(long id)
+        {
+            return (await saleProductSet.FindAsync(id));
+        }
     }
 }
