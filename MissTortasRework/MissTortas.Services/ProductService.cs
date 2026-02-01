@@ -94,14 +94,7 @@ namespace MissTortas.Services
             var categories = await productRepository.GetAllProductCategoriesAsync();
             return productMapper.ProductCategoryToDTO(categories);
         }
-            
 
-        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesWithParentAsync()
-        {
-            var categories = await productRepository.GetAllProductCategoriesWithParentAsync();
-            return productMapper.ProductCategoryToDTO(categories);
-        }
-            
         public async Task DeleteProductCategory(long id)
         {
             var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFound("Product category not found");

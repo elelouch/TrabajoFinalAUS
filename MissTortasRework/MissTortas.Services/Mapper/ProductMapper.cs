@@ -15,7 +15,7 @@ namespace MissTortas.Services.Mapper
                 ParentId = product.Parent?.Id ?? 0,
                 IsFinal = product.IsFinal,
                 Name = product.Name,
-                Children = product.Children.Select(c => new ChildrenProductCategory { Id = c.Id, Name = c.Name })
+                Children = [.. product.Children.Select(child => ChildrenProductCategoryToDTO(child))]
             };
         }
 
@@ -49,6 +49,20 @@ namespace MissTortas.Services.Mapper
                 Description = product.SaleDescription,
                 Quantity = product.SaleQuantity
             };
+        }
+
+        public ChildrenProductCategoryDTO ChildrenProductCategoryToDTO(ProductCategory pc)
+        {
+            return new ChildrenProductCategoryDTO
+            {
+                Id = pc.Id,
+                Name = pc.Name
+            };
+        }
+
+        public IEnumerable<ChildrenProductCategoryDTO> ChildrenProductCategoryToDTO(IEnumerable<ProductCategory> pc)
+        {
+            throw new NotImplementedException();
         }
     }
 }

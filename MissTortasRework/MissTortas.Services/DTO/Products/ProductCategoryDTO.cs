@@ -6,6 +6,6 @@
         public bool IsFinal { get; set; }
         public string Name { get; set; } = string.Empty;
         public long Id { get; set; }
-        public required IEnumerable<ChildrenProductCategory> Children { get; set; }
+        public required IEnumerable<ChildrenProductCategoryDTO> Children { get; set; }
     }
 }

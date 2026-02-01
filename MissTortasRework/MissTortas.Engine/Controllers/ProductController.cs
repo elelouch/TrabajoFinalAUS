@@ -27,7 +27,7 @@ namespace MissTortas.Engine.Controllers
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
         {
-            var ps = await productService.AllProductCategoriesWithParentAsync();
+            var ps = await productService.AllProductCategoriesAsync();
             return ps.ToList();
         }
 

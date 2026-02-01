@@ -13,5 +13,7 @@ namespace MissTortas.Services.Mapper
         public SaleProductDTO SaleProductToDTO(SaleProduct product);
         public ProductCategoryDTO ProductCategoryToDTO(ProductCategory product);
         public IEnumerable<ProductCategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> product);
+        public ChildrenProductCategoryDTO ChildrenProductCategoryToDTO(ProductCategory pc);
+        public IEnumerable<ChildrenProductCategoryDTO> ChildrenProductCategoryToDTO(IEnumerable<ProductCategory> pc);
     }
 }
