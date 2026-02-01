@@ -4,6 +4,7 @@ namespace MissTortas.Data.Entity.Orders
     {
         Finished,
         InProgress,
-        Pending
+        Pending,
+        WaitingForPayment
     }
 }

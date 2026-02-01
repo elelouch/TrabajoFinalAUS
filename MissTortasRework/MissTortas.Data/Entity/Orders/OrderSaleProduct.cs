@@ -4,7 +4,7 @@ namespace MissTortas.Data.Entity.Orders
 {
     public class OrderSaleProduct
     {
-        public long QuantityAsked { get; set; }
+        public double QuantityAsked { get; set; }
         public required SaleProduct SaleProduct { get; set; }
         public required Order Order { get; set; }
     }

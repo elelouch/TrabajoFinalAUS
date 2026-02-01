@@ -15,14 +15,14 @@ namespace MissTortas.Data.Repositories
         public async Task<IEnumerable<Product>> GetAllWithDetailAsync() =>
             await productsSet.Include(p => p.ProductDetail).ToListAsync();
 
-        public async Task<Product?> GetProductByNameAsync(string name) =>
+        public async Task<Product?> FindProductByNameAsync(string name) =>
             await productsSet.Where(p => p.Name == name).FirstOrDefaultAsync();
 
         public async Task InsertProductDetailAsync(ProductDetail productDetail) => await productsDetailSet.AddAsync(productDetail);
 
         public async Task InsertSaleProductAsync(SaleProduct saleProduct) => await saleProductSet.AddAsync(saleProduct);
 
-        public async Task<ProductCategory?> GetProductCategoryAsync(long id) => await productCategoriesSet.FindAsync(id);
+        public async Task<ProductCategory?> FindProductCategoryAsync(long id) => await productCategoriesSet.FindAsync(id);
 
         public async Task InsertProductCategoryAsync(ProductCategory productCategory) => await productCategoriesSet.AddAsync(productCategory);
 

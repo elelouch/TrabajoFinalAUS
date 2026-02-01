@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MissTortas.Services.Exceptions
 {
-    public class UserNotFoundException(string message): EntityNotFoundException(message)
+    public class OrderTypeNotFoundException(string message) : EntityNotFoundException(message)
     {
     }
 }

@@ -9,6 +9,6 @@ namespace MissTortas.Services.DTO.Order
         public required long OrderManagerId { get; set; }
         public required long ClientId { get; set; }
         public required long ConsultancyId { get; set; }
-        public required ICollection<SoldProductDTO> SoldProducts { get; set; }
+        public required ICollection<AskedProductDTO> AskedProduct { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace MissTortas.Data.Entity.Products
         public double SalePrice { get; set; }
         public double SaleQuantity { get; set; }
         public string SaleImagePath { get; set; } = string.Empty;
+        public bool IsAvailable { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
@@ -19,7 +20,7 @@ namespace MissTortas.Services
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
         {
-            var product = await productRepository.GetProductByNameAsync(name);
+            var product = await productRepository.FindProductByNameAsync(name);
             if (product is not null)
             {
                 return productMapper.ProductToDTO(product);
@@ -27,17 +28,18 @@ namespace MissTortas.Services
             return null;
         }
 
+
         public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
         {
             var productDetail = new ProductDetail { Description = dto.Description };
             await productRepository.InsertProductDetailAsync(productDetail);
             await productRepository.SaveChangesAsync();
-            var result = await productRepository.GetProductByNameAsync(dto.Name);
+            var result = await productRepository.FindProductByNameAsync(dto.Name);
             if (result is not null)
             {
                 throw new AlreadyCreatedException("Product with that name already created");
             }
-            var productCategory = await productRepository.GetProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
+            var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
             if (!productCategory.IsFinal)
             {
                 throw new ChildAppendException("Cannot append a product on a category that is not final");
@@ -75,7 +77,7 @@ namespace MissTortas.Services
         }
         public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
-            var parent = await productRepository.GetProductCategoryAsync(dto.ParentId);
+            var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
             if (parent is not null && parent.IsFinal)
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
@@ -101,14 +103,11 @@ namespace MissTortas.Services
 
         public async Task DeleteProductCategory(long id)
         {
-            var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFound("Product category not found");
+            var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFoundException("Product category not found");
             await productRepository.DeleteProductCategory(pc);
             await productRepository.SaveChangesAsync();
         }
 
-        public async Task SellProduct()
-        {
-            productRepository.
-        }
+
     }
 }

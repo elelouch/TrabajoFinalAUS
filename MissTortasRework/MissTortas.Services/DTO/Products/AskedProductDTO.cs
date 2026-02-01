@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MissTortas.Services.DTO.Products
 {
-    public class SoldProductDTO
+    public class AskedProductDTO
     {
-        public long Id { get; set; }
+        public long SaleProductId { get; set; }
         public double Quantity { get; set; }
     }
 }
