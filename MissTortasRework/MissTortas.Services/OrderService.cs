@@ -58,7 +58,7 @@ namespace MissTortas.Services
             foreach (var d in dtos)
             {
                 var productForSale = await productRepository.FindSaleProductAsync(d.SaleProductId) ?? throw new SaleProductNotFoundException("Product for sale not found");
-                var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.Quantity };
+                var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(asked);
             }
             await orderRepository.BulkInsertOrderSaleProductAsync(askedProducts);
