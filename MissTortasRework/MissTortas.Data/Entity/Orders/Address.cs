@@ -7,7 +7,7 @@ namespace MissTortas.Data.Entity.Orders
         public int Id { get; set; } = 0;
         public int Number { get; set; } = 0;
         public string Street { get; set; } = string.Empty;
-        public required HomeType HomeType { get; set; }
-        public required ApplicationUser User { get; set; }
+        public virtual required HomeType HomeType { get; set; }
+        public virtual required ApplicationUser User { get; set; }
     }
 }

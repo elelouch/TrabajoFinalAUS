@@ -28,9 +28,15 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
 builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
 
+// Validators
+
+
 // DI
+builder.Services.AddScoped<IValidator<CreateProductCategoryDTO>, CreateProductCategoryDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
+builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
+
 builder.Services.AddMissTortasServiceCore(builder.Configuration);
 
 builder.Services.Configure<IdentityOptions>(options =>

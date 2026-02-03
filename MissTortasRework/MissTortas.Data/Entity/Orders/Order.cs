@@ -7,12 +7,12 @@ namespace MissTortas.Data.Entity.Orders
         public long Id { get; set; }
         public string Description { get; set; } = string.Empty;
         public DateTime CreationTime { get; set; } = DateTime.Now;
-        public required OrderStatus OrderStatus { get; set; }
+        public virtual required OrderStatus OrderStatus { get; set; }
         public required OrderType OrderType;
-        public required ApplicationUser OrderManager { get; set; }
+        public virtual required ApplicationUser OrderManager { get; set; }
         public required ApplicationUser Client { get; set; }
-        public ICollection<OrderSaleProduct> ProductsAsked { get; set; } = [];
-        public ICollection<OrderPreparation> Preparations { get; set; } = [];
-        public Consultancy? Consultancy { get; set; }
+        public virtual ICollection<OrderSaleProduct> ProductsAsked { get; set; } = [];
+        public virtual ICollection<OrderPreparation> Preparations { get; set; } = [];
+        public virtual Consultancy? Consultancy { get; set; }
     }
 }

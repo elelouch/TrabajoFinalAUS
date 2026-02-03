@@ -51,6 +51,13 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<Order>().HasMany(o => o.Preparations)
                 .WithOne(prep => prep.Order)
                 .HasForeignKey(prep => prep.Id);
+
+            modelBuilder.Entity<Order>().HasOne(o => o.Consultancy)
+                .WithOne(c => c.Order)
+                .HasForeignKey<Consultancy>(c => c.Id);
+
+            modelBuilder.Entity<OrderSaleProduct>()
+                .HasKey(osp => new { osp.OrderId, osp.SaleProductId });
         }
 
         // In your DbContext

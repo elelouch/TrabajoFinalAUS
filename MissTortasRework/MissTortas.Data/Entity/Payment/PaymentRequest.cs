@@ -4,6 +4,6 @@ namespace MissTortas.Data.Entity.Payment
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
-        public required Payment Payment { get; set; }
+        public virtual required Payment Payment { get; set; }
     }
 }
