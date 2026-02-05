@@ -12,7 +12,7 @@ namespace MissTortas.Engine.Validators.Products
         public CreateProductCategoryDTOValidator()
         {
             RuleFor(createProduct => createProduct.Name).NotEmpty().Length(NameMinLength, NameMaxLength);
-            RuleFor(createProduct => createProduct.ParentId).NotEmpty().InclusiveBetween(1, MaxParentId);
+            RuleFor(createProduct => createProduct.ParentId).InclusiveBetween(0, MaxParentId);
         }
     }
 }

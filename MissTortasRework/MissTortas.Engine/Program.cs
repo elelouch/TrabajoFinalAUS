@@ -17,6 +17,8 @@ using MissTortas.Engine;
 using MissTortas.Services;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Interfaces;
+using MissTortas.Engine.DTO.Orders;
+using MissTortas.Engine.Validators.Orders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,7 @@ builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer
 builder.Services.AddScoped<IValidator<CreateProductCategoryDTO>, CreateProductCategoryDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateOrderDTO>, CreateOrderDTOValidator>();
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
 
 builder.Services.AddMissTortasServiceCore(builder.Configuration);

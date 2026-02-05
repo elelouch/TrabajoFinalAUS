@@ -58,6 +58,11 @@ namespace MissTortas.Services
             foreach (var d in dtos)
             {
                 var productForSale = await productRepository.FindSaleProductAsync(d.SaleProductId) ?? throw new SaleProductNotFoundException("Product for sale not found");
+                var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
+                if (!(productForSale.AllowDecimalAsk || askIsUnit))
+                {
+                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
+                }
                 var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(asked);
             }

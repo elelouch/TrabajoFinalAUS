@@ -64,11 +64,17 @@ namespace MissTortas.Services
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
             var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found");
+            if(dto.UseDecimal && dto.SaleQuantityUnits != 0)
+            {
+                throw new AskQuantityException("Cannot use decimals and units while creating a product. Pick one or another by specifying if using decimals.");
+            }
             var saleProduct = new SaleProduct
             {
                 StockProduct = product,
                 SalePrice = dto.SalePrice,
-                SaleQuantity = dto.SaleQuantity,
+                IsAvailable = dto.IsAvailable,
+                SaleQuantityDecimal = dto.SaleQuantityDecimal,
+                SaleQuantityUnit = dto.SaleQuantityUnits,
                 SaleDescription = dto.SaleDescription
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
