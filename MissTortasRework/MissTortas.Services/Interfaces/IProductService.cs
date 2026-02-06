@@ -17,5 +17,6 @@ namespace MissTortas.Services.Interfaces
         public Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto);
         public Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesAsync();
         public Task DeleteProductCategory(long id);
+        public Task<ProductDTO?> FindProduct(long id);
     }
 }

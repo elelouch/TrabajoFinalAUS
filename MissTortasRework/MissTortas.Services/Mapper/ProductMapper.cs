@@ -43,13 +43,12 @@ namespace MissTortas.Services.Mapper
 
         public SaleProductDTO SaleProductToDTO(SaleProduct product)
         {
-            var quantity = product.SaleQuantityDecimal == 0 ? product.SaleQuantityDecimal : (double)product.SaleQuantityUnit;
             return new SaleProductDTO
             {
                 Id = product.Id,
                 Price = product.SalePrice,
                 Description = product.SaleDescription,
-                Quantity = quantity
+                Quantity = product.SaleQuantity
             };
         }
 

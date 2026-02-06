@@ -7,9 +7,9 @@ namespace MissTortas.Data.Entity.Products
         public virtual required ProductDetail ProductDetail { get; set; }
         public virtual required ProductCategory ProductCategory { get; set; }
         public SaleProduct? SaleProduct { get; set; }
-        public double DecimalQuantity { get; set; }
-        public long Quantity { get; set; }
-        public bool AllowDecimal { get; set; }
+        public double Quantity { get; set; }
+        public long IntegerQuantity { get; set; }
+        public bool ManageQuantityAsInteger { get; set; }
         public string Unit { get; set; } = string.Empty;
     }
 }

@@ -60,7 +60,8 @@ namespace MissTortas.Engine.Controllers
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                CategoryId = dto.CategoryId
+                CategoryId = dto.CategoryId,
+                ManageQuantityAsInteger = dto.ManageQuantityAsInteger
             };
             var p = await productService.CreateProductAsync(productDto);
             return p;
@@ -74,9 +75,8 @@ namespace MissTortas.Engine.Controllers
             {
                 SalePrice = dto.SalePrice,
                 SaleDescription = dto.SaleDescription,
-                SaleQuantityDecimal = dto.SaleQuantity,
-                SaleQuantityUnits = dto.SaleQuantityUnit,
-                ProductId = dto.StockProductId
+                Quantity = dto.SaleQuantity,
+                ProductId = dto.StockProductId,
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             return saleProduct;

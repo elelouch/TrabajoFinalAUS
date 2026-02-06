@@ -28,7 +28,6 @@ namespace MissTortas.Services
             return null;
         }
 
-
         public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
         {
             var productDetail = new ProductDetail { Description = dto.Description };
@@ -42,9 +41,15 @@ namespace MissTortas.Services
             var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
             if (!productCategory.IsFinal)
             {
-                throw new ChildAppendException("Cannot append a product on a category that is not final");
+                throw new ChildAppendException("Cannot append a product on a Category that is not final");
             }
-            var product = new Product { Name = dto.Name, ProductDetail = productDetail, ProductCategory = productCategory };
+            var product = new Product
+            {
+                Name = dto.Name,
+                ProductDetail = productDetail,
+                ProductCategory = productCategory,
+                ManageQuantityAsInteger = dto.ManageQuantityAsInteger
+            };
             await productRepository.InsertAsync(product);
             await productRepository.SaveChangesAsync();
             return productMapper.ProductToDTO(product);
@@ -64,23 +69,41 @@ namespace MissTortas.Services
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
             var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found");
-            if(dto.UseDecimal && dto.SaleQuantityUnits != 0)
+            if(product.SaleProduct is not null)
             {
-                throw new AskQuantityException("Cannot use decimals and units while creating a product. Pick one or another by specifying if using decimals.");
+                throw new SaleProductAlreadyVinculatedException("Sale product already vinculated. Try another stock product.");
             }
+            var qties = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
+
             var saleProduct = new SaleProduct
             {
                 StockProduct = product,
                 SalePrice = dto.SalePrice,
                 IsAvailable = dto.IsAvailable,
-                SaleQuantityDecimal = dto.SaleQuantityDecimal,
-                SaleQuantityUnit = dto.SaleQuantityUnits,
+                SaleQuantity = qties.DecimalQuantity,
+                SaleQuantityInteger = qties.IntegerQuantity,
                 SaleDescription = dto.SaleDescription
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
             await productRepository.SaveChangesAsync();
             return productMapper.SaleProductToDTO(saleProduct);
         }
+
+        private static QuantityHolder ValidateQuantity(double qty, bool mustBeInteger)
+        {
+            var qtyIsInteger = Math.Floor(qty) == qty;
+            if (mustBeInteger && !qtyIsInteger)
+            {
+                throw new AskQuantityException("Quantity is not valid, try a valid quantity.");
+            }
+            var intQty = (long)Math.Floor(qty);
+            if (mustBeInteger && intQty < 0 && intQty > (long.MaxValue - 1024))
+            {
+                throw new AskQuantityException("Quantity is not valid, try a valid quantity.");
+            }
+            return new QuantityHolder { IntegerQuantity = intQty, DecimalQuantity = qty };
+        }
+
         public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
             var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
@@ -114,6 +137,14 @@ namespace MissTortas.Services
             await productRepository.SaveChangesAsync();
         }
 
-
+        public async Task<ProductDTO?> FindProduct(long id)
+        {
+            var product = await productRepository.FindAsync(id);
+            if (product is null)
+            {
+                return null;
+            }
+            return productMapper.ProductToDTO(product);
+        }
     }
 }
