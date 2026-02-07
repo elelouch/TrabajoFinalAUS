@@ -94,12 +94,12 @@ namespace MissTortas.Services
             var qtyIsInteger = Math.Floor(qty) == qty;
             if (mustBeInteger && !qtyIsInteger)
             {
-                throw new AskQuantityException("Quantity is not valid, try a valid quantity.");
+                throw new AskQuantityException("Quantity is not valid, try an integer quantity.");
             }
             var intQty = (long)Math.Floor(qty);
             if (mustBeInteger && intQty < 0 && intQty > (long.MaxValue - 1024))
             {
-                throw new AskQuantityException("Quantity is not valid, try a valid quantity.");
+                throw new AskQuantityException("The quantity is negative. It is not valid.");
             }
             return new QuantityHolder { IntegerQuantity = intQty, DecimalQuantity = qty };
         }

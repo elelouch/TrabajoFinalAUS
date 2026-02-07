@@ -12,7 +12,7 @@ namespace MissTortas.Services.Mapper
         {
             return new OrderDTO
             {
-                Status = nameof(order.OrderStatus),
+                Status = order.OrderStatus.ToString(),
                 StatusId = (long) order.OrderStatus,
                 Id = order.Id,
                 ClientId = order.Client?.Id ?? 0,

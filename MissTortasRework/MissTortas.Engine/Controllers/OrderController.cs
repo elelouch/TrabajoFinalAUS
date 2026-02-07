@@ -9,6 +9,10 @@ using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using System.Collections;
 
+
+using CreateOrderTypeDTO = MissTortas.Engine.DTO.Orders.CreateOrderTypeDTO;
+using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Order.CreateOrderTypeDTO;
+
 namespace MissTortas.Engine.Controllers
 {
     [Route("[controller]")]
@@ -18,6 +22,14 @@ namespace MissTortas.Engine.Controllers
         IValidator<CreateOrderDTO> createOrderValidator
         )
     {
+        [HttpPost("ordertype")]
+        public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
+        {
+            var orderTypeDTO = new CreateOrderTypeServiceDTO { Name = dto.Name };
+            var orderType = await orderService.CreateOrderType(orderTypeDTO);
+            return orderType;
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderTypeDTO>>> AllOrderTypes()
         {

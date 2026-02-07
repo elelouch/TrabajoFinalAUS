@@ -23,6 +23,14 @@ namespace MissTortas.Services
             return orderMapper.OrderTypeToDTO(orders);
         }
 
+        public async Task<OrderTypeDTO> CreateOrderType(CreateOrderTypeDTO dto)
+        {
+            var orderType = new OrderType { Name = dto.Name };
+            await orderRepository.InsertOrderTypeAsync(orderType);
+            await orderRepository.SaveChangesAsync();
+            return orderMapper.OrderTypeToDTO(orderType);
+        }
+
         public async Task<OrderDTO?> GetOrder(long orderId)
         {
             var order = await orderRepository.FindAsync(orderId);
@@ -62,6 +70,10 @@ namespace MissTortas.Services
                 if (!(productForSale.AllowDecimalAsk || askIsUnit))
                 {
                     throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
+                }
+                if(productForSale.SaleQuantity < d.QuantityAsked)
+                {
+                    throw new AskQuantityException($"Quantity asked of product is greater than what it's available. Product {productForSale.Id}");
                 }
                 var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(asked);

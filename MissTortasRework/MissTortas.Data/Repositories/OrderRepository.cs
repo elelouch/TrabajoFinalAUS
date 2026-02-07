@@ -38,5 +38,10 @@ namespace MissTortas.Data.Repositories
         {
             await askedProductsSet.AddRangeAsync(osps);
         }
+
+        public async Task InsertOrderTypeAsync(OrderType ot)
+        {
+            await orderTypeSet.AddAsync(ot);
+        }
     }
 }
