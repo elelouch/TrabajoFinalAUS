@@ -6,7 +6,7 @@ namespace MissTortas.Data.Entity.Orders
     {
         public long Id { get; set; }
         public required Order Order { get; set; }
-        public ApplicationUser? Assignee { get; set; }
+        public required ApplicationUser Assignee { get; set; }
         public bool Done { get; set; }
         public string Detail { get; set; } = string.Empty;
         public DateTime CreationTime { get; set; }

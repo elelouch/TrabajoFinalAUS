@@ -16,16 +16,16 @@ namespace MissTortas.Services.Mapper
                     Id = prep.Id,
                     Detail = prep.Detail,
                     Done = prep.Done
-                });
+                }).ToList();
 
             return new OrderDTO
             {
                 Status = order.OrderStatus.ToString(),
-                StatusId = (long)order.OrderStatus,
+                StatusId = (long) order.OrderStatus,
                 Id = order.Id,
                 ClientId = order.Client?.Id ?? 0,
                 OrderMangerId = order.OrderManager?.Id ?? 0,
-                Preparations = [..preparations]
+                Preparations = preparations
             };
         }
 

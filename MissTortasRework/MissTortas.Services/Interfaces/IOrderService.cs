@@ -11,6 +11,7 @@ namespace MissTortas.Services.Interfaces
     {
         public Task EndOrderPreparation(long id);
         public Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync();
+        public Task CancelOrder(long id);
         public Task<OrderDTO> SetupOrder(SetupOrderDTO dto);
         public Task<OrderTypeDTO> CreateOrderType(CreateOrderTypeDTO dto);
         public Task PlaceOrder(PlaceOrderDTO dto);

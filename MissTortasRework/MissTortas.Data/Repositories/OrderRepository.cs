@@ -23,6 +23,8 @@ namespace MissTortas.Data.Repositories
                 .ThenInclude(asked => asked.SaleProduct)
                 .ThenInclude(sp => sp.StockProduct)
                 .Include(order => order.Preparations)
+                .Include(order => order.OrderManager)
+                .Include(order => order.Client)
                 .Where(order => order.Id == id)
                 .SingleAsync();
             return order;

@@ -49,6 +49,12 @@ namespace MissTortas.Engine.Controllers
             return order;
         }
 
+        [HttpDelete("cancel/{id}")]
+        public async Task CancelOrder(long id)
+        {
+            await orderService.CancelOrder(id);
+        }
+
         [HttpPost("setup")]
         public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrderDTO dto)
         {
@@ -78,7 +84,7 @@ namespace MissTortas.Engine.Controllers
             await orderService.PlaceOrder(placeOrder);
         }
 
-        [HttpPut("preparation/{id}")]
+        [HttpPut("preparation/end/{id}")]
         public async Task PatchOrderPreparation(long id)
         {
             await orderService.EndOrderPreparation(id);

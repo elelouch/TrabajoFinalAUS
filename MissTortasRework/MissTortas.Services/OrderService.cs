@@ -85,10 +85,8 @@ namespace MissTortas.Services
             await orderRepository.BulkInsertOrderSaleProductAsync(askedProducts);
         }
 
-        public async Task PlaceOrder(PlaceOrderDTO dto)
+        private static void ReserveProductQuantities(ICollection<OrderSaleProduct> askedProducts)
         {
-            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
-            var askedProducts = order.ProductsAsked;
             foreach (var ap in askedProducts)
             {
                 var saleProduct = ap.SaleProduct;
@@ -101,49 +99,106 @@ namespace MissTortas.Services
                 }
                 saleProduct.SaleQuantity -= ask;
 
-                if(saleProduct.SaleQuantity <= 0)
+                if (saleProduct.SaleQuantity <= 0)
                 {
                     saleProduct.IsAvailable = false;
                 }
 
-                if(stockProduct.Quantity < ask)
+                if (stockProduct.Quantity < ask)
                 {
                     throw new AskQuantityException("Cannot ask more than what's available from the stock.");
                 }
                 stockProduct.Quantity -= ask;
             }
-            order.OrderStatus = OrderStatus.Pending;
-            var assignee = await userManager.FindByIdAsync(dto.AssigneeId.ToString());
+        }
 
-            var preparation = new OrderPreparation { Order = order, Done = false, Detail = "Generic products" };
-            if (assignee is not null)
+        private static void FreeProductQuantities(ICollection<OrderSaleProduct> askedProducts)
+        {
+            foreach (var ap in askedProducts)
             {
-                preparation.Assignee = assignee;
+                var saleProduct = ap.SaleProduct;
+                var stockProduct = saleProduct.StockProduct;
+                var ask = ap.QuantityAsked;
+                saleProduct.SaleQuantity += ask;
+                if (saleProduct.SaleQuantity >= 0)
+                {
+                    saleProduct.IsAvailable = true;
+                }
+                stockProduct.Quantity += ask;
             }
+        }
 
+        public async Task PlaceOrder(PlaceOrderDTO dto)
+        {
+            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
+            var askedProducts = order.ProductsAsked;
+            if(order.OrderStatus != OrderStatus.Pending)
+            {
+                throw new InvalidOrderStateException("Order should be Waiting for Payment.");
+            }
+            ReserveProductQuantities(askedProducts);
+            order.OrderStatus = OrderStatus.Pending;
+            var assigneeId = dto.AssigneeId <= 0 ? order.OrderManager.Id : dto.AssigneeId;
+            var assignee = await userManager.FindByIdAsync(assigneeId.ToString()) ?? throw new UserNotFoundException("Assignee must exist.");
+            var preparation = new OrderPreparation 
+            { 
+                Order = order,
+                Done = false, 
+                Assignee = assignee,
+                CreationTime = DateTime.Now
+            };
             order.Preparations.Add(preparation);
             orderRepository.Update(order);
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task EndOrderPreparation(long id)
+        public async Task EndOrderPreparation(long orderPreparationId)
         {
-            var orderPreparation = await orderRepository.GetOrderPreparationAsync(id);
+            var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId);
+            var order = orderPreparation.Order;
+            var orderStatus = order.OrderStatus;
+            if(orderStatus != OrderStatus.Pending || orderStatus != OrderStatus.InProgress)
+            {
+                throw new InvalidOrderStateException("Order should be Pending or In Progress.");
+            }
+
+            if(orderPreparation.Done)
+            {
+                throw new InvalidOrderPreparationStateException("Order preparation mustn't be done");
+            }
+
             orderPreparation.FinalizationTime = DateTime.Now;
             orderPreparation.Done = true;
 
-            var order = orderPreparation.Order;
-            var arePreparationOrdersLeft = order.Preparations.Any(op => op.Id != orderPreparation.Id && !op.Done);
-            if (!arePreparationOrdersLeft)
-            {
-                order.OrderStatus = OrderStatus.Finished;
-            }
-            else
-            {
-                order.OrderStatus = OrderStatus.InProgress;
-            }
+            var areOrderPreparationsLeft = order.Preparations.Any(op => op.Id != orderPreparation.Id && !op.Done);
+
+            order.OrderStatus = areOrderPreparationsLeft ? OrderStatus.InProgress : OrderStatus.Finished;
+            
             orderRepository.Update(order);
             await orderRepository.SaveChangesAsync();
+        }
+
+        public async Task CancelOrder(long orderId)
+        {
+            var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
+            
+            switch (order.OrderStatus)
+            {
+                case OrderStatus.WaitingForPayment:
+                    break;
+                case OrderStatus.Pending:
+                case OrderStatus.InProgress:
+                    FreeProductQuantities(order.ProductsAsked);
+                    break;
+                default:
+                    throw new InvalidOrderStateException("Order state must be Pending, In Progress or Waiting For Payment");
+            }
+            order.OrderStatus = OrderStatus.Cancelled;
+        }
+
+        public async Task<ConsultancyDTO> CreateConsultancy(CreateConsultancyDTO dto)
+        {
+
         }
 
     }
