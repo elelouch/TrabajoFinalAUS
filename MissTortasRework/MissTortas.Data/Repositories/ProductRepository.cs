@@ -15,6 +15,9 @@ namespace MissTortas.Data.Repositories
         public async Task<IEnumerable<Product>> GetAllWithDetailAsync() =>
             await productsSet.Include(p => p.ProductDetail).ToListAsync();
 
+        public async Task<Product> GetWithDetailAsync(long id) =>
+            await productsSet.Include(p => p.ProductDetail).Where(p => p.Id == id).SingleAsync();
+
         public async Task<Product?> FindProductByNameAsync(string name) =>
             await productsSet.Where(p => p.Name == name).FirstOrDefaultAsync();
 
@@ -46,5 +49,6 @@ namespace MissTortas.Data.Repositories
         {
             return (await saleProductSet.Include(sp => sp.StockProduct).SingleAsync(sp => sp.Id == id));
         }
+
     }
 }

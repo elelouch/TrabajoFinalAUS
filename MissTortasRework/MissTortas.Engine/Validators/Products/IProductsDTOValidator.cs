@@ -8,5 +8,6 @@ namespace MissTortas.Engine.Validators.Products
         public IValidator<CreateProductCategoryDTO> ProductCategoryValidator ();
         public IValidator<CreateProductDTO> ProductValidator();
         public IValidator<CreateSaleProductDTO> SaleProductValidator();
+        public IValidator<UpdateProductDTO> UpdateProductValidator();
     }
 }

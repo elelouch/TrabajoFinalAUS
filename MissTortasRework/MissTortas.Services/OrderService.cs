@@ -60,6 +60,7 @@ namespace MissTortas.Services
             };
             await orderRepository.InsertAsync(order);
             await PlaceProductAsks(dto.AskedProduct, order);
+            await orderRepository.SaveChangesAsync();
             return orderMapper.OrderToDTO(order);
         }
 

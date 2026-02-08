@@ -155,5 +155,21 @@ namespace MissTortas.Services
             var sp = await productRepository.FindSaleProductAsync(id) ?? throw new SaleProductNotFoundException("Product for sale not found");
             return sp;
         }
+
+        public async Task<ProductDTO> UpdateProductAsync(UpdateProductDTO dto)
+        {
+            var product = await productRepository.GetWithDetailAsync(dto.ProductId);
+            var category = await productRepository.FindProductCategoryAsync(dto.CategoryId);
+            product.ProductDetail.Description = dto.Description;
+            var qty = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
+            product.Quantity = qty.DecimalQuantity;
+            if(category is not null)
+            {
+                product.ProductCategory = category;
+            }
+            productRepository.Update(product);
+            await productRepository.SaveChangesAsync();
+            return productMapper.ProductToDTO(product);
+        }
     }
 }

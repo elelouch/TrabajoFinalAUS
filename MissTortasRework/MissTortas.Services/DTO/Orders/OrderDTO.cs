@@ -11,6 +11,6 @@ namespace MissTortas.Services.DTO.Orders
         public long StatusId { get; set; }
         public long OrderMangerId { get; set; }
         public long ClientId { get; set; }
-        public ICollection<OrderPreparationDTO> Preparations = [];
+        public required IEnumerable<OrderPreparationDTO> Preparations;
     }
 }

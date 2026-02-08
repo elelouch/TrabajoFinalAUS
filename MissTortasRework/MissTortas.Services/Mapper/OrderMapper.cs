@@ -16,7 +16,7 @@ namespace MissTortas.Services.Mapper
                     Id = prep.Id,
                     Detail = prep.Detail,
                     Done = prep.Done
-                }).ToList();
+                });
 
             return new OrderDTO
             {
@@ -25,7 +25,7 @@ namespace MissTortas.Services.Mapper
                 Id = order.Id,
                 ClientId = order.Client?.Id ?? 0,
                 OrderMangerId = order.OrderManager?.Id ?? 0,
-                Preparations = preparations
+                Preparations = [..preparations]
             };
         }
 

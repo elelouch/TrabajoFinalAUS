@@ -9,6 +9,9 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using System.Collections.Generic;
 
+using UpdateProductDTO = MissTortas.Engine.DTO.Products.UpdateProductDTO;
+using UpdateProductServiceDTO = MissTortas.Services.DTO.Products.UpdateProductDTO;
+
 namespace MissTortas.Engine.Controllers
 {
     [Route("[controller]")]
@@ -50,6 +53,21 @@ namespace MissTortas.Engine.Controllers
         {
             var ps = await productService.AllWithDetailAsync();
             return ps.ToList();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ProductDTO>> PutProduct(UpdateProductDTO dto)
+        {
+            await validators.UpdateProductValidator().ValidateAndThrowAsync(dto);
+            var productDto = new UpdateProductServiceDTO
+            {
+                ProductId = dto.ProductId,
+                CategoryId = dto.CategoryId,
+                Quantity = dto.Quantity,
+                Description = dto.Description
+            };
+            var product = await productService.UpdateProductAsync(productDto);
+            return product;
         }
 
         [HttpPost]

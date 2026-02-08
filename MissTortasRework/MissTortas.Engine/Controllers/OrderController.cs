@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Engine.DTO.Orders;
 using MissTortas.Engine.DTO.Products;
+using MissTortas.Engine.Validators.Orders;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
@@ -22,13 +23,13 @@ namespace MissTortas.Engine.Controllers
     [ApiController]
     public class OrderController(
         IOrderService orderService,
-        IValidator<CreateOrderDTO> createOrderValidator,
-        IValidator<PlaceOrderDTO> placeOrderValidator
+        IOrdersDTOValidator validators
         )
     {
         [HttpPost("ordertype")]
         public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
         {
+            await validators.CreateOrderTypeValidator().ValidateAndThrowAsync(dto);
             var orderTypeDTO = new CreateOrderTypeServiceDTO { Name = dto.Name };
             var orderType = await orderService.CreateOrderType(orderTypeDTO);
             return orderType;
@@ -51,7 +52,7 @@ namespace MissTortas.Engine.Controllers
         [HttpPost("setup")]
         public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrderDTO dto)
         {
-            await createOrderValidator.ValidateAndThrowAsync(dto);
+            await validators.CreateOrderValidator().ValidateAndThrowAsync(dto);
             var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
             {
                 QuantityAsked = p.QuantityAsked,
@@ -72,12 +73,12 @@ namespace MissTortas.Engine.Controllers
         [HttpPost("place")]
         public async Task PlaceOrder(PlaceOrderDTO dto)
         {
-            await placeOrderValidator.ValidateAndThrowAsync(dto);
+            await validators.PlaceOrderValidator().ValidateAndThrowAsync(dto);
             var placeOrder = new PlaceOrderServiceDTO { AssigneeId = dto.AssigneeId, Id = dto.OrderId };
             await orderService.PlaceOrder(placeOrder);
         }
 
-        [HttpPatch("preparation/{id}")]
+        [HttpPut("preparation/{id}")]
         public async Task PatchOrderPreparation(long id)
         {
             await orderService.EndOrderPreparation(id);

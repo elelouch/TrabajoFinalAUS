@@ -186,13 +186,25 @@ namespace MissTortas.Data.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("AssigneeId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("FinalizationTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssigneeId");
 
                     b.ToTable("OrderPreparation");
                 });
@@ -235,9 +247,6 @@ namespace MissTortas.Data.Migrations
             modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("IntegerQuantity")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("ManageQuantityAsInteger")
@@ -338,9 +347,6 @@ namespace MissTortas.Data.Migrations
                     b.Property<double>("SaleQuantity")
                         .HasColumnType("float");
 
-                    b.Property<double>("SaleQuantityInteger")
-                        .HasColumnType("float");
-
                     b.Property<long>("StockProductId")
                         .HasColumnType("bigint");
 
@@ -359,9 +365,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("ApplicationUserId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -382,8 +385,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -549,11 +550,17 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderPreparation", b =>
                 {
+                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", "Assignee")
+                        .WithMany("Preparations")
+                        .HasForeignKey("AssigneeId");
+
                     b.HasOne("MissTortas.Data.Entity.Orders.Order", "Order")
                         .WithMany("Preparations")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Assignee");
 
                     b.Navigation("Order");
                 });
@@ -616,13 +623,6 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("StockProduct");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationRole", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
                 {
                     b.Navigation("Consultancy");
@@ -651,7 +651,7 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationUser", b =>
                 {
-                    b.Navigation("Roles");
+                    b.Navigation("Preparations");
                 });
 #pragma warning restore 612, 618
         }

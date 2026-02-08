@@ -34,11 +34,16 @@ builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer
 
 
 // DI
+builder.Services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProductCategoryDTO>, CreateProductCategoryDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderDTO>, CreateOrderDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateOrderTypeDTO>, CreateOrderTypeDTOValidator>();
+builder.Services.AddScoped<IValidator<PlaceOrderDTO>, PlaceOrderDTOValidator>();
+
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
+builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 
 builder.Services.AddMissTortasServiceCore(builder.Configuration);
 

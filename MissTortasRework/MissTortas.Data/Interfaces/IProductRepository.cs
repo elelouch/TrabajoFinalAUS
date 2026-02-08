@@ -5,6 +5,7 @@ namespace MissTortas.Data.Interfaces
     public interface IProductRepository: IRepositoryCrud<Product>
     {
         public Task InsertProductCategoryAsync(ProductCategory productCategory);
+        public Task<Product> GetWithDetailAsync(long id);
         public Task<ProductCategory?> FindProductCategoryAsync(long id);
         public Task InsertProductDetailAsync(ProductDetail productDetail);
         public Task InsertSaleProductAsync(SaleProduct saleProduct);
