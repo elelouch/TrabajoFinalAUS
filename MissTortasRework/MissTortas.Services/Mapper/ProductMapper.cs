@@ -48,7 +48,8 @@ namespace MissTortas.Services.Mapper
                 Id = product.Id,
                 Price = product.SalePrice,
                 Description = product.SaleDescription,
-                Quantity = product.SaleQuantity
+                Quantity = product.SaleQuantity,
+                AllowDecimalAsk = product.AllowDecimalAsk
             };
         }
 

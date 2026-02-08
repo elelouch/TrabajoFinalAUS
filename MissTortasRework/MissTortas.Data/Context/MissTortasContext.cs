@@ -17,6 +17,7 @@ namespace MissTortas.Data.Context
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
         public DbSet<Consultancy> Consultancies { get; set; } = default!;
         public DbSet<OrderSaleProduct> AskedProducts { get; set; } = default!;
+        public DbSet<OrderPreparation> OrderPreparations { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,6 +64,10 @@ namespace MissTortas.Data.Context
                 .HasOne(sp => sp.StockProduct)
                 .WithOne(p => p.SaleProduct)
                 .HasForeignKey<SaleProduct>("StockProductId");
+
+            modelBuilder.Entity<OrderPreparation>()
+                .HasOne(op => op.Assignee)
+                .WithMany(assignee => assignee.Preparations);
         }
 
         // In your DbContext

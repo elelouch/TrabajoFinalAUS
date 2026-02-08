@@ -1,5 +1,5 @@
 ﻿using MissTortas.Data.Entity.Orders;
-using MissTortas.Services.DTO.Order;
+using MissTortas.Services.DTO.Orders;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,13 +10,22 @@ namespace MissTortas.Services.Mapper
     {
         public OrderDTO OrderToDTO(Order order)
         {
+            var preparations = order.Preparations.Select(
+                prep => new OrderPreparationDTO 
+                { 
+                    Id = prep.Id,
+                    Detail = prep.Detail,
+                    Done = prep.Done
+                }).ToList();
+
             return new OrderDTO
             {
                 Status = order.OrderStatus.ToString(),
-                StatusId = (long) order.OrderStatus,
+                StatusId = (long)order.OrderStatus,
                 Id = order.Id,
                 ClientId = order.Client?.Id ?? 0,
-                OrderMangerId = order.OrderManager?.Id ?? 0
+                OrderMangerId = order.OrderManager?.Id ?? 0,
+                Preparations = preparations
             };
         }
 

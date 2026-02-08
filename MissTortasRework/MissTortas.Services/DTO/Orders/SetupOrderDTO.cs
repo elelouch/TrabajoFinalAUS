@@ -1,8 +1,8 @@
 ﻿using MissTortas.Services.DTO.Products;
 
-namespace MissTortas.Services.DTO.Order
+namespace MissTortas.Services.DTO.Orders
 {
-    public class PlaceOrderDTO
+    public class SetupOrderDTO
     {
         public string Description { get; set; } = string.Empty;
         public required long OrderTypeId;

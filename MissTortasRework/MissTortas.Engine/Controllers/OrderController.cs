@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Engine.DTO.Orders;
 using MissTortas.Engine.DTO.Products;
-using MissTortas.Services.DTO.Order;
+using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using System.Collections;
 
 
 using CreateOrderTypeDTO = MissTortas.Engine.DTO.Orders.CreateOrderTypeDTO;
-using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Order.CreateOrderTypeDTO;
+using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Orders.CreateOrderTypeDTO;
+using PlaceOrderDTO = MissTortas.Engine.DTO.Orders.PlaceOrderDTO;
+using PlaceOrderServiceDTO = MissTortas.Services.DTO.Orders.PlaceOrderDTO;
+
 
 namespace MissTortas.Engine.Controllers
 {
@@ -19,7 +22,8 @@ namespace MissTortas.Engine.Controllers
     [ApiController]
     public class OrderController(
         IOrderService orderService,
-        IValidator<CreateOrderDTO> createOrderValidator
+        IValidator<CreateOrderDTO> createOrderValidator,
+        IValidator<PlaceOrderDTO> placeOrderValidator
         )
     {
         [HttpPost("ordertype")]
@@ -30,14 +34,22 @@ namespace MissTortas.Engine.Controllers
             return orderType;
         }
 
-        [HttpGet]
+        [HttpGet("ordertype")]
         public async Task<ActionResult<IEnumerable<OrderTypeDTO>>> AllOrderTypes()
         {
             var orderTypes = await orderService.AllOrderTypeAsync();
             return orderTypes.ToList();
         }
-        [HttpPost]
-        public async Task<ActionResult<OrderDTO>> PostOrder(CreateOrderDTO dto)
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OrderDTO>> GetOrder(long id)
+        {
+            var order = await orderService.GetOrderAsync(id);
+            return order;
+        }
+
+        [HttpPost("setup")]
+        public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrderDTO dto)
         {
             await createOrderValidator.ValidateAndThrowAsync(dto);
             var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
@@ -45,7 +57,7 @@ namespace MissTortas.Engine.Controllers
                 QuantityAsked = p.QuantityAsked,
                 SaleProductId = p.SaleProductId
             });
-            var placeOrder = new PlaceOrderDTO
+            var placeOrder = new SetupOrderDTO
             {
                 OrderManagerId = dto.OrderManagerId,
                 OrderTypeId = dto.OrderTypeId,
@@ -54,7 +66,21 @@ namespace MissTortas.Engine.Controllers
                 ConsultancyId = 0,
                 Description = dto.Description
             };
-            return await orderService.PlaceOrder(placeOrder);
+            return await orderService.SetupOrder(placeOrder);
+        }
+
+        [HttpPost("place")]
+        public async Task PlaceOrder(PlaceOrderDTO dto)
+        {
+            await placeOrderValidator.ValidateAndThrowAsync(dto);
+            var placeOrder = new PlaceOrderServiceDTO { AssigneeId = dto.AssigneeId, Id = dto.OrderId };
+            await orderService.PlaceOrder(placeOrder);
+        }
+
+        [HttpPatch("preparation/{id}")]
+        public async Task PatchOrderPreparation(long id)
+        {
+            await orderService.EndOrderPreparation(id);
         }
     }
 }

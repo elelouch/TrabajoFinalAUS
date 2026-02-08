@@ -3,7 +3,7 @@ using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
-using MissTortas.Services.DTO.Order;
+using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
@@ -73,6 +73,10 @@ namespace MissTortas.Services
             {
                 throw new SaleProductAlreadyVinculatedException("Sale product already vinculated. Try another stock product.");
             }
+            if (product.Quantity < dto.Quantity)
+            {
+                throw new AskQuantityException("Cannot place more for sale than what's available from the stock.");
+            }
             var qties = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
 
             var saleProduct = new SaleProduct
@@ -81,7 +85,6 @@ namespace MissTortas.Services
                 SalePrice = dto.SalePrice,
                 IsAvailable = dto.IsAvailable,
                 SaleQuantity = qties.DecimalQuantity,
-                SaleQuantityInteger = qties.IntegerQuantity,
                 SaleDescription = dto.SaleDescription
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
@@ -101,7 +104,7 @@ namespace MissTortas.Services
             {
                 throw new AskQuantityException("The quantity is negative. It is not valid.");
             }
-            return new QuantityHolder { IntegerQuantity = intQty, DecimalQuantity = qty };
+            return new QuantityHolder { DecimalQuantity = qty };
         }
 
         public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
@@ -145,6 +148,12 @@ namespace MissTortas.Services
                 return null;
             }
             return productMapper.ProductToDTO(product);
+        }
+
+        public async Task<SaleProduct> GetSaleProductEntityAsync(long id)
+        {
+            var sp = await productRepository.FindSaleProductAsync(id) ?? throw new SaleProductNotFoundException("Product for sale not found");
+            return sp;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MissTortas.Data.Entity.Orders
         public string Description { get; set; } = string.Empty;
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public virtual required OrderStatus OrderStatus { get; set; }
-        public required OrderType OrderType;
+        public OrderType? OrderType;
         public virtual required ApplicationUser OrderManager { get; set; }
         public required ApplicationUser Client { get; set; }
         public virtual ICollection<OrderSaleProduct> ProductsAsked { get; set; } = [];

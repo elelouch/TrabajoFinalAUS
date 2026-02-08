@@ -1,5 +1,5 @@
 ﻿using MissTortas.Data.Entity.Orders;
-using MissTortas.Services.DTO.Order;
+using MissTortas.Services.DTO.Orders;
 
 namespace MissTortas.Services.Mapper
 {

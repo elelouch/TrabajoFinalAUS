@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.DTO.Order
+namespace MissTortas.Services.DTO.Orders
 {
     public class OrderDTO
     {
@@ -11,5 +11,6 @@ namespace MissTortas.Services.DTO.Order
         public long StatusId { get; set; }
         public long OrderMangerId { get; set; }
         public long ClientId { get; set; }
+        public ICollection<OrderPreparationDTO> Preparations = [];
     }
 }

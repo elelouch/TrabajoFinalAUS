@@ -3,7 +3,7 @@ using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
-using MissTortas.Services.DTO.Order;
+using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
@@ -13,7 +13,7 @@ namespace MissTortas.Services
 {
     public class OrderService(
         UserManager<ApplicationUser> userManager,
-        IProductRepository productRepository,
+        IProductService productService,
         IOrderRepository orderRepository,
         IOrderMapper orderMapper) : IOrderService
     {
@@ -31,17 +31,20 @@ namespace MissTortas.Services
             return orderMapper.OrderTypeToDTO(orderType);
         }
 
-        public async Task<OrderDTO?> GetOrder(long orderId)
+        public async Task<OrderDTO> GetOrderAsync(long orderId)
         {
-            var order = await orderRepository.FindAsync(orderId);
-            if (order is null)
+            try
             {
-                return null;
+                var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
+                return orderMapper.OrderToDTO(order);
             }
-            return orderMapper.OrderToDTO(order);
+            catch (InvalidOperationException)
+            {
+                throw new OrderNotFoundException("Order not found.");
+            }
         }
 
-        public async Task<OrderDTO> PlaceOrder(PlaceOrderDTO dto)
+        public async Task<OrderDTO> SetupOrder(SetupOrderDTO dto)
         {
             var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException("Client not found");
             var orderManager = await userManager.FindByIdAsync(dto.OrderManagerId.ToString()) ?? throw new UserNotFoundException("Order manager not found");
@@ -65,7 +68,7 @@ namespace MissTortas.Services
             var askedProducts = new List<OrderSaleProduct>(dtos.Count);
             foreach (var d in dtos)
             {
-                var productForSale = await productRepository.FindSaleProductAsync(d.SaleProductId) ?? throw new SaleProductNotFoundException("Product for sale not found");
+                var productForSale = await productService.GetSaleProductEntityAsync(d.SaleProductId);
                 var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
                 if (!(productForSale.AllowDecimalAsk || askIsUnit))
                 {
@@ -75,10 +78,72 @@ namespace MissTortas.Services
                 {
                     throw new AskQuantityException($"Quantity asked of product is greater than what it's available. Product {productForSale.Id}");
                 }
-                var asked = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
-                askedProducts.Add(asked);
+                var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
+                askedProducts.Add(orderSaleProduct);
             }
             await orderRepository.BulkInsertOrderSaleProductAsync(askedProducts);
         }
+
+        public async Task PlaceOrder(PlaceOrderDTO dto)
+        {
+            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
+            var askedProducts = order.ProductsAsked;
+            foreach (var ap in askedProducts)
+            {
+                var saleProduct = ap.SaleProduct;
+                var stockProduct = saleProduct.StockProduct;
+                var ask = ap.QuantityAsked;
+
+                if (saleProduct.SaleQuantity < ask)
+                {
+                    throw new AskQuantityException("Couldn't execute order, asked quantity is not available for sale.");
+                }
+                saleProduct.SaleQuantity -= ask;
+
+                if(saleProduct.SaleQuantity <= 0)
+                {
+                    saleProduct.IsAvailable = false;
+                }
+
+                if(stockProduct.Quantity < ask)
+                {
+                    throw new AskQuantityException("Cannot ask more than what's available from the stock.");
+                }
+                stockProduct.Quantity -= ask;
+            }
+            order.OrderStatus = OrderStatus.Pending;
+            var assignee = await userManager.FindByIdAsync(dto.AssigneeId.ToString());
+
+            var preparation = new OrderPreparation { Order = order, Done = false, Detail = "Generic products" };
+            if (assignee is not null)
+            {
+                preparation.Assignee = assignee;
+            }
+
+            order.Preparations.Add(preparation);
+            orderRepository.Update(order);
+            await orderRepository.SaveChangesAsync();
+        }
+
+        public async Task EndOrderPreparation(long id)
+        {
+            var orderPreparation = await orderRepository.GetOrderPreparationAsync(id);
+            orderPreparation.FinalizationTime = DateTime.Now;
+            orderPreparation.Done = true;
+
+            var order = orderPreparation.Order;
+            var arePreparationOrdersLeft = order.Preparations.Any(op => op.Id != orderPreparation.Id && !op.Done);
+            if (!arePreparationOrdersLeft)
+            {
+                order.OrderStatus = OrderStatus.Finished;
+            }
+            else
+            {
+                order.OrderStatus = OrderStatus.InProgress;
+            }
+            orderRepository.Update(order);
+            await orderRepository.SaveChangesAsync();
+        }
+
     }
 }
