@@ -15,7 +15,8 @@ using CreateOrderTypeDTO = MissTortas.Engine.DTO.Orders.CreateOrderTypeDTO;
 using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Orders.CreateOrderTypeDTO;
 using PlaceOrderDTO = MissTortas.Engine.DTO.Orders.PlaceOrderDTO;
 using PlaceOrderServiceDTO = MissTortas.Services.DTO.Orders.PlaceOrderDTO;
-
+using CreateConsultancyDTO = MissTortas.Engine.DTO.Orders.CreateConsultancyDTO;
+using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
 
 namespace MissTortas.Engine.Controllers
 {
@@ -94,7 +95,7 @@ namespace MissTortas.Engine.Controllers
         }
 
         [HttpPost("consultancy")]
-        public async Task<ActionResult<List<long>>> UploadFile(List<IFormFile> files)
+        public async Task<ActionResult<List<long>>> UploadFile([FromForm]CreateConsultancyDTO dto, [FromForm]List<IFormFile> files)
         {
             var sizes = files.Select(f => f.Length).ToList();
             return sizes;

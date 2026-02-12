@@ -72,7 +72,7 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<Consultancy>()
                 .HasOne(c => c.PersonalizedProduct)
                 .WithOne(pp => pp.Consultancy)
-                .HasForeignKey("ConsultancyId");
+                .HasForeignKey<PersonalizedProduct>("ConsultancyId");
         }
 
         // In your DbContext
