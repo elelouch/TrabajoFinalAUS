@@ -68,6 +68,11 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<OrderPreparation>()
                 .HasOne(op => op.Assignee)
                 .WithMany(assignee => assignee.Preparations);
+
+            modelBuilder.Entity<Consultancy>()
+                .HasOne(c => c.PersonalizedProduct)
+                .WithOne(pp => pp.Consultancy)
+                .HasForeignKey("ConsultancyId");
         }
 
         // In your DbContext

@@ -50,9 +50,10 @@ namespace MissTortas.Engine.Controllers
         }
 
         [HttpDelete("cancel/{id}")]
-        public async Task CancelOrder(long id)
+        public async Task<ActionResult> CancelOrder(long id)
         {
             await orderService.CancelOrder(id);
+            return new EmptyResult();
         }
 
         [HttpPost("setup")]
@@ -77,17 +78,26 @@ namespace MissTortas.Engine.Controllers
         }
 
         [HttpPost("place")]
-        public async Task PlaceOrder(PlaceOrderDTO dto)
+        public async Task<ActionResult> PlaceOrder(PlaceOrderDTO dto)
         {
             await validators.PlaceOrderValidator().ValidateAndThrowAsync(dto);
             var placeOrder = new PlaceOrderServiceDTO { AssigneeId = dto.AssigneeId, Id = dto.OrderId };
             await orderService.PlaceOrder(placeOrder);
+            return new EmptyResult();
         }
 
         [HttpPut("preparation/end/{id}")]
-        public async Task PatchOrderPreparation(long id)
+        public async Task<ActionResult> PatchOrderPreparation(long id)
         {
             await orderService.EndOrderPreparation(id);
+            return new EmptyResult();
+        }
+
+        [HttpPost("consultancy")]
+        public async Task<ActionResult<List<long>>> UploadFile(List<IFormFile> files)
+        {
+            var sizes = files.Select(f => f.Length).ToList();
+            return sizes;
         }
     }
 }

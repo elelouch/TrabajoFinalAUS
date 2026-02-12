@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
@@ -181,7 +182,6 @@ namespace MissTortas.Services
         public async Task CancelOrder(long orderId)
         {
             var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
-            
             switch (order.OrderStatus)
             {
                 case OrderStatus.WaitingForPayment:
@@ -196,9 +196,8 @@ namespace MissTortas.Services
             order.OrderStatus = OrderStatus.Cancelled;
         }
 
-        public async Task<ConsultancyDTO> CreateConsultancy(CreateConsultancyDTO dto)
+        public async Task CreateConsultancy(CreateConsultancyDTO dto)
         {
-
         }
 
     }
