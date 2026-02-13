@@ -9,12 +9,13 @@ namespace MissTortas.Services.Interfaces
 {
     public interface IOrderService
     {
-        public Task EndOrderPreparation(long id);
+        public Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto);
+        public Task EndOrderPreparationAsync(long id);
         public Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync();
-        public Task CancelOrder(long id);
-        public Task<OrderDTO> SetupOrder(SetupOrderDTO dto);
-        public Task<OrderTypeDTO> CreateOrderType(CreateOrderTypeDTO dto);
-        public Task PlaceOrder(PlaceOrderDTO dto);
+        public Task CancelOrderAsync(long id);
+        public Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto);
+        public Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto);
+        public Task PlaceOrderAsync(PlaceOrderDTO dto);
         public Task<OrderDTO> GetOrderAsync(long id);
     }
 }

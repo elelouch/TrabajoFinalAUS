@@ -24,7 +24,8 @@ namespace MissTortas.Engine.Controllers
     [ApiController]
     public class OrderController(
         IOrderService orderService,
-        IOrdersDTOValidator validators
+        IOrdersDTOValidator validators,
+        IWebHostEnvironment webHostEnvironment
         )
     {
         [HttpPost("ordertype")]
@@ -32,7 +33,7 @@ namespace MissTortas.Engine.Controllers
         {
             await validators.CreateOrderTypeValidator().ValidateAndThrowAsync(dto);
             var orderTypeDTO = new CreateOrderTypeServiceDTO { Name = dto.Name };
-            var orderType = await orderService.CreateOrderType(orderTypeDTO);
+            var orderType = await orderService.CreateOrderTypeAsync(orderTypeDTO);
             return orderType;
         }
 
@@ -53,7 +54,7 @@ namespace MissTortas.Engine.Controllers
         [HttpDelete("cancel/{id}")]
         public async Task<ActionResult> CancelOrder(long id)
         {
-            await orderService.CancelOrder(id);
+            await orderService.CancelOrderAsync(id);
             return new EmptyResult();
         }
 
@@ -75,7 +76,7 @@ namespace MissTortas.Engine.Controllers
                 ConsultancyId = 0,
                 Description = dto.Description
             };
-            return await orderService.SetupOrder(placeOrder);
+            return await orderService.SetupOrderAsync(placeOrder);
         }
 
         [HttpPost("place")]
@@ -83,22 +84,31 @@ namespace MissTortas.Engine.Controllers
         {
             await validators.PlaceOrderValidator().ValidateAndThrowAsync(dto);
             var placeOrder = new PlaceOrderServiceDTO { AssigneeId = dto.AssigneeId, Id = dto.OrderId };
-            await orderService.PlaceOrder(placeOrder);
+            await orderService.PlaceOrderAsync(placeOrder);
             return new EmptyResult();
         }
 
         [HttpPut("preparation/end/{id}")]
         public async Task<ActionResult> PatchOrderPreparation(long id)
         {
-            await orderService.EndOrderPreparation(id);
+            await orderService.EndOrderPreparationAsync(id);
             return new EmptyResult();
         }
 
         [HttpPost("consultancy")]
-        public async Task<ActionResult<List<long>>> UploadFile([FromForm]CreateConsultancyDTO dto, [FromForm]List<IFormFile> files)
+        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy ([FromForm]CreateConsultancyDTO dto, [FromForm]List<IFormFile> files)
         {
-            var sizes = files.Select(f => f.Length).ToList();
-            return sizes;
+            var uploadsPath = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
+            var consultancyDTO = new CreateConsultancyServiceDTO
+            {
+                UploadPath = uploadsPath,
+                Files = files,
+                Description = dto.Description,
+                Title = dto.Title
+            };
+
+            var consultancy = await orderService.CreateConsultancyAsync(consultancyDTO);
+            return consultancy;
         }
     }
 }

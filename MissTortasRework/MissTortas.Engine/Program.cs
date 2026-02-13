@@ -20,6 +20,8 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Engine.DTO.Orders;
 using MissTortas.Engine.Validators.Orders;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,8 +31,6 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
 builder.Services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
-
-// Validators
 
 
 // DI
@@ -102,6 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.MapOpenApi();
+    app.MapStaticAssets();
 }
 
 app.UseAuthentication();
@@ -111,5 +112,6 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
 
 app.Run();

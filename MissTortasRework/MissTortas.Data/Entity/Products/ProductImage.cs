@@ -4,5 +4,6 @@
     {
         public long Id { get; set; }
         public Guid Guid { get; set; } = Guid.NewGuid();
+        public string Extension { get; set; } = string.Empty;
     }
 }

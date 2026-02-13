@@ -24,7 +24,7 @@ namespace MissTortas.Services
             return orderMapper.OrderTypeToDTO(orders);
         }
 
-        public async Task<OrderTypeDTO> CreateOrderType(CreateOrderTypeDTO dto)
+        public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
         {
             var orderType = new OrderType { Name = dto.Name };
             await orderRepository.InsertOrderTypeAsync(orderType);
@@ -45,7 +45,7 @@ namespace MissTortas.Services
             }
         }
 
-        public async Task<OrderDTO> SetupOrder(SetupOrderDTO dto)
+        public async Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto)
         {
             var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException("Client not found");
             var orderManager = await userManager.FindByIdAsync(dto.OrderManagerId.ToString()) ?? throw new UserNotFoundException("Order manager not found");
@@ -129,7 +129,7 @@ namespace MissTortas.Services
             }
         }
 
-        public async Task PlaceOrder(PlaceOrderDTO dto)
+        public async Task PlaceOrderAsync(PlaceOrderDTO dto)
         {
             var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
             var askedProducts = order.ProductsAsked;
@@ -153,7 +153,7 @@ namespace MissTortas.Services
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task EndOrderPreparation(long orderPreparationId)
+        public async Task EndOrderPreparationAsync(long orderPreparationId)
         {
             var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId);
             var order = orderPreparation.Order;
@@ -179,7 +179,7 @@ namespace MissTortas.Services
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task CancelOrder(long orderId)
+        public async Task CancelOrderAsync(long orderId)
         {
             var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
             switch (order.OrderStatus)
@@ -200,5 +200,9 @@ namespace MissTortas.Services
         {
         }
 
+        public Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
+        {
+            
+        }
     }
 }
