@@ -1,4 +1,5 @@
 using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Data.Entity.Orders
 {
@@ -10,6 +11,8 @@ namespace MissTortas.Data.Entity.Orders
         public string BakeryNotes { get; set; } = string.Empty;
         public DateTime EstimatedFinishedTime { get; set; } = DateTime.Now;
         public DateTime AlternativeEstimatedFinishedTime { get; set; } = DateTime.Now;
+        public virtual required ApplicationUser OrderManager { get; set; }
+        public virtual required ApplicationUser Client { get; set; }
         public virtual ConsultancyStatus Status { get; set; }
         public virtual ICollection<ConsultancyFile> ConsultancyFiles { get; set; } = [];
         public virtual ICollection<Order> Orders { get; set; } = [];
