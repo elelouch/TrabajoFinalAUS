@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddMissTortasServiceCore(this IServiceCollection services, IConfigurationRoot configuration)
         {
+            services.AddScoped<ISimpleStorage, SimpleStorage>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<SignInManager<ApplicationUser>>();
             services.AddScoped<IProductService, ProductService>();

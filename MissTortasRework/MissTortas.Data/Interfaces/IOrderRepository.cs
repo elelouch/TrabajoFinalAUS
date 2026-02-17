@@ -7,6 +7,7 @@ namespace MissTortas.Data.Interfaces
 {
     public interface IOrderRepository: IRepositoryCrud<Order>
     {
+        public Task InsertConsultancyAsync(Consultancy consultancy);
         public Task<OrderType?> FindOrderTypeAsync(long id);
         public Task<OrderPreparation> GetOrderPreparationAsync(long id);
         public Task InsertOrderTypeAsync(OrderType ot);

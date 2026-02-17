@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial10 : Migration
+    public partial class KamiKA : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -268,7 +268,9 @@ namespace MissTortas.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BakeryNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EstimatedFinishedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AlternativeEstimatedFinishedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -289,7 +291,7 @@ namespace MissTortas.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
-                    AssigneeId = table.Column<long>(type: "bigint", nullable: true),
+                    AssigneeId = table.Column<long>(type: "bigint", nullable: false),
                     Done = table.Column<bool>(type: "bit", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -302,11 +304,34 @@ namespace MissTortas.Data.Migrations
                         name: "FK_OrderPreparation_AspNetUsers_AssigneeId",
                         column: x => x.AssigneeId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderPreparation_Order_Id",
                         column: x => x.Id,
                         principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductFile",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductFile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductFile_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -333,6 +358,62 @@ namespace MissTortas.Data.Migrations
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsultancyFile",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConsultancyId = table.Column<long>(type: "bigint", nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsultancyFile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConsultancyFile_Consultancy_ConsultancyId",
+                        column: x => x.ConsultancyId,
+                        principalTable: "Consultancy",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonalizedProduct",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConsultancyId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductCategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductImageId = table.Column<long>(type: "bigint", nullable: true),
+                    FinalPrice = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonalizedProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonalizedProduct_Consultancy_ConsultancyId",
+                        column: x => x.ConsultancyId,
+                        principalTable: "Consultancy",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonalizedProduct_ProductCategory_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonalizedProduct_ProductFile_ProductImageId",
+                        column: x => x.ProductImageId,
+                        principalTable: "ProductFile",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -405,6 +486,11 @@ namespace MissTortas.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConsultancyFile_ConsultancyId",
+                table: "ConsultancyFile",
+                column: "ConsultancyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_ClientId",
                 table: "Order",
                 column: "ClientId");
@@ -425,6 +511,22 @@ namespace MissTortas.Data.Migrations
                 column: "SaleProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PersonalizedProduct_ConsultancyId",
+                table: "PersonalizedProduct",
+                column: "ConsultancyId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonalizedProduct_ProductCategoryId",
+                table: "PersonalizedProduct",
+                column: "ProductCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonalizedProduct_ProductImageId",
+                table: "PersonalizedProduct",
+                column: "ProductImageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_Name",
                 table: "Product",
                 column: "Name",
@@ -439,6 +541,11 @@ namespace MissTortas.Data.Migrations
                 name: "IX_ProductCategory_ParentId",
                 table: "ProductCategory",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductFile_ProductId",
+                table: "ProductFile",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleProduct_StockProductId",
@@ -466,7 +573,7 @@ namespace MissTortas.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Consultancy");
+                name: "ConsultancyFile");
 
             migrationBuilder.DropTable(
                 name: "OrderPreparation");
@@ -478,19 +585,28 @@ namespace MissTortas.Data.Migrations
                 name: "OrderType");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "PersonalizedProduct");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "SaleProduct");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Consultancy");
+
+            migrationBuilder.DropTable(
+                name: "ProductFile");
+
+            migrationBuilder.DropTable(
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "ProductCategory");

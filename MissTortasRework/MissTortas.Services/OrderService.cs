@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Orders;
+using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
@@ -14,6 +15,7 @@ namespace MissTortas.Services
 {
     public class OrderService(
         UserManager<ApplicationUser> userManager,
+        ISimpleStorage simpleStorageService,
         IProductService productService,
         IOrderRepository orderRepository,
         IOrderMapper orderMapper) : IOrderService
@@ -196,13 +198,30 @@ namespace MissTortas.Services
             order.OrderStatus = OrderStatus.Cancelled;
         }
 
-        public async Task CreateConsultancy(CreateConsultancyDTO dto)
+        public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
-        }
-
-        public Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
-        {
-            
+            var consultancy = new Consultancy
+            {
+                Title = dto.Title,
+                Notes = dto.Description,
+                Status = ConsultancyStatus.Pending,
+                ConsultancyFiles = []
+            };
+            await orderRepository.InsertConsultancyAsync(consultancy);
+            await orderRepository.SaveChangesAsync();
+            //var fss = dto.Files.Select(file =>
+            //{
+            //    if (file.OpenReadStream() is FileStream fs)
+            //    {
+            //        return fs;
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("File was not a Filestream");
+            //    }
+            //});
+            //await simpleStorageService.SaveConsultancyFileAsync(fss, consultancy);
+            return orderMapper.ConsultancyToDTO(consultancy);
         }
     }
 }

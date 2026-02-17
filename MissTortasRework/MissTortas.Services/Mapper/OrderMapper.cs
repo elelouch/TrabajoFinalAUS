@@ -8,6 +8,16 @@ namespace MissTortas.Services.Mapper
 {
     public class OrderMapper : IOrderMapper
     {
+        public ConsultancyDTO ConsultancyToDTO(Consultancy consultancy)
+        {
+            var ret = new ConsultancyDTO
+            {
+                Title = consultancy.Title,
+                Notes = consultancy.Notes
+            };
+            return ret;
+        }
+
         public OrderDTO OrderToDTO(Order order)
         {
             var preparations = order.Preparations.Select(

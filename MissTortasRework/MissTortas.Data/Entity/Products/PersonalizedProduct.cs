@@ -6,10 +6,7 @@ namespace MissTortas.Data.Entity.Products
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public long ConsultancyId { get; set; }
-        public virtual required Consultancy Consultancy { get; set; }
-        public virtual required ProductCategory ProductCategory { get; set; }
-        public virtual ProductImage? ProductImage { get; set; }
+        public virtual ProductFile? ProductImage { get; set; }
         public float FinalPrice { get; set; }
     }
 }

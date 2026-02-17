@@ -8,5 +8,6 @@ namespace MissTortas.Services.Mapper
         public OrderTypeDTO OrderTypeToDTO(OrderType ot);
         public IEnumerable<OrderTypeDTO> OrderTypeToDTO(IEnumerable<OrderType> ots);
         public OrderDTO OrderToDTO(Order order);
+        public ConsultancyDTO ConsultancyToDTO(Consultancy consultancy);
     }
 }

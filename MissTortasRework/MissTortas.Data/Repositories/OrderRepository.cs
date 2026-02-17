@@ -30,14 +30,19 @@ namespace MissTortas.Data.Repositories
             return order;
         }
 
+        public async Task InsertConsultancyAsync(Consultancy consultancy)
+        {
+            await consultanciesSet.AddAsync(consultancy);
+        }
+
         public async Task<Consultancy?> FindConsultancyAsync(long id)
         {
-            return (await consultanciesSet.FindAsync(id));
+            return await consultanciesSet.FindAsync(id);
         }
 
         public async Task<OrderType?> FindOrderTypeAsync(long id)
         {
-            return (await orderTypeSet.FindAsync(id));
+            return await orderTypeSet.FindAsync(id);
         }
 
         public async Task<IEnumerable<OrderType>> GetAllOrderTypeAsync()

@@ -24,8 +24,7 @@ namespace MissTortas.Engine.Controllers
     [ApiController]
     public class OrderController(
         IOrderService orderService,
-        IOrdersDTOValidator validators,
-        IWebHostEnvironment webHostEnvironment
+        IOrdersDTOValidator validators
         )
     {
         [HttpPost("ordertype")]
@@ -98,10 +97,8 @@ namespace MissTortas.Engine.Controllers
         [HttpPost("consultancy")]
         public async Task<ActionResult<ConsultancyDTO>> PostConsultancy ([FromForm]CreateConsultancyDTO dto, [FromForm]List<IFormFile> files)
         {
-            var uploadsPath = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
             var consultancyDTO = new CreateConsultancyServiceDTO
             {
-                UploadPath = uploadsPath,
                 Files = files,
                 Description = dto.Description,
                 Title = dto.Title

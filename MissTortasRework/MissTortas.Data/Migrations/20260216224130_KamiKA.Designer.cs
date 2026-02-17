@@ -12,8 +12,8 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260212230256_InitialCreatex.x")]
-    partial class InitialCreatexx
+    [Migration("20260216224130_KamiKA")]
+    partial class KamiKA
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,35 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("Consultancy");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Orders.ConsultancyFile", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ConsultancyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultancyId");
+
+                    b.ToTable("ConsultancyFile");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -276,12 +305,17 @@ namespace MissTortas.Data.Migrations
                     b.Property<long>("ProductCategoryId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ProductImageId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ConsultancyId")
                         .IsUnique();
 
                     b.HasIndex("ProductCategoryId");
+
+                    b.HasIndex("ProductImageId");
 
                     b.ToTable("PersonalizedProduct");
                 });
@@ -362,6 +396,35 @@ namespace MissTortas.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductDetail");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductFile", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductFile");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.SaleProduct", b =>
@@ -571,6 +634,17 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Orders.ConsultancyFile", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Orders.Consultancy", "Consultancy")
+                        .WithMany("ConsultancyFiles")
+                        .HasForeignKey("ConsultancyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consultancy");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
                 {
                     b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", "Client")
@@ -642,9 +716,15 @@ namespace MissTortas.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MissTortas.Data.Entity.Products.ProductFile", "ProductImage")
+                        .WithMany()
+                        .HasForeignKey("ProductImageId");
+
                     b.Navigation("Consultancy");
 
                     b.Navigation("ProductCategory");
+
+                    b.Navigation("ProductImage");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>
@@ -675,6 +755,17 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductFile", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Products.SaleProduct", b =>
                 {
                     b.HasOne("MissTortas.Data.Entity.Products.Product", "StockProduct")
@@ -688,6 +779,8 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
                 {
+                    b.Navigation("ConsultancyFiles");
+
                     b.Navigation("PersonalizedProduct");
                 });
 

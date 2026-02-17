@@ -73,6 +73,15 @@ namespace MissTortas.Data.Context
                 .HasOne(c => c.PersonalizedProduct)
                 .WithOne(pp => pp.Consultancy)
                 .HasForeignKey<PersonalizedProduct>("ConsultancyId");
+
+            modelBuilder.Entity<Consultancy>()
+                .HasMany(c => c.ConsultancyFiles)
+                .WithOne(cf => cf.Consultancy);
+
+            modelBuilder.Entity<Order>()
+                .Haso(o => o.Consultancy)
+                .WithMany(c => c.Orders)
+                .IsConstrained(false);
         }
 
         // In your DbContext
