@@ -33,8 +33,8 @@ namespace MissTortas.Services.Mapper
                 Status = order.OrderStatus.ToString(),
                 StatusId = (long) order.OrderStatus,
                 Id = order.Id,
-                ClientId = order.Client?.Id ?? 0,
-                OrderMangerId = order.OrderManager?.Id ?? 0,
+                ClientId = order.Consultancy?.Client?.Id ?? 0,
+                OrderMangerId = order.Consultancy?.Assignee?.Id ?? 0,
                 Preparations = preparations
             };
         }

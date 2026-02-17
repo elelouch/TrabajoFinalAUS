@@ -51,13 +51,11 @@ namespace MissTortas.Services
         {
             var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException("Client not found");
             var orderManager = await userManager.FindByIdAsync(dto.OrderManagerId.ToString()) ?? throw new UserNotFoundException("Order manager not found");
-            var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
+            var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId) ?? throw new ConsultancyNotFoundException("Couldn't find consultancy");
             var orderType = await orderRepository.FindOrderTypeAsync(dto.OrderTypeId) ?? throw new OrderTypeNotFoundException("Order type not found");
             var order = new Order
             {
                 Consultancy = consultancy,
-                Client = client,
-                OrderManager = orderManager,
                 OrderType = orderType,
                 OrderStatus = OrderStatus.WaitingForPayment
             };
@@ -141,7 +139,7 @@ namespace MissTortas.Services
             }
             ReserveProductQuantities(askedProducts);
             order.OrderStatus = OrderStatus.Pending;
-            var assigneeId = dto.AssigneeId <= 0 ? order.OrderManager.Id : dto.AssigneeId;
+            var assigneeId = dto.AssigneeId <= 0 ? order.Consultancy?.Assignee.Id : dto.AssigneeId;
             var assignee = await userManager.FindByIdAsync(assigneeId.ToString()) ?? throw new UserNotFoundException("Assignee must exist.");
             var preparation = new OrderPreparation 
             { 
@@ -200,8 +198,12 @@ namespace MissTortas.Services
 
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
+            var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
+            var assignee = await userManager.FindByIdAsync(dto.AssigneeId.ToString()) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found."); ;
             var consultancy = new Consultancy
             {
+                Client = client,
+                Assignee = assignee,
                 Title = dto.Title,
                 Notes = dto.Description,
                 Status = ConsultancyStatus.Pending,

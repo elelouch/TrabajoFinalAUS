@@ -7,7 +7,7 @@ using MissTortas.Data.Entity.Security;
 
 namespace MissTortas.Data.Context
 {
-    public class MissTortasContext (DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
+    public class MissTortasContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
     {
         public DbSet<Order> OrderItems { get; set; } = default!;
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
@@ -23,13 +23,13 @@ namespace MissTortas.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>().HasIndex(u => new {u.Email, u.UserName});
-            modelBuilder.Entity<Order>()
-                .HasOne(order => order.Client)
+            modelBuilder.Entity<ApplicationUser>().HasIndex(u => new { u.Email, u.UserName });
+            modelBuilder.Entity<Consultancy>()
+                .HasOne(c => c.Assignee)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Order>()
-                .HasOne(order => order.OrderManager)
+            modelBuilder.Entity<Consultancy>()
+                .HasOne(c => c.Client)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -53,9 +53,9 @@ namespace MissTortas.Data.Context
                 .WithOne(prep => prep.Order)
                 .HasForeignKey(prep => prep.Id);
 
-            modelBuilder.Entity<Order>().HasOne(o => o.Consultancy)
-                .WithOne(c => c.Order)
-                .HasForeignKey<Consultancy>(c => c.Id);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Consultancy)
+                .WithMany(c => c.Orders);
 
             modelBuilder.Entity<OrderSaleProduct>()
                 .HasKey(osp => new { osp.OrderId, osp.SaleProductId });
@@ -70,18 +70,16 @@ namespace MissTortas.Data.Context
                 .WithMany(assignee => assignee.Preparations);
 
             modelBuilder.Entity<Consultancy>()
-                .HasOne(c => c.PersonalizedProduct)
-                .WithOne(pp => pp.Consultancy)
-                .HasForeignKey<PersonalizedProduct>("ConsultancyId");
+                .HasMany(c => c.ConsultancyFiles)
+                .WithOne(pp => pp.Consultancy);
 
             modelBuilder.Entity<Consultancy>()
                 .HasMany(c => c.ConsultancyFiles)
                 .WithOne(cf => cf.Consultancy);
 
             modelBuilder.Entity<Order>()
-                .Haso(o => o.Consultancy)
-                .WithMany(c => c.Orders)
-                .IsConstrained(false);
+                .HasOne(o => o.Consultancy)
+                .WithMany(c => c.Orders);
         }
 
         // In your DbContext

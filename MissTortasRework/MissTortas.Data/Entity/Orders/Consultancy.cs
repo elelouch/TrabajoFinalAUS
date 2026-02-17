@@ -9,9 +9,8 @@ namespace MissTortas.Data.Entity.Orders
         public string Title { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
         public string BakeryNotes { get; set; } = string.Empty;
-        public DateTime EstimatedFinishedTime { get; set; } = DateTime.Now;
-        public DateTime AlternativeEstimatedFinishedTime { get; set; } = DateTime.Now;
-        public virtual required ApplicationUser OrderManager { get; set; }
+        public DateTime CreationTime { get; set; } = DateTime.Now;
+        public virtual required ApplicationUser Assignee { get; set; }
         public virtual required ApplicationUser Client { get; set; }
         public virtual ConsultancyStatus Status { get; set; }
         public virtual ICollection<ConsultancyFile> ConsultancyFiles { get; set; } = [];

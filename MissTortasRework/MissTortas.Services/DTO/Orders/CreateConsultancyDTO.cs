@@ -11,6 +11,8 @@ namespace MissTortas.Services.DTO.Orders
         public string Description { get; set; } = string.Empty;
         public IEnumerable<IFormFile> Files { get; set; } = [];
         public string UploadPath { get; set; } = string.Empty;
+        public long AssigneeId { get; set; }
+        public long ClientId { get; set; }
 
     }
 }
