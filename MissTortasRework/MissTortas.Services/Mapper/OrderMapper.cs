@@ -13,7 +13,9 @@ namespace MissTortas.Services.Mapper
             var ret = new ConsultancyDTO
             {
                 Title = consultancy.Title,
-                Notes = consultancy.Notes
+                Notes = consultancy.Notes,
+                StatusId = (int) consultancy.Status,
+                Status = consultancy.Status.ToString()
             };
             return ret;
         }
@@ -21,8 +23,8 @@ namespace MissTortas.Services.Mapper
         public OrderDTO OrderToDTO(Order order)
         {
             var preparations = order.Preparations.Select(
-                prep => new OrderPreparationDTO 
-                { 
+                prep => new OrderPreparationDTO
+                {
                     Id = prep.Id,
                     Detail = prep.Detail,
                     Done = prep.Done
@@ -31,7 +33,7 @@ namespace MissTortas.Services.Mapper
             return new OrderDTO
             {
                 Status = order.OrderStatus.ToString(),
-                StatusId = (long) order.OrderStatus,
+                StatusId = (long)order.OrderStatus,
                 Id = order.Id,
                 ClientId = order.Consultancy?.Client?.Id ?? 0,
                 OrderMangerId = order.Consultancy?.Assignee?.Id ?? 0,

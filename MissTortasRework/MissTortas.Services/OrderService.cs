@@ -211,19 +211,22 @@ namespace MissTortas.Services
             };
             await orderRepository.InsertConsultancyAsync(consultancy);
             await orderRepository.SaveChangesAsync();
-            //var fss = dto.Files.Select(file =>
-            //{
-            //    if (file.OpenReadStream() is FileStream fs)
-            //    {
-            //        return fs;
-            //    }
-            //    else
-            //    {
-            //        throw new Exception("File was not a Filestream");
-            //    }
-            //});
-            //await simpleStorageService.SaveConsultancyFileAsync(fss, consultancy);
+            await simpleStorageService.SaveConsultancyFileAsync(dto.Files, consultancy);
             return orderMapper.ConsultancyToDTO(consultancy);
         }
+
+        public async Task<ConsultancyDTO> UpdateConsultancyAsync(UpdateConsultancyDTO dto)
+        {
+            var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId) ?? throw new ConsultancyNotFoundException($"Consultancy {dto.ConsultancyId} not found");
+            consultancy.BakeryNotes = dto.BakeryNotes;
+            if(!Enum.IsDefined(typeof(ConsultancyStatus), dto.Status))
+            {
+                throw new InvalidStateException($"Cannot assign {dto.Status} as a consultancy status.");
+            }
+            consultancy.Status = (ConsultancyStatus) dto.Status;
+            await orderRepository.SaveChangesAsync();
+            return orderMapper.ConsultancyToDTO(consultancy);
+        }
+
     }
 }

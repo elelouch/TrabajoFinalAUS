@@ -19,6 +19,7 @@ using MissTortas.Services.Mapper;
 using MissTortas.Services.Interfaces;
 using MissTortas.Engine.DTO.Orders;
 using MissTortas.Engine.Validators.Orders;
+using Microsoft.Extensions.FileProviders;
 
 
 
@@ -103,6 +104,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.MapOpenApi();
     app.MapStaticAssets();
+    var fileOptions = new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+        RequestPath = "/uploads"
+    };
+    app.UseStaticFiles(fileOptions);
 }
 
 app.UseAuthentication();
@@ -112,6 +119,5 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.MapControllers();
-
 
 app.Run();

@@ -17,5 +17,7 @@ namespace MissTortas.Services.Interfaces
         public Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto);
         public Task PlaceOrderAsync(PlaceOrderDTO dto);
         public Task<OrderDTO> GetOrderAsync(long id);
+        public Task<ConsultancyDTO> UpdateConsultancyAsync(UpdateConsultancyDTO dto);
+
     }
 }

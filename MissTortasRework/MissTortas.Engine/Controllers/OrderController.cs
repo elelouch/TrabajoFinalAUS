@@ -17,6 +17,8 @@ using PlaceOrderDTO = MissTortas.Engine.DTO.Orders.PlaceOrderDTO;
 using PlaceOrderServiceDTO = MissTortas.Services.DTO.Orders.PlaceOrderDTO;
 using CreateConsultancyDTO = MissTortas.Engine.DTO.Orders.CreateConsultancyDTO;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
+using UpdateConsultancyDTO = MissTortas.Engine.DTO.Orders.UpdateConsultancyDTO;
+using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
 
 namespace MissTortas.Engine.Controllers
 {
@@ -99,13 +101,28 @@ namespace MissTortas.Engine.Controllers
         {
             var consultancyDTO = new CreateConsultancyServiceDTO
             {
+                ClientId = dto.ClientId,
+                AssigneeId = dto.AssigneeId,
                 Files = files,
                 Description = dto.Description,
                 Title = dto.Title
             };
-
             var consultancy = await orderService.CreateConsultancyAsync(consultancyDTO);
             return consultancy;
         }
+
+        [HttpPut("consultancy/{id}")]
+        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancyDTO dto)
+        {
+            var consultancyDTO = new UpdateConsultancyServiceDTO
+            {
+                BakeryNotes = dto.BakeryNotes,
+                ConsultancyId = id,
+                Status = dto.NewStatus
+            };
+            var consultancy = await orderService.UpdateConsultancyAsync(consultancyDTO);
+            return consultancy;
+        }
+
     }
 }
