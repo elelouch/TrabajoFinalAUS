@@ -40,6 +40,6 @@ namespace MissTortas.Data.Repositories
             return rowsAffected;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
+        public IAsyncEnumerable<TEntity> GetAll() => _dbSet.AsAsyncEnumerable();
     }
 }

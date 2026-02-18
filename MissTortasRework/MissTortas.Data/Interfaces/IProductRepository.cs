@@ -11,9 +11,9 @@ namespace MissTortas.Data.Interfaces
         public Task InsertSaleProductAsync(SaleProduct saleProduct);
         public Task<SaleProduct?> FindSaleProductAsync(long id);
         public Task<Product?> FindProductByNameAsync(string name);
-        public Task<IEnumerable<Product>> GetAllWithDetailAsync();
+        public IAsyncEnumerable<Product> GetAllWithDetail();
         public Task<ProductCategory?> GetProductCategory(long id);
         public Task DeleteProductCategory(ProductCategory pc);
-        public Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync();
+        public IAsyncEnumerable<ProductCategory> GetAllProductCategoriesAsync();
     }
 }

@@ -12,8 +12,7 @@ namespace MissTortas.Data.Repositories
         private readonly DbSet<SaleProduct> saleProductSet = context.SaleProducts;
         private readonly DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
 
-        public async Task<IEnumerable<Product>> GetAllWithDetailAsync() =>
-            await productsSet.Include(p => p.ProductDetail).ToListAsync();
+        public IAsyncEnumerable<Product> GetAllWithDetail() => productsSet.Include(p => p.ProductDetail).AsAsyncEnumerable();
 
         public async Task<Product> GetWithDetailAsync(long id) =>
             await productsSet.Include(p => p.ProductDetail).Where(p => p.Id == id).SingleAsync();
@@ -29,12 +28,11 @@ namespace MissTortas.Data.Repositories
 
         public async Task InsertProductCategoryAsync(ProductCategory productCategory) => await productCategoriesSet.AddAsync(productCategory);
 
-        public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesAsync()
+        public IAsyncEnumerable<ProductCategory> GetAllProductCategoriesAsync()
         {
             var categoriesTask = productCategoriesSet.Include(c => c.Parent)
-                    //.Include(c => c.Children)
-                    .ToListAsync();
-            return (await categoriesTask);
+                    .AsAsyncEnumerable();
+            return categoriesTask;
         }
 
         public async Task DeleteProductCategory(ProductCategory cat) =>

@@ -22,7 +22,7 @@ namespace MissTortas.Services
     {
         public async Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync()
         {
-            var orders = await orderRepository.GetAllOrderTypeAsync();
+            var orders = await orderRepository.GetAllOrderType();
             return orderMapper.OrderTypeToDTO(orders);
         }
 

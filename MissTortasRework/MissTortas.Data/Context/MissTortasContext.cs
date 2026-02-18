@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
+using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Entity.Security;
 
@@ -20,6 +21,7 @@ namespace MissTortas.Data.Context
         public DbSet<OrderPreparation> OrderPreparations { get; set; } = default!;
         public DbSet<ConsultancyFile> ConsultancyFiles { get; set; } = default!;
         public DbSet<ProductFile> ProductFiles { get; set; } = default!;
+        public DbSet<PaymentMethod> PaymentMethods { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

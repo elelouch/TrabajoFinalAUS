@@ -62,7 +62,7 @@ namespace MissTortas.Services
         }
         public async Task<IEnumerable<ProductDTO>> AllWithDetailAsync()
         {
-            var products = await productRepository.GetAllWithDetailAsync();
+            var products = await productRepository.GetAllWithDetail();
             return productMapper.ProductToDTO(products);
         }
 

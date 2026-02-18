@@ -11,7 +11,7 @@ namespace MissTortas.Data.Interfaces
         public Task<OrderType?> FindOrderTypeAsync(long id);
         public Task<OrderPreparation> GetOrderPreparationAsync(long id);
         public Task InsertOrderTypeAsync(OrderType ot);
-        public Task<IEnumerable<OrderType>> GetAllOrderTypeAsync();
+        public IAsyncEnumerable<OrderType> GetAllOrderType();
         public Task<Consultancy?> FindConsultancyAsync(long id);
         public Task InsertOrderSaleProductAsync(OrderSaleProduct osp);
         public Task BulkInsertOrderSaleProductAsync(ICollection<OrderSaleProduct> osps);

@@ -47,9 +47,9 @@ namespace MissTortas.Data.Repositories
             return await orderTypeSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<OrderType>> GetAllOrderTypeAsync()
+        public IAsyncEnumerable<OrderType> GetAllOrderType()
         {
-            return (await orderTypeSet.ToListAsync());
+            return orderTypeSet.AsAsyncEnumerable();
         }
 
         public async Task InsertOrderSaleProductAsync(OrderSaleProduct osp)
