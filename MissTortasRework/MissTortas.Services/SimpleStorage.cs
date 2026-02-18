@@ -2,12 +2,17 @@
 using Microsoft.AspNetCore.Http;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Interfaces;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 
 namespace MissTortas.Services
 {
-    public class SimpleStorage(IWebHostEnvironment? webHostEnvironment, string root = "") : ISimpleStorage
+    public class SimpleStorage(
+        IWebHostEnvironment? webHostEnvironment,
+        ISimpleStorageRepository simpleStorageRepository,
+        string root = ""
+        ) : ISimpleStorage
     {
         private readonly string _root = webHostEnvironment?.WebRootPath ?? root;
         public async Task SaveConsultancyFileAsync(IFormFile fsIn, Consultancy consultancy)
@@ -18,22 +23,21 @@ namespace MissTortas.Services
             }
             var extension = Path.GetExtension(fsIn.FileName);
             var guid = Guid.NewGuid();
-            var newDirectory = Path.Combine(_root, "consultancy", consultancy.Id.ToString());
-            if(!Directory.Exists(newDirectory))
-            {
-                Directory.CreateDirectory(newDirectory);
-            }
-            var newPath = Path.Combine(newDirectory, guid.ToString() + extension);
+            var storageDirectory = Path.Combine(_root, "consultancy");
+            var filename = guid.ToString() + extension;
+            var relativePath = $"consultancy/{filename}";
             var consultancyFile = new ConsultancyFile()
             {
                 Guid = guid,
                 Consultancy = consultancy,
                 Extension = extension,
-                Path = newPath
+                Path = relativePath
             };
             consultancy.ConsultancyFiles.Add(consultancyFile);
-            using var fsOut = File.Create(newPath);
+            using var fsOut = File.Create(Path.Combine(storageDirectory, filename));
             await fsIn.CopyToAsync(fsOut);
+            await simpleStorageRepository.InsertConsultancyFileAsync(consultancyFile);
+            await simpleStorageRepository.SaveChangesAsync();
         }
 
         public async Task SaveConsultancyFileAsync(IEnumerable<IFormFile> files, Consultancy consultancy)

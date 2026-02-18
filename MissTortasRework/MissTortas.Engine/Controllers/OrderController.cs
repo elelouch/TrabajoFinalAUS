@@ -29,7 +29,7 @@ namespace MissTortas.Engine.Controllers
         IOrdersDTOValidator validators
         )
     {
-        [HttpPost("ordertype")]
+        [HttpPost("type")]
         public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
         {
             await validators.CreateOrderTypeValidator().ValidateAndThrowAsync(dto);
@@ -38,7 +38,7 @@ namespace MissTortas.Engine.Controllers
             return orderType;
         }
 
-        [HttpGet("ordertype")]
+        [HttpGet("type")]
         public async Task<ActionResult<IEnumerable<OrderTypeDTO>>> AllOrderTypes()
         {
             var orderTypes = await orderService.AllOrderTypeAsync();
@@ -52,7 +52,7 @@ namespace MissTortas.Engine.Controllers
             return order;
         }
 
-        [HttpDelete("cancel/{id}")]
+        [HttpDelete("{id}/cancel")]
         public async Task<ActionResult> CancelOrder(long id)
         {
             await orderService.CancelOrderAsync(id);
@@ -80,19 +80,18 @@ namespace MissTortas.Engine.Controllers
             return await orderService.SetupOrderAsync(placeOrder);
         }
 
-        [HttpPost("place")]
-        public async Task<ActionResult> PlaceOrder(PlaceOrderDTO dto)
+        [HttpPost("{orderId}/place")]
+        public async Task<ActionResult> PlaceOrder(long orderId)
         {
-            await validators.PlaceOrderValidator().ValidateAndThrowAsync(dto);
-            var placeOrder = new PlaceOrderServiceDTO { AssigneeId = dto.AssigneeId, Id = dto.OrderId };
+            var placeOrder = new PlaceOrderServiceDTO { Id = orderId };
             await orderService.PlaceOrderAsync(placeOrder);
             return new EmptyResult();
         }
 
-        [HttpPut("preparation/end/{id}")]
-        public async Task<ActionResult> PatchOrderPreparation(long id)
+        [HttpPut("preparation/{preparationId}/end")]
+        public async Task<ActionResult> PatchOrderPreparation(long preparationId)
         {
-            await orderService.EndOrderPreparationAsync(id);
+            await orderService.EndOrderPreparationAsync(preparationId);
             return new EmptyResult();
         }
 
@@ -105,7 +104,7 @@ namespace MissTortas.Engine.Controllers
                 AssigneeId = dto.AssigneeId,
                 Files = files,
                 Description = dto.Description,
-                Title = dto.Title
+                Title = dto.Title,
             };
             var consultancy = await orderService.CreateConsultancyAsync(consultancyDTO);
             return consultancy;

@@ -10,12 +10,15 @@ namespace MissTortas.Services.Mapper
     {
         public ConsultancyDTO ConsultancyToDTO(Consultancy consultancy)
         {
+            var filePaths = consultancy.ConsultancyFiles.Select(f => f.Path);
             var ret = new ConsultancyDTO
             {
+                Id = consultancy.Id,
                 Title = consultancy.Title,
                 Notes = consultancy.Notes,
-                StatusId = (int) consultancy.Status,
-                Status = consultancy.Status.ToString()
+                StatusId = (int)consultancy.Status,
+                Status = consultancy.Status.ToString(),
+                FilePaths = [..filePaths]
             };
             return ret;
         }

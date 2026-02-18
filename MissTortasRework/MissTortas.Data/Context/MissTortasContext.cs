@@ -18,6 +18,8 @@ namespace MissTortas.Data.Context
         public DbSet<Consultancy> Consultancies { get; set; } = default!;
         public DbSet<OrderSaleProduct> AskedProducts { get; set; } = default!;
         public DbSet<OrderPreparation> OrderPreparations { get; set; } = default!;
+        public DbSet<ConsultancyFile> ConsultancyFiles { get; set; } = default!;
+        public DbSet<ProductFile> ProductFiles { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

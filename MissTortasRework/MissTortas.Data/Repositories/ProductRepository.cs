@@ -7,10 +7,10 @@ namespace MissTortas.Data.Repositories
 {
     public class ProductRepository(MissTortasContext context) : RepositoryCrud<Product>(context), IProductRepository
     {
-        public DbSet<Product> productsSet = context.Products;
-        public DbSet<ProductDetail> productsDetailSet = context.ProductDetails;
-        public DbSet<SaleProduct> saleProductSet = context.SaleProducts;
-        public DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
+        private readonly DbSet<Product> productsSet = context.Products;
+        private readonly DbSet<ProductDetail> productsDetailSet = context.ProductDetails;
+        private readonly DbSet<SaleProduct> saleProductSet = context.SaleProducts;
+        private readonly DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
 
         public async Task<IEnumerable<Product>> GetAllWithDetailAsync() =>
             await productsSet.Include(p => p.ProductDetail).ToListAsync();

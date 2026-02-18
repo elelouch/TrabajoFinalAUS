@@ -51,8 +51,19 @@ namespace MissTortas.Services
         {
             var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException("Client not found");
             var orderManager = await userManager.FindByIdAsync(dto.OrderManagerId.ToString()) ?? throw new UserNotFoundException("Order manager not found");
-            var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId) ?? throw new ConsultancyNotFoundException("Couldn't find consultancy");
+            var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
             var orderType = await orderRepository.FindOrderTypeAsync(dto.OrderTypeId) ?? throw new OrderTypeNotFoundException("Order type not found");
+            if(consultancy is null)
+            {
+                var createConsultancyDTO = new CreateConsultancyDTO
+                {
+                    ClientId = dto.ClientId,
+                    AssigneeId = dto.OrderManagerId,
+                };
+                var newConsultancyDTO = await CreateConsultancyAsync(createConsultancyDTO);
+                consultancy = await orderRepository.FindConsultancyAsync(newConsultancyDTO.Id);
+                consultancy!.Status = ConsultancyStatus.Approved;
+            }
             var order = new Order
             {
                 Consultancy = consultancy,
@@ -128,19 +139,18 @@ namespace MissTortas.Services
                 stockProduct.Quantity += ask;
             }
         }
-
+        
         public async Task PlaceOrderAsync(PlaceOrderDTO dto)
         {
             var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
             var askedProducts = order.ProductsAsked;
-            if(order.OrderStatus != OrderStatus.Pending)
+            if(order.OrderStatus != OrderStatus.WaitingForPayment)
             {
                 throw new InvalidOrderStateException("Order should be Waiting for Payment.");
             }
             ReserveProductQuantities(askedProducts);
             order.OrderStatus = OrderStatus.Pending;
-            var assigneeId = dto.AssigneeId <= 0 ? order.Consultancy?.Assignee.Id : dto.AssigneeId;
-            var assignee = await userManager.FindByIdAsync(assigneeId.ToString()) ?? throw new UserNotFoundException("Assignee must exist.");
+            var assignee = order.Consultancy.Assignee;
             var preparation = new OrderPreparation 
             { 
                 Order = order,
@@ -227,6 +237,5 @@ namespace MissTortas.Services
             await orderRepository.SaveChangesAsync();
             return orderMapper.ConsultancyToDTO(consultancy);
         }
-
     }
 }

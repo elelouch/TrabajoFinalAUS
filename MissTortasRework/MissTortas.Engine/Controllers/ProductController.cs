@@ -55,13 +55,13 @@ namespace MissTortas.Engine.Controllers
             return ps.ToList();
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ProductDTO>> PutProduct(UpdateProductDTO dto)
+        [HttpPut("{productId}")]
+        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProductDTO dto)
         {
             await validators.UpdateProductValidator().ValidateAndThrowAsync(dto);
             var productDto = new UpdateProductServiceDTO
             {
-                ProductId = dto.ProductId,
+                ProductId = productId,
                 CategoryId = dto.CategoryId,
                 Quantity = dto.Quantity,
                 Description = dto.Description
