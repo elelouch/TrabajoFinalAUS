@@ -6,6 +6,6 @@ namespace MissTortas.Services.Mapper
 {
     public interface IPaymentMapper
     {
-        public PaymentMethodDTO PaymentMethodToDTO(PaymentMethod paymentMethod);
+        public PaymentMethodDTO PaymentMethodToDTO(PaymentMethodDetailBase paymentMethod);
     }
 }

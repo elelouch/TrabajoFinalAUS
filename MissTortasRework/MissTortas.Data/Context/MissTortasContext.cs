@@ -10,19 +10,23 @@ namespace MissTortas.Data.Context
 {
     public class MissTortasContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
     {
-        public DbSet<Order> OrderItems { get; set; } = default!;
-        public DbSet<OrderType> OrderTypes { get; set; } = default!;
+
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
-        public DbSet<Consultancy> Consultancies { get; set; } = default!;
+        public DbSet<ProductFile> ProductFiles { get; set; } = default!;
         public DbSet<OrderSaleProduct> AskedProducts { get; set; } = default!;
+
+        public DbSet<Order> Orders { get; set; } = default!;
+        public DbSet<OrderType> OrderTypes { get; set; } = default!;
+        public DbSet<Consultancy> Consultancies { get; set; } = default!;
         public DbSet<OrderPreparation> OrderPreparations { get; set; } = default!;
         public DbSet<ConsultancyFile> ConsultancyFiles { get; set; } = default!;
-        public DbSet<ProductFile> ProductFiles { get; set; } = default!;
-        public DbSet<PaymentMethod> PaymentMethods { get; set; } = default!;
 
+        public DbSet<Payment> Payments { get; set; } = default!;
+        public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
+        public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,6 +88,26 @@ namespace MissTortas.Data.Context
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Consultancy)
                 .WithMany(c => c.Orders);
+
+            var cc = modelBuilder.Entity<CreditCard>();
+            cc.Property(cc => cc.PAN).HasColumnName("PAN");
+            cc.Property(cc => cc.ExpirationDate).HasColumnName("ExpirationDate");
+            cc.Property(cc => cc.CardHolderName).HasColumnName("CardHolderName");
+
+            var dc = modelBuilder.Entity<DebitCard>();
+            dc.Property(dc => dc.PAN).HasColumnName("PAN");
+            dc.Property(dc => dc.ExpirationDate).HasColumnName("ExpirationDate");
+            dc.Property(dc => dc.CardHolderName).HasColumnName("CardHolderName");
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.PaymentMethodDetail)
+                .WithMany(pmd => pmd.Payments);
+
+            modelBuilder.Entity<PaymentRequest>()
+                .HasOne(pr => pr.Payment)
+                .WithOne(p => p.PaymentRequest)
+                .HasForeignKey<Payment>(p => p.PaymentRequestId);
+
         }
 
         // In your DbContext

@@ -13,7 +13,7 @@ namespace MissTortas.Data.Repositories
         private readonly DbSet<Consultancy> consultanciesSet = context.Consultancies;
         private readonly DbSet<OrderType> orderTypeSet = context.OrderTypes;
         private readonly DbSet<OrderSaleProduct> askedProductsSet = context.AskedProducts;
-        private readonly DbSet<Order> orderSet = context.OrderItems;
+        private readonly DbSet<Order> orderSet = context.Orders;
         private readonly DbSet<OrderPreparation> orderPreparationsSet = context.OrderPreparations;
 
 

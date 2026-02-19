@@ -57,13 +57,15 @@ namespace MissTortas.Services
 
         public async Task<IEnumerable<ProductDTO>> AllAsync()
         {
-            var products = await productRepository.GetAllAsync();
-            return productMapper.ProductToDTO(products);
+            var products = productRepository.GetAll();
+            var productList = await products.ToListAsync();
+            return productMapper.ProductToDTO(productList);
         }
         public async Task<IEnumerable<ProductDTO>> AllWithDetailAsync()
         {
-            var products = await productRepository.GetAllWithDetail();
-            return productMapper.ProductToDTO(products);
+            var products = productRepository.GetAllWithDetail();
+            var productList = await products.ToListAsync();
+            return productMapper.ProductToDTO(productList);
         }
 
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
@@ -129,8 +131,9 @@ namespace MissTortas.Services
 
         public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesAsync()
         {
-            var categories = await productRepository.GetAllProductCategoriesAsync();
-            return productMapper.ProductCategoryToDTO(categories);
+            var categories = productRepository.GetAllProductCategories();
+            var categoriesList = await categories.ToListAsync();
+            return productMapper.ProductCategoryToDTO(categoriesList);
         }
 
         public async Task DeleteProductCategory(long id)

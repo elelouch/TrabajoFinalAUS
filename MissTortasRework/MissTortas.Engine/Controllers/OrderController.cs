@@ -80,14 +80,6 @@ namespace MissTortas.Engine.Controllers
             return await orderService.SetupOrderAsync(placeOrder);
         }
 
-        [HttpPost("{orderId}/place")]
-        public async Task<ActionResult> PlaceOrder(long orderId)
-        {
-            var placeOrder = new PlaceOrderServiceDTO { Id = orderId };
-            await orderService.PlaceOrderAsync(placeOrder);
-            return new EmptyResult();
-        }
-
         [HttpPut("preparation/{preparationId}/end")]
         public async Task<ActionResult> PatchOrderPreparation(long preparationId)
         {

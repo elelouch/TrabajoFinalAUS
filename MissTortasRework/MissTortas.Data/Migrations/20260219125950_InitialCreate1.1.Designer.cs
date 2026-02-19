@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MissTortas.Data.Context;
 
@@ -11,9 +12,11 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    partial class MissTortasContextModelSnapshot : ModelSnapshot
+    [Migration("20260219125950_InitialCreate1.1")]
+    partial class InitialCreate11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,14 +215,9 @@ namespace MissTortas.Data.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<long?>("PaymentRequestId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ConsultancyId");
-
-                    b.HasIndex("PaymentRequestId");
 
                     b.ToTable("Order");
                 });
@@ -287,49 +285,13 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("OrderType");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PaymentMethodDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<long>("PaymentRequestId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaymentMethodDetailId");
-
-                    b.HasIndex("PaymentRequestId")
-                        .IsUnique();
-
-                    b.ToTable("Payment");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("nvarchar(34)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -337,27 +299,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethodDetailBase");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PaymentMethodDetailBase");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentRequest", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("RequestTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PaymentRequest");
+                    b.ToTable("PaymentMethod");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.PersonalizedProduct", b =>
@@ -642,56 +584,6 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCard", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
-
-                    b.Property<string>("CardHolderName")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CardHolderName");
-
-                    b.Property<string>("ExpirationDate")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ExpirationDate");
-
-                    b.Property<string>("PAN")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PAN");
-
-                    b.HasDiscriminator().HasValue("CreditCard");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.DebitCard", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
-
-                    b.Property<string>("CardHolderName")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CardHolderName");
-
-                    b.Property<string>("ExpirationDate")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ExpirationDate");
-
-                    b.Property<string>("PAN")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PAN");
-
-                    b.HasDiscriminator().HasValue("DebitCard");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("MissTortas.Data.Entity.Security.ApplicationRole", null)
@@ -781,13 +673,7 @@ namespace MissTortas.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MissTortas.Data.Entity.Payment.PaymentRequest", "PaymentRequest")
-                        .WithMany()
-                        .HasForeignKey("PaymentRequestId");
-
                     b.Navigation("Consultancy");
-
-                    b.Navigation("PaymentRequest");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderPreparation", b =>
@@ -826,25 +712,6 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("SaleProduct");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", "PaymentMethodDetail")
-                        .WithMany("Payments")
-                        .HasForeignKey("PaymentMethodDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Payment.PaymentRequest", "PaymentRequest")
-                        .WithOne("Payment")
-                        .HasForeignKey("MissTortas.Data.Entity.Payment.Payment", "PaymentRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentMethodDetail");
-
-                    b.Navigation("PaymentRequest");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.PersonalizedProduct", b =>
@@ -924,16 +791,6 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Preparations");
 
                     b.Navigation("ProductsAsked");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentRequest", b =>
-                {
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.Product", b =>

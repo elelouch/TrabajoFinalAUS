@@ -7,13 +7,13 @@ namespace MissTortas.Data.Repositories
 {
     public class PaymentRepository(MissTortasContext context) : RepositoryCrud<Payment>(context), IPaymentRepository
     {
-        private readonly DbSet<PaymentMethod> paymentMethods = context.PaymentMethods;
-        public async Task InsertPaymentMethodAsync(PaymentMethod paymentMethod)
+        private readonly DbSet<PaymentMethodDetailBase> paymentMethods = context.PaymentMethodDetails;
+        public async Task InsertPaymentMethodAsync(PaymentMethodDetailBase paymentMethod)
         {
             await paymentMethods.AddAsync(paymentMethod);
         }
 
-        public IAsyncEnumerable<PaymentMethod> GetPaymentMethods()
+        public IAsyncEnumerable<PaymentMethodDetailBase> GetPaymentMethods()
         {
             return paymentMethods.ToAsyncEnumerable();
         }

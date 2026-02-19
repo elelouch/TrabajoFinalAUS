@@ -1,3 +1,4 @@
+using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
 using MissTortas.Data.Entity.Security;
 
@@ -13,5 +14,6 @@ namespace MissTortas.Data.Entity.Orders
         public virtual ICollection<OrderPreparation> Preparations { get; set; } = [];
         public virtual ICollection<PersonalizedProduct> PersonalizedProducts { get; set; } = [];
         public virtual required Consultancy Consultancy { get; set; }
+        public virtual PaymentRequest? PaymentRequest { get; set; }
     }
 }

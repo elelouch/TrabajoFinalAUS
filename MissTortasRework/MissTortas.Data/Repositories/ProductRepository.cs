@@ -48,5 +48,9 @@ namespace MissTortas.Data.Repositories
             return (await saleProductSet.Include(sp => sp.StockProduct).SingleAsync(sp => sp.Id == id));
         }
 
+        public IAsyncEnumerable<ProductCategory> GetAllProductCategories()
+        {
+            return productCategoriesSet.AsAsyncEnumerable();
+        }
     }
 }

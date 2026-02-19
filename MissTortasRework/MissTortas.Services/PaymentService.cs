@@ -13,7 +13,7 @@ namespace MissTortas.Services
     {
         public async Task<PaymentMethodDTO> CreatePaymentMethodAsync(CreatePaymentMethodDTO dto)
         {
-            var paymentMethod = new PaymentMethod { Name = dto.Name };
+            var paymentMethod = new PaymentMethodDetailBase { Name = dto.Name };
             await paymentRepository.InsertPaymentMethodAsync(paymentMethod);
             await paymentRepository.SaveChangesAsync();
             return paymentMapper.PaymentMethodToDTO(paymentMethod);

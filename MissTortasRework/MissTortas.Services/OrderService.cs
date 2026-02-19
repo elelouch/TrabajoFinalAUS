@@ -22,8 +22,9 @@ namespace MissTortas.Services
     {
         public async Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync()
         {
-            var orders = await orderRepository.GetAllOrderType();
-            return orderMapper.OrderTypeToDTO(orders);
+            var orders = orderRepository.GetAllOrderType();
+            var orderList = await orders.ToListAsync();
+            return orderMapper.OrderTypeToDTO(orderList);
         }
 
         public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
@@ -49,10 +50,7 @@ namespace MissTortas.Services
 
         public async Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto)
         {
-            var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException("Client not found");
-            var orderManager = await userManager.FindByIdAsync(dto.OrderManagerId.ToString()) ?? throw new UserNotFoundException("Order manager not found");
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
-            var orderType = await orderRepository.FindOrderTypeAsync(dto.OrderTypeId) ?? throw new OrderTypeNotFoundException("Order type not found");
             if(consultancy is null)
             {
                 var createConsultancyDTO = new CreateConsultancyDTO
@@ -64,6 +62,8 @@ namespace MissTortas.Services
                 consultancy = await orderRepository.FindConsultancyAsync(newConsultancyDTO.Id);
                 consultancy!.Status = ConsultancyStatus.Approved;
             }
+
+            var orderType = await orderRepository.FindOrderTypeAsync(dto.OrderTypeId) ?? throw new OrderTypeNotFoundException("Order type not found");
             var order = new Order
             {
                 Consultancy = consultancy,

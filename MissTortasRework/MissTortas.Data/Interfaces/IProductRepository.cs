@@ -14,6 +14,6 @@ namespace MissTortas.Data.Interfaces
         public IAsyncEnumerable<Product> GetAllWithDetail();
         public Task<ProductCategory?> GetProductCategory(long id);
         public Task DeleteProductCategory(ProductCategory pc);
-        public IAsyncEnumerable<ProductCategory> GetAllProductCategoriesAsync();
+        public IAsyncEnumerable<ProductCategory> GetAllProductCategories();
     }
 }
