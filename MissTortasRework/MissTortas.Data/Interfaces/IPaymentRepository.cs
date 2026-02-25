@@ -4,7 +4,7 @@ namespace MissTortas.Data.Interfaces
 {
     public interface IPaymentRepository : IRepositoryCrud<Payment>
     {
-        public Task InsertPaymentMethodAsync(PaymentMethodDetailBase paymentMethod);
+        public Task InsertPaymentMethodDetailAsync(PaymentMethodDetailBase paymentMethod);
         public IAsyncEnumerable<PaymentMethodDetailBase> GetPaymentMethods();
     }
 }

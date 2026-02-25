@@ -19,6 +19,8 @@ using CreateConsultancyDTO = MissTortas.Engine.DTO.Orders.CreateConsultancyDTO;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
 using UpdateConsultancyDTO = MissTortas.Engine.DTO.Orders.UpdateConsultancyDTO;
 using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MissTortas.Engine.Controllers
 {
@@ -27,7 +29,7 @@ namespace MissTortas.Engine.Controllers
     public class OrderController(
         IOrderService orderService,
         IOrdersDTOValidator validators
-        )
+        ) : Controller
     {
         [HttpPost("type")]
         public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
@@ -115,5 +117,27 @@ namespace MissTortas.Engine.Controllers
             return consultancy;
         }
 
+        [HttpGet("consultancy/{id}")]
+        public async Task<ActionResult<ConsultancyDTO>> GetConsultancy(long id)
+        {
+            return await orderService.GetConsultancyAsync(id);
+        }
+
+        [HttpGet("currentuser/consultancy")]
+        public async Task<ActionResult<IEnumerable<ConsultancyDTO>>> GetConsultancies()
+        {
+            ClaimsPrincipal principal = this.User;
+            var id = principal.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("The user must have the jwt sub claim");
+            var idLong = Convert.ToInt64(id);
+            var ret = await orderService.GetUserConsultanciesAsync(idLong);
+            return ret.ToList();
+        }
+
+        [HttpGet("user/{id}/consultancy")]
+        public async Task<ActionResult<IEnumerable<ConsultancyDTO>>> GetConsultancies(long id)
+        {
+            var ret = await orderService.GetUserConsultanciesAsync(id);
+            return ret.ToList();
+        }
     }
 }

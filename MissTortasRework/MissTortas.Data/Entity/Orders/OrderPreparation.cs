@@ -1,4 +1,4 @@
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Entity.Orders
 {

@@ -22,7 +22,6 @@ using MissTortas.Engine.Validators.Orders;
 using Microsoft.Extensions.FileProviders;
 using MissTortas.Data.Entity.Security.Constants;
 using MissTortas.Services.Security.Constants;
-using MissTortas.Engine.Security.UserOperation;
 
 
 
@@ -99,9 +98,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("UserAdministrator", policy => policy.AddRequirements(ViewUserRequirementConstants.ViewAllUserRequirement));
+    .AddPolicy("UserAdministrator", policy => policy.AddRequirement(UserOperationConstants.ViewAllUsers));
 
 var app = builder.Build();
 

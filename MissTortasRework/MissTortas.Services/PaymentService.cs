@@ -3,27 +3,101 @@ using MissTortas.Data.Interfaces;
 using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
+using MissTortas.Services.Exceptions;
+using MissTortas.Data.Entity.Orders;
+using MissTortas.Services.DTO.Orders;
 
 namespace MissTortas.Services
 {
-    public class PaymentService (
+    public class PaymentService(
         IPaymentRepository paymentRepository,
-        IPaymentMapper paymentMapper
+        IPaymentMapper paymentMapper,
+        IOrderService orderService
         ) : IPaymentService
     {
-        public async Task<PaymentMethodDTO> CreatePaymentMethodAsync(CreatePaymentMethodDTO dto)
+
+        private PaymentMethodDetailBase GetPaymentMethodDetail(
+            PayOrderDTO dto,
+            Payment payment
+            )
         {
-            var paymentMethod = new PaymentMethodDetailBase { Name = dto.Name };
-            await paymentRepository.InsertPaymentMethodAsync(paymentMethod);
+            if (!Enum.IsDefined(typeof(PaymentMethodEnum), dto.PaymentMethod))
+            {
+                throw new InvalidOperationException("Invalid payment method specified");
+            }
+            var pm = dto.PaymentDetails is null ? PaymentMethodEnum.Cash : (PaymentMethodEnum)dto.PaymentMethod;
+            switch (pm)
+            {
+                case PaymentMethodEnum.DebitCard:
+                    return new DebitCardDetail
+                    {
+                        Payment = payment,
+                        PAN = dto.PaymentDetails!.PAN,
+                        CardHolderName = dto.PaymentDetails!.CardHolderName,
+                        ExpirationDate = dto.PaymentDetails!.ExpirationDate
+                    };
+                case PaymentMethodEnum.CreditCard:
+                    return new CreditCardDetail
+                    {
+                        Payment = payment,
+                        PAN = dto.PaymentDetails!.PAN,
+                        CardHolderName = dto.PaymentDetails!.CardHolderName,
+                        ExpirationDate = dto.PaymentDetails!.ExpirationDate
+                    };
+                case PaymentMethodEnum.Cash:
+                    return new CashDetail() { Payment = payment };
+                default:
+                    throw new InvalidOperationException("Invalid payment method specified");
+            }
+        }
+
+        private async Task<Payment> ExecutePaymentAsync(Payment payment)
+        {
+            if (payment.PaymentMethodDetail is null)
+            {
+                return payment;
+            }
+            var random = new Random();
+            var paymentSucceeded = random.Next(0, 10) < 9;
+            payment.PaymentStatus = paymentSucceeded ? PaymentStatus.Completed : PaymentStatus.Cancelled;
+            await Task.Yield();
+            return payment;
+        }
+
+        public async Task PayOrderAsync(PayOrderDTO dto)
+        {
+            var order = await orderService.GetOrderEntityAsync(dto.OrderId);
+            var paymentRequest = new PaymentRequest() { Order = order };
+            var payment = new Payment()
+            {
+                PaymentStatus = PaymentStatus.Pending,
+                PaymentRequest = paymentRequest
+            };
+
+            var paymentMethodDetail = GetPaymentMethodDetail(dto, payment);
+            await ExecutePaymentAsync(payment);
+
+            if (payment.PaymentStatus != PaymentStatus.Completed && paymentMethodDetail is not CashDetail)
+            {
+                throw new PaymentFailedException("Payment failed");
+            }
+
+            await paymentRepository.InsertAsync(payment);
+            var storePaymentDetails = dto.PaymentDetails is not null && dto.PaymentDetails.StorePaymentDetails;
+            if (storePaymentDetails)
+            {
+                await paymentRepository.InsertPaymentMethodDetailAsync(paymentMethodDetail);
+            }
             await paymentRepository.SaveChangesAsync();
-            return paymentMapper.PaymentMethodToDTO(paymentMethod);
+
+            var placeOrderDTO = new PlaceOrderDTO { OrderId = order.Id };
+            await orderService.PlaceOrderAsync(placeOrderDTO);
         }
 
-        public async Task<IEnumerable<PaymentMethodDTO>> AllPaymentMethodsAsync()
+        public IEnumerable<PaymentMethodDTO> AllPaymentMethods()
         {
-            var paymentMethods = paymentRepository.GetPaymentMethods();
-            return await paymentMethods.Select(pm => paymentMapper.PaymentMethodToDTO(pm)).ToListAsync();
+            var values = Enum.GetValues<PaymentMethodEnum>();
+            return values.Select(pm => paymentMapper.PaymentMethodToDTO(pm));
         }
-
     }
 }

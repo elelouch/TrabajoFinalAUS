@@ -2,10 +2,8 @@
 {
     public class PayOrderDTO
     {
-        public long OrderId { get; set; }
-        public int PaymentMethod { get; set; }
-        public string CardHolderName { get; set; } = string.Empty;
-        public string PAN { get; set; } = string.Empty;
-        public string ExpirationDate { get; set; } = string.Empty;
+        public required long OrderId { get; set; }
+        public required int PaymentMethod { get; set; }
+        public PaymentMethodDetailDTO? PaymentDetails { get; set; }
     }
 }

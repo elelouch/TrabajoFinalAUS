@@ -6,6 +6,6 @@ namespace MissTortas.Data.Entity.Orders
         InProgress,
         Pending,
         Cancelled,
-        WaitingForPayment
+        Created
     }
 }

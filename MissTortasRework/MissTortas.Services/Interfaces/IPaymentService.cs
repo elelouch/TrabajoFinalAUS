@@ -7,8 +7,7 @@ namespace MissTortas.Services.Interfaces
 {
     public interface IPaymentService
     {
-        public Task<PaymentMethodDTO> CreatePaymentMethodAsync(CreatePaymentMethodDTO dto);
-        public Task<IEnumerable<PaymentMethodDTO>> AllPaymentMethodsAsync();
-        public Task<IEnumerable<PaymentMethodDTO>> PayOrderAsync();
+        public IEnumerable<PaymentMethodDTO> AllPaymentMethods();
+        public Task PayOrderAsync(PayOrderDTO dto);
     }
 }

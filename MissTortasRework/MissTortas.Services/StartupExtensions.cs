@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MissTortas.Data.Context;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
-using MissTortas.Engine;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;

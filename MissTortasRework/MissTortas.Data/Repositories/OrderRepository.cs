@@ -75,5 +75,14 @@ namespace MissTortas.Data.Repositories
                 .SingleAsync();
             return op;
         }
+
+        public IAsyncEnumerable<Consultancy> GetConsultanciesByClientId(long clientId)
+        {
+            return consultanciesSet
+                .Include(c => c.ConsultancyFiles)
+                .Include(c => c.Client)
+                .Where(c => c.Client.Id == clientId)
+                .AsAsyncEnumerable();
+        }
     }
 }

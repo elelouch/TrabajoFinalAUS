@@ -6,13 +6,9 @@ namespace MissTortas.Services.Mapper
 {
     public class PaymentMapper : IPaymentMapper
     {
-        public PaymentMethodDTO PaymentMethodToDTO(PaymentMethodDetailBase paymentMethod)
+        public PaymentMethodDTO PaymentMethodToDTO(PaymentMethodEnum paymentMethod)
         {
-            return new PaymentMethodDTO
-            {
-                Id = paymentMethod.Id,
-                Name = paymentMethod.Name
-            };
+            return new PaymentMethodDTO { Id = (long)paymentMethod, Name = paymentMethod.ToString()};
         }
     }
 }

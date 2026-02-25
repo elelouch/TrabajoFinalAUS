@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
 using MissTortas.Services.DTO.Orders;
@@ -68,7 +68,7 @@ namespace MissTortas.Services
             {
                 Consultancy = consultancy,
                 OrderType = orderType,
-                OrderStatus = OrderStatus.WaitingForPayment
+                OrderStatus = OrderStatus.Created
             };
             await orderRepository.InsertAsync(order);
             await PlaceProductAsks(dto.AskedProduct, order);
@@ -142,11 +142,11 @@ namespace MissTortas.Services
         
         public async Task PlaceOrderAsync(PlaceOrderDTO dto)
         {
-            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.Id);
+            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.OrderId);
             var askedProducts = order.ProductsAsked;
-            if(order.OrderStatus != OrderStatus.WaitingForPayment)
+            if(order.OrderStatus != OrderStatus.Created)
             {
-                throw new InvalidOrderStateException("Order should be Waiting for Payment.");
+                throw new InvalidOrderStateException("Order should be just created.");
             }
             ReserveProductQuantities(askedProducts);
             order.OrderStatus = OrderStatus.Pending;
@@ -194,7 +194,7 @@ namespace MissTortas.Services
             var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
             switch (order.OrderStatus)
             {
-                case OrderStatus.WaitingForPayment:
+                case OrderStatus.Created:
                     break;
                 case OrderStatus.Pending:
                 case OrderStatus.InProgress:
@@ -236,6 +236,23 @@ namespace MissTortas.Services
             consultancy.Status = (ConsultancyStatus) dto.Status;
             await orderRepository.SaveChangesAsync();
             return orderMapper.ConsultancyToDTO(consultancy);
+        }
+
+        public async Task<Order> GetOrderEntityAsync(long id)
+        {
+            return await orderRepository.FindAsync(id) ?? throw new OrderNotFoundException($"Order: {id} not found");
+        }
+
+        public async Task<ConsultancyDTO> GetConsultancyAsync(long id)
+        {
+            var consultancy = await orderRepository.FindConsultancyAsync(id) ?? throw new ConsultancyNotFoundException($"Consultancy {id} not found.");
+            return orderMapper.ConsultancyToDTO(consultancy);
+        }
+
+        public async Task<IEnumerable<ConsultancyDTO>> GetUserConsultanciesAsync(long userId)
+        {
+            var consultancies = orderRepository.GetConsultanciesByClientId(userId);
+            return await consultancies.Select(c => orderMapper.ConsultancyToDTO(c)).ToListAsync();
         }
     }
 }

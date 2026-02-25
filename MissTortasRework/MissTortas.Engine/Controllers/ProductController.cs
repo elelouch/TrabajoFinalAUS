@@ -19,7 +19,7 @@ namespace MissTortas.Engine.Controllers
     public class ProductController(
             IProductService productService,
             IProductsDTOValidator validators    
-        )
+        ): Controller
     {
         [HttpDelete("category/{id}")]
         public async Task DeleteProductCategory(long id)

@@ -4,6 +4,7 @@ namespace MissTortas.Data.Entity.Payment
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public IEnumerable<Payment> Payments { get; set; } = [];
+        public virtual required Payment Payment { get; set; }
+        public long PaymentId { get; set; }
     }
 }

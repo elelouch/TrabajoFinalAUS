@@ -4,8 +4,10 @@ using MissTortas.Services.Interfaces;
 
 
 
-using CreatePaymentMethodServiceDTO = MissTortas.Services.DTO.Payment.CreatePaymentMethodDTO;
+//using CreatePaymentMethodServiceDTO = MissTortas.Services.DTO.Payment.CreatePaymentMethodDTO;
 using CreatePaymentMethodDTO = MissTortas.Engine.DTO.Payment.CreatePaymentMethodDTO;
+using PaymentMethodDetailsServiceDTO = MissTortas.Services.DTO.Payment.PaymentMethodDetailDTO;
+using PaymentMethodDetailsDTO = MissTortas.Engine.DTO.Payment.PaymentMethodDetailDTO;
 using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
 using PayOrderDTO = MissTortas.Engine.DTO.Payment.PayOrderDTO;
 
@@ -13,34 +15,35 @@ namespace MissTortas.Engine.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PaymentController(IPaymentService paymentService)
+    public class PaymentController(IPaymentService paymentService) : Controller
     {
-        [HttpPost("method")]
-        public async Task<ActionResult<PaymentMethodDTO>> PostPaymentType(CreatePaymentMethodDTO dto)
-        {
-            var serviceDto = new CreatePaymentMethodServiceDTO { Name = dto.Name };
-            return await paymentService.CreatePaymentMethodAsync(serviceDto);
-        }
-
         [HttpGet("method")]
-        public async Task<ActionResult<IEnumerable<PaymentMethodDTO>>> GetPaymentTypes()
+        public async Task<IEnumerable<PaymentMethodDTO>> GetPaymentMethods()
         {
-            var ret = await paymentService.AllPaymentMethodsAsync();
-            return ret.ToList();
+            return paymentService.AllPaymentMethods();
         }
 
         [HttpPost("order")]
         public async Task<ActionResult> PostPayOrder(PayOrderDTO dto)
         {
+            PaymentMethodDetailsServiceDTO? paymentMethodDetails = null;
+            if (dto.PaymentDetails is not null)
+            {
+                paymentMethodDetails = new PaymentMethodDetailsServiceDTO
+                {
+                    ExpirationDate = dto.PaymentDetails.ExpirationDate,
+                    PAN = dto.PaymentDetails.PAN,
+                    StorePaymentDetails = dto.PaymentDetails.StorePaymentDetails,
+                    CardHolderName = dto.PaymentDetails.CardHolderName
+                };
+            }
             var serviceDto = new PayOrderServiceDTO
             {
                 OrderId = dto.OrderId,
-                CardHolderName = dto.CardHolderName,
                 PaymentMethod = dto.PaymentMethod,
-                ExpirationDate = dto.ExpirationDate,
-                PAN = dto.PAN
+                PaymentDetails = paymentMethodDetails
             };
-            paymentService.PayOrderAsync()
+            await paymentService.PayOrderAsync(serviceDto);
             return new EmptyResult();
         }
     }

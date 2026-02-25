@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Context
 {
@@ -89,25 +89,25 @@ namespace MissTortas.Data.Context
                 .HasOne(o => o.Consultancy)
                 .WithMany(c => c.Orders);
 
-            var cc = modelBuilder.Entity<CreditCard>();
+            var cc = modelBuilder.Entity<CreditCardDetail>();
             cc.Property(cc => cc.PAN).HasColumnName("PAN");
             cc.Property(cc => cc.ExpirationDate).HasColumnName("ExpirationDate");
             cc.Property(cc => cc.CardHolderName).HasColumnName("CardHolderName");
 
-            var dc = modelBuilder.Entity<DebitCard>();
+            var dc = modelBuilder.Entity<DebitCardDetail>();
             dc.Property(dc => dc.PAN).HasColumnName("PAN");
             dc.Property(dc => dc.ExpirationDate).HasColumnName("ExpirationDate");
             dc.Property(dc => dc.CardHolderName).HasColumnName("CardHolderName");
 
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.PaymentMethodDetail)
-                .WithMany(pmd => pmd.Payments);
+                .WithOne(pmd => pmd.Payment)
+                .HasForeignKey<PaymentMethodDetailBase>(pmd => pmd.PaymentId);
 
             modelBuilder.Entity<PaymentRequest>()
                 .HasOne(pr => pr.Payment)
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
-
         }
 
         // In your DbContext
