@@ -108,6 +108,8 @@ namespace MissTortas.Data.Context
                 .HasOne(pr => pr.Payment)
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
+
+            modelBuilder.Entity<PermissionUser>().ToTable("PermissionUser");
         }
 
         // In your DbContext

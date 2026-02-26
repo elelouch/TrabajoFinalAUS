@@ -9,6 +9,5 @@ namespace MissTortas.Services.Interfaces
 {
     public interface ISecurityService
     {
-        public Task<UserDTO> GetAllUsersAsync();
     }
 }

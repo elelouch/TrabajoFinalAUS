@@ -22,7 +22,6 @@ namespace MissTortas.Engine.Controllers
         SignInManager<ApplicationUser> signInManager) : Controller
     {
 
-
         [Authorize(Policy = "UserAdministrator")]
         [HttpGet("user")]
         public async Task<ActionResult<List<UserLoginDTO>>> AllUser()
