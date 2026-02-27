@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MissTortas.Data.Context;
 using MissTortas.Data.Entity.Security.User;
@@ -15,6 +16,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddMissTortasServiceCore(this IServiceCollection services, IConfigurationRoot configuration)
         {
+            var connectionString = configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
+            services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentMapper, PaymentMapper>();
