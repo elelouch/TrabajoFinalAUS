@@ -6,7 +6,6 @@ namespace MissTortas.Data.Repositories
 {
     public class SecurityRepository(MissTortasContext context) : ISecurityRepository
     {
-        
         public PermissionUser? UserHasViewPermission(long userId, ViewUserPermission userPermission)
         {
             throw new NotImplementedException();

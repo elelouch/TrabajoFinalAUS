@@ -21,6 +21,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.Validators.Orders;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -31,6 +32,7 @@ namespace MissTortas.Presentation.Controllers
         IOrdersDTOValidator validators
         ) : Controller
     {
+        [Authorize(Policy="ManageOrder")]
         [HttpPost("type")]
         public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
         {

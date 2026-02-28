@@ -4,7 +4,6 @@
     {
         ViewAll,
         ViewClient,
-        ViewSelf,
-        ViewNothing
+        ViewSelf
     }
 }
