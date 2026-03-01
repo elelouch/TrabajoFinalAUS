@@ -1,16 +1,17 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Entity.Security;
 using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Context
 {
     public class MissTortasContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
     {
-
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
@@ -27,6 +28,10 @@ namespace MissTortas.Data.Context
         public DbSet<Payment> Payments { get; set; } = default!;
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
+
+        public DbSet<Permission> Permissions { get; set; } = default!;
+        public DbSet<PermissionRole> PermissionRoles { get; set; } = default!;
+        public DbSet<PermissionUser> PermissionUser { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -108,8 +113,7 @@ namespace MissTortas.Data.Context
                 .HasOne(pr => pr.Payment)
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
-
-            modelBuilder.Entity<PermissionUser>().ToTable("PermissionUser");
+            
         }
 
         // In your DbContext

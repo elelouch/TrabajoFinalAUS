@@ -13,6 +13,5 @@ namespace MissTortas.Data.Interfaces
         public Task<TEntity?> FindAsync(long id);
         public IAsyncEnumerable<TEntity> GetAll();
         public Task<int> SaveChangesAsync();
-
     }
 }

@@ -12,7 +12,7 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260219153943_InitialCreate1.2")]
+    [Migration("20260301002624_InitialCreate1.2")]
     partial class InitialCreate12
     {
         /// <inheritdoc />
@@ -20,10 +20,40 @@ namespace MissTortas.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("ProductVersion", "10.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
+                {
+                    b.Property<long>("RolesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationRoleApplicationUser");
+                });
+
+            modelBuilder.Entity("ApplicationRolePermission", b =>
+                {
+                    b.Property<long>("PermissionsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RolesId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PermissionsId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("ApplicationRolePermission");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
@@ -215,14 +245,9 @@ namespace MissTortas.Data.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<long?>("PaymentRequestId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ConsultancyId");
-
-                    b.HasIndex("PaymentRequestId");
 
                     b.ToTable("Order");
                 });
@@ -292,28 +317,22 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentMethodDetailId")
-                        .HasColumnType("int");
-
                     b.Property<long>("PaymentRequestId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentMethodDetailId");
 
                     b.HasIndex("PaymentRequestId")
                         .IsUnique();
@@ -338,7 +357,13 @@ namespace MissTortas.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("PaymentId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
 
                     b.ToTable("PaymentMethodDetailBase");
 
@@ -355,10 +380,16 @@ namespace MissTortas.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("RequestTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("PaymentRequest");
                 });
@@ -536,7 +567,29 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("SaleProduct");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationRole", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -562,6 +615,9 @@ namespace MissTortas.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<bool>("Trivial")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -570,9 +626,31 @@ namespace MissTortas.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            ConcurrencyStamp = "36b49bd1-399c-47ab-a9c6-319061a794c2",
+                            Deleted = false,
+                            LastTimeModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            Trivial = false
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            ConcurrencyStamp = "50f6d3da-5966-44ca-947d-d8103653cd14",
+                            Deleted = false,
+                            LastTimeModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "User",
+                            NormalizedName = "USER",
+                            Trivial = false
+                        });
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationUser", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -645,7 +723,7 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCard", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCardDetail", b =>
                 {
                     b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
 
@@ -667,10 +745,10 @@ namespace MissTortas.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PAN");
 
-                    b.HasDiscriminator().HasValue("CreditCard");
+                    b.HasDiscriminator().HasValue("CreditCardDetail");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.DebitCard", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.DebitCardDetail", b =>
                 {
                     b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
 
@@ -692,12 +770,62 @@ namespace MissTortas.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PAN");
 
-                    b.HasDiscriminator().HasValue("DebitCard");
+                    b.HasDiscriminator().HasValue("DebitCardDetail");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
+
+                    b.Property<int>("RolePermission")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("PermissionRole");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
+
+                    b.Property<int>("ViewUserPermission")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("PermissionUser");
+                });
+
+            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApplicationRolePermission", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationRole", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -706,7 +834,7 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -715,7 +843,7 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -724,13 +852,13 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationRole", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -739,7 +867,7 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -748,13 +876,13 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", "Assignee")
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "Assignee")
                         .WithMany()
                         .HasForeignKey("AssigneeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", "Client")
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -784,18 +912,12 @@ namespace MissTortas.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MissTortas.Data.Entity.Payment.PaymentRequest", "PaymentRequest")
-                        .WithMany()
-                        .HasForeignKey("PaymentRequestId");
-
                     b.Navigation("Consultancy");
-
-                    b.Navigation("PaymentRequest");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderPreparation", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.ApplicationUser", "Assignee")
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "Assignee")
                         .WithMany("Preparations")
                         .HasForeignKey("AssigneeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -833,21 +955,35 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", "PaymentMethodDetail")
-                        .WithMany("Payments")
-                        .HasForeignKey("PaymentMethodDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MissTortas.Data.Entity.Payment.PaymentRequest", "PaymentRequest")
                         .WithOne("Payment")
                         .HasForeignKey("MissTortas.Data.Entity.Payment.Payment", "PaymentRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PaymentMethodDetail");
-
                     b.Navigation("PaymentRequest");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Payment.Payment", "Payment")
+                        .WithOne("PaymentMethodDetail")
+                        .HasForeignKey("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", "PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentRequest", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Orders.Order", "Order")
+                        .WithOne("PaymentRequest")
+                        .HasForeignKey("MissTortas.Data.Entity.Payment.PaymentRequest", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.PersonalizedProduct", b =>
@@ -922,6 +1058,8 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
                 {
+                    b.Navigation("PaymentRequest");
+
                     b.Navigation("PersonalizedProducts");
 
                     b.Navigation("Preparations");
@@ -929,9 +1067,9 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("ProductsAsked");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
                 {
-                    b.Navigation("Payments");
+                    b.Navigation("PaymentMethodDetail");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentRequest", b =>
@@ -956,7 +1094,7 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.ApplicationUser", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
                 {
                     b.Navigation("Preparations");
                 });

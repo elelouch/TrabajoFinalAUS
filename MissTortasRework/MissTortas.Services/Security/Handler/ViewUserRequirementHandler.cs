@@ -15,12 +15,12 @@ namespace MissTortas.Services.Security.Handler
         {
             var userIdString = context.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User must have a Name Identifier Claim.");
             var userId = long.Parse(userIdString);
-            var permission = securityRepository.UserHasViewPermission(userId, requirement.ViewUserPermission);
+            //var permission = securityRepository.HasViewPermission(userId, requirement.ViewUserPermission);
 
-            if(permission is not null)
-            {
-                context.Succeed(requirement);
-            }
+            //if(permission is not null)
+            //{
+            //    context.Succeed(requirement);
+            //}
 
             return Task.CompletedTask;
         }

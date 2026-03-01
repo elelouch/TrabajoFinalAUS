@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MissTortas.Data.Context;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
-using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace MissTortas.Services
 {
     public static class StartupExtensions
     {

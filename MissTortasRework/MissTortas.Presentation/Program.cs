@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using MissTortas.Engine.DTO;
@@ -17,6 +16,7 @@ using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
+using MissTortas.Data.Entity.Security.User;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +38,7 @@ builder.Services.AddScoped<IValidator<PlaceOrderDTO>, PlaceOrderDTOValidator>();
 
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
 builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
+
 
 builder.Services.AddMissTortasServiceCore(builder.Configuration);
 
@@ -112,6 +113,14 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>)) as UserManager<ApplicationUser>;
+    var roleManager = scope.ServiceProvider.GetService(typeof(RoleManager<ApplicationRole>)) as RoleManager<ApplicationRole>;
+    Console.WriteLine("Testing");
+    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!);
+}
 
 app.UseHttpsRedirection();
 

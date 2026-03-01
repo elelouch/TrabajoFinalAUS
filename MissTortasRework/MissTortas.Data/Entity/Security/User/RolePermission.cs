@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Data.Entity.Security.User
 {
-    public enum UserRolesPermission
+    public enum RolePermission
     {
         AssociateRole,
         DeassociateRole,

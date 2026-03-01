@@ -6,28 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreatexx : Migration
+    public partial class InitialCreate10 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LastTimeModified = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
@@ -69,6 +52,32 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PermissionRole",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RolePermission = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PermissionRole", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PermissionUser",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ViewUserPermission = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PermissionUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductCategory",
                 columns: table => new
                 {
@@ -100,27 +109,6 @@ namespace MissTortas.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductDetail", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,30 +146,6 @@ namespace MissTortas.Data.Migrations
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -234,6 +198,36 @@ namespace MissTortas.Data.Migrations
                         name: "FK_Consultancy_AspNetUsers_ClientId",
                         column: x => x.ClientId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LastTimeModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false),
+                    Trivial = table.Column<bool>(type: "bit", nullable: false),
+                    PermissionRoleId = table.Column<long>(type: "bigint", nullable: true),
+                    PermissionUserId = table.Column<long>(type: "bigint", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoles_PermissionRole_PermissionRoleId",
+                        column: x => x.PermissionRoleId,
+                        principalTable: "PermissionRole",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetRoles_PermissionUser_PermissionUserId",
+                        column: x => x.PermissionUserId,
+                        principalTable: "PermissionUser",
                         principalColumn: "Id");
                 });
 
@@ -304,6 +298,51 @@ namespace MissTortas.Data.Migrations
                         name: "FK_Order_Consultancy_ConsultancyId",
                         column: x => x.ConsultancyId,
                         principalTable: "Consultancy",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -383,6 +422,26 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentRequest",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RequestTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentRequest", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentRequest_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersonalizedProduct",
                 columns: table => new
                 {
@@ -433,10 +492,65 @@ namespace MissTortas.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentRequestId = table.Column<long>(type: "bigint", nullable: false),
+                    PaymentStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payment_PaymentRequest_PaymentRequestId",
+                        column: x => x.PaymentRequestId,
+                        principalTable: "PaymentRequest",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentMethodDetailBase",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentId = table.Column<long>(type: "bigint", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    PAN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CardHolderName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentMethodDetailBase", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentMethodDetailBase_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoles_PermissionRoleId",
+                table: "AspNetRoles",
+                column: "PermissionRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoles_PermissionUserId",
+                table: "AspNetRoles",
+                column: "PermissionUserId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -508,6 +622,24 @@ namespace MissTortas.Data.Migrations
                 column: "SaleProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payment_PaymentRequestId",
+                table: "Payment",
+                column: "PaymentRequestId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentMethodDetailBase_PaymentId",
+                table: "PaymentMethodDetailBase",
+                column: "PaymentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentRequest_OrderId",
+                table: "PaymentRequest",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalizedProduct_OrderId",
                 table: "PersonalizedProduct",
                 column: "OrderId");
@@ -576,6 +708,9 @@ namespace MissTortas.Data.Migrations
                 name: "OrderType");
 
             migrationBuilder.DropTable(
+                name: "PaymentMethodDetailBase");
+
+            migrationBuilder.DropTable(
                 name: "PersonalizedProduct");
 
             migrationBuilder.DropTable(
@@ -585,25 +720,37 @@ namespace MissTortas.Data.Migrations
                 name: "SaleProduct");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "ProductFile");
 
             migrationBuilder.DropTable(
-                name: "Consultancy");
+                name: "PermissionRole");
+
+            migrationBuilder.DropTable(
+                name: "PermissionUser");
+
+            migrationBuilder.DropTable(
+                name: "PaymentRequest");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "ProductCategory");
 
             migrationBuilder.DropTable(
                 name: "ProductDetail");
+
+            migrationBuilder.DropTable(
+                name: "Consultancy");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

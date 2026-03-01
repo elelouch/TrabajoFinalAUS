@@ -7,6 +7,6 @@ namespace MissTortas.Data.Entity.Security.User
     {
         public Guid Guid { get; set; }
         public virtual ICollection<OrderPreparation> Preparations { get; set; } = [];
-        public IEnumerable<Permission> Permissions { get; set; } = [];
+        public virtual IEnumerable<ApplicationRole> Roles { get; set; } = [];
     }
 }

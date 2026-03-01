@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MissTortas.Data.Context;
 
@@ -11,9 +12,11 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    partial class MissTortasContextModelSnapshot : ModelSnapshot
+    [Migration("20260228214144_InitialCreate1.0")]
+    partial class InitialCreate10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +24,6 @@ namespace MissTortas.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationRoleApplicationUser");
-                });
-
-            modelBuilder.Entity("ApplicationRolePermission", b =>
-                {
-                    b.Property<long>("PermissionsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("PermissionsId", "RolesId");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("ApplicationRolePermission");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
@@ -564,28 +537,6 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("SaleProduct");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permission", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permission");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
@@ -612,6 +563,12 @@ namespace MissTortas.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<long?>("PermissionRoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PermissionUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("Trivial")
                         .HasColumnType("bit");
 
@@ -621,6 +578,10 @@ namespace MissTortas.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.HasIndex("PermissionRoleId");
+
+                    b.HasIndex("PermissionUserId");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -698,6 +659,38 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("RolePermission")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PermissionRole");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("ViewUserPermission")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PermissionUser", (string)null);
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCardDetail", b =>
                 {
                     b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
@@ -746,56 +739,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnName("PAN");
 
                     b.HasDiscriminator().HasValue("DebitCardDetail");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("RolePermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionRole");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("ViewUserPermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionUser");
-                });
-
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ApplicationRolePermission", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -1024,6 +967,17 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("StockProduct");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.PermissionRole", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("PermissionRoleId");
+
+                    b.HasOne("MissTortas.Data.Entity.Security.User.PermissionUser", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("PermissionUserId");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
                 {
                     b.Navigation("ConsultancyFiles");
@@ -1072,6 +1026,16 @@ namespace MissTortas.Data.Migrations
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
                 {
                     b.Navigation("Preparations");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
+                {
+                    b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
+                {
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,7 @@ namespace MissTortas.Presentation.Controllers
     [ApiController]
     public class SecurityController(
         UserManager<ApplicationUser> userManager,
+        RoleManager<ApplicationRole> roleManager,
         ITokenGenerator tokenGenerator,
         SignInManager<ApplicationUser> signInManager) : Controller
     {
@@ -44,13 +45,14 @@ namespace MissTortas.Presentation.Controllers
             var user = await userManager.FindByNameAsync(request.Email);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("User not found. Checkout credentials.");
             }
             var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
             if (result != SignInResult.Success)
             {
                 return Unauthorized("Wrong credentials, check if username or password are right.");
             }
+
             var dtoRet = new UserLoginDTO
             {
                 Id = user.Id,
@@ -64,20 +66,39 @@ namespace MissTortas.Presentation.Controllers
         [HttpPost("user/register")]
         public async Task<ActionResult<UserLoginDTO>> RegisterUser(RegisterRequest request)
         {
-            var newUser = new ApplicationUser { Email = request.Email, UserName = request.Email, Guid = Guid.NewGuid() };
-            var creation = await userManager.CreateAsync(newUser, request.Password);
-            if (creation.Succeeded)
-            {
-                var userDto = new UserLoginDTO
-                {
-                    Id = newUser.Id,
-                    Username = newUser.UserName,
-                    AccessToken = tokenGenerator.GenerateToken(newUser)
-                };
-                return Ok(userDto);
-            }
+            var newUser = new ApplicationUser 
+            { 
+                Email = request.Email, 
+                UserName = request.Email, 
+                Guid = Guid.NewGuid(), 
+                EmailConfirmed = false,
+                LockoutEnabled = true
+            };
 
-            return BadRequest(creation.Errors);
+            var userCreation = await userManager.CreateAsync(newUser, request.Password);
+            if (!userCreation.Succeeded)
+            {
+                return BadRequest(userCreation.Errors);
+            }
+            var newRoleName = $"{newUser.Id}-{newUser.UserName}";
+            var trivialRole = new ApplicationRole {Trivial = true, Name=newRoleName}; 
+            var roleCreation = await roleManager.CreateAsync(trivialRole);
+            if(!roleCreation.Succeeded)
+            {
+                return BadRequest(userCreation.Errors);
+            }
+            await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
+            var trivialRoleAssign = await userManager.AddToRoleAsync(newUser, newRoleName);
+            if (!trivialRoleAssign.Succeeded)
+            {
+                return BadRequest(trivialRoleAssign.Errors);
+            }
+            var userDto = new UserLoginDTO
+            {
+                Id = newUser.Id,
+                Username = newUser.UserName
+            };
+            return Ok(userDto);
         }
 
 
