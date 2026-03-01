@@ -20,6 +20,10 @@ namespace MissTortas.Services
         {
             var connectionString = configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
             services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<ISecurityService, SecurityService>();
+            services.AddScoped<ISecurityRepository, SecurityRepository>();
+
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentMapper, PaymentMapper>();

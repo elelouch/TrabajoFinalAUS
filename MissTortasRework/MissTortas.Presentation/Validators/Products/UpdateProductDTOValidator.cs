@@ -3,7 +3,7 @@ using MissTortas.Presentation.DTO.Products;
 
 namespace MissTortas.Presentation.Validators.Products
 {
-    public class UpdateProductDTOValidator : AbstractValidator<UpdateProductDTO>
+    public class UpdateProductDTOValidator : AbstractValidator<UpdateProduct>
     {
         private readonly long CategoryIdMax = long.MaxValue - 1024;
         private readonly long CategoryIdMin = 0;

@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Orders
 {
-    public class AskedProductDTO
+    public class AskedProduct
     {
         public long SaleProductId { get; set; }
         public double QuantityAsked { get; set; }

@@ -5,8 +5,8 @@ namespace MissTortas.Presentation.Validators.Orders
 {
     public interface IOrdersDTOValidator
     {
-        public IValidator<CreateOrderDTO> CreateOrderValidator();
-        public IValidator<CreateOrderTypeDTO> CreateOrderTypeValidator();
-        public IValidator<PlaceOrderDTO> PlaceOrderValidator();
+        public IValidator<CreateOrder> CreateOrderValidator();
+        public IValidator<CreateOrderType> CreateOrderTypeValidator();
+        public IValidator<PlaceOrder> PlaceOrderValidator();
     }
 }

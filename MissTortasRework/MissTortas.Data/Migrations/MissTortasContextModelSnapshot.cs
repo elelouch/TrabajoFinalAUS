@@ -572,18 +572,20 @@ namespace MissTortas.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Permission");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
@@ -746,26 +748,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnName("PAN");
 
                     b.HasDiscriminator().HasValue("DebitCardDetail");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("RolePermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionRole");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("ViewUserPermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionUser");
                 });
 
             modelBuilder.Entity("ApplicationRoleApplicationUser", b =>

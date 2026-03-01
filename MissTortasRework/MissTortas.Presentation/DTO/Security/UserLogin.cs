@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Security
 {
-    public class UserLoginDTO
+    public class UserLogin
     {
         public long Id { get; set; }
         public string Username { get; set; } = string.Empty;

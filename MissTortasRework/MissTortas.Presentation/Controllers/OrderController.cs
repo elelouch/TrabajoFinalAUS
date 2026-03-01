@@ -9,13 +9,13 @@ using MissTortas.Services.Interfaces;
 using System.Collections;
 
 
-using CreateOrderTypeDTO = MissTortas.Presentation.DTO.Orders.CreateOrderTypeDTO;
+using CreateOrderType = MissTortas.Presentation.DTO.Orders.CreateOrderType;
 using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Orders.CreateOrderTypeDTO;
-using PlaceOrderDTO = MissTortas.Presentation.DTO.Orders.PlaceOrderDTO;
+using PlaceOrderDTO = MissTortas.Presentation.DTO.Orders.PlaceOrder;
 using PlaceOrderServiceDTO = MissTortas.Services.DTO.Orders.PlaceOrderDTO;
-using CreateConsultancyDTO = MissTortas.Presentation.DTO.Orders.CreateConsultancyDTO;
+using CreateConsultancy = MissTortas.Presentation.DTO.Orders.CreateConsultancy;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
-using UpdateConsultancyDTO = MissTortas.Presentation.DTO.Orders.UpdateConsultancyDTO;
+using UpdateConsultancy = MissTortas.Presentation.DTO.Orders.UpdateConsultancy;
 using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -34,7 +34,7 @@ namespace MissTortas.Presentation.Controllers
     {
         [Authorize(Policy="ManageOrder")]
         [HttpPost("type")]
-        public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeDTO dto)
+        public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderType dto)
         {
             await validators.CreateOrderTypeValidator().ValidateAndThrowAsync(dto);
             var orderTypeDTO = new CreateOrderTypeServiceDTO { Name = dto.Name };
@@ -64,7 +64,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost("setup")]
-        public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrderDTO dto)
+        public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrder dto)
         {
             await validators.CreateOrderValidator().ValidateAndThrowAsync(dto);
             var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
@@ -92,7 +92,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost("consultancy")]
-        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy ([FromForm]CreateConsultancyDTO dto, [FromForm]List<IFormFile> files)
+        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy ([FromForm]CreateConsultancy dto, [FromForm]List<IFormFile> files)
         {
             var consultancyDTO = new CreateConsultancyServiceDTO
             {
@@ -107,7 +107,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPut("consultancy/{id}")]
-        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancyDTO dto)
+        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancy dto)
         {
             var consultancyDTO = new UpdateConsultancyServiceDTO
             {

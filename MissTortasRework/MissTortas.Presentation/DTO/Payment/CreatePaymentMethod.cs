@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Payment
 {
-    public class CreatePaymentMethodDTO
+    public class CreatePaymentMethod
     {
         public string Name { get; set; } = string.Empty;
     }

@@ -25,20 +25,20 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = "UserAdministrator")]
         [HttpGet("user")]
-        public async Task<ActionResult<List<UserLoginDTO>>> AllUser()
+        public async Task<ActionResult<List<UserLogin>>> AllUser()
         {
             var allUsers = await userManager.Users.ToListAsync();
             var allUserDTO = new ArrayList(allUsers.Count);
             foreach (var user in allUsers)
             {
-                allUserDTO.Add(new UserLoginDTO { Id = user.Id, Username = user.UserName! });
+                allUserDTO.Add(new UserLogin { Id = user.Id, Username = user.UserName! });
             }
             return Ok(allUserDTO);
         }
 
         [AllowAnonymous]
         [HttpPost("user/login")]
-        public async Task<ActionResult<UserLoginDTO>> LoginUser(
+        public async Task<ActionResult<UserLogin>> LoginUser(
                 LoginRequest request
             )
         {
@@ -53,7 +53,7 @@ namespace MissTortas.Presentation.Controllers
                 return Unauthorized("Wrong credentials, check if username or password are right.");
             }
 
-            var dtoRet = new UserLoginDTO
+            var dtoRet = new UserLogin
             {
                 Id = user.Id,
                 Username = user.UserName!,
@@ -62,9 +62,13 @@ namespace MissTortas.Presentation.Controllers
             return dtoRet;
         }
 
+        [Authorize(Policy = "UserAdministrator")]
+        [HttpPost("role/permission")]
+
+
         [AllowAnonymous]
         [HttpPost("user/register")]
-        public async Task<ActionResult<UserLoginDTO>> RegisterUser(RegisterRequest request)
+        public async Task<ActionResult<UserLogin>> RegisterUser(RegisterRequest request)
         {
             var newUser = new ApplicationUser 
             { 
@@ -87,13 +91,14 @@ namespace MissTortas.Presentation.Controllers
             {
                 return BadRequest(userCreation.Errors);
             }
-            await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
             var trivialRoleAssign = await userManager.AddToRoleAsync(newUser, newRoleName);
             if (!trivialRoleAssign.Succeeded)
             {
                 return BadRequest(trivialRoleAssign.Errors);
             }
-            var userDto = new UserLoginDTO
+            await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
+
+            var userDto = new UserLogin
             {
                 Id = newUser.Id,
                 Username = newUser.UserName

@@ -4,23 +4,23 @@ using MissTortas.Presentation.DTO.Orders;
 namespace MissTortas.Presentation.Validators.Orders
 {
     public class OrdersDTOValidator (
-        IValidator<CreateOrderDTO> createOrder,
-        IValidator<PlaceOrderDTO> placeOrder,
-        IValidator<CreateOrderTypeDTO> createOrderType
+        IValidator<CreateOrder> createOrder,
+        IValidator<PlaceOrder> placeOrder,
+        IValidator<CreateOrderType> createOrderType
         )
         : IOrdersDTOValidator
     {
-        public IValidator<CreateOrderTypeDTO> CreateOrderTypeValidator()
+        public IValidator<CreateOrderType> CreateOrderTypeValidator()
         {
             return createOrderType;
         }
 
-        public IValidator<CreateOrderDTO> CreateOrderValidator()
+        public IValidator<CreateOrder> CreateOrderValidator()
         {
             return createOrder;
         }
 
-        public IValidator<PlaceOrderDTO> PlaceOrderValidator()
+        public IValidator<PlaceOrder> PlaceOrderValidator()
         {
             return placeOrder;
         }

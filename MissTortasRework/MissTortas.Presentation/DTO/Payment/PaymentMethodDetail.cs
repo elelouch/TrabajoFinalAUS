@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Payment
 {
-    public class PaymentMethodDetailDTO
+    public class PaymentMethodDetail
     {
         public string CardHolderName { get; set; } = string.Empty;
         public string PAN { get; set; } = string.Empty;

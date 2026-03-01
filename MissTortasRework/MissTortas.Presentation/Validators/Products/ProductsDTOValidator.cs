@@ -4,28 +4,28 @@ using MissTortas.Presentation.DTO.Products;
 namespace MissTortas.Presentation.Validators.Products
 {
     public class ProductsDTOValidator(
-        IValidator<CreateProductCategoryDTO> productCategory,
-        IValidator<CreateProductDTO> product,
-        IValidator<CreateSaleProductDTO> saleProduct,
-        IValidator<UpdateProductDTO> updateProduct
+        IValidator<CreateProductCategory> productCategory,
+        IValidator<CreateProduct> product,
+        IValidator<CreateSaleProduct> saleProduct,
+        IValidator<UpdateProduct> updateProduct
         ) : IProductsDTOValidator
     {
-        public IValidator<CreateProductCategoryDTO> ProductCategoryValidator()
+        public IValidator<CreateProductCategory> ProductCategoryValidator()
         {
             return productCategory;
         }
 
-        public IValidator<CreateProductDTO> ProductValidator()
+        public IValidator<CreateProduct> ProductValidator()
         {
             return product;
         }
 
-        public IValidator<CreateSaleProductDTO> SaleProductValidator()
+        public IValidator<CreateSaleProduct> SaleProductValidator()
         {
             return saleProduct;
         }
 
-        public IValidator<UpdateProductDTO> UpdateProductValidator()
+        public IValidator<UpdateProduct> UpdateProductValidator()
         {
             return updateProduct;
         }

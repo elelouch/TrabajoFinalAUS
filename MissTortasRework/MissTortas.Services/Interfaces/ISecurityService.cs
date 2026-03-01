@@ -9,5 +9,8 @@ namespace MissTortas.Services.Interfaces
 {
     public interface ISecurityService
     {
+        public Task<IEnumerable<Permission>> GetAllPermissions();
+        public Task CreatePermissionBulkAsync(IEnumerable<Permission> permissionBulk);
+        public Task AssignPermissionBulkAsync(string roleName, IEnumerable<Permission> permissionBulk);
     }
 }

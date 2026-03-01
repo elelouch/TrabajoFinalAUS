@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Orders
 {
-    public class PlaceOrderDTO
+    public class PlaceOrder
     {
         public long OrderId { get; set; }
     }

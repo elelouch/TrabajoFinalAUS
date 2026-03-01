@@ -3,7 +3,7 @@ using MissTortas.Presentation.DTO.Orders;
 
 namespace MissTortas.Presentation.Validators.Orders
 {
-    public class CreateOrderDTOValidator : AbstractValidator<CreateOrderDTO>
+    public class CreateOrderDTOValidator : AbstractValidator<CreateOrder>
     {
         public long OrderManagerIdMax = long.MaxValue - 1024;
         public long ClientIdMax = long.MaxValue - 1024;
@@ -26,7 +26,7 @@ namespace MissTortas.Presentation.Validators.Orders
             RuleFor(c => c.Description).MaximumLength(DescriptionMax);
         }
 
-        public class AskedProductDTOValidator : AbstractValidator<AskedProductDTO>
+        public class AskedProductDTOValidator : AbstractValidator<AskedProduct>
         {
             public long SaleProductIdMax = long.MaxValue - 1024;
             public double MaxAskedQuantity = double.MaxValue - 1;

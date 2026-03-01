@@ -30,8 +30,6 @@ namespace MissTortas.Data.Context
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
         public DbSet<Permission> Permissions { get; set; } = default!;
-        public DbSet<PermissionRole> PermissionRoles { get; set; } = default!;
-        public DbSet<PermissionUser> PermissionUser { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -113,7 +111,10 @@ namespace MissTortas.Data.Context
                 .HasOne(pr => pr.Payment)
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
-            
+
+            modelBuilder.Entity<Permission>()
+                .HasIndex(p => new { p.Name, p.Type })
+                .IsUnique();
         }
 
         // In your DbContext

@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Products
 {
-    public class UpdateProductDTO
+    public class UpdateProduct
     {
         public string Description { get; set; } = string.Empty;
         public long CategoryId { get; set; }

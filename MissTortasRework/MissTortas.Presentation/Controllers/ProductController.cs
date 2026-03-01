@@ -9,7 +9,7 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using System.Collections.Generic;
 
-using UpdateProductDTO = MissTortas.Presentation.DTO.Products.UpdateProductDTO;
+using UpdateProduct = MissTortas.Presentation.DTO.Products.UpdateProduct;
 using UpdateProductServiceDTO = MissTortas.Services.DTO.Products.UpdateProductDTO;
 
 namespace MissTortas.Presentation.Controllers
@@ -35,7 +35,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost("category")]
-        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategoryDTO dto)
+        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)
         {
             await validators.ProductCategoryValidator().ValidateAndThrowAsync(dto);
             var productCategoryDto = new ProductCategoryCreateDTO()
@@ -56,7 +56,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPut("{productId}")]
-        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProductDTO dto)
+        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProduct dto)
         {
             await validators.UpdateProductValidator().ValidateAndThrowAsync(dto);
             var productDto = new UpdateProductServiceDTO
@@ -71,7 +71,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> PostProduct(CreateProductDTO dto)
+        public async Task<ActionResult<ProductDTO>> PostProduct(CreateProduct dto)
         {
             await validators.ProductValidator().ValidateAndThrowAsync(dto);
             var productDto = new ProductCreateDTO
@@ -86,7 +86,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost("sale")]
-        public async Task<ActionResult<SaleProductDTO>> PostSaleProduct(CreateSaleProductDTO dto)
+        public async Task<ActionResult<SaleProductDTO>> PostSaleProduct(CreateSaleProduct dto)
         {
             await validators.SaleProductValidator().ValidateAndThrowAsync(dto);
             var saleProductDto = new SaleProductCreateDTO

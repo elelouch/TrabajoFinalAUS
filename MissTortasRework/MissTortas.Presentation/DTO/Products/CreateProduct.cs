@@ -2,7 +2,7 @@
 
 namespace MissTortas.Presentation.DTO.Products
 {
-    public class CreateProductDTO
+    public class CreateProduct
     {
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";

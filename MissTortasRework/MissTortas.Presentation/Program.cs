@@ -28,13 +28,13 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // DI
-builder.Services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateProductCategoryDTO>, CreateProductCategoryDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateProductDTO>, CreateProductDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateSaleProductDTO>, CreateSaleProductDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateOrderDTO>, CreateOrderDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateOrderTypeDTO>, CreateOrderTypeDTOValidator>();
-builder.Services.AddScoped<IValidator<PlaceOrderDTO>, PlaceOrderDTOValidator>();
+builder.Services.AddScoped<IValidator<UpdateProduct>, UpdateProductDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateProductCategory>, CreateProductCategoryDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateProduct>, CreateProductDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateSaleProduct>, CreateSaleProductDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateOrderType>, CreateOrderTypeDTOValidator>();
+builder.Services.AddScoped<IValidator<PlaceOrder>, PlaceOrderDTOValidator>();
 
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
 builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
@@ -118,8 +118,8 @@ using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>)) as UserManager<ApplicationUser>;
     var roleManager = scope.ServiceProvider.GetService(typeof(RoleManager<ApplicationRole>)) as RoleManager<ApplicationRole>;
-    Console.WriteLine("Testing");
-    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!);
+    var securityService = scope.ServiceProvider.GetService(typeof(ISecurityService)) as ISecurityService;
+    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!, securityService!);
 }
 
 app.UseHttpsRedirection();

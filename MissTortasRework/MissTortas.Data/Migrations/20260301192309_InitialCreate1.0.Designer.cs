@@ -12,8 +12,8 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260301002624_InitialCreate1.2")]
-    partial class InitialCreate12
+    [Migration("20260301192309_InitialCreate1.0")]
+    partial class InitialCreate10
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -575,18 +575,20 @@ namespace MissTortas.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Permission");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
@@ -626,28 +628,6 @@ namespace MissTortas.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            ConcurrencyStamp = "36b49bd1-399c-47ab-a9c6-319061a794c2",
-                            Deleted = false,
-                            LastTimeModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Admin",
-                            NormalizedName = "ADMIN",
-                            Trivial = false
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            ConcurrencyStamp = "50f6d3da-5966-44ca-947d-d8103653cd14",
-                            Deleted = false,
-                            LastTimeModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "User",
-                            NormalizedName = "USER",
-                            Trivial = false
-                        });
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
@@ -771,26 +751,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnName("PAN");
 
                     b.HasDiscriminator().HasValue("DebitCardDetail");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionRole", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("RolePermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionRole");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.PermissionUser", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permission");
-
-                    b.Property<int>("ViewUserPermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionUser");
                 });
 
             modelBuilder.Entity("ApplicationRoleApplicationUser", b =>

@@ -6,7 +6,8 @@ namespace MissTortas.Data.Interfaces
 {
     public interface ISecurityRepository : IRepositoryCrud<Permission>
     {
-        //public bool HasViewPermission (long userId, ViewUserPermission userPermission);
-        //public bool HasRolePermission(long userId, IEnumerable<RolePermission> rolePermissions);
+        public IAsyncEnumerable<Permission> GetAllPermissions();
+        public Task BulkInsertPermissionsAsync(IEnumerable<Permission> permission);
+        public Task<IEnumerable<Permission>?> FindAllPermissionAsync(IEnumerable<string> permissionNames);
     }
 }

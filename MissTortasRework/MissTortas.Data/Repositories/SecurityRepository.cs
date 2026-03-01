@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MissTortas.Data.Context;
 using MissTortas.Data.Entity.Security;
@@ -7,21 +8,35 @@ using MissTortas.Data.Interfaces;
 
 namespace MissTortas.Data.Repositories
 {
-    public class SecurityRepository(MissTortasContext context) : RepositoryCrud<Permission>(context), ISecurityRepository
+    public class SecurityRepository(
+        MissTortasContext context
+        ) : RepositoryCrud<Permission>(context), ISecurityRepository
     {
-        private readonly DbSet<PermissionRole> permissionForRoles = context.PermissionRoles;
+        private readonly DbSet<Permission> permissionsSet  = context.Permissions;
 
-        public bool HasRolePermission(long userId, IEnumerable<RolePermission> rolePermissions)
+        public bool HasPermissionAsync(long userId, IEnumerable<string> permissionName)
         {
-            var permissions = rolePermissions.Select(r => (int)r).ToList();
-            var count = permissionForRoles
-                .Include(pfr => pfr.Roles)
-                .ThenInclude(roles => roles.Users)
-                .Where(pfr => pfr.Roles.Any(r => r.Users.Any(u => u.Id == userId)) && rolePermissions.Contains(pfr.RolePermission))
-                .GroupBy(pfr => pfr.RolePermission)
-                .Count();
-            return count == rolePermissions.Count();
+            var permission = await permissionsSet.Include(p => p.Roles)
+                .ThenInclude(r => r.Users)
+                .Where(p => permissionName.Any(name => name == p.Name))
+                .Where(p => p.Roles.Any(r => r.Users.Any(u => u.Id == userId)))
+                .ToListAsync();
+            return 
+        }
+        public async Task BulkInsertPermissionsAsync(IEnumerable<Permission> permissions)
+        {
+            await permissionsSet.AddRangeAsync(permissions);
         }
 
+        public async Task<IEnumerable<Permission>?> FindAllPermissionAsync(IEnumerable<string> permissionNames)
+        {
+            var permissions = await permissionsSet.Where(p => permissionNames.Any(name => name == p.Name)).ToListAsync();
+            return permissions.Count == permissionNames.Count() ? permissions : null;
+        }
+
+        public IAsyncEnumerable<Permission> GetAllPermissions()
+        {
+            return permissionsSet.AsAsyncEnumerable();
+        }
     }
 }

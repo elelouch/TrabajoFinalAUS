@@ -3,7 +3,7 @@ using MissTortas.Presentation.DTO.Products;
 
 namespace MissTortas.Presentation.Validators.Products
 {
-    public class CreateSaleProductDTOValidator : AbstractValidator<CreateSaleProductDTO>
+    public class CreateSaleProductDTOValidator : AbstractValidator<CreateSaleProduct>
     {
         public CreateSaleProductDTOValidator()
         {

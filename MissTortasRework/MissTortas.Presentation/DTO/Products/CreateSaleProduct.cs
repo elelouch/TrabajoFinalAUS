@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Presentation.DTO.Products
 {
-    public class CreateSaleProductDTO
+    public class CreateSaleProduct
     {
         public double SalePrice { get; set; }
         public double SaleQuantity { get; set; }

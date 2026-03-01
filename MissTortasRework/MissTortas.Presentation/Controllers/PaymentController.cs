@@ -5,11 +5,11 @@ using MissTortas.Services.Interfaces;
 
 
 //using CreatePaymentMethodServiceDTO = MissTortas.Services.DTO.Payment.CreatePaymentMethodDTO;
-using CreatePaymentMethodDTO = MissTortas.Presentation.DTO.Payment.CreatePaymentMethodDTO;
+using CreatePaymentMethodDTO = MissTortas.Presentation.DTO.Payment.CreatePaymentMethod;
 using PaymentMethodDetailsServiceDTO = MissTortas.Services.DTO.Payment.PaymentMethodDetailDTO;
-using PaymentMethodDetailsDTO = MissTortas.Presentation.DTO.Payment.PaymentMethodDetailDTO;
+using PaymentMethodDetailsDTO = MissTortas.Presentation.DTO.Payment.PaymentMethodDetail;
 using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
-using PayOrderDTO = MissTortas.Presentation.DTO.Payment.PayOrderDTO;
+using PayOrder = MissTortas.Presentation.DTO.Payment.PayOrder;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -24,7 +24,7 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [HttpPost("order")]
-        public async Task<ActionResult> PostPayOrder(PayOrderDTO dto)
+        public async Task<ActionResult> PostPayOrder(PayOrder dto)
         {
             PaymentMethodDetailsServiceDTO? paymentMethodDetails = null;
             if (dto.PaymentDetails is not null)
