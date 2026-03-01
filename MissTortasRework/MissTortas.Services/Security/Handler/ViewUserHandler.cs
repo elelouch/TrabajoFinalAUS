@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MissTortas.Services.Security.Handler
 {
-    public class ViewUserRequirementHandler (ISecurityRepository securityRepository): AuthorizationHandler<ViewUserRequirement>
+    public class ViewUserHandler (ISecurityRepository securityRepository): AuthorizationHandler<ViewUserRequirement>
     {
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context, ViewUserRequirement requirement)

@@ -14,7 +14,8 @@ namespace MissTortas.Services.Security.Handler
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleManagementRequirement requirement)
         {
             var permissionsName = Enum.GetNames<RolePermission>();
-            repository.FindAllPermissionAsync()
+            var permissions = requirement.RolePermissions;
+
         }
     }
 }

@@ -7,5 +7,8 @@ using System.Text;
 
 namespace MissTortas.Services.Security.Requirement
 {
-    public class RoleManagementRequirement() : IAuthorizationRequirement { }
+    public class RoleManagementRequirement(IEnumerable<RolePermission> rolePermissions) : IAuthorizationRequirement 
+    {
+        public IEnumerable<RolePermission> RolePermissions { get; set; } = rolePermissions;
+    }
 }

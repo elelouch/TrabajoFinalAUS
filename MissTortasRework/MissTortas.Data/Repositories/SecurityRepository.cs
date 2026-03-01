@@ -14,14 +14,14 @@ namespace MissTortas.Data.Repositories
     {
         private readonly DbSet<Permission> permissionsSet  = context.Permissions;
 
-        public bool HasPermissionAsync(long userId, IEnumerable<string> permissionName)
+        public async Task<bool> HasPermissionAsync(long userId, IEnumerable<Permission> permissionsRequired)
         {
-            var permission = await permissionsSet.Include(p => p.Roles)
+            var permissionsObtained = await permissionsSet.Include(p => p.Roles)
                 .ThenInclude(r => r.Users)
-                .Where(p => permissionName.Any(name => name == p.Name))
+                .Where(p => permissionsRequired.Any(perm => perm.Name == p.Name && perm.Type == p.Type))
                 .Where(p => p.Roles.Any(r => r.Users.Any(u => u.Id == userId)))
                 .ToListAsync();
-            return 
+            return permissionsObtained.Count == permissionsRequired.Count();
         }
         public async Task BulkInsertPermissionsAsync(IEnumerable<Permission> permissions)
         {
