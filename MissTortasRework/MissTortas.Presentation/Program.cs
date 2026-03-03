@@ -90,9 +90,15 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("UserAdministrator", policy => policy.AddRequirements(ViewUserRequirementConstants.ViewAllUserRequirement));
+    .AddPolicy("UserAdministrator", policy => policy.AddRequirements(ViewUserRequirementConstants.ViewAllUserRequirement))
+    .AddPolicy("RoleManagement", policy => policy.AddRequirements(RoleManagementRequirementConstants.RoleManagementRequirement))
+    .AddPolicy("RoleAssignment", policy => policy.AddRequirements(RoleManagementRequirementConstants.RoleAssignationRequirement))
+    .AddPolicy("RoleAdmin",
+        policy => policy
+            .AddRequirements(RoleManagementRequirementConstants.RoleManagementRequirement)
+            .AddRequirements(RoleManagementRequirementConstants.RoleAssignationRequirement)
+    );
 
 var app = builder.Build();
 

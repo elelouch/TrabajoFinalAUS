@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Engine.Interfaces;
 using MissTortas.Services.Interfaces;
+using MissTortas.Services.Security;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,7 @@ namespace MissTortas.Services
     {
         public static void SeedPermissions(ISecurityService securityService)
         {
-            var createPermissionsTask = securityService.CreatePermissionBulkAsync(Permission.permissions);
+            var createPermissionsTask = securityService.CreatePermissionBulkAsync(PermissionFactory.GeneratePermissions());
             createPermissionsTask.Wait();
             var allPermissions = securityService.GetAllPermissions().Result;
             var assignPermissionToAdminTask = 

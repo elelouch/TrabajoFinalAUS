@@ -11,6 +11,8 @@ using MissTortas.Services.Mapper;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Presentation.DTO.Security;
+using MissTortas.Services.DTO.Security;
+using MissTortas.Services;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -20,6 +22,7 @@ namespace MissTortas.Presentation.Controllers
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         ITokenGenerator tokenGenerator,
+        SecurityService securityService,
         SignInManager<ApplicationUser> signInManager) : Controller
     {
 
@@ -62,9 +65,18 @@ namespace MissTortas.Presentation.Controllers
             return dtoRet;
         }
 
-        [Authorize(Policy = "UserAdministrator")]
-        [HttpPost("role/permission")]
-
+        [Authorize(Policy = "RoleAssignment")]
+        [HttpPost("role/permission/assignment")]
+        public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+        {
+            var serviceDto = new AssignPermissionToRoleDTO
+            {
+                RoleName = assignPermissionsDTO.RoleName,
+                PermissionsId = assignPermissionsDTO.PermissionsId
+            };
+            await securityService.AssignPermissionBulkAsync(serviceDto);
+            return Ok();
+        }
 
         [AllowAnonymous]
         [HttpPost("user/register")]

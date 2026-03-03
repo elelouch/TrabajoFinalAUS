@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Context
@@ -30,6 +30,9 @@ namespace MissTortas.Data.Context
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
         public DbSet<Permission> Permissions { get; set; } = default!;
+        public DbSet<PermissionCreateOrder> CreateOrderPermissions { get; set; } = default!;
+        public DbSet<PermissionRole> RolePermissions { get; set; } = default!;
+        public DbSet<PermissionViewUser> ViewUserPermissions { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
+using MissTortas.Services.DTO.Security;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 
 namespace MissTortas.Services
@@ -35,6 +37,12 @@ namespace MissTortas.Services
                 role.Permissions.Add(p);
             }
             await securityRepository.SaveChangesAsync();
+        }
+
+        public async Task AssignPermissionBulkAsync(AssignPermissionToRoleDTO dto)
+        {
+            var allPermissions = await securityRepository.FindAllPermissionsAsync(dto.PermissionsId) ?? throw new PermissionNotFound("Couldn't found a permission");
+            await AssignPermissionBulkAsync(dto.RoleName, allPermissions);
         }
     }
 }

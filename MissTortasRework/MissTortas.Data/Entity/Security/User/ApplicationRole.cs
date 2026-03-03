@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using MissTortas.Data.Entity.Security.Permissions;
 
 namespace MissTortas.Data.Entity.Security.User
 {
