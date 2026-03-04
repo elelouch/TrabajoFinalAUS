@@ -16,7 +16,8 @@ namespace MissTortas.Services
 {
     public class ProductService(
         IProductRepository productRepository,
-        IProductMapper productMapper) : IProductService
+        IProductMapper productMapper
+        ) : IProductService
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
         {
@@ -71,7 +72,7 @@ namespace MissTortas.Services
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
             var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found");
-            if(product.SaleProduct is not null)
+            if (product.SaleProduct is not null)
             {
                 throw new SaleProductAlreadyVinculatedException("Sale product already vinculated. Try another stock product.");
             }
@@ -166,7 +167,7 @@ namespace MissTortas.Services
             product.ProductDetail.Description = dto.Description;
             var qty = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
             product.Quantity = qty.DecimalQuantity;
-            if(category is not null)
+            if (category is not null)
             {
                 product.ProductCategory = category;
             }

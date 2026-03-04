@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Engine.DTO.User
+﻿namespace MissTortas.Services.DTO.Security
 {
-    public class UserLoginDTO
+    public class SignUpUserDTO
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;

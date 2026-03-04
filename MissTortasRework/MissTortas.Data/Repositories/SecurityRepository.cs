@@ -26,10 +26,6 @@ namespace MissTortas.Data.Repositories
                 .ToListAsync();
             return permissionsObtained.Count == permissionsRequired.Count();
         }
-        public async Task BulkInsertPermissionsAsync(IEnumerable<Permission> permissions)
-        {
-            await permissionsSet.AddRangeAsync(permissions);
-        }
 
         public async Task<IEnumerable<Permission>?> FindAllPermissionAsync(IEnumerable<string> permissionNames)
         {
@@ -39,12 +35,27 @@ namespace MissTortas.Data.Repositories
 
         public IAsyncEnumerable<Permission> GetAllPermissions()
         {
-            return permissionsSet.AsAsyncEnumerable();
+            return permissionsSet
+                .Include(p => p.Roles)
+                .ThenInclude(r => r.Users)
+                .AsAsyncEnumerable();
         }
 
-        public IAsyncEnumerable<Permission> GetAllRolePermissionsFromUser(long userId)
+        public IAsyncEnumerable<T> GetAllPermissionsFromUser<T>(long userId) where T : Permission 
         {
-            return permissionsCreateOrderSet
+            return typeof(T) switch
+            {
+                Type t when t == typeof(PermissionCreateOrder) => (IAsyncEnumerable<T>)GetAllPermissionsFromUser<PermissionCreateOrder>(permissionsCreateOrderSet, userId),
+                Type t when t == typeof(PermissionRole) => (IAsyncEnumerable<T>)GetAllPermissionsFromUser<PermissionRole>(permissionsRoleSet, userId),
+                Type t when t == typeof(PermissionViewUser) => (IAsyncEnumerable<T>)GetAllPermissionsFromUser<PermissionViewUser>(permissionsViewUserSet, userId),
+                Type t when t == typeof(Permission) => (IAsyncEnumerable<T>)GetAllPermissionsFromUser<Permission>(permissionsSet, userId),
+                _ => throw new NotImplementedException("Type not implemented")
+            };
+        }
+
+        public IAsyncEnumerable<T> GetAllPermissionsFromUser<T>(DbSet<T> dbSet, long userId) where T : Permission
+        {
+            return dbSet
                 .Include(perm => perm.Roles)
                 .ThenInclude(roles => roles.Users)
                 .Where(perm => perm.Roles.Any(role => role.Users.Any(u => u.Id == userId)))

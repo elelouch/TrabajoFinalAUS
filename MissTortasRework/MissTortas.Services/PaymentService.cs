@@ -15,7 +15,6 @@ namespace MissTortas.Services
         IOrderService orderService
         ) : IPaymentService
     {
-
         private PaymentMethodDetailBase GetPaymentMethodDetail(
             PayOrderDTO dto,
             Payment payment

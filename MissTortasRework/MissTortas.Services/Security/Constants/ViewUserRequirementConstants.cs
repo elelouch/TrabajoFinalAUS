@@ -1,9 +1,7 @@
 ﻿using MissTortas.Data.Entity.Security;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Services.Security.Requirement;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Security.Constants
 {

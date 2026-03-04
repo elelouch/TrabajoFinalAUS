@@ -3,8 +3,6 @@ using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Interfaces;
 
 
-
-//using CreatePaymentMethodServiceDTO = MissTortas.Services.DTO.Payment.CreatePaymentMethodDTO;
 using CreatePaymentMethodDTO = MissTortas.Presentation.DTO.Payment.CreatePaymentMethod;
 using PaymentMethodDetailsServiceDTO = MissTortas.Services.DTO.Payment.PaymentMethodDetailDTO;
 using PaymentMethodDetailsDTO = MissTortas.Presentation.DTO.Payment.PaymentMethodDetail;

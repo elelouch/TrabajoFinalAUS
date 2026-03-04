@@ -14,8 +14,6 @@ namespace MissTortas.Services
     {
         public static void SeedPermissions(ISecurityService securityService)
         {
-            var createPermissionsTask = securityService.CreatePermissionBulkAsync(PermissionFactory.GeneratePermissions());
-            createPermissionsTask.Wait();
             var allPermissions = securityService.GetAllPermissions().Result;
             var assignPermissionToAdminTask = 
                 securityService.AssignPermissionBulkAsync(ApplicationRole.AdminRole.Name!, allPermissions);

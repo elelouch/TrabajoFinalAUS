@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
@@ -75,8 +77,11 @@ namespace MissTortas.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    CreateOrderPermission = table.Column<int>(type: "int", nullable: true),
+                    RolePermission = table.Column<int>(type: "int", nullable: true),
+                    ViewUserPermission = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -561,6 +566,37 @@ namespace MissTortas.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Permission",
+                columns: new[] { "Id", "CreateOrderPermission", "Discriminator", "Name" },
+                values: new object[,]
+                {
+                    { 1L, 1, "PermissionCreateOrder", "CreateOrder" },
+                    { 2L, 2, "PermissionCreateOrder", "CreateOrderOBO" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Permission",
+                columns: new[] { "Id", "Discriminator", "Name", "ViewUserPermission" },
+                values: new object[,]
+                {
+                    { 3L, "PermissionViewUser", "ViewAll", 1 },
+                    { 4L, "PermissionViewUser", "ViewClient", 2 },
+                    { 5L, "PermissionViewUser", "ViewSelf", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Permission",
+                columns: new[] { "Id", "Discriminator", "Name", "RolePermission" },
+                values: new object[,]
+                {
+                    { 6L, "PermissionRole", "AssociateRole", 1 },
+                    { 7L, "PermissionRole", "DeassociateRole", 2 },
+                    { 8L, "PermissionRole", "ViewRoles", 3 },
+                    { 9L, "PermissionRole", "CreateRole", 4 },
+                    { 10L, "PermissionRole", "RemoveRole", 5 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationRoleApplicationUser_UsersId",
                 table: "ApplicationRoleApplicationUser",
@@ -661,12 +697,6 @@ namespace MissTortas.Data.Migrations
                 name: "IX_PaymentRequest_OrderId",
                 table: "PaymentRequest",
                 column: "OrderId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Permission_Name",
-                table: "Permission",
-                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(

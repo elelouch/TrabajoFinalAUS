@@ -115,9 +115,35 @@ namespace MissTortas.Data.Context
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
 
-            modelBuilder.Entity<Permission>()
-                .HasIndex(p => new { p.Name, p.Type })
-                .IsUnique();
+            var permissionsLoaded = 1;
+            foreach (var val in Enum.GetValues<CreateOrderPermission>())
+            {
+                modelBuilder.Entity<PermissionCreateOrder>().HasData(new PermissionCreateOrder()
+                {
+                    Id = permissionsLoaded++,
+                    Name = val.ToString(),
+                    CreateOrderPermission = val
+                });
+            }
+            foreach (var val in Enum.GetValues<ViewUserPermission>())
+            {
+                modelBuilder.Entity<PermissionViewUser>().HasData(new PermissionViewUser()
+                {
+                    Id = permissionsLoaded++,
+                    Name = val.ToString(),
+                    ViewUserPermission = val
+                });
+            }
+
+            foreach (var val in Enum.GetValues<RolePermission>())
+            {
+                modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole()
+                {
+                    Id = permissionsLoaded++,
+                    Name = val.ToString(),
+                    RolePermission = val
+                });
+            }
         }
 
         // In your DbContext

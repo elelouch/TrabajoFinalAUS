@@ -13,22 +13,20 @@ namespace MissTortas.Services.Security.Handler
 {
     public class RoleManagementHandler(ISecurityRepository repository) : AuthorizationHandler<RoleManagementRequirement>
     {
-
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleManagementRequirement requirement)
         {
             var userIdString = context.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User must have a Name Identifier Claim.");
             var userId = long.Parse(userIdString);
-            var permissionsAvailable = await repository.GetAllRolePermissionsFromUser(userId).ToListAsync();
+            var permissionsAvailable = await repository.GetAllPermissionsFromUser<PermissionRole>(userId).ToListAsync();
             var permissionsRequired = requirement.RolePermissions;
             var allRequiredPermissionsAreMet = permissionsRequired.All(
-                permRequired => permissionsAvailable.Any(available => available.Value == (int)permRequired)
+                permRequired => permissionsAvailable.Any(available => available.RolePermission == permRequired)
             );
 
             if(allRequiredPermissionsAreMet)
             {
                 context.Succeed(requirement);
             }
-            
         }
     }
 }

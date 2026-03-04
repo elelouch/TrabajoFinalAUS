@@ -13,18 +13,16 @@ using MissTortas.Data.Entity.Security.User;
 using MissTortas.Presentation.DTO.Security;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services;
+using MissTortas.Services.Interfaces;
+using MissTortas.Services.DTO.User;
 
 namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class SecurityController(
-        UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager,
-        ITokenGenerator tokenGenerator,
-        SecurityService securityService,
-        SignInManager<ApplicationUser> signInManager) : Controller
+    public class SecurityController(ISecurityService securityService) : Controller
     {
+        private readonly int DefaultLockTime = 10000;
 
         [Authorize(Policy = "UserAdministrator")]
         [HttpGet("user")]
@@ -45,24 +43,7 @@ namespace MissTortas.Presentation.Controllers
                 LoginRequest request
             )
         {
-            var user = await userManager.FindByNameAsync(request.Email);
-            if (user is null)
-            {
-                return NotFound("User not found. Checkout credentials.");
-            }
-            var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
-            if (result != SignInResult.Success)
-            {
-                return Unauthorized("Wrong credentials, check if username or password are right.");
-            }
 
-            var dtoRet = new UserLogin
-            {
-                Id = user.Id,
-                Username = user.UserName!,
-                AccessToken = tokenGenerator.GenerateToken(user)
-            };
-            return dtoRet;
         }
 
         [Authorize(Policy = "RoleAssignment")]
@@ -78,44 +59,16 @@ namespace MissTortas.Presentation.Controllers
             return Ok();
         }
 
+        [Authorize(Policy="ManageUsers")]
+        [HttpPut]
+        public async Task<ActionResult> PostUserModification(UserModification userModificationDTO)
+        {
+        }
+
         [AllowAnonymous]
         [HttpPost("user/register")]
         public async Task<ActionResult<UserLogin>> RegisterUser(RegisterRequest request)
-        {
-            var newUser = new ApplicationUser 
-            { 
-                Email = request.Email, 
-                UserName = request.Email, 
-                Guid = Guid.NewGuid(), 
-                EmailConfirmed = false,
-                LockoutEnabled = true
-            };
-
-            var userCreation = await userManager.CreateAsync(newUser, request.Password);
-            if (!userCreation.Succeeded)
-            {
-                return BadRequest(userCreation.Errors);
-            }
-            var newRoleName = $"{newUser.Id}-{newUser.UserName}";
-            var trivialRole = new ApplicationRole {Trivial = true, Name=newRoleName}; 
-            var roleCreation = await roleManager.CreateAsync(trivialRole);
-            if(!roleCreation.Succeeded)
-            {
-                return BadRequest(userCreation.Errors);
-            }
-            var trivialRoleAssign = await userManager.AddToRoleAsync(newUser, newRoleName);
-            if (!trivialRoleAssign.Succeeded)
-            {
-                return BadRequest(trivialRoleAssign.Errors);
-            }
-            await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
-
-            var userDto = new UserLogin
-            {
-                Id = newUser.Id,
-                Username = newUser.UserName
-            };
-            return Ok(userDto);
+        { 
         }
 
 

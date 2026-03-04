@@ -12,7 +12,7 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260301192309_InitialCreate1.0")]
+    [Migration("20260303225504_InitialCreate1.0")]
     partial class InitialCreate10
     {
         /// <inheritdoc />
@@ -567,7 +567,7 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("SaleProduct");
                 });
 
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permission", b =>
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.Permission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -575,20 +575,22 @@ namespace MissTortas.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Permission");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
@@ -753,6 +755,102 @@ namespace MissTortas.Data.Migrations
                     b.HasDiscriminator().HasValue("DebitCardDetail");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionCreateOrder", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.Property<int>("CreateOrderPermission")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("PermissionCreateOrder");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "CreateOrder",
+                            CreateOrderPermission = 1
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "CreateOrderOBO",
+                            CreateOrderPermission = 2
+                        });
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionRole", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.Property<int>("RolePermission")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("PermissionRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 6L,
+                            Name = "AssociateRole",
+                            RolePermission = 1
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Name = "DeassociateRole",
+                            RolePermission = 2
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Name = "ViewRoles",
+                            RolePermission = 3
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            Name = "CreateRole",
+                            RolePermission = 4
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            Name = "RemoveRole",
+                            RolePermission = 5
+                        });
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionViewUser", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.Property<int>("ViewUserPermission")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("PermissionViewUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3L,
+                            Name = "ViewAll",
+                            ViewUserPermission = 1
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "ViewClient",
+                            ViewUserPermission = 2
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Name = "ViewSelf",
+                            ViewUserPermission = 3
+                        });
+                });
+
             modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
                 {
                     b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
@@ -770,7 +868,7 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("ApplicationRolePermission", b =>
                 {
-                    b.HasOne("MissTortas.Data.Entity.Security.Permission", null)
+                    b.HasOne("MissTortas.Data.Entity.Security.Permissions.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
