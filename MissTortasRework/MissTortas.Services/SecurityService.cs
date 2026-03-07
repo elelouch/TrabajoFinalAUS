@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
@@ -18,32 +19,21 @@ namespace MissTortas.Services
         ITokenGenerator tokenGenerator
         ) : ISecurityService
     {
-        public async Task<LoginUserResultDTO> LoginUser(LoginUserDTO request)
+        public async Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.FindByNameAsync(request.Email);
-            if (user is null)
-            {
-                return NotFound("User not found. Checkout credentials.");
-            }
+            var user = await userManager.FindByNameAsync(request.Email) ?? throw new UserNotFoundException($"User {request.Email}not found.");
             var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
-            if (result.IsLockedOut)
-                return Unauthorized("User locked out. Contact the system administrator.");
-            if (result.IsNotAllowed)
-                return Unauthorized("Wrong credentials.");
-            if (result.Succeeded)
+            var dtoRet = new LoginUserResultDTO
             {
-                var dtoRet = new UserLogin
-                {
-                    Id = user.Id,
-                    Username = user.UserName!,
-                    AccessToken = tokenGenerator.GenerateToken(user)
-                };
-                return dtoRet;
-            }
-            return Unauthorized("Something went wrong, try again.");
+                Id = user.Id,
+                Username = user.UserName!,
+                AccessToken = tokenGenerator.GenerateToken(user),
+                SignInResult = result
+            };
+            return dtoRet;
         }
 
-        public async Task<SignUpUserResultDTO> SignUpUser(SignUpUserDTO request)
+        public async Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO request)
         {
             var newUser = new ApplicationUser
             {
@@ -54,34 +44,26 @@ namespace MissTortas.Services
                 LockoutEnabled = true,
                 LockoutEnd = DateTimeOffset.MaxValue
             };
-            var newUserDTO = new SignUpUserResultDTO();
-            
             var userCreation = await userManager.CreateAsync(newUser, request.Password);
             if (!userCreation.Succeeded)
             {
-                newUserDTO.IdentityResult = userCreation;
-                newUserDTO.Errors = userCreation.Errors;
-                return newUserDTO;
+                return new SignUpUserResultDTO() { IdentityResult = userCreation };
             }
             var newRoleName = $"{newUser.Id}-{newUser.UserName}";
             var trivialRole = new ApplicationRole { Trivial = true, Name = newRoleName };
             var roleCreation = await roleManager.CreateAsync(trivialRole);
             if (!roleCreation.Succeeded)
             {
-                newUserDTO.IdentityResult = roleCreation;
-                newUserDTO.Errors = roleCreation.Errors;
-                return newUserDTO;
+                return new SignUpUserResultDTO() { IdentityResult = roleCreation };
             }
             var trivialRoleAssign = await userManager.AddToRoleAsync(newUser, newRoleName);
             if (!trivialRoleAssign.Succeeded)
             {
-                newUserDTO.IdentityResult = trivialRoleAssign;
-                newUserDTO.Errors = trivialRoleAssign.Errors;
-                return newUserDTO;
+                return new SignUpUserResultDTO() { IdentityResult = trivialRoleAssign };
             }
             await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
 
-            return newUserDTO;
+            return new SignUpUserResultDTO() { Id = newUser.Id, Email = newUser.Email };
         }
 
         public async Task<IEnumerable<Permission>> GetAllPermissions()
@@ -111,7 +93,31 @@ namespace MissTortas.Services
 
         public async Task ModifyUserAsync(UserModificationDTO dto)
         {
+            var user = await userManager.FindByNameAsync(dto.Username)
+             ?? throw new UserNotFoundException("User not found.");
 
+            user.Email = dto.Email;
+            user.LockoutEnabled = !dto.IsEnabled;
+
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                throw new InvalidOperationException("Failed to update user.");
+            }
+
+            if (!string.IsNullOrEmpty(dto.Role))
+            {
+                var currentRoles = await userManager.GetRolesAsync(user);
+                await userManager.RemoveFromRolesAsync(user, currentRoles);
+                await userManager.AddToRoleAsync(user, dto.Role);
+            }
+
+            await securityRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
+        {
+            return await userManager.Users.ToListAsync();
         }
     }
 }

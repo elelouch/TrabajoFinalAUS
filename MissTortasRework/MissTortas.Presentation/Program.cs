@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using MissTortas.Engine.DTO;
-using MissTortas.Engine;
+using MissTortas.Presentation.DTO;
+using MissTortas.Presentation;
 using MissTortas.Services;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Interfaces;
@@ -98,7 +98,8 @@ builder.Services.AddAuthorizationBuilder()
         policy => policy
             .AddRequirements(RoleManagementRequirementConstants.RoleManagementRequirement)
             .AddRequirements(RoleManagementRequirementConstants.RoleAssignationRequirement)
-    );
+    )
+    .AddPolicy("ManageUsers", policy => policy.AddRequirements());
 
 var app = builder.Build();
 

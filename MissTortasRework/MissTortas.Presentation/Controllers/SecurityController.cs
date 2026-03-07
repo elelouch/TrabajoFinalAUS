@@ -14,7 +14,6 @@ using MissTortas.Presentation.DTO.Security;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.DTO.User;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -28,12 +27,13 @@ namespace MissTortas.Presentation.Controllers
         [HttpGet("user")]
         public async Task<ActionResult<List<UserLogin>>> AllUser()
         {
-            var allUsers = await userManager.Users.ToListAsync();
-            var allUserDTO = new ArrayList(allUsers.Count);
-            foreach (var user in allUsers)
+            var allUsers = await securityService.GetAllUsersAsync();
+            var allUserDTO = allUsers.Select(user => new UserLogin
             {
-                allUserDTO.Add(new UserLogin { Id = user.Id, Username = user.UserName! });
-            }
+                Id = user.Id,
+                Username = user.UserName!
+            }).ToList();
+
             return Ok(allUserDTO);
         }
 
@@ -42,12 +42,38 @@ namespace MissTortas.Presentation.Controllers
         public async Task<ActionResult<UserLogin>> LoginUser(
                 LoginRequest request
             )
-        {
+        { 
+            var loginDto = new LoginUserDTO
+            {
+                Email = request.Email,
+                Password = request.Password
+            };
 
+            var result = await securityService.SignInUserAsync(loginDto);
+
+            if (!result.SignInResult.Succeeded)
+            {
+                return result.SignInResult switch
+                {
+                    { IsLockedOut: true } => Unauthorized(new { Message = "User is locked out." }),
+                    { IsNotAllowed: true } => Unauthorized(new { Message = "User is not allowed to sign in." }),
+                    { RequiresTwoFactor: true } => Unauthorized(new { Message = "Two-factor authentication is required." }),
+                    _ => Unauthorized(new { Message = "Invalid login attempt." })
+                };
+            }
+
+            var userLogin = new UserLogin
+            {
+                Id = result.Id,
+                Username = result.Username,
+                AccessToken = result.AccessToken
+            };
+
+            return Ok(userLogin);
         }
 
         [Authorize(Policy = "RoleAssignment")]
-        [HttpPost("role/permission/assignment")]
+        [HttpPost("role/assign/permission")]
         public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
         {
             var serviceDto = new AssignPermissionToRoleDTO
@@ -60,15 +86,38 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [Authorize(Policy="ManageUsers")]
-        [HttpPut]
+        [HttpPut("user/modification")]
         public async Task<ActionResult> PostUserModification(UserModification userModificationDTO)
         {
+            var serviceDto = new UserModificationDTO
+            {
+                IsEnabled = userModificationDTO.IsEnabled,
+                Username = userModificationDTO.Username,
+                Email = userModificationDTO.Email,
+                Role = userModificationDTO.Role
+            };
+
+            await securityService.ModifyUserAsync(serviceDto);
+            return Ok();
         }
 
         [AllowAnonymous]
         [HttpPost("user/register")]
-        public async Task<ActionResult<UserLogin>> RegisterUser(RegisterRequest request)
-        { 
+        public async Task<ActionResult<UserLogin>> SignUpUser(RegisterRequest request)
+        {
+            var serviceDto = new SignUpUserDTO
+            {
+                Username = request.Email,
+                Password = request.Password
+            };
+
+            var result = await securityService.SignUpUserAsync(serviceDto);
+            var ret = new SignUpUser
+            {
+                Username = result.Email,
+                Result = result.IdentityResult!
+            };
+            return Ok(ret);
         }
 
 
