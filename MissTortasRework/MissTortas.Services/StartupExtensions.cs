@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using MissTortas.Data.Interfaces;
 using MissTortas.Data.Repositories;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
+using MissTortas.Services.Security.Handlers;
 
 namespace MissTortas.Services
 {
@@ -21,29 +24,31 @@ namespace MissTortas.Services
             var connectionString = configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
             services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<ISecurityService, SecurityService>();
-            services.AddScoped<ISecurityRepository, SecurityRepository>();
 
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<MissTortasContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentMapper, PaymentMapper>();
             services.AddScoped<ISimpleStorageRepository, SimpleStorageRepository>();
             services.AddScoped<ISimpleStorage, SimpleStorage>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
-            services.AddScoped<SignInManager<ApplicationUser>>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, MissTortasContext, long>>();
-            services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<IProductMapper, ProductMapper>();
             services.AddScoped<IOrderMapper, OrderMapper>();
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<MissTortasContext>()
-                .AddDefaultTokenProviders();
+
+            // Authorization handlers
+            services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
+
+
             return services;
         }
     }

@@ -23,7 +23,7 @@ namespace MissTortas.Presentation.Controllers
     {
         private readonly int DefaultLockTime = 10000;
 
-        [Authorize(Policy = "UserAdministrator")]
+        [Authorize(Policy = "Users.ViewAll")]
         [HttpGet("user")]
         public async Task<ActionResult<List<UserLogin>>> AllUser()
         {
@@ -33,7 +33,6 @@ namespace MissTortas.Presentation.Controllers
                 Id = user.Id,
                 Username = user.UserName!
             }).ToList();
-
             return Ok(allUserDTO);
         }
 
@@ -42,10 +41,10 @@ namespace MissTortas.Presentation.Controllers
         public async Task<ActionResult<UserLogin>> LoginUser(
                 LoginRequest request
             )
-        { 
+        {
             var loginDto = new LoginUserDTO
             {
-                Email = request.Email,
+                Username = request.Email,
                 Password = request.Password
             };
 
@@ -72,20 +71,28 @@ namespace MissTortas.Presentation.Controllers
             return Ok(userLogin);
         }
 
-        [Authorize(Policy = "RoleAssignment")]
-        [HttpPost("role/assign/permission")]
-        public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+
+        [Authorize(Policy = "Claims.ViewAll")]
+        [HttpGet("permission")]
+        public async Task<IEnumerable<SimpleClaim>> GetAllPermissions()
         {
-            var serviceDto = new AssignPermissionToRoleDTO
-            {
-                RoleName = assignPermissionsDTO.RoleName,
-                PermissionsId = assignPermissionsDTO.PermissionsId
-            };
-            await securityService.AssignPermissionBulkAsync(serviceDto);
-            return Ok();
+            return securityService.GetAllAvailableClaims().Select(cl => new SimpleClaim { ClaimType = cl.Type, ClaimValue = cl.Value}).ToList();
         }
 
-        [Authorize(Policy="ManageUsers")]
+        //[Authorize(Policy = "Roles.AssignPermission")]
+        //[HttpPost("role/assign/permission")]
+        //public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+        //{
+        //    var serviceDto = new AssignPermissionToRoleDTO
+        //    {
+        //        RoleName = assignPermissionsDTO.RoleName,
+        //        PermissionsId = assignPermissionsDTO.PermissionsId
+        //    };
+        //    await securityService.AssignPermissionBulkAsync(serviceDto);
+        //    return Ok();
+        //}
+
+        [Authorize(Policy = "Users.Update")]
         [HttpPut("user/modification")]
         public async Task<ActionResult> PostUserModification(UserModification userModificationDTO)
         {

@@ -12,8 +12,8 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260303225504_InitialCreate1.0")]
-    partial class InitialCreate10
+    [Migration("20260309005449_InitialCreate1.1")]
+    partial class InitialCreate11
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,139 +24,6 @@ namespace MissTortas.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationRoleApplicationUser");
-                });
-
-            modelBuilder.Entity("ApplicationRolePermission", b =>
-                {
-                    b.Property<long>("PermissionsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("PermissionsId", "RolesId");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("ApplicationRolePermission");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
                 {
@@ -196,7 +63,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Consultancy");
+                    b.ToTable("Consultancies");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.ConsultancyFile", b =>
@@ -225,7 +92,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ConsultancyId");
 
-                    b.ToTable("ConsultancyFile");
+                    b.ToTable("ConsultancyFiles");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Order", b =>
@@ -249,7 +116,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ConsultancyId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderPreparation", b =>
@@ -277,7 +144,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("AssigneeId");
 
-                    b.ToTable("OrderPreparation");
+                    b.ToTable("OrderPreparations");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderSaleProduct", b =>
@@ -295,7 +162,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("SaleProductId");
 
-                    b.ToTable("OrderSaleProduct");
+                    b.ToTable("AskedProducts");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.OrderType", b =>
@@ -312,7 +179,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderType");
+                    b.ToTable("OrderTypes");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.Payment", b =>
@@ -337,7 +204,7 @@ namespace MissTortas.Data.Migrations
                     b.HasIndex("PaymentRequestId")
                         .IsUnique();
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase", b =>
@@ -365,7 +232,7 @@ namespace MissTortas.Data.Migrations
                     b.HasIndex("PaymentId")
                         .IsUnique();
 
-                    b.ToTable("PaymentMethodDetailBase");
+                    b.ToTable("PaymentMethodDetails");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("PaymentMethodDetailBase");
 
@@ -391,7 +258,7 @@ namespace MissTortas.Data.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("PaymentRequest");
+                    b.ToTable("PaymentRequests");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.PersonalizedProduct", b =>
@@ -453,7 +320,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ProductCategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductCategory", b =>
@@ -478,7 +345,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductDetail", b =>
@@ -499,7 +366,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductDetail");
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.ProductFile", b =>
@@ -528,7 +395,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductFile");
+                    b.ToTable("ProductFiles");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Products.SaleProduct", b =>
@@ -564,33 +431,7 @@ namespace MissTortas.Data.Migrations
                     b.HasIndex("StockProductId")
                         .IsUnique();
 
-                    b.ToTable("SaleProduct");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.Permission", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permission");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("SaleProducts");
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
@@ -630,6 +471,30 @@ namespace MissTortas.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
@@ -705,6 +570,85 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserRole", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserToken", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCardDetail", b =>
                 {
                     b.HasBaseType("MissTortas.Data.Entity.Payment.PaymentMethodDetailBase");
@@ -753,183 +697,6 @@ namespace MissTortas.Data.Migrations
                         .HasColumnName("PAN");
 
                     b.HasDiscriminator().HasValue("DebitCardDetail");
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionCreateOrder", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
-
-                    b.Property<int>("CreateOrderPermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionCreateOrder");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "CreateOrder",
-                            CreateOrderPermission = 1
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "CreateOrderOBO",
-                            CreateOrderPermission = 2
-                        });
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionRole", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
-
-                    b.Property<int>("RolePermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionRole");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 6L,
-                            Name = "AssociateRole",
-                            RolePermission = 1
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Name = "DeassociateRole",
-                            RolePermission = 2
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Name = "ViewRoles",
-                            RolePermission = 3
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Name = "CreateRole",
-                            RolePermission = 4
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Name = "RemoveRole",
-                            RolePermission = 5
-                        });
-                });
-
-            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.PermissionViewUser", b =>
-                {
-                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
-
-                    b.Property<int>("ViewUserPermission")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("PermissionViewUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3L,
-                            Name = "ViewAll",
-                            ViewUserPermission = 1
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "ViewClient",
-                            ViewUserPermission = 2
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "ViewSelf",
-                            ViewUserPermission = 3
-                        });
-                });
-
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ApplicationRolePermission", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.Permissions.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
-                {
-                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
@@ -1107,6 +874,69 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("StockProduct");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRoleClaim", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", "Role")
+                        .WithMany("RoleClaims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserClaim", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "User")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserLogin", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "User")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserRole", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserToken", b =>
+                {
+                    b.HasOne("MissTortas.Data.Entity.Security.User.ApplicationUser", "User")
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>
                 {
                     b.Navigation("ConsultancyFiles");
@@ -1152,9 +982,24 @@ namespace MissTortas.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
+                {
+                    b.Navigation("RoleClaims");
+
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
                 {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
                     b.Navigation("Preparations");
+
+                    b.Navigation("Tokens");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

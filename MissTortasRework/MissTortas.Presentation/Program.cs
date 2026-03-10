@@ -91,15 +91,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("UserAdministrator", policy => policy.AddRequirements(ViewUserRequirementConstants.ViewAllUserRequirement))
-    .AddPolicy("RoleManagement", policy => policy.AddRequirements(RoleManagementRequirementConstants.RoleManagementRequirement))
-    .AddPolicy("RoleAssignment", policy => policy.AddRequirements(RoleManagementRequirementConstants.RoleAssignationRequirement))
-    .AddPolicy("RoleAdmin",
-        policy => policy
-            .AddRequirements(RoleManagementRequirementConstants.RoleManagementRequirement)
-            .AddRequirements(RoleManagementRequirementConstants.RoleAssignationRequirement)
-    )
-    .AddPolicy("ManageUsers", policy => policy.AddRequirements());
+    .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
+    .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
+    .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
+    .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllClaims));
 
 var app = builder.Build();
 
@@ -125,8 +120,7 @@ using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>)) as UserManager<ApplicationUser>;
     var roleManager = scope.ServiceProvider.GetService(typeof(RoleManager<ApplicationRole>)) as RoleManager<ApplicationRole>;
-    var securityService = scope.ServiceProvider.GetService(typeof(ISecurityService)) as ISecurityService;
-    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!, securityService!);
+    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!);
 }
 
 app.UseHttpsRedirection();

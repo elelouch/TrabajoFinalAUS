@@ -1,22 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Services.DTO.Security;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace MissTortas.Services.Interfaces
 {
     public interface ISecurityService
     {
-        public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
-        public Task<IEnumerable<Permission>> GetAllPermissions();
-        public Task AssignPermissionBulkAsync(string roleName, IEnumerable<Permission> permissionBulk);
-        public Task AssignPermissionBulkAsync(AssignPermissionToRoleDTO dto);
-        public Task ModifyUserAsync(UserModificationDTO dto);
-        public Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO request);
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        public Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO dto);
+        public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
+        public Task AssignClaimsAsync(long roleId, IEnumerable<Claim> claims);
+        public List<Claim> GetAllAvailableClaims();
     }
 }

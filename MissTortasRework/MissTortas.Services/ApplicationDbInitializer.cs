@@ -1,34 +1,49 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Engine.Interfaces;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Security;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MissTortas.Services.Security.Constants;
+
 
 namespace MissTortas.Services
 {
     public static class ApplicationDbInitializer
     {
-        public static void SeedPermissions(ISecurityService securityService)
+        public static void SeedClaims(RoleManager<ApplicationRole> roleManager)
         {
-            var allPermissions = securityService.GetAllPermissions().Result;
-            var assignPermissionToAdminTask = 
-                securityService.AssignPermissionBulkAsync(ApplicationRole.AdminRole.Name!, allPermissions);
-            assignPermissionToAdminTask.Wait();
+            var adminRole = roleManager.FindByNameAsync(ApplicationRole.AdminRole.Name!).Result;
+            if (adminRole != null)
+            {
+                foreach (var claim in ClaimConstants.AdminClaims)
+                {
+                    if (!roleManager.GetClaimsAsync(adminRole).Result.Any(c => c.Type == claim.Type && c.Value == claim.Value))
+                    {
+                        roleManager.AddClaimAsync(adminRole, claim).Wait();
+                    }
+                }
+            }
+
+            var userRole = roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!).Result;
+            if (userRole != null)
+            {
+                foreach (var claim in ClaimConstants.UserClaims)
+                {
+                    if (!roleManager.GetClaimsAsync(userRole).Result.Any(c => c.Type == claim.Type && c.Value == claim.Value))
+                    {
+                        roleManager.AddClaimAsync(userRole, claim).Wait();
+                    }
+                }
+            }
         }
 
         public static void SeedDatabase(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
-            ISecurityService securityService
-            )
+            RoleManager<ApplicationRole> roleManager
+        )
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
-            SeedPermissions(securityService);
+            SeedClaims(roleManager);
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
@@ -67,3 +82,4 @@ namespace MissTortas.Services
         }
     }
 }
+

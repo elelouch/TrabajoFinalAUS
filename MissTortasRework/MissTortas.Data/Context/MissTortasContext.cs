@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Context
 {
-    public class MissTortasContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long>(options)
+    public class MissTortasContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
     {
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
@@ -29,19 +28,39 @@ namespace MissTortas.Data.Context
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
-        public DbSet<Permission> Permissions { get; set; } = default!;
-        public DbSet<PermissionCreateOrder> CreateOrderPermissions { get; set; } = default!;
-        public DbSet<PermissionRole> RolePermissions { get; set; } = default!;
-        public DbSet<PermissionViewUser> ViewUserPermissions { get; set; } = default!;
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>().HasIndex(u => new { u.Email, u.UserName });
+
+            modelBuilder.Entity<ApplicationUser>(appUser =>
+            {
+                appUser.HasIndex(u => new { u.Email, u.UserName });
+                appUser.HasMany(e => e.Claims)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(uc => uc.UserId)
+                    .IsRequired();
+
+                appUser.HasMany(e => e.Logins)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ul => ul.UserId)
+                    .IsRequired();
+
+                appUser.HasMany(e => e.Tokens)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ut => ut.UserId)
+                    .IsRequired();
+
+                appUser.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
             modelBuilder.Entity<Consultancy>()
                 .HasOne(c => c.Assignee)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Consultancy>()
                 .HasOne(c => c.Client)
                 .WithMany()
@@ -115,41 +134,48 @@ namespace MissTortas.Data.Context
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId);
 
-            var permissionsLoaded = 1;
-            foreach (var val in Enum.GetValues<CreateOrderPermission>())
+            modelBuilder.Entity<ApplicationUserRole>(userRole =>
             {
-                modelBuilder.Entity<PermissionCreateOrder>().HasData(new PermissionCreateOrder()
-                {
-                    Id = permissionsLoaded++,
-                    Name = val.ToString(),
-                    CreateOrderPermission = val
-                });
-            }
-            foreach (var val in Enum.GetValues<ViewUserPermission>())
-            {
-                modelBuilder.Entity<PermissionViewUser>().HasData(new PermissionViewUser()
-                {
-                    Id = permissionsLoaded++,
-                    Name = val.ToString(),
-                    ViewUserPermission = val
-                });
-            }
+                userRole.HasKey(ur => new { ur.RoleId, ur.UserId });
+                userRole.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
 
-            foreach (var val in Enum.GetValues<RolePermission>())
-            {
-                modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole()
-                {
-                    Id = permissionsLoaded++,
-                    Name = val.ToString(),
-                    RolePermission = val
-                });
-            }
-        }
+                userRole.HasOne(ur => ur.User)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
 
-        // In your DbContext
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        {
-            configurationBuilder.Conventions.Remove<TableNameFromDbSetConvention>();
+                userRole.ToTable(name:"ApplicationUserRole");
+            });
+
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable(name: "ApplicationRoleClaim");
+
+            modelBuilder.Entity<ApplicationUserClaim>().ToTable(name:"ApplicationUserClaim");
+
+            modelBuilder.Entity<ApplicationUserLogin>(aul =>
+            {
+                aul.ToTable(name: "ApplicationUserLogin");
+            });
+
+            modelBuilder.Entity<ApplicationUser>().ToTable(name: "ApplicationUser");
+
+            modelBuilder.Entity<ApplicationUserToken>().ToTable(name: "ApplicationUserToken");
+
+            modelBuilder.Entity<ApplicationRole>(b =>
+            {
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                b.HasMany(e => e.RoleClaims)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(rc => rc.RoleId)
+                    .IsRequired();
+                b.ToTable(name: "ApplicationRole");
+            });
         }
 
     }
