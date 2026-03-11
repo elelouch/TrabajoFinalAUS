@@ -1,8 +1,10 @@
-﻿namespace MissTortas.Presentation.DTO.Security
+﻿using System.Security.Claims;
+
+namespace MissTortas.Presentation.DTO.Security
 {
     public class AssignPermissionToRole
     {
-        public List<long> PermissionsId { get; set; } = [];
-        public string RoleName { get; set; }
+        public List<SimpleClaim> Claims { get; set; } = [];
+        public long RoleId { get; set; }
     }
 }

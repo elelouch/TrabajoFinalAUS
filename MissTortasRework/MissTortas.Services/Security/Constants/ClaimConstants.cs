@@ -9,23 +9,30 @@ namespace MissTortas.Services.Security.Constants
         public static readonly Claim ViewAllClaims = new(PermissionRequirementConstants.ViewAllClaims.ClaimType, PermissionRequirementConstants.ViewAllClaims.ClaimValue);
         public static readonly Claim UpdateAllUser = new(PermissionRequirementConstants.UpdateAllUser.ClaimType, PermissionRequirementConstants.UpdateAllUser.ClaimValue);
         public static readonly Claim UpdateSelfUser = new(PermissionRequirementConstants.UpdateSelfUser.ClaimType, PermissionRequirementConstants.UpdateSelfUser.ClaimValue);
+        public static readonly Claim RoleAssignClaim = new(PermissionRequirementConstants.RoleAssignClaim.ClaimType, PermissionRequirementConstants.RoleAssignClaim.ClaimValue);
 
         public static readonly List<Claim> AllClaims = 
         [
             ViewAllUser,
             ViewSelf,
-            ViewAllClaims
+            ViewAllClaims,
+            UpdateAllUser,
+            UpdateSelfUser,
+            RoleAssignClaim
         ];
 
         public static readonly List<Claim> AdminClaims =
         [
             ViewAllUser,
-            ViewAllClaims
+            ViewAllClaims,
+            UpdateAllUser,
+            RoleAssignClaim
         ];
 
         public static readonly List<Claim> UserClaims =
         [
-            ViewSelf
+            ViewSelf,
+            UpdateSelfUser
         ];
     }
 }

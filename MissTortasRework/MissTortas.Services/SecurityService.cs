@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
@@ -19,6 +18,7 @@ namespace MissTortas.Services
         ITokenGenerator tokenGenerator
         ) : ISecurityService
     {
+
         public async Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO request)
         {
             var user = await userManager.FindByNameAsync(request.Username) ?? throw new UserNotFoundException($"User {request.Username} not found.");
@@ -60,7 +60,7 @@ namespace MissTortas.Services
              ?? throw new UserNotFoundException("User not found.");
 
             user.Email = dto.Email;
-            user.LockoutEnabled = !dto.IsEnabled;
+            user.LockoutEnabled = !(dto.IsEnabled ?? true);
 
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
@@ -81,22 +81,25 @@ namespace MissTortas.Services
             return await userManager.Users.ToListAsync();
         }
 
-        public async Task AssignClaimsAsync(long roleId, IEnumerable<Claim> claims)
+        public async Task AssignClaimsAsync(AssignClaimsToRoleDTO dto)
         {
-            var role = await roleManager.FindByIdAsync(roleId.ToString()) ?? throw new RoleNotFound("Role not found.");
-            var areClaimsValid = claims.All(
+            var role = await roleManager.FindByIdAsync(dto.RoleId.ToString()) ?? throw new RoleNotFound("Role not found.");
+            var claimsAreValid = dto.Claims.All(
                 inputClaim => ClaimConstants.AllClaims.Any(
                     availableClaim => inputClaim.Type == availableClaim.Type && inputClaim.ValueType == availableClaim.ValueType
                 )
             );
+            if(!claimsAreValid)
+            {
+                throw new InvalidClaimsException("All claims must be valid. Review which claims are available and try to assign it again.");
+            }
             var currentRoleClaims = await roleManager.GetClaimsAsync(role);
-            foreach (var claim in claims)
+            foreach (var claim in dto.Claims)
             {
                 if (!currentRoleClaims.Any(crc => crc.Type == claim.Type && crc.ValueType == claim.ValueType))
                 {
                     await roleManager.AddClaimAsync(role, claim);
                 }
-                
             }
         }
 

@@ -45,6 +45,7 @@ namespace MissTortas.Services
             services.AddScoped<IProductMapper, ProductMapper>();
             services.AddScoped<IOrderMapper, OrderMapper>();
 
+            services.AddScoped<IClaimsTransformation, RoleClaimsTransformation>();
             // Authorization handlers
             services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
 

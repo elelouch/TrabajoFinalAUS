@@ -3,20 +3,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using MissTortas.Presentation.DTO;
+using MissTortas.Data.Entity.Security.User;
 using MissTortas.Presentation;
-using MissTortas.Services;
-using MissTortas.Services.Mapper;
-using MissTortas.Services.Interfaces;
-using Microsoft.Extensions.FileProviders;
-using MissTortas.Services.Security.Constants;
-using MissTortas.Presentation.Validators.Orders;
-using MissTortas.Presentation.Validators.Products;
+using MissTortas.Presentation.DTO;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
-using MissTortas.Data.Entity.Security.User;
+using MissTortas.Presentation.DTO.Security;
+using MissTortas.Presentation.Validators.Orders;
+using MissTortas.Presentation.Validators.Products;
+using MissTortas.Presentation.Validators.Security;
+using MissTortas.Services;
+using MissTortas.Services.Interfaces;
+using MissTortas.Services.Mapper;
+using MissTortas.Services.Security.Constants;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +37,10 @@ builder.Services.AddScoped<IValidator<CreateSaleProduct>, CreateSaleProductDTOVa
 builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderType>, CreateOrderTypeDTOValidator>();
 builder.Services.AddScoped<IValidator<PlaceOrder>, PlaceOrderDTOValidator>();
+builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidator>();
 
+
+builder.Services.AddScoped<ISecurityDTOValidator, SecurityDTOValidator>();
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
 builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 
@@ -93,7 +98,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
     .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
-    .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
+    .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.RoleAssignClaim))
     .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllClaims));
 
 var app = builder.Build();

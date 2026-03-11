@@ -14,14 +14,21 @@ using MissTortas.Presentation.DTO.Security;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
+using MissTortas.Services.Security.Requirements;
+using MissTortas.Services.Security.Constants;
+using MissTortas.Presentation.Validators.Security;
+using System.Security.Claims;
 
 namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class SecurityController(ISecurityService securityService) : Controller
+    public class SecurityController(
+        ISecurityService securityService, 
+        IAuthorizationService authorizationService,
+        ISecurityDTOValidator validator
+    ) : Controller
     {
-        private readonly int DefaultLockTime = 10000;
 
         [Authorize(Policy = "Users.ViewAll")]
         [HttpGet("user")]
@@ -79,23 +86,24 @@ namespace MissTortas.Presentation.Controllers
             return securityService.GetAllAvailableClaims().Select(cl => new SimpleClaim { ClaimType = cl.Type, ClaimValue = cl.Value}).ToList();
         }
 
-        //[Authorize(Policy = "Roles.AssignPermission")]
-        //[HttpPost("role/assign/permission")]
-        //public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
-        //{
-        //    var serviceDto = new AssignPermissionToRoleDTO
-        //    {
-        //        RoleName = assignPermissionsDTO.RoleName,
-        //        PermissionsId = assignPermissionsDTO.PermissionsId
-        //    };
-        //    await securityService.AssignPermissionBulkAsync(serviceDto);
-        //    return Ok();
-        //}
+        [Authorize(Policy = "Roles.AssignClaim")]
+        [HttpPost("role/assign/permission")]
+        public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+        {
+            var claims = assignPermissionsDTO.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList();
+            var serviceDto = new AssignClaimsToRoleDTO
+            {
+                RoleId = assignPermissionsDTO.RoleId,
+                Claims = claims
+            };
+            await securityService.AssignClaimsAsync(serviceDto);
+            return Ok();
+        }
 
-        [Authorize(Policy = "Users.Update")]
         [HttpPut("user/modification")]
         public async Task<ActionResult> PostUserModification(UserModification userModificationDTO)
         {
+            await validator.UserModificationValidator().ValidateAndThrowAsync(userModificationDTO);
             var serviceDto = new UserModificationDTO
             {
                 IsEnabled = userModificationDTO.IsEnabled,
@@ -103,6 +111,9 @@ namespace MissTortas.Presentation.Controllers
                 Email = userModificationDTO.Email,
                 Role = userModificationDTO.Role
             };
+            var updateUserRequirement = new UpdateUserRequirement();
+
+            await authorizationService.AuthorizeAsync(User, userModificationDTO, updateUserRequirement);
 
             await securityService.ModifyUserAsync(serviceDto);
             return Ok();

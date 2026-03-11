@@ -8,7 +8,5 @@ namespace MissTortas.Services.Security.Requirements
 {
     public class UpdateUserRequirement : IAuthorizationRequirement
     {
-        public long UserId { get; set; }
-        public required Claim RequiredClaim { get; set; }
     }
 }

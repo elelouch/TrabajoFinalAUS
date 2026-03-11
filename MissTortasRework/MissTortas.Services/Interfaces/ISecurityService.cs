@@ -14,7 +14,8 @@ namespace MissTortas.Services.Interfaces
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
         public Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO dto);
         public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
-        public Task AssignClaimsAsync(long roleId, IEnumerable<Claim> claims);
+        public Task AssignClaimsAsync(AssignClaimsToRoleDTO dto);
         public List<Claim> GetAllAvailableClaims();
+        public Task ModifyUserAsync(UserModificationDTO dto);
     }
 }
