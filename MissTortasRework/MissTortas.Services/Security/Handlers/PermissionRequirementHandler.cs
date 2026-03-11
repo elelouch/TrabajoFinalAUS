@@ -7,7 +7,7 @@ namespace MissTortas.Services.Security.Handlers
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            if (context.User.HasClaim(requirement.ClaimType, requirement.ClaimValue))
+             if (context.User.HasClaim(requirement.ClaimType, requirement.ClaimValue))
             {
                 context.Succeed(requirement);
             }
