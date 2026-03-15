@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
 using MissTortas.Services.DTO.Security;
@@ -16,6 +17,7 @@ namespace MissTortas.Services
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         SignInManager<ApplicationUser> signInManager,
+        ISecurityRepository securityRepository,
         ITokenGenerator tokenGenerator
         ) : ISecurityService
     {
@@ -111,36 +113,36 @@ namespace MissTortas.Services
             return await userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToListAsync();
         }
 
-        public async Task AssignClaimsAsync(AssignClaimsToRoleDTO dto)
+        public async Task AssignPermissionsAsync(AssignPermissionsToRoleDTO dto)
         {
             var role = await roleManager.FindByIdAsync(dto.RoleId.ToString()) ?? throw new RoleNotFound("Role not found.");
-            var claimsAreValid = dto.Claims.All(
-                inputClaim => ClaimConstants.AllClaims.Any(
-                    availableClaim => inputClaim.Type == availableClaim.Type && inputClaim.ValueType == availableClaim.ValueType
-                )
-            );
-            if (!claimsAreValid)
-            {
-                throw new InvalidClaimsException("All claims must be valid. Review which claims are available and try to assign it again.");
-            }
             var currentRoleClaims = await roleManager.GetClaimsAsync(role);
-            foreach (var claim in dto.Claims)
-            {
-                if (!currentRoleClaims.Any(crc => crc.Type == claim.Type && crc.ValueType == claim.ValueType))
-                {
-                    await roleManager.AddClaimAsync(role, claim);
-                }
-            }
-        }
+            var permissionsIdAsked = dto.Permissions;
+            var permissionsAsked = await securityRepository.GetAllPermissions().Where(p => permissionsIdAsked.Contains(p.Id)).ToListAsync();
 
-        public List<Claim> GetAllAvailableClaims()
-        {
-            return ClaimConstants.AllClaims;
+            foreach (var perm in permissionsAsked)
+            {
+                var claim = perm.AsClaim();
+                if (!currentRoleClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value))
+                {
+                    var assignResult = await roleManager.AddClaimAsync(role, claim);
+                    if(!assignResult.Succeeded)
+                    {
+                        throw new InvalidOperationException($"Permission {perm.Id} assign didn't succeed");
+                    }
+                }
+                    
+            }
         }
 
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
             return await roleManager.Roles.Select(r => r.Name!).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Permission>> GetAllPermissionAsync()
+        {
+            return await securityRepository.GetAllPermissions().ToListAsync();
         }
     }
 }

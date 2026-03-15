@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Presentation;
 using MissTortas.Presentation.DTO;
@@ -30,6 +31,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // DI
+builder.Services.AddScoped<IValidator<AssignPermissionToRole>, AssignPermissionToRoleValidator>();
 builder.Services.AddScoped<IValidator<UpdateProduct>, UpdateProductDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProductCategory>, CreateProductCategoryDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateProduct>, CreateProductDTOValidator>();
@@ -96,11 +98,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
-    .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
+    .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUser))
+    .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.UpdateAllUser))
     .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.RoleAssignClaim))
     .AddPolicy("Roles.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.RoleViewAll))
-    .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllClaims));
+    .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ClaimViewAll));
 
 var app = builder.Build();
 

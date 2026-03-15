@@ -29,6 +29,7 @@ namespace MissTortas.Data.Context
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
+        public DbSet<Permission> Permissions { get; set; } = default!;
         public DbSet<RolePermission> RolePermissions { get; set; } = default!;
         public DbSet<ClaimPermission> ClaimPermissions { get; set; } = default!;
         public DbSet<UserPermission> UserPermissions { get; set; } = default!;
@@ -182,6 +183,13 @@ namespace MissTortas.Data.Context
                 b.ToTable(name: "ApplicationRole");
             });
 
+            modelBuilder.Entity<Permission>()
+                .HasDiscriminator<PermissionTypeEnum>("PermissionType")
+                .HasValue<UserPermission>(PermissionTypeEnum.User)
+                .HasValue<ClaimPermission>(PermissionTypeEnum.Claim)
+                .HasValue<RolePermission>(PermissionTypeEnum.Role);
+                
+
             var permissionId = 1;
             var userPermissionEnum = Enum.GetValues<UserPermissionEnum>();
             foreach(var perm in userPermissionEnum)
@@ -190,8 +198,8 @@ namespace MissTortas.Data.Context
                     new UserPermission
                     {
                         Id = permissionId++, 
-                        Name = perm.ToString(),
-                        Value = perm
+                        Value = (int) perm,
+                        Name = "User" + perm.ToString()
                     });
             }
             var rolePermissionEnum = Enum.GetValues<RolePermissionEnum>();
@@ -201,8 +209,8 @@ namespace MissTortas.Data.Context
                     new RolePermission
                     {
                         Id = permissionId++,
-                        Name = perm.ToString(),
-                        Value = perm
+                        Value = (int)perm,
+                        Name = "Role"+perm.ToString()
                     });
             }
 
@@ -213,8 +221,8 @@ namespace MissTortas.Data.Context
                     new ClaimPermission
                     {
                         Id = permissionId++,
-                        Name = perm.ToString(),
-                        Value = perm
+                        Value = (int)perm,
+                        Name = "Role" + perm.ToString()
                     });
             }
 

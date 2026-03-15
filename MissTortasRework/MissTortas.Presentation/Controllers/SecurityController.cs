@@ -18,6 +18,7 @@ using MissTortas.Services.Security.Requirements;
 using MissTortas.Services.Security.Constants;
 using MissTortas.Presentation.Validators.Security;
 using System.Security.Claims;
+using MissTortas.Data.Entity.Security.Permissions;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -84,9 +85,9 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = "Claims.ViewAll")]
         [HttpGet("permission")]
-        public async Task<IEnumerable<SimpleClaim>> GetAllPermissions()
+        public async Task<IEnumerable<Permission>> GetAllPermissions()
         {
-            return securityService.GetAllAvailableClaims().Select(cl => new SimpleClaim { ClaimType = cl.Type, ClaimValue = cl.Value}).ToList();
+            return await securityService.GetAllPermissionAsync();
         }
 
         [Authorize(Policy = "Roles.ViewAll")]
@@ -100,13 +101,13 @@ namespace MissTortas.Presentation.Controllers
         [HttpPost("role/assign/permission")]
         public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
         {
-            var claims = assignPermissionsDTO.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList();
-            var serviceDto = new AssignClaimsToRoleDTO
+            await validator.AssignPermissionToRoleValidator().ValidateAndThrowAsync(assignPermissionsDTO);
+            var serviceDto = new AssignPermissionsToRoleDTO
             {
                 RoleId = assignPermissionsDTO.RoleId,
-                Claims = claims
+                Permissions = assignPermissionsDTO.Permissions
             };
-            await securityService.AssignClaimsAsync(serviceDto);
+            await securityService.AssignPermissionsAsync(serviceDto);
             return Ok();
         }
 
@@ -116,7 +117,7 @@ namespace MissTortas.Presentation.Controllers
             await validator.UserModificationValidator().ValidateAndThrowAsync(userModificationDTO);
             var serviceDto = new UserModificationDTO
             {
-                IsEnabled = userModificationDTO.IsEnabled,
+                IsEnabled = userModificationDTO.Enabled,
                 Username = userModificationDTO.Username,
                 Email = userModificationDTO.Email,
                 Roles = userModificationDTO.Roles

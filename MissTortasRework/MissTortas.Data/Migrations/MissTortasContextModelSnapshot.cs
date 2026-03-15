@@ -431,6 +431,33 @@ namespace MissTortas.Data.Migrations
                     b.ToTable("SaleProducts");
                 });
 
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.Permission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PermissionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+
+                    b.HasDiscriminator<int>("PermissionType");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
@@ -694,6 +721,81 @@ namespace MissTortas.Data.Migrations
                         .HasColumnName("PAN");
 
                     b.HasDiscriminator().HasValue("DebitCardDetail");
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.ClaimPermission", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.HasDiscriminator().HasValue(2);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 8L,
+                            Name = "RoleViewAll",
+                            Value = 0
+                        });
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.RolePermission", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.HasDiscriminator().HasValue(1);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5L,
+                            Name = "RoleAssignClaim",
+                            Value = 0
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            Name = "RoleViewAll",
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Name = "RoleViewSelf",
+                            Value = 2
+                        });
+                });
+
+            modelBuilder.Entity("MissTortas.Data.Entity.Security.Permissions.UserPermission", b =>
+                {
+                    b.HasBaseType("MissTortas.Data.Entity.Security.Permissions.Permission");
+
+                    b.HasDiscriminator().HasValue(0);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "UserViewAll",
+                            Value = 0
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "UserViewSelf",
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "UserUpdateAll",
+                            Value = 2
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "UserUpdateSelf",
+                            Value = 3
+                        });
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Orders.Consultancy", b =>

@@ -1,8 +1,10 @@
-﻿namespace MissTortas.Data.Entity.Security.Permissions
+﻿using System.Security.Claims;
+
+namespace MissTortas.Data.Entity.Security.Permissions
 {
     public class RolePermission : Permission
     {
-        public RolePermissionEnum Value { get; set; }
+        public override Claim AsClaim() => ((RolePermissionEnum)Value).ToClaim();
     }
     public enum RolePermissionEnum
     {

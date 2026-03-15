@@ -1,27 +1,17 @@
+using MissTortas.Data.Entity.Security.Permissions;
 using System.Security.Claims;
 
 namespace MissTortas.Services.Security.Constants
 {
     public static class ClaimConstants
     {
-        public static readonly Claim ViewAllUser = new(PermissionRequirementConstants.ViewAllUserPermission.ClaimType, PermissionRequirementConstants.ViewAllUserPermission.ClaimValue);
-        public static readonly Claim ViewSelf = new(PermissionRequirementConstants.ViewSelfUserPermission.ClaimType, PermissionRequirementConstants.ViewSelfUserPermission.ClaimValue);
-        public static readonly Claim ViewAllClaims = new(PermissionRequirementConstants.ViewAllClaims.ClaimType, PermissionRequirementConstants.ViewAllClaims.ClaimValue);
-        public static readonly Claim UpdateAllUser = new(PermissionRequirementConstants.UpdateAllUser.ClaimType, PermissionRequirementConstants.UpdateAllUser.ClaimValue);
-        public static readonly Claim UpdateSelfUser = new(PermissionRequirementConstants.UpdateSelfUser.ClaimType, PermissionRequirementConstants.UpdateSelfUser.ClaimValue);
-        public static readonly Claim RoleViewAll = new(PermissionRequirementConstants.RoleAssignClaim.ClaimType, PermissionRequirementConstants.RoleAssignClaim.ClaimValue);
-        public static readonly Claim RoleAssignClaim = new(PermissionRequirementConstants.RoleViewAll.ClaimType, PermissionRequirementConstants.RoleViewAll.ClaimValue);
-
-        public static readonly List<Claim> AllClaims = 
-        [
-            ViewAllUser,
-            ViewSelf,
-            ViewAllClaims,
-            UpdateAllUser,
-            UpdateSelfUser,
-            RoleAssignClaim,
-            RoleViewAll
-        ];
+        public static readonly Claim ViewAllUser = UserPermissionEnum.ViewAll.ToClaim();
+        public static readonly Claim ViewSelf = UserPermissionEnum.ViewSelf.ToClaim();
+        public static readonly Claim UpdateAllUser = UserPermissionEnum.UpdateAll.ToClaim();
+        public static readonly Claim UpdateSelfUser = UserPermissionEnum.UpdateSelf.ToClaim();
+        public static readonly Claim ViewAllClaims = ClaimPermissionEnum.ViewAll.ToClaim();
+        public static readonly Claim RoleViewAll = RolePermissionEnum.ViewAll.ToClaim();
+        public static readonly Claim RoleAssignClaim = RolePermissionEnum.AssignClaim.ToClaim();
 
         public static readonly List<Claim> AdminClaims =
         [
@@ -36,5 +26,6 @@ namespace MissTortas.Services.Security.Constants
             ViewSelf,
             UpdateSelfUser
         ];
+
     }
 }

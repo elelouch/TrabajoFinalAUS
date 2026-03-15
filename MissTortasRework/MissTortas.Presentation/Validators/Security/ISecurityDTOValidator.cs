@@ -6,5 +6,6 @@ namespace MissTortas.Presentation.Validators.Security
     public interface ISecurityDTOValidator
     {
         public IValidator<UserModification> UserModificationValidator();
+        public IValidator<AssignPermissionToRole> AssignPermissionToRoleValidator();
     }
 }

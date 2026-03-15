@@ -31,6 +31,7 @@ namespace MissTortas.Services
             }).AddEntityFrameworkStores<MissTortasContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<ISecurityRepository, SecurityRepository>();
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace MissTortas.Services.DTO.Security
 {
-    public class AssignClaimsToRoleDTO
+    public class AssignPermissionsToRoleDTO
     {
         public long RoleId { get; set; }
-        public List<Claim> Claims { get; set; } = [];
+        public List<long> Permissions { get; set; } = [];
     }
 }

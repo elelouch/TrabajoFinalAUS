@@ -4,7 +4,7 @@ namespace MissTortas.Presentation.DTO.Security
 {
     public class AssignPermissionToRole
     {
-        public List<SimpleClaim> Claims { get; set; } = [];
+        public List<long> Permissions { get; set; } = [];
         public long RoleId { get; set; }
     }
 }
