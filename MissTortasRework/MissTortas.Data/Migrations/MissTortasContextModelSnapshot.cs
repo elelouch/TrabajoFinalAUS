@@ -593,10 +593,10 @@ namespace MissTortas.Data.Migrations
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserLogin", b =>
                 {
-                    b.Property<string>("ProviderKey")
+                    b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LoginProvider")
+                    b.Property<string>("ProviderKey")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
@@ -605,7 +605,7 @@ namespace MissTortas.Data.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ProviderKey", "LoginProvider");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 

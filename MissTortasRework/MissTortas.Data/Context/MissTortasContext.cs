@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using MissTortas.Data.Entity.Orders;
 using MissTortas.Data.Entity.Payment;
 using MissTortas.Data.Entity.Products;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 
 namespace MissTortas.Data.Context
@@ -27,6 +28,10 @@ namespace MissTortas.Data.Context
         public DbSet<Payment> Payments { get; set; } = default!;
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
+
+        public DbSet<RolePermission> RolePermissions { get; set; } = default!;
+        public DbSet<ClaimPermission> ClaimPermissions { get; set; } = default!;
+        public DbSet<UserPermission> UserPermissions { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -176,6 +181,43 @@ namespace MissTortas.Data.Context
                     .IsRequired();
                 b.ToTable(name: "ApplicationRole");
             });
+
+            var permissionId = 1;
+            var userPermissionEnum = Enum.GetValues<UserPermissionEnum>();
+            foreach(var perm in userPermissionEnum)
+            {
+                modelBuilder.Entity<UserPermission>().HasData(
+                    new UserPermission
+                    {
+                        Id = permissionId++, 
+                        Name = perm.ToString(),
+                        Value = perm
+                    });
+            }
+            var rolePermissionEnum = Enum.GetValues<RolePermissionEnum>();
+            foreach (var perm in rolePermissionEnum)
+            {
+                modelBuilder.Entity<RolePermission>().HasData(
+                    new RolePermission
+                    {
+                        Id = permissionId++,
+                        Name = perm.ToString(),
+                        Value = perm
+                    });
+            }
+
+            var claimPermissionEnum = Enum.GetValues<ClaimPermissionEnum>();
+            foreach (var perm in claimPermissionEnum)
+            {
+                modelBuilder.Entity<ClaimPermission>().HasData(
+                    new ClaimPermission
+                    {
+                        Id = permissionId++,
+                        Name = perm.ToString(),
+                        Value = perm
+                    });
+            }
+
         }
 
     }

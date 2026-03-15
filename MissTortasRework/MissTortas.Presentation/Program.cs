@@ -99,6 +99,7 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
     .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUserPermission))
     .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.RoleAssignClaim))
+    .AddPolicy("Roles.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.RoleViewAll))
     .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllClaims));
 
 var app = builder.Build();

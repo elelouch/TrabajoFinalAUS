@@ -30,9 +30,8 @@ namespace MissTortas.Presentation.Validators.Security
                 .Length(EmailMinLength, EmailMaxLength)
                 .EmailAddress();
 
-            RuleFor(user => user.Role)
-                .MaximumLength(RoleMaxLength)
-                .When(user => user.Role != null);
+            RuleForEach(user => user.Roles).MaximumLength(RoleMaxLength);
+
         }
     }
 }

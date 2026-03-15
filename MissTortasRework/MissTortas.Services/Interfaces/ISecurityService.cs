@@ -12,8 +12,9 @@ namespace MissTortas.Services.Interfaces
     public interface ISecurityService
     {
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
-        public Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO dto);
+        public Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO dto);
         public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
+        public Task<IEnumerable<string>> GetAllRolesAsync();
         public Task AssignClaimsAsync(AssignClaimsToRoleDTO dto);
         public List<Claim> GetAllAvailableClaims();
         public Task ModifyUserAsync(UserModificationDTO dto);

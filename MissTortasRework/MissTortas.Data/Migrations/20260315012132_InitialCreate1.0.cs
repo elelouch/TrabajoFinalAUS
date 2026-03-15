@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate11 : Migration
+    public partial class InitialCreate10 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
+                name: "ApplicationRole",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -26,11 +26,11 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "ApplicationUser",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -53,7 +53,7 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +104,7 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "ApplicationRoleClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -115,17 +115,17 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationRoleClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        name: "FK_ApplicationRoleClaim_ApplicationRole_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        principalTable: "ApplicationRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
+                name: "ApplicationUserClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -136,17 +136,17 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationUserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        name: "FK_ApplicationUserClaim_ApplicationUser_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
+                name: "ApplicationUserLogin",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -156,17 +156,17 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_ApplicationUserLogin", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        name: "FK_ApplicationUserLogin_ApplicationUser_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
+                name: "ApplicationUserRole",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
@@ -174,23 +174,23 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_ApplicationUserRole", x => new { x.RoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        name: "FK_ApplicationUserRole_ApplicationRole_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        principalTable: "ApplicationRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        name: "FK_ApplicationUserRole_ApplicationUser_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
+                name: "ApplicationUserToken",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
@@ -200,11 +200,11 @@ namespace MissTortas.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_ApplicationUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        name: "FK_ApplicationUserToken_ApplicationUser_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -227,14 +227,14 @@ namespace MissTortas.Data.Migrations
                 {
                     table.PrimaryKey("PK_Consultancies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Consultancies_AspNetUsers_AssigneeId",
+                        name: "FK_Consultancies_ApplicationUser_AssigneeId",
                         column: x => x.AssigneeId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Consultancies_AspNetUsers_ClientId",
+                        name: "FK_Consultancies_ApplicationUser_ClientId",
                         column: x => x.ClientId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id");
                 });
 
@@ -370,9 +370,9 @@ namespace MissTortas.Data.Migrations
                 {
                     table.PrimaryKey("PK_OrderPreparations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderPreparations_AspNetUsers_AssigneeId",
+                        name: "FK_OrderPreparations_ApplicationUser_AssigneeId",
                         column: x => x.AssigneeId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -500,53 +500,53 @@ namespace MissTortas.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AskedProducts_SaleProductId",
-                table: "AskedProducts",
-                column: "SaleProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "AspNetRoles",
+                table: "ApplicationRole",
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
+                name: "IX_ApplicationRoleClaim_RoleId",
+                table: "ApplicationRoleClaim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "AspNetUsers",
+                table: "ApplicationUser",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_Email_UserName",
-                table: "AspNetUsers",
+                name: "IX_ApplicationUser_Email_UserName",
+                table: "ApplicationUser",
                 columns: new[] { "Email", "UserName" });
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "AspNetUsers",
+                table: "ApplicationUser",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserClaim_UserId",
+                table: "ApplicationUserClaim",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserLogin_UserId",
+                table: "ApplicationUserLogin",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserRole_UserId",
+                table: "ApplicationUserRole",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AskedProducts_SaleProductId",
+                table: "AskedProducts",
+                column: "SaleProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Consultancies_AssigneeId",
@@ -633,22 +633,22 @@ namespace MissTortas.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApplicationRoleClaim");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserClaim");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserLogin");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserRole");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserToken");
+
+            migrationBuilder.DropTable(
                 name: "AskedProducts");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "ConsultancyFiles");
@@ -666,10 +666,10 @@ namespace MissTortas.Data.Migrations
                 name: "PersonalizedProduct");
 
             migrationBuilder.DropTable(
-                name: "SaleProducts");
+                name: "ApplicationRole");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "SaleProducts");
 
             migrationBuilder.DropTable(
                 name: "Payments");
@@ -696,7 +696,7 @@ namespace MissTortas.Data.Migrations
                 name: "Consultancies");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ApplicationUser");
         }
     }
 }

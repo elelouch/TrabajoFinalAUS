@@ -13,6 +13,7 @@ namespace MissTortas.Services.Security.Constants
         public static PermissionRequirement RoleAssignClaim { get; set; } = new("Role", "AssignClaim");
         public static PermissionRequirement UpdateAllUser { get; set; } = new("User", "UpdateAll");
         public static PermissionRequirement UpdateSelfUser { get; set; } = new("User", "UpdateSelf");
+        public static PermissionRequirement RoleViewAll { get; set; } = new("Role", "ViewAll");
 
     }
 }

@@ -24,14 +24,16 @@ namespace MissTortas.Services.Security.Handlers
                 return Task.CompletedTask;
             }
 
-            if (context.User.HasClaim(cl => cl.Equals(ClaimConstants.UpdateSelfUser)) &&
-                currentUsername == userModification.Username)
+            var userCanUpdateHimself = context.User.HasClaim(cl => cl.Equals(ClaimConstants.UpdateSelfUser))
+                && currentUsername == userModification.Username;
+
+            var hasNoStatusOrRoleChanges = userModification.IsEnabled == null && !userModification.Roles.Any();
+
+            if (userCanUpdateHimself && hasNoStatusOrRoleChanges)
             {
                 context.Succeed(requirement);
-                if (userModification.IsEnabled != null || !string.IsNullOrEmpty(userModification.Role))
-                    return Task.CompletedTask;
             }
-
+            
             return Task.CompletedTask;
         }
     }

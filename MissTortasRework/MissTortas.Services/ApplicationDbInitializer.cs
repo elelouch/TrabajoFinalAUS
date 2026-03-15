@@ -22,7 +22,7 @@ namespace MissTortas.Services
                     }
                 }
             }
-
+            
             var userRole = roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!).Result;
             if (userRole != null)
             {

@@ -12,8 +12,8 @@ using MissTortas.Data.Context;
 namespace MissTortas.Data.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260309005449_InitialCreate1.1")]
-    partial class InitialCreate11
+    [Migration("20260315012132_InitialCreate1.0")]
+    partial class InitialCreate10
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -470,7 +470,7 @@ namespace MissTortas.Data.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("ApplicationRole", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationRoleClaim", b =>
@@ -494,7 +494,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("ApplicationRoleClaim", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUser", b =>
@@ -567,7 +567,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("Email", "UserName");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("ApplicationUser", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserClaim", b =>
@@ -591,7 +591,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("ApplicationUserClaim", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserLogin", b =>
@@ -612,22 +612,22 @@ namespace MissTortas.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("ApplicationUserLogin", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserRole", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("UserId", "RoleId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("RoleId");
+                    b.HasKey("RoleId", "UserId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ApplicationUserRole", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Security.User.ApplicationUserToken", b =>
@@ -646,7 +646,7 @@ namespace MissTortas.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("ApplicationUserToken", (string)null);
                 });
 
             modelBuilder.Entity("MissTortas.Data.Entity.Payment.CreditCardDetail", b =>

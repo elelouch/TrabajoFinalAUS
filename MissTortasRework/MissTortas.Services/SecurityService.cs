@@ -8,6 +8,7 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Security.Constants;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MissTortas.Services
 {
@@ -19,9 +20,13 @@ namespace MissTortas.Services
         ) : ISecurityService
     {
 
-        public async Task<LoginUserResultDTO> SignInUserAsync(LoginUserDTO request)
+        public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.FindByNameAsync(request.Username) ?? throw new UserNotFoundException($"User {request.Username} not found.");
+            var user = await userManager.FindByNameAsync(request.Username);
+            if (user == null)
+            {
+                return null;
+            }
             var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
             var dtoRet = new LoginUserResultDTO
             {
@@ -56,29 +61,54 @@ namespace MissTortas.Services
 
         public async Task ModifyUserAsync(UserModificationDTO dto)
         {
-            var user = await userManager.FindByNameAsync(dto.Username)
-             ?? throw new UserNotFoundException("User not found.");
+            var user = await userManager.FindByNameAsync(dto.Username) ?? throw new UserNotFoundException("User not found.");
+            var roles = dto.Roles;
+            if(roles.Any())
+            {
+                var difference = await FindNonExistentRoles(roles);
+                if (difference.Count > 0)
+                {
+                    throw new InvalidOperationException($"Not all roles exist. Check: {string.Join(", ", difference)}");
+                }
+
+                var currentRoles = await userManager.GetRolesAsync(user);
+                var removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+                if (!removeResult.Succeeded)
+                {
+                    var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException(errors);
+                }
+
+                var addResult = await userManager.AddToRolesAsync(user, roles);
+                if (!addResult.Succeeded)
+                {
+                    var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException(errors);
+                }
+            }
 
             user.Email = dto.Email;
             user.LockoutEnabled = !(dto.IsEnabled ?? true);
-
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
                 throw new InvalidOperationException("Failed to update user.");
             }
+        }
 
-            if (!string.IsNullOrEmpty(dto.Role))
-            {
-                var currentRoles = await userManager.GetRolesAsync(user);
-                await userManager.RemoveFromRolesAsync(user, currentRoles);
-                await userManager.AddToRoleAsync(user, dto.Role);
-            }
+        private async Task<List<string>> FindNonExistentRoles(IEnumerable<string> roles)
+        {
+            var rolesFound = await roleManager.Roles
+                .Where(r => roles.Contains(r.Name ?? ""))
+                .Select(r => r.Name)
+                .ToListAsync();
+            var sape = roles.Except(rolesFound);
+            return [.. sape];
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return await userManager.Users.ToListAsync();
+            return await userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToListAsync();
         }
 
         public async Task AssignClaimsAsync(AssignClaimsToRoleDTO dto)
@@ -89,7 +119,7 @@ namespace MissTortas.Services
                     availableClaim => inputClaim.Type == availableClaim.Type && inputClaim.ValueType == availableClaim.ValueType
                 )
             );
-            if(!claimsAreValid)
+            if (!claimsAreValid)
             {
                 throw new InvalidClaimsException("All claims must be valid. Review which claims are available and try to assign it again.");
             }
@@ -106,6 +136,11 @@ namespace MissTortas.Services
         public List<Claim> GetAllAvailableClaims()
         {
             return ClaimConstants.AllClaims;
+        }
+
+        public async Task<IEnumerable<string>> GetAllRolesAsync()
+        {
+            return await roleManager.Roles.Select(r => r.Name!).ToListAsync();
         }
     }
 }

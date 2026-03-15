@@ -38,7 +38,8 @@ namespace MissTortas.Presentation.Controllers
             var allUserDTO = allUsers.Select(user => new UserLogin
             {
                 Id = user.Id,
-                Username = user.UserName!
+                Username = user.UserName!,
+                Roles = [.. user.UserRoles.Select(ur => ur.Role.Name ?? "")]
             }).ToList();
             return Ok(allUserDTO);
         }
@@ -54,9 +55,11 @@ namespace MissTortas.Presentation.Controllers
                 Username = request.Email,
                 Password = request.Password
             };
-
             var result = await securityService.SignInUserAsync(loginDto);
-
+            if(result == null)
+            {
+                return NotFound("User not found.");
+            }
             if (!result.SignInResult.Succeeded)
             {
                 return result.SignInResult switch
@@ -86,6 +89,13 @@ namespace MissTortas.Presentation.Controllers
             return securityService.GetAllAvailableClaims().Select(cl => new SimpleClaim { ClaimType = cl.Type, ClaimValue = cl.Value}).ToList();
         }
 
+        [Authorize(Policy = "Roles.ViewAll")]
+        [HttpGet("role")]
+        public async Task<IEnumerable<string>> GetAllRoles()
+        {
+            return await securityService.GetAllRolesAsync();
+        }
+
         [Authorize(Policy = "Roles.AssignClaim")]
         [HttpPost("role/assign/permission")]
         public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
@@ -109,7 +119,7 @@ namespace MissTortas.Presentation.Controllers
                 IsEnabled = userModificationDTO.IsEnabled,
                 Username = userModificationDTO.Username,
                 Email = userModificationDTO.Email,
-                Role = userModificationDTO.Role
+                Roles = userModificationDTO.Roles
             };
             var updateUserRequirement = new UpdateUserRequirement();
 
