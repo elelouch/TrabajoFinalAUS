@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
 using MissTortas.Data.Interfaces;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper;
 using MissTortas.Services.Security.Constants;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -17,24 +18,28 @@ namespace MissTortas.Services
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         SignInManager<ApplicationUser> signInManager,
-        ISecurityRepository securityRepository,
         ITokenGenerator tokenGenerator
         ) : ISecurityService
     {
-
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.FindByNameAsync(request.Username);
+            var user = await userManager.Users.Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role.RoleClaims)
+                .Include(u => u.Claims)
+                .Where(u => u.UserName == request.Username)
+                .SingleOrDefaultAsync();
+
             if (user == null)
             {
                 return null;
             }
+
             var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
             var dtoRet = new LoginUserResultDTO
             {
                 Id = user.Id,
                 Username = user.UserName!,
-                AccessToken = tokenGenerator.GenerateToken(user),
+                AccessToken = await tokenGenerator.GenerateToken(user),
                 SignInResult = result
             };
             return dtoRet;
@@ -63,9 +68,18 @@ namespace MissTortas.Services
 
         public async Task ModifyUserAsync(UserModificationDTO dto)
         {
-            var user = await userManager.FindByNameAsync(dto.Username) ?? throw new UserNotFoundException("User not found.");
+            var user = await userManager.FindByIdAsync(dto.UserId.ToString()) ?? throw new UserNotFoundException("User not found.");
+            user.UserName = dto.Username;
+            user.Email = dto.Email;
+            user.LockoutEnabled = !(dto.IsEnabled ?? true);
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                throw new InvalidOperationException("Failed to update user.");
+            }
+
             var roles = dto.Roles;
-            if(roles.Any())
+            if (roles is not null)
             {
                 var difference = await FindNonExistentRoles(roles);
                 if (difference.Count > 0)
@@ -74,27 +88,22 @@ namespace MissTortas.Services
                 }
 
                 var currentRoles = await userManager.GetRolesAsync(user);
-                var removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+                var rolesToAdd = roles.Except(currentRoles);
+                var rolesToRemove = currentRoles.Except(roles);
+
+                var removeResult = await userManager.RemoveFromRolesAsync(user, rolesToRemove);
                 if (!removeResult.Succeeded)
                 {
                     var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
                     throw new InvalidOperationException(errors);
                 }
 
-                var addResult = await userManager.AddToRolesAsync(user, roles);
+                var addResult = await userManager.AddToRolesAsync(user, rolesToAdd);
                 if (!addResult.Succeeded)
                 {
                     var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
                     throw new InvalidOperationException(errors);
                 }
-            }
-
-            user.Email = dto.Email;
-            user.LockoutEnabled = !(dto.IsEnabled ?? true);
-            var updateResult = await userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                throw new InvalidOperationException("Failed to update user.");
             }
         }
 
@@ -104,8 +113,8 @@ namespace MissTortas.Services
                 .Where(r => roles.Contains(r.Name ?? ""))
                 .Select(r => r.Name)
                 .ToListAsync();
-            var sape = roles.Except(rolesFound);
-            return [.. sape];
+            var ret = roles.Except(rolesFound);
+            return [.. ret];
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
@@ -113,26 +122,16 @@ namespace MissTortas.Services
             return await userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToListAsync();
         }
 
-        public async Task AssignPermissionsAsync(AssignPermissionsToRoleDTO dto)
+        public async Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto)
         {
             var role = await roleManager.FindByIdAsync(dto.RoleId.ToString()) ?? throw new RoleNotFound("Role not found.");
-            var currentRoleClaims = await roleManager.GetClaimsAsync(role);
-            var permissionsIdAsked = dto.Permissions;
-            var permissionsAsked = await securityRepository.GetAllPermissions().Where(p => permissionsIdAsked.Contains(p.Id)).ToListAsync();
-
-            foreach (var perm in permissionsAsked)
+            var permissionsAsked = dto.Permissions;
+            var permissionsDiff = Permission.All.Select(p => p.Name).Except(permissionsAsked);
+            if (permissionsDiff.Any())
             {
-                var claim = perm.AsClaim();
-                if (!currentRoleClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value))
-                {
-                    var assignResult = await roleManager.AddClaimAsync(role, claim);
-                    if(!assignResult.Succeeded)
-                    {
-                        throw new InvalidOperationException($"Permission {perm.Id} assign didn't succeed");
-                    }
-                }
-                    
+                throw new InvalidOperationException($"The following permissions don't exist {string.Join(",", permissionsDiff)}");
             }
+            permissionsAsked.ForEach(async pAsked => await roleManager.AddClaimAsync(role, new Claim(Permission.ClaimName, pAsked)));
         }
 
         public async Task<IEnumerable<string>> GetAllRolesAsync()
@@ -140,9 +139,29 @@ namespace MissTortas.Services
             return await roleManager.Roles.Select(r => r.Name!).ToListAsync();
         }
 
-        public async Task<IEnumerable<Permission>> GetAllPermissionAsync()
+        public IEnumerable<Permission> GetAllPermissions()
         {
-            return await securityRepository.GetAllPermissions().ToListAsync();
+            return Permission.All;
+        }
+
+        public Task AssignPermissionsToUserAsync(AssignPermissionsToRoleDTO dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AssignPermissionsAsync(AssignPermissionsDTO dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUsersForAsync(CurrentUserDTO user)
+        {
+            if (user.Permissions.Any(p => Permission.ReadAllUser.Name == p))
+            {
+                return await GetAllUsersAsync();
+            }
+            var currentUser = await userManager.FindByNameAsync(user.Username);
+            return currentUser == null ? throw new UserNotFoundException($"User {user.Id} - {user.Username} not found.") : [currentUser];
         }
     }
 }

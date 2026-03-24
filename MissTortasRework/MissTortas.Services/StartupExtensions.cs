@@ -14,6 +14,7 @@ using MissTortas.Data.Repositories;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Security.Handlers;
+using MissTortas.Services.Security.Requirements;
 
 namespace MissTortas.Services
 {
@@ -31,7 +32,6 @@ namespace MissTortas.Services
             }).AddEntityFrameworkStores<MissTortasContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<ISecurityRepository, SecurityRepository>();
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
@@ -46,10 +46,8 @@ namespace MissTortas.Services
             services.AddScoped<IProductMapper, ProductMapper>();
             services.AddScoped<IOrderMapper, OrderMapper>();
 
-            services.AddScoped<IClaimsTransformation, RoleClaimsTransformation>();
-            // Authorization handlers
-            services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
-
+            services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
+            services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
             return services;
         }

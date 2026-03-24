@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Services.Mapper
+namespace MissTortas.Services.Interfaces
 {
     public interface ITokenGenerator
     {
-        public string GenerateToken(ApplicationUser user);
+        public Task<string> GenerateToken(ApplicationUser user);
     }
 }

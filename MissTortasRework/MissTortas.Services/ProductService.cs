@@ -71,7 +71,7 @@ namespace MissTortas.Services
 
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
-            var product = (await productRepository.FindAsync(dto.ProductId)) ?? throw new EntityNotFoundException("No stock product related found");
+            var product = await productRepository.FindAsync(dto.ProductId) ?? throw new EntityNotFoundException("No stock product related found");
             if (product.SaleProduct is not null)
             {
                 throw new SaleProductAlreadyVinculatedException("Sale product already vinculated. Try another stock product.");

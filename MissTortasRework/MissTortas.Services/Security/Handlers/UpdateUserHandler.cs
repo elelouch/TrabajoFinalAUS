@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
@@ -8,33 +9,34 @@ using System.Text;
 
 namespace MissTortas.Services.Security.Handlers
 {
-    public class UpdateUserHandler
-        : AuthorizationHandler<UpdateUserRequirement, UserModificationDTO>
+    public class UpdateUserHandler : AuthorizationHandler<UpdateUserRequirement, UserModificationDTO>
     {
-        protected override Task HandleRequirementAsync(
+        protected async override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             UpdateUserRequirement requirement,
             UserModificationDTO userModification)
         {
             var currentUsername = context.User.Identity?.Name;
+            var claimType = Permission.ClaimName;
+            var updateAllValue = Permission.UpdateAllUser.Name;
 
-            if (context.User.HasClaim(cl => cl.Equals(ClaimConstants.UpdateAllUser)))
+            if (context.User.HasClaim(claimType, updateAllValue))
             {
                 context.Succeed(requirement);
-                return Task.CompletedTask;
+                return;
             }
 
-            var userCanUpdateHimself = context.User.HasClaim(cl => cl.Equals(ClaimConstants.UpdateSelfUser))
-                && currentUsername == userModification.Username;
-
-            var hasNoStatusOrRoleChanges = userModification.IsEnabled == null && !userModification.Roles.Any();
-
-            if (userCanUpdateHimself && hasNoStatusOrRoleChanges)
+            var updateSelfValue = Permission.UpdateSelfUser.Name;
+            if (context.User.HasClaim(claimType, updateSelfValue) && currentUsername == userModification.Username)
             {
-                context.Succeed(requirement);
+
+                if (userModification.IsEnabled == null && !userModification.Roles.Any())
+                {
+                    context.Succeed(requirement);
+                    return;
+                }
+                    
             }
-            
-            return Task.CompletedTask;
         }
     }
 }

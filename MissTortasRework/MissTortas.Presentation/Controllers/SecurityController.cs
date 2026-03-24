@@ -19,6 +19,8 @@ using MissTortas.Services.Security.Constants;
 using MissTortas.Presentation.Validators.Security;
 using System.Security.Claims;
 using MissTortas.Data.Entity.Security.Permissions;
+using MissTortas.Presentation.Security;
+using MissTortas.Presentation.Mappers;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -27,16 +29,18 @@ namespace MissTortas.Presentation.Controllers
     public class SecurityController(
         ISecurityService securityService, 
         IAuthorizationService authorizationService,
-        ISecurityDTOValidator validator
+        ISecurityDTOValidator validator,
+        IUserMapper userMapper
     ) : Controller
     {
-
-        [Authorize(Policy = "Users.ViewAll")]
+        
+        [Authorize(Policy = PolicyName.ReadUsers)]
         [HttpGet("user")]
-        public async Task<ActionResult<List<UserLogin>>> AllUser()
+        public async Task<ActionResult<List<SimpleUser>>> Users()
         {
-            var allUsers = await securityService.GetAllUsersAsync();
-            var allUserDTO = allUsers.Select(user => new UserLogin
+            var currentUserDto = userMapper.UserToCurrentUserDTO(User);
+            var allUsers = await securityService.GetUsersForAsync(currentUserDto);
+            var allUserDTO = allUsers.Select(user => new SimpleUser
             {
                 Id = user.Id,
                 Username = user.UserName!,
@@ -82,12 +86,11 @@ namespace MissTortas.Presentation.Controllers
             return Ok(userLogin);
         }
 
-
-        [Authorize(Policy = "Claims.ViewAll")]
+        [Authorize(Policy = PolicyName.ReadPermissions)]
         [HttpGet("permission")]
         public async Task<IEnumerable<Permission>> GetAllPermissions()
         {
-            return await securityService.GetAllPermissionAsync();
+            return securityService.GetAllPermissions();
         }
 
         [Authorize(Policy = "Roles.ViewAll")]
@@ -107,7 +110,7 @@ namespace MissTortas.Presentation.Controllers
                 RoleId = assignPermissionsDTO.RoleId,
                 Permissions = assignPermissionsDTO.Permissions
             };
-            await securityService.AssignPermissionsAsync(serviceDto);
+            await securityService.AssignPermissionsToRoleAsync(serviceDto);
             return Ok();
         }
 
@@ -117,15 +120,13 @@ namespace MissTortas.Presentation.Controllers
             await validator.UserModificationValidator().ValidateAndThrowAsync(userModificationDTO);
             var serviceDto = new UserModificationDTO
             {
+                UserId = userModificationDTO.UserId,
                 IsEnabled = userModificationDTO.Enabled,
                 Username = userModificationDTO.Username,
                 Email = userModificationDTO.Email,
                 Roles = userModificationDTO.Roles
             };
-            var updateUserRequirement = new UpdateUserRequirement();
-
-            await authorizationService.AuthorizeAsync(User, userModificationDTO, updateUserRequirement);
-
+            await authorizationService.AuthorizeAsync(User, userModificationDTO, new UpdateUserRequirement());
             await securityService.ModifyUserAsync(serviceDto);
             return Ok();
         }

@@ -12,12 +12,15 @@ namespace MissTortas.Services.Interfaces
 {
     public interface ISecurityService
     {
-        public Task<IEnumerable<Permission>> GetAllPermissionAsync();
+        public IEnumerable<Permission> GetAllPermissions();
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        public Task<IEnumerable<ApplicationUser>> GetUsersForAsync(CurrentUserDTO user);
         public Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO dto);
         public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
         public Task<IEnumerable<string>> GetAllRolesAsync();
-        public Task AssignPermissionsAsync(AssignPermissionsToRoleDTO dto);
+        public Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto);
+        public Task AssignPermissionsToUserAsync(AssignPermissionsToRoleDTO dto);
+        public Task AssignPermissionsAsync(AssignPermissionsDTO dto);
         public Task ModifyUserAsync(UserModificationDTO dto);
     }
 }

@@ -25,29 +25,25 @@ namespace MissTortas.Services
                 throw new InvalidOperationException("Invalid payment method specified");
             }
             var pm = dto.PaymentDetails is null ? PaymentMethodEnum.Cash : (PaymentMethodEnum)dto.PaymentMethod;
-            switch (pm)
+            return pm switch
             {
-                case PaymentMethodEnum.DebitCard:
-                    return new DebitCardDetail
-                    {
-                        Payment = payment,
-                        PAN = dto.PaymentDetails!.PAN,
-                        CardHolderName = dto.PaymentDetails!.CardHolderName,
-                        ExpirationDate = dto.PaymentDetails!.ExpirationDate
-                    };
-                case PaymentMethodEnum.CreditCard:
-                    return new CreditCardDetail
-                    {
-                        Payment = payment,
-                        PAN = dto.PaymentDetails!.PAN,
-                        CardHolderName = dto.PaymentDetails!.CardHolderName,
-                        ExpirationDate = dto.PaymentDetails!.ExpirationDate
-                    };
-                case PaymentMethodEnum.Cash:
-                    return new CashDetail() { Payment = payment };
-                default:
-                    throw new InvalidOperationException("Invalid payment method specified");
-            }
+                PaymentMethodEnum.DebitCard => new DebitCardDetail
+                {
+                    Payment = payment,
+                    PAN = dto.PaymentDetails!.PAN,
+                    CardHolderName = dto.PaymentDetails!.CardHolderName,
+                    ExpirationDate = dto.PaymentDetails!.ExpirationDate
+                },
+                PaymentMethodEnum.CreditCard => new CreditCardDetail
+                {
+                    Payment = payment,
+                    PAN = dto.PaymentDetails!.PAN,
+                    CardHolderName = dto.PaymentDetails!.CardHolderName,
+                    ExpirationDate = dto.PaymentDetails!.ExpirationDate
+                },
+                PaymentMethodEnum.Cash => new CashDetail() { Payment = payment },
+                _ => throw new InvalidOperationException("Invalid payment method specified"),
+            };
         }
 
         private async Task<Payment> ExecutePaymentAsync(Payment payment)
@@ -93,10 +89,7 @@ namespace MissTortas.Services
             await orderService.PlaceOrderAsync(placeOrderDTO);
         }
 
-        public IEnumerable<PaymentMethodDTO> AllPaymentMethods()
-        {
-            var values = Enum.GetValues<PaymentMethodEnum>();
-            return values.Select(pm => paymentMapper.PaymentMethodToDTO(pm));
-        }
+        public IEnumerable<PaymentMethodDTO> AllPaymentMethods() => Enum.GetValues<PaymentMethodEnum>().Select(pm => paymentMapper.PaymentMethodToDTO(pm));
+
     }
 }

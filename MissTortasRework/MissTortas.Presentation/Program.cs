@@ -13,6 +13,8 @@ using MissTortas.Presentation.DTO;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.DTO.Security;
+using MissTortas.Presentation.Mappers;
+using MissTortas.Presentation.Security;
 using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Presentation.Validators.Security;
@@ -20,6 +22,7 @@ using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Security.Constants;
+using MissTortas.Services.Security.Requirements;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +49,8 @@ builder.Services.AddScoped<ISecurityDTOValidator, SecurityDTOValidator>();
 builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
 builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 
+builder.Services.AddScoped<IOrderMapper, OrderMapper>();
+builder.Services.AddScoped<IUserMapper, UserMapper>();
 
 builder.Services.AddMissTortasServiceCore(builder.Configuration);
 
@@ -98,11 +103,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Users.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ViewAllUser))
-    .AddPolicy("Users.UpdateAll", policy => policy.AddRequirements(PermissionRequirementConstants.UpdateAllUser))
-    .AddPolicy("Roles.AssignClaim", policy => policy.AddRequirements(PermissionRequirementConstants.RoleAssignClaim))
-    .AddPolicy("Roles.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.RoleViewAll))
-    .AddPolicy("Claims.ViewAll", policy => policy.AddRequirements(PermissionRequirementConstants.ClaimViewAll));
+    .AddPolicy(PolicyName.ReadUsers, policy => policy.AddRequirements(PermissionConstants.ReadUsers))
+    .AddPolicy(PolicyName.UpdateUsers, policy => policy.AddRequirements(PermissionConstants.UpdateUsers))
+    .AddPolicy(PolicyName.ReadPermissions, policy => policy.RequireClaim(Permission.ClaimName,Permission.ReadPermissions.Name));
 
 var app = builder.Build();
 

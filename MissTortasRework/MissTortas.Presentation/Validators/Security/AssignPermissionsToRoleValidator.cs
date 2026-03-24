@@ -14,9 +14,7 @@ namespace MissTortas.Presentation.Validators.Security
             RuleFor(x => x.Permissions)
                 .NotEmpty();
 
-            RuleForEach(x => x.Permissions)
-                .GreaterThan(0)
-                .LessThan(long.MaxValue);
+            RuleForEach(x => x.Permissions).Length(1, 256);
         }
     }
 }

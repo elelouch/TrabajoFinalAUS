@@ -6,9 +6,10 @@ namespace MissTortas.Presentation.DTO.Security
 {
     public class UserModification
     {
+        public long UserId { get; set; }
         public bool? Enabled { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public IEnumerable<string> Roles { get; set; } = [];
+        public IEnumerable<string>? Roles { get; set; }
     }
 }

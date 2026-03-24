@@ -29,11 +29,6 @@ namespace MissTortas.Data.Context
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetailBase> PaymentMethodDetails { get; set; } = default!;
 
-        public DbSet<Permission> Permissions { get; set; } = default!;
-        public DbSet<RolePermission> RolePermissions { get; set; } = default!;
-        public DbSet<ClaimPermission> ClaimPermissions { get; set; } = default!;
-        public DbSet<UserPermission> UserPermissions { get; set; } = default!;
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -182,49 +177,6 @@ namespace MissTortas.Data.Context
                     .IsRequired();
                 b.ToTable(name: "ApplicationRole");
             });
-
-            modelBuilder.Entity<Permission>()
-                .HasDiscriminator<PermissionTypeEnum>("PermissionType")
-                .HasValue<UserPermission>(PermissionTypeEnum.User)
-                .HasValue<ClaimPermission>(PermissionTypeEnum.Claim)
-                .HasValue<RolePermission>(PermissionTypeEnum.Role);
-                
-
-            var permissionId = 1;
-            var userPermissionEnum = Enum.GetValues<UserPermissionEnum>();
-            foreach(var perm in userPermissionEnum)
-            {
-                modelBuilder.Entity<UserPermission>().HasData(
-                    new UserPermission
-                    {
-                        Id = permissionId++, 
-                        Value = (int) perm,
-                        Name = "User" + perm.ToString()
-                    });
-            }
-            var rolePermissionEnum = Enum.GetValues<RolePermissionEnum>();
-            foreach (var perm in rolePermissionEnum)
-            {
-                modelBuilder.Entity<RolePermission>().HasData(
-                    new RolePermission
-                    {
-                        Id = permissionId++,
-                        Value = (int)perm,
-                        Name = "Role"+perm.ToString()
-                    });
-            }
-
-            var claimPermissionEnum = Enum.GetValues<ClaimPermissionEnum>();
-            foreach (var perm in claimPermissionEnum)
-            {
-                modelBuilder.Entity<ClaimPermission>().HasData(
-                    new ClaimPermission
-                    {
-                        Id = permissionId++,
-                        Value = (int)perm,
-                        Name = "Role" + perm.ToString()
-                    });
-            }
 
         }
 

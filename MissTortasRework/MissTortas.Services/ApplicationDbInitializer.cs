@@ -1,39 +1,43 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Data.Entity.Security.User;
+using MissTortas.Data.Interfaces;
 using MissTortas.Engine.Interfaces;
+using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Security.Constants;
+using System.Security.Claims;
 
 
 namespace MissTortas.Services
 {
     public static class ApplicationDbInitializer
     {
-        public static void SeedClaims(RoleManager<ApplicationRole> roleManager)
+        public static void SeedPermissions(RoleManager<ApplicationRole> roleManager)
         {
+            var allPermissions = Permission.All;
             var adminRole = roleManager.FindByNameAsync(ApplicationRole.AdminRole.Name!).Result;
-            if (adminRole != null)
+
+            var adminPermissionsAssigned = roleManager.GetClaimsAsync(adminRole!).Result.Where(c => c.Type == Permission.ClaimName);
+            foreach (var p in allPermissions)
             {
-                foreach (var claim in ClaimConstants.AdminClaims)
+                if(!adminPermissionsAssigned.Any(pAssigned => pAssigned.Value == p.Name))
                 {
-                    if (!roleManager.GetClaimsAsync(adminRole).Result.Any(c => c.Type == claim.Type && c.Value == claim.Value))
-                    {
-                        roleManager.AddClaimAsync(adminRole, claim).Wait();
-                    }
+                    roleManager.AddClaimAsync(adminRole!, new Claim(Permission.ClaimName, p.Name)).Wait();
+                }
+            }
+
+            List<Permission> userRolePermission = [Permission.ReadSelfUser];
+            var userRole = roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!).Result;
+            var userPermissionsAssigned = roleManager.GetClaimsAsync(userRole!).Result.Where(c => c.Type == Permission.ClaimName);
+            foreach (var p in userRolePermission)
+            {
+                if (!userPermissionsAssigned.Any(pAssigned => pAssigned.Value == p.Name))
+                {
+                    roleManager.AddClaimAsync(userRole!, new Claim(Permission.ClaimName, p.Name)).Wait();
                 }
             }
             
-            var userRole = roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!).Result;
-            if (userRole != null)
-            {
-                foreach (var claim in ClaimConstants.UserClaims)
-                {
-                    if (!roleManager.GetClaimsAsync(userRole).Result.Any(c => c.Type == claim.Type && c.Value == claim.Value))
-                    {
-                        roleManager.AddClaimAsync(userRole, claim).Wait();
-                    }
-                }
-            }
         }
 
         public static void SeedDatabase(
@@ -43,7 +47,7 @@ namespace MissTortas.Services
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
-            SeedClaims(roleManager);
+            SeedPermissions(roleManager);
         }
 
         public static void SeedRoles(RoleManager<ApplicationRole> roleManager)

@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace MissTortas.Data.Migrations
 {
     /// <inheritdoc />
@@ -69,21 +67,6 @@ namespace MissTortas.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Permissions",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PermissionType = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -516,21 +499,6 @@ namespace MissTortas.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Permissions",
-                columns: new[] { "Id", "Name", "PermissionType", "Value" },
-                values: new object[,]
-                {
-                    { 1L, "UserViewAll", 0, 0 },
-                    { 2L, "UserViewSelf", 0, 1 },
-                    { 3L, "UserUpdateAll", 0, 2 },
-                    { 4L, "UserUpdateSelf", 0, 3 },
-                    { 5L, "RoleAssignClaim", 1, 0 },
-                    { 6L, "RoleViewAll", 1, 1 },
-                    { 7L, "RoleViewSelf", 1, 2 },
-                    { 8L, "RoleViewAll", 2, 0 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "ApplicationRole",
@@ -693,9 +661,6 @@ namespace MissTortas.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentMethodDetails");
-
-            migrationBuilder.DropTable(
-                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "PersonalizedProduct");

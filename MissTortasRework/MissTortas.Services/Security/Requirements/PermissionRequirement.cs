@@ -7,9 +7,9 @@ using System.Text;
 
 namespace MissTortas.Services.Security.Requirements
 {
-    public class PermissionRequirement(List<Claim> claimsRequired) : IAuthorizationRequirement
+    public class PermissionRequirement(List<Permission> permissionsRequired) : IAuthorizationRequirement
     {
-        public List<Claim> ClaimsRequired { get; set; } = claimsRequired;
+        public List<Permission> PermissionsRequired { get; set; } = permissionsRequired;
     }
 
 }
