@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Presentation.Security
+﻿namespace MissTortas.Infrastructure.Security
 {
     public static class PolicyName
     {

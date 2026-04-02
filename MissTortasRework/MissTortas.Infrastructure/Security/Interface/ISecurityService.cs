@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using MissTortas.Infrastructure.Security.Identity;
+﻿using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.DTO.Security;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace MissTortas.Services.Interfaces
 {

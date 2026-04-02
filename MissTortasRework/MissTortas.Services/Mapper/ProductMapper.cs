@@ -1,10 +1,6 @@
-﻿using MissTortas.Domain.Entity.Products;
-using MissTortas.Domain.Products;
+﻿using MissTortas.Domain.Products;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Mapper.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Mapper
 {

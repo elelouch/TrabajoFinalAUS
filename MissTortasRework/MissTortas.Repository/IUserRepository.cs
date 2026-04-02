@@ -1,6 +1,9 @@
-﻿namespace MissTortas.Repository
+﻿using MissTortas.Domain.Security.Users;
+
+namespace MissTortas.Repository
 {
-    internal class IUserRepository
+    public interface IUserRepository
     {
+        public Task<User?> FindByIdAsync(long id);
     }
 }

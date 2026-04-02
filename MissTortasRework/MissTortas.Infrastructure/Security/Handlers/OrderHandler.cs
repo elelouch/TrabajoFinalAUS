@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MissTortas.Domain.Entity.Orders;
 using MissTortas.Infrastructure.Repositories;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.DTO.Orders;
-using MissTortas.Services.DTO.Security;
-using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace MissTortas.Services.Security.Handlers
 {
-    public class OrderHandler (OrderRepository orderRepository): AuthorizationHandler<OrderRequirement, long>
+    public class OrderHandler(OrderRepository orderRepository) : AuthorizationHandler<OrderRequirement, long>
     {
         protected async override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
@@ -25,7 +18,7 @@ namespace MissTortas.Services.Security.Handlers
             var orderBelongsToUser = await orderRepository.BelongsToUserAsync(orderId, currentUserId);
             var userCanManageOrder = context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code);
             var userCanPlaceOrder = context.User.HasClaim(Permission.ClaimName, Permission.PlaceOrders.Code);
-            if(userCanManageOrder || orderBelongsToUser && userCanPlaceOrder)
+            if (userCanManageOrder || orderBelongsToUser && userCanPlaceOrder)
             {
                 context.Succeed(requirement);
             }

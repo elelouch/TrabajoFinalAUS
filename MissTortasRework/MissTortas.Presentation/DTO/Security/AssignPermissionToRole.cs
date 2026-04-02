@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace MissTortas.Presentation.DTO.Security
+﻿namespace MissTortas.Presentation.DTO.Security
 {
     public class AssignPermissionToRole
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using MissTortas.Domain.Orders;
 using MissTortas.Domain.Products;
+using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Exceptions;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Repository;
@@ -15,9 +15,9 @@ namespace MissTortas.Infrastructure
         ) : ISimpleStorage
     {
         private readonly string _root = webHostEnvironment?.WebRootPath ?? root;
-        public async Task SaveConsultancyFileAsync(IFormFile fsIn, Consultancy consultancy)
+        public async Task SaveConsultancyFileAsync(IFormFile fsIn, long consultancyId)
         {
-            if (consultancy.Id == 0)
+            if (consultancyId == 0)
             {
                 throw new ConsultancyException("Consultancy doesn't have an ID");
             }
@@ -29,22 +29,21 @@ namespace MissTortas.Infrastructure
             var consultancyFile = new ConsultancyFile()
             {
                 Guid = guid,
-                Consultancy = consultancy,
+                ConsultancyId = consultancyId,
                 Extension = extension,
                 Path = relativePath
             };
-            consultancy.ConsultancyFiles.Add(consultancyFile);
             using var fsOut = File.Create(Path.Combine(storageDirectory, filename));
             await fsIn.CopyToAsync(fsOut);
             await simpleStorageRepository.InsertConsultancyFileAsync(consultancyFile);
             await simpleStorageRepository.SaveChangesAsync();
         }
 
-        public async Task SaveConsultancyFileAsync(IEnumerable<IFormFile> files, Consultancy consultancy)
+        public async Task SaveConsultancyFileAsync(IEnumerable<IFormFile> files, long consultancyId)
         {
             foreach (var file in files)
             {
-                await SaveConsultancyFileAsync(file, consultancy);
+                await SaveConsultancyFileAsync(file, consultancyId);
             }
         }
 

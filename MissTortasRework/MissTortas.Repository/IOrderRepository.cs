@@ -1,11 +1,8 @@
 using MissTortas.Domain.Orders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Repository
 {
-    public interface IOrderRepository: IRepositoryCrud<Order>
+    public interface IOrderRepository : IRepositoryCrud<Order>
     {
         public IAsyncEnumerable<Consultancy> GetConsultanciesByClientId(long clientId);
         public Task InsertConsultancyAsync(Consultancy consultancy);

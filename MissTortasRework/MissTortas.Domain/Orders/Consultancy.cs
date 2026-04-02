@@ -13,7 +13,6 @@ namespace MissTortas.Domain.Orders
         public virtual required User Assignee { get; set; }
         public virtual required User Client { get; set; }
         public virtual ConsultancyStatus Status { get; set; }
-        public virtual ICollection<ConsultancyFile> ConsultancyFiles { get; set; } = [];
         public virtual ICollection<Order> Orders { get; set; } = [];
     }
 }

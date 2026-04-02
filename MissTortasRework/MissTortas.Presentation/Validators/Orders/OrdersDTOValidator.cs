@@ -3,7 +3,7 @@ using MissTortas.Presentation.DTO.Orders;
 
 namespace MissTortas.Presentation.Validators.Orders
 {
-    public class OrdersDTOValidator (
+    public class OrdersDTOValidator(
         IValidator<CreateOrder> createOrder,
         IValidator<PlaceOrder> placeOrder,
         IValidator<CreateOrderType> createOrderType

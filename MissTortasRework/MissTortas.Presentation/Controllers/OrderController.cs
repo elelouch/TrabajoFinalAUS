@@ -1,27 +1,18 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Infrastructure.Interfaces;
+using MissTortas.Infrastructure.Security;
 using MissTortas.Presentation.DTO.Orders;
-using MissTortas.Presentation.DTO.Products;
-using MissTortas.Presentation.Security;
 using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Services.DTO.Orders;
-using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
-using System.Collections;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using CreateConsultancy = MissTortas.Presentation.DTO.Orders.CreateConsultancy;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
 using CreateOrderType = MissTortas.Presentation.DTO.Orders.CreateOrderType;
 using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Orders.CreateOrderTypeDTO;
-using PlaceOrderDTO = MissTortas.Presentation.DTO.Orders.PlaceOrder;
-using PlaceOrderServiceDTO = MissTortas.Services.DTO.Orders.PlaceOrderDTO;
 using UpdateConsultancy = MissTortas.Presentation.DTO.Orders.UpdateConsultancy;
 using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
 
@@ -31,6 +22,7 @@ namespace MissTortas.Presentation.Controllers
     [ApiController]
     public class OrderController(
         IOrderService orderService,
+        ISimpleStorage simpleStorage,
         IAuthorizationService authorizationService,
         IOrdersDTOValidator validators
         ) : Controller
@@ -58,13 +50,13 @@ namespace MissTortas.Presentation.Controllers
         public async Task<ActionResult<OrderDTO>> GetOrder(long id)
         {
             var authRes = await authorizationService.AuthorizeAsync(User, id, new OrderRequirement());
-            if(!authRes.Succeeded)
+            if (!authRes.Succeeded)
             {
                 return NotFound();
             }
 
             var order = await orderService.GetOrderAsync(id);
-            if(order is null)
+            if (order is null)
             {
                 return NotFound();
             }
@@ -114,17 +106,17 @@ namespace MissTortas.Presentation.Controllers
         }
         [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpPost("consultancy")]
-        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy([FromForm]CreateConsultancy dto, [FromForm]List<IFormFile> files)
+        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy([FromForm] CreateConsultancy dto, [FromForm] List<IFormFile> files)
         {
             var consultancyDTO = new CreateConsultancyServiceDTO
             {
                 ClientId = dto.ClientId,
                 AssigneeId = dto.AssigneeId,
-                Files = files,
                 Description = dto.Description,
                 Title = dto.Title,
             };
             var consultancy = await orderService.CreateConsultancyAsync(consultancyDTO);
+            await simpleStorage.SaveConsultancyFileAsync(files, consultancy.Id);
             return consultancy;
         }
 

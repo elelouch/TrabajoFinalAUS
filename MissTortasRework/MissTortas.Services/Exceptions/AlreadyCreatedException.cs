@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.Exceptions
+﻿namespace MissTortas.Services.Exceptions
 {
-    internal class AlreadyCreatedException(string message): Exception(message)
+    internal class AlreadyCreatedException(string message) : Exception(message)
     {
     }
 }

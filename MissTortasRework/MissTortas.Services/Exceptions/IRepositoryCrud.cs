@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MissTortas.Repository
 {
-    public interface IRepositoryCrud<TEntity> where TEntity: class
+    public interface IRepositoryCrud<TEntity> where TEntity : class
     {
         public Task InsertAsync(TEntity entity);
         public void Update(TEntity entity);

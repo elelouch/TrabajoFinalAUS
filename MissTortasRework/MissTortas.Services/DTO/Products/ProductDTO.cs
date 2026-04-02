@@ -1,7 +1,4 @@
-﻿using MissTortas.Domain.Entity.Products;
-using System.Collections;
-
-namespace MissTortas.Services.DTO.Products
+﻿namespace MissTortas.Services.DTO.Products
 {
     public class ProductDTO
     {

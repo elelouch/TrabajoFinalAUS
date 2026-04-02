@@ -1,10 +1,10 @@
-﻿using MissTortas.Services.DTO.Payment;
-using MissTortas.Services.Interfaces;
-using MissTortas.Services.Exceptions;
-using MissTortas.Services.DTO.Orders;
-using MissTortas.Services.Mapper.Interfaces;
-using MissTortas.Domain.Payment;
+﻿using MissTortas.Domain.Payment;
 using MissTortas.Repository;
+using MissTortas.Services.DTO.Orders;
+using MissTortas.Services.DTO.Payment;
+using MissTortas.Services.Exceptions;
+using MissTortas.Services.Interfaces;
+using MissTortas.Services.Mapper.Interfaces;
 
 namespace MissTortas.Services
 {

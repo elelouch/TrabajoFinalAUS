@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.Exceptions
+﻿namespace MissTortas.Services.Exceptions
 {
-    internal class AskQuantityException (string message): Exception(message)
+    internal class AskQuantityException(string message) : Exception(message)
     {
     }
 }

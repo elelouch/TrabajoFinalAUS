@@ -1,7 +1,6 @@
-using MissTortas.Domain.Security.Contacts;
 using MissTortas.Domain.Security.Users;
 
-namespace MissTortas.Domain.Orders
+namespace MissTortas.Domain.Security.Contacts
 {
     public class Address
     {

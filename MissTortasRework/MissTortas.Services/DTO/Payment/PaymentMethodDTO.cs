@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.DTO.Payment
+﻿namespace MissTortas.Services.DTO.Payment
 {
     public class PaymentMethodDTO
     {

@@ -1,8 +1,5 @@
 ﻿using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services.Security.Requirements;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Security.Constants
 {
@@ -20,7 +17,7 @@ namespace MissTortas.Services.Security.Constants
                 Permission.UpdateAllUser
             ]
 );
-        
+
     }
 
 }

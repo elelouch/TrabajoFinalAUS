@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.DTO.Security;
-using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper.Interfaces;
-using MissTortas.Services.Security.Constants;
 using System.Data;
 using System.Security.Claims;
 

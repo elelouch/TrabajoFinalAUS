@@ -1,8 +1,4 @@
-﻿using MissTortas.Infrastructure.Security.Identity;
-using MissTortas.Services.DTO.Security;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MissTortas.Services.DTO.Security;
 
 namespace MissTortas.Services.Mapper.Interfaces
 {

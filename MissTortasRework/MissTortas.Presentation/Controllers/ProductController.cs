@@ -1,13 +1,9 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MissTortas.Domain.Entity.Products;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper;
-using System.Collections.Generic;
 
 using UpdateProduct = MissTortas.Presentation.DTO.Products.UpdateProduct;
 using UpdateProductServiceDTO = MissTortas.Services.DTO.Products.UpdateProductDTO;
@@ -18,8 +14,8 @@ namespace MissTortas.Presentation.Controllers
     [ApiController]
     public class ProductController(
             IProductService productService,
-            IProductsDTOValidator validators    
-        ): Controller
+            IProductsDTOValidator validators
+        ) : Controller
     {
         [HttpDelete("category/{id}")]
         public async Task DeleteProductCategory(long id)

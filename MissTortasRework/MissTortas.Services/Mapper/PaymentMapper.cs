@@ -9,7 +9,7 @@ namespace MissTortas.Services.Mapper
     {
         public PaymentMethodDTO PaymentMethodToDTO(PaymentMethodEnum paymentMethod)
         {
-            return new PaymentMethodDTO { Id = (long)paymentMethod, Name = paymentMethod.ToString()};
+            return new PaymentMethodDTO { Id = (long)paymentMethod, Name = paymentMethod.ToString() };
         }
     }
 }

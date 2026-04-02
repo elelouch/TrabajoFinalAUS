@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.Exceptions
+﻿namespace MissTortas.Services.Exceptions
 {
-    public class OrderNotFoundException (string message): EntityNotFoundException(message)
+    public class OrderNotFoundException(string message) : EntityNotFoundException(message)
     {
     }
 }

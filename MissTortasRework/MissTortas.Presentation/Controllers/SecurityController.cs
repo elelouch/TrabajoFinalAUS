@@ -1,39 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections;
-using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using MissTortas.Services.Mapper;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using MissTortas.Domain.Entity.Security.User;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
+using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Presentation.DTO.Security;
+using MissTortas.Presentation.Mappers;
+using MissTortas.Presentation.Validators.Security;
 using MissTortas.Services.DTO.Security;
-using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Security.Requirements;
-using MissTortas.Services.Security.Constants;
-using MissTortas.Presentation.Validators.Security;
-using System.Security.Claims;
-using MissTortas.Presentation.Security;
-using MissTortas.Presentation.Mappers;
-using MissTortas.Infrastructure.Security.Permissions;
 
 namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class SecurityController(
-        ISecurityService securityService, 
+        ISecurityService securityService,
         IAuthorizationService authorizationService,
         ISecurityDTOValidator validator,
         IUserMapper userMapper
     ) : Controller
     {
-        
+
         [Authorize(Policy = PolicyName.ReadUsers)]
         [HttpGet("user")]
         public async Task<ActionResult<List<SimpleUser>>> Users()
@@ -61,7 +50,7 @@ namespace MissTortas.Presentation.Controllers
                 Password = request.Password
             };
             var result = await securityService.SignInUserAsync(loginDto);
-            if(result == null)
+            if (result == null)
             {
                 return NotFound("User not found.");
             }
@@ -134,7 +123,7 @@ namespace MissTortas.Presentation.Controllers
                 Roles = userModificationDTO.Roles
             };
             var authResult = await authorizationService.AuthorizeAsync(User, serviceDto, new UpdateUserRequirement());
-            if(!authResult.Succeeded)
+            if (!authResult.Succeeded)
             {
                 return Forbid();
             }

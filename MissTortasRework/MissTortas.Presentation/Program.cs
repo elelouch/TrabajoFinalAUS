@@ -1,8 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -10,8 +8,6 @@ using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Presentation;
-using MissTortas.Presentation.DTO;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.DTO.Security;
@@ -21,11 +17,9 @@ using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Presentation.Validators.Security;
 using MissTortas.Services;
-using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
 using MissTortas.Services.Mapper.Interfaces;
 using MissTortas.Services.Security.Constants;
-using MissTortas.Services.Security.Requirements;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,41 +53,9 @@ builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 builder.Services.AddScoped<IOrderMapper, OrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
-builder.Services.AddMissTortasServiceCore(builder.Configuration);
-builder.Services.AddMissTortasInfrastructure();
+builder.Services.AddMissTortasServiceCore();
+builder.Services.AddMissTortasInfrastructure(builder.Configuration);
 
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 10;
-    options.Password.RequiredUniqueChars = 1;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireDigit = true;
-});
-
-
-var requireAuthPolicy = new AuthorizationPolicyBuilder()
-    .RequireAuthenticatedUser()
-    .Build();
-
-builder.Services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
-
-var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication()
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            IssuerSigningKey = new SymmetricSecurityKey("VerySecureSymmetricKeySaracatungueanos"u8.ToArray()),
-            ValidIssuer = jwtOptions.Issuer,
-            ValidAudience = jwtOptions.Audience,
-            ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-            ValidateAudience = true,
-            ValidateIssuer = true
-        };
-    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -110,16 +72,6 @@ builder.Services.AddSwaggerGen(options =>
         [new OpenApiSecuritySchemeReference("bearer", document)] = []
     });
 });
-
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy(PolicyName.ReadUsers, policy => policy.AddRequirements(PermissionConstants.ReadUsers))
-    .AddPolicy(PolicyName.UpdateUsers, policy => policy.AddRequirements(PermissionConstants.UpdateUsers))
-    .AddPolicy(PolicyName.ReadPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadPermissions.Code))
-    .AddPolicy(PolicyName.AssignPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.AssignPermissions.Code))
-    .AddPolicy(PolicyName.ReadRoles, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadRoles.Code))
-    .AddPolicy(PolicyName.ManageOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageOrders.Code))
-    .AddPolicy(PolicyName.PlaceOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.PlaceOrders.Code))
-    ;
 
 var app = builder.Build();
 

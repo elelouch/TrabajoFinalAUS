@@ -1,9 +1,6 @@
 ﻿using MissTortas.Domain.Orders;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Mapper.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Mapper
 {
@@ -11,15 +8,13 @@ namespace MissTortas.Services.Mapper
     {
         public ConsultancyDTO ConsultancyToDTO(Consultancy consultancy)
         {
-            var filePaths = consultancy.ConsultancyFiles.Select(f => f.Path);
             var ret = new ConsultancyDTO
             {
                 Id = consultancy.Id,
                 Title = consultancy.Title,
                 Notes = consultancy.Notes,
                 StatusId = (int)consultancy.Status,
-                Status = consultancy.Status.ToString(),
-                FilePaths = [..filePaths]
+                Status = consultancy.Status.ToString()
             };
             return ret;
         }

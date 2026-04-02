@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
 using MissTortas.Domain.Payment;
 using MissTortas.Domain.Products;
+using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Security.Identity;
 
 namespace MissTortas.Infrastructure.Context
@@ -19,7 +20,7 @@ namespace MissTortas.Infrastructure.Context
 
         public DbSet<Order> Orders { get; set; } = default!;
         public DbSet<OrderType> OrderTypes { get; set; } = default!;
-        public DbSet<Consultancy> Consultancies { get; set; } = default!;
+        public DbSet<@long> Consultancies { get; set; } = default!;
         public DbSet<OrderPreparation> OrderPreparations { get; set; } = default!;
         public DbSet<ConsultancyFile> ConsultancyFiles { get; set; } = default!;
 
@@ -55,12 +56,12 @@ namespace MissTortas.Infrastructure.Context
                     .IsRequired();
             });
 
-            modelBuilder.Entity<Consultancy>()
+            modelBuilder.Entity<@long>()
                 .HasOne(c => c.Assignee)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Consultancy>()
+            modelBuilder.Entity<@long>()
                 .HasOne(c => c.Client)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
@@ -101,11 +102,11 @@ namespace MissTortas.Infrastructure.Context
                 .HasOne(op => op.Assignee)
                 .WithMany(assignee => assignee.Preparations);
 
-            modelBuilder.Entity<Consultancy>()
+            modelBuilder.Entity<@long>()
                 .HasMany(c => c.ConsultancyFiles)
                 .WithOne(pp => pp.Consultancy);
 
-            modelBuilder.Entity<Consultancy>()
+            modelBuilder.Entity<@long>()
                 .HasMany(c => c.ConsultancyFiles)
                 .WithOne(cf => cf.Consultancy);
 

@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.DTO.Security;
-using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Security.Handlers
 {
@@ -34,7 +29,7 @@ namespace MissTortas.Services.Security.Handlers
                     context.Succeed(requirement);
                     return;
                 }
-                    
+
             }
         }
     }

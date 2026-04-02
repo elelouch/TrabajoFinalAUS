@@ -1,9 +1,8 @@
-﻿using MissTortas.Domain.Entity.Products;
-using MissTortas.Domain.Products;
+﻿using MissTortas.Domain.Products;
 
 namespace MissTortas.Repository
 {
-    public interface IProductRepository: IRepositoryCrud<Product>
+    public interface IProductRepository : IRepositoryCrud<Product>
     {
         public Task InsertProductCategoryAsync(ProductCategory productCategory);
         public Task<Product> GetWithDetailAsync(long id);

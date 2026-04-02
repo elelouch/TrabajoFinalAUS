@@ -1,9 +1,5 @@
 ﻿using MissTortas.Domain.Orders;
 using MissTortas.Services.DTO.Orders;
-using MissTortas.Services.DTO.Products;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services.Interfaces
 {

@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Interfaces;
-
-
-using CreatePaymentMethodDTO = MissTortas.Presentation.DTO.Payment.CreatePaymentMethod;
 using PaymentMethodDetailsServiceDTO = MissTortas.Services.DTO.Payment.PaymentMethodDetailDTO;
-using PaymentMethodDetailsDTO = MissTortas.Presentation.DTO.Payment.PaymentMethodDetail;
-using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
 using PayOrder = MissTortas.Presentation.DTO.Payment.PayOrder;
+using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
 
 namespace MissTortas.Presentation.Controllers
 {

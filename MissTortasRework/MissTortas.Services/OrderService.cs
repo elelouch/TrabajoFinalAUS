@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using MissTortas.Domain.Orders;
+﻿using MissTortas.Domain.Orders;
 using MissTortas.Repository;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
@@ -12,8 +9,7 @@ using MissTortas.Services.Mapper.Interfaces;
 namespace MissTortas.Services
 {
     public class OrderService(
-        //UserManager<ApplicationUser> userManager,
-        //ISimpleStorage simpleStorage,
+        IUserRepository userRepository,
         IProductService productService,
         IOrderRepository orderRepository,
         IOrderMapper orderMapper
@@ -203,8 +199,8 @@ namespace MissTortas.Services
 
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
-            var client = await userManager.FindByIdAsync(dto.ClientId.ToString()) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
-            var assignee = await userManager.FindByIdAsync(dto.AssigneeId.ToString()) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found."); ;
+            var client = await userRepository.FindByIdAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
+            var assignee = await userRepository.FindByIdAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found."); ;
             var consultancy = new Consultancy
             {
                 Client = client,
@@ -212,11 +208,9 @@ namespace MissTortas.Services
                 Title = dto.Title,
                 Notes = dto.Description,
                 Status = ConsultancyStatus.Pending,
-                ConsultancyFiles = []
             };
             await orderRepository.InsertConsultancyAsync(consultancy);
             await orderRepository.SaveChangesAsync();
-            await simpleStorage.SaveConsultancyFileAsync(dto.Files, consultancy);
             return orderMapper.ConsultancyToDTO(consultancy);
         }
 
