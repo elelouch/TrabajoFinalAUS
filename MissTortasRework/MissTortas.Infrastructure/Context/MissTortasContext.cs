@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
-using MissTortas.Domain.Payment;
+using MissTortas.Domain.Payments;
 using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Security.Identity;

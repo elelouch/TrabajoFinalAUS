@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
+using MissTortas.Domain.Repositories;
 using MissTortas.Infrastructure.Context;
-using MissTortas.Repository;
 
 namespace MissTortas.Infrastructure.Repositories
 {

@@ -2,7 +2,7 @@
 using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity.Orders;
-using MissTortas.Repository;
+using MissTortas.Infrastructure.Interfaces;
 
 namespace MissTortas.Infrastructure.Repositories
 {

@@ -1,4 +1,4 @@
-namespace MissTortas.Repository
+namespace MissTortas.Services.Exceptions
 {
     public interface IRepositoryCrud<TEntity> where TEntity : class
     {

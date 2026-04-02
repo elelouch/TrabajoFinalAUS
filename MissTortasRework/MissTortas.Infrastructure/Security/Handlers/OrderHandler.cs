@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using MissTortas.Infrastructure.Repositories;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.Security.Requirements;
+using MissTortas.Infrastructure.Security.Requirements;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace MissTortas.Services.Security.Handlers
+namespace MissTortas.Infrastructure.Security.Handlers
 {
     public class OrderHandler(OrderRepository orderRepository) : AuthorizationHandler<OrderRequirement, long>
     {

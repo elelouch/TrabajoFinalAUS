@@ -1,25 +1,20 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Infrastructure.Security.Identity;
-using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.DTO.Security;
 using MissTortas.Presentation.Mappers;
-using MissTortas.Presentation.Security;
 using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Presentation.Validators.Security;
 using MissTortas.Services;
-using MissTortas.Services.Mapper;
-using MissTortas.Services.Mapper.Interfaces;
-using MissTortas.Services.Security.Constants;
+using MissTortas.Services.Mapping;
+using MissTortas.Services.Mapping.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,7 +48,7 @@ builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 builder.Services.AddScoped<IOrderMapper, OrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
-builder.Services.AddMissTortasServiceCore();
+builder.Services.AddMissTortasServices();
 builder.Services.AddMissTortasInfrastructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

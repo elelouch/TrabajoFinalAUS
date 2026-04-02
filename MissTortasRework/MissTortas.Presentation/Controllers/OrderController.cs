@@ -7,7 +7,6 @@ using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Security.Requirements;
 using System.Security.Claims;
 using CreateConsultancy = MissTortas.Presentation.DTO.Orders.CreateConsultancy;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;

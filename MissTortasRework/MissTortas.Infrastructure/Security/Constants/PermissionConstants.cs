@@ -1,7 +1,7 @@
 ﻿using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.Security.Requirements;
+using MissTortas.Infrastructure.Security.Requirements;
 
-namespace MissTortas.Services.Security.Constants
+namespace MissTortas.Infrastructure.Security.Constants
 {
     public static class PermissionConstants
     {

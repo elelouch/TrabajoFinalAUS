@@ -1,4 +1,4 @@
-using MissTortas.Domain.Payment;
+using MissTortas.Domain.Payments;
 using MissTortas.Domain.Products;
 using MissTortas.Domain.Security.Authorization;
 

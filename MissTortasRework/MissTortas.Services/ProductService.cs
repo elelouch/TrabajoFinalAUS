@@ -1,9 +1,9 @@
 ﻿using MissTortas.Domain.Products;
-using MissTortas.Repository;
+using MissTortas.Domain.Repositories;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper.Interfaces;
+using MissTortas.Services.Mapping.Interfaces;
 
 namespace MissTortas.Services
 {

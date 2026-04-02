@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.Security.Requirements;
+using MissTortas.Infrastructure.Security.Requirements;
 
-namespace MissTortas.Services.Security.Handlers
+namespace MissTortas.Infrastructure.Security.Handlers
 {
     public class UpdateUserHandler : AuthorizationHandler<UpdateUserRequirement, UserModificationDTO>
     {

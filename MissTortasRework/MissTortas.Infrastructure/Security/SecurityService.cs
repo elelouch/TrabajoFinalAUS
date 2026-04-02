@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
 

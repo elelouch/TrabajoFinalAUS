@@ -1,5 +1,5 @@
-﻿using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.DTO.Security;
+﻿using MissTortas.Infrastructure.DTO.Security;
+using MissTortas.Infrastructure.Security.Permissions;
 using System.Security.Claims;
 
 namespace MissTortas.Presentation.Mappers

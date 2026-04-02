@@ -4,7 +4,6 @@ using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Exceptions;
 using MissTortas.Infrastructure.Interfaces;
-using MissTortas.Repository;
 
 namespace MissTortas.Infrastructure
 {

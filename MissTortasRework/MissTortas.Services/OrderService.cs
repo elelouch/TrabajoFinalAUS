@@ -1,10 +1,10 @@
 ﻿using MissTortas.Domain.Orders;
-using MissTortas.Repository;
+using MissTortas.Domain.Repositories;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper.Interfaces;
+using MissTortas.Services.Mapping.Interfaces;
 
 namespace MissTortas.Services
 {

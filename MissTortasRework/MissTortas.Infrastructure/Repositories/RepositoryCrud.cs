@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MissTortas.Repository;
+using MissTortas.Domain.Repositories;
 
 namespace MissTortas.Infrastructure.Repositories
 {

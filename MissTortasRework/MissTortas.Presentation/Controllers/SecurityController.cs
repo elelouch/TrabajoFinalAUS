@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Presentation.DTO.Security;
 using MissTortas.Presentation.Mappers;
 using MissTortas.Presentation.Validators.Security;
-using MissTortas.Services.DTO.Security;
-using MissTortas.Services.Interfaces;
-using MissTortas.Services.Security.Requirements;
 
 namespace MissTortas.Presentation.Controllers
 {

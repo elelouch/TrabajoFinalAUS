@@ -1,4 +1,4 @@
-﻿using MissTortas.Services.DTO.Security;
+﻿using MissTortas.Infrastructure.DTO.Security;
 using System.Security.Claims;
 
 namespace MissTortas.Presentation.Mappers

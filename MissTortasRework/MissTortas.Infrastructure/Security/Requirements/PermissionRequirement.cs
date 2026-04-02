@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using MissTortas.Infrastructure.Security.Permissions;
 
-namespace MissTortas.Services.Security.Requirements
+namespace MissTortas.Infrastructure.Security.Requirements
 {
     public class PermissionRequirement(List<Permission> permissionsRequired) : IAuthorizationRequirement
     {

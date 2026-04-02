@@ -3,17 +3,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using MissTortas.Domain.Repositories;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Interfaces;
+using MissTortas.Infrastructure.Mappings;
+using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Repositories;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Constants;
+using MissTortas.Infrastructure.Security.Handlers;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Repository;
-using MissTortas.Services.Interfaces;
-using MissTortas.Services.Security.Constants;
-using MissTortas.Services.Security.Handlers;
 
 namespace MissTortas.Infrastructure
 {
@@ -41,6 +44,7 @@ namespace MissTortas.Infrastructure
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+            services.AddScoped<IRoleMapper, RoleMapper>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireNonAlphanumeric = true;

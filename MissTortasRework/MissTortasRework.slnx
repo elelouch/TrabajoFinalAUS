@@ -2,6 +2,5 @@
   <Project Path="MissTortas.Domain/MissTortas.Domain.csproj" Id="9509ae24-bdcb-49c3-8c91-ef061736d687" />
   <Project Path="MissTortas.Infrastructure/MissTortas.Infrastructure.csproj" Id="8b1d78d6-4027-4fb1-8e07-498d9ec7635e" />
   <Project Path="MissTortas.Presentation/MissTortas.Presentation.csproj" Id="06d662e1-bb9a-4184-98ec-1c774ae43584" />
-  <Project Path="MissTortas.Repository/MissTortas.Repository.csproj" Id="c11fc443-3f42-419d-bf5c-7ae9ba0db73c" />
   <Project Path="MissTortas.Services/MissTortas.Services.csproj" Id="d2511529-5717-4cae-a62b-a7ae42660ddd" />
 </Solution>
