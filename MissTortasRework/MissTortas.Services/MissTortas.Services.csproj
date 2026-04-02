@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MissTortas.Data\MissTortas.Data.csproj" />
+    <ProjectReference Include="..\MissTortas.Data\MissTortas.Domain.csproj" />
+    <ProjectReference Include="..\MissTortas.Domain\MissTortas.Domain.csproj" />
+    <ProjectReference Include="..\MissTortas.Repository\MissTortas.Repository.csproj" />
   </ItemGroup>
 
 </Project>

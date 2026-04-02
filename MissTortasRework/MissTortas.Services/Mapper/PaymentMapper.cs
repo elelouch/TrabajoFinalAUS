@@ -1,5 +1,6 @@
-﻿using MissTortas.Data.Entity.Payment;
+﻿using MissTortas.Domain.Payment;
 using MissTortas.Services.DTO.Payment;
+using MissTortas.Services.Mapper.Interfaces;
 
 
 namespace MissTortas.Services.Mapper

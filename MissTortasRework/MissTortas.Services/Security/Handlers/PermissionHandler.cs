@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MissTortas.Data.Entity.Security.Permissions;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services.Security.Requirements;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace MissTortas.Services.Security.Handlers
         protected async override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             var hasAllPermissions = requirement.PermissionsRequired
-                .Select(p => p.Name)
+                .Select(p => p.Code)
                 .Any(p => context.User.HasClaim(Permission.ClaimName, p));
 
             if (hasAllPermissions) 

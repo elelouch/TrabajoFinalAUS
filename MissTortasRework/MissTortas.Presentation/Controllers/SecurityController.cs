@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using MissTortas.Services.Mapper;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using MissTortas.Data.Entity.Security.User;
+using MissTortas.Domain.Entity.Security.User;
 using MissTortas.Presentation.DTO.Security;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services;
@@ -18,9 +18,9 @@ using MissTortas.Services.Security.Requirements;
 using MissTortas.Services.Security.Constants;
 using MissTortas.Presentation.Validators.Security;
 using System.Security.Claims;
-using MissTortas.Data.Entity.Security.Permissions;
 using MissTortas.Presentation.Security;
 using MissTortas.Presentation.Mappers;
+using MissTortas.Infrastructure.Security.Permissions;
 
 namespace MissTortas.Presentation.Controllers
 {
@@ -93,16 +93,23 @@ namespace MissTortas.Presentation.Controllers
             return securityService.GetAllPermissions();
         }
 
-        [Authorize(Policy = "Roles.ViewAll")]
+        [Authorize(Policy = PolicyName.ReadRoles)]
         [HttpGet("role")]
-        public async Task<IEnumerable<string>> GetAllRoles()
+        public async Task<IEnumerable<SimpleRoleDTO>> GetAllRoles()
         {
             return await securityService.GetAllRolesAsync();
         }
 
-        [Authorize(Policy = "Roles.AssignClaim")]
-        [HttpPost("role/assign/permission")]
-        public async Task<ActionResult> PostAssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+        [Authorize(Policy = PolicyName.ReadRoles)]
+        [HttpGet("role/{id}")]
+        public async Task<RoleDTO> GetRole(long id)
+        {
+            return await securityService.GetRoleAsync(id);
+        }
+
+        [Authorize(Policy = PolicyName.AssignPermissions)]
+        [HttpPut("role")]
+        public async Task<ActionResult> AssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
         {
             await validator.AssignPermissionToRoleValidator().ValidateAndThrowAsync(assignPermissionsDTO);
             var serviceDto = new AssignPermissionsToRoleDTO
@@ -114,8 +121,8 @@ namespace MissTortas.Presentation.Controllers
             return Ok();
         }
 
-        [HttpPut("user/modification")]
-        public async Task<ActionResult> PostUserModification(UserModification userModificationDTO)
+        [HttpPut("user")]
+        public async Task<ActionResult> UserModification(UserModification userModificationDTO)
         {
             await validator.UserModificationValidator().ValidateAndThrowAsync(userModificationDTO);
             var serviceDto = new UserModificationDTO
@@ -126,7 +133,12 @@ namespace MissTortas.Presentation.Controllers
                 Email = userModificationDTO.Email,
                 Roles = userModificationDTO.Roles
             };
-            await authorizationService.AuthorizeAsync(User, userModificationDTO, new UpdateUserRequirement());
+            var authResult = await authorizationService.AuthorizeAsync(User, serviceDto, new UpdateUserRequirement());
+            if(!authResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await securityService.ModifyUserAsync(serviceDto);
             return Ok();
         }

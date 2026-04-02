@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using MissTortas.Data.Entity.Security.Permissions;
-using MissTortas.Data.Entity.Security.User;
+using MissTortas.Infrastructure;
+using MissTortas.Infrastructure.Configuration;
+using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Presentation;
 using MissTortas.Presentation.DTO;
 using MissTortas.Presentation.DTO.Orders;
@@ -21,6 +23,7 @@ using MissTortas.Presentation.Validators.Security;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
+using MissTortas.Services.Mapper.Interfaces;
 using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
 
@@ -32,6 +35,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("Jwt"));
 
 // DI
 builder.Services.AddScoped<IValidator<AssignPermissionToRole>, AssignPermissionToRoleValidator>();
@@ -53,6 +60,7 @@ builder.Services.AddScoped<IOrderMapper, OrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
 builder.Services.AddMissTortasServiceCore(builder.Configuration);
+builder.Services.AddMissTortasInfrastructure();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -70,15 +78,16 @@ var requireAuthPolicy = new AuthorizationPolicyBuilder()
 
 builder.Services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
 
+var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
-    .AddJwtBearer(jwtOptions =>
+    .AddJwtBearer(options =>
     {
-        jwtOptions.TokenValidationParameters = new TokenValidationParameters
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             IssuerSigningKey = new SymmetricSecurityKey("VerySecureSymmetricKeySaracatungueanos"u8.ToArray()),
-            ValidIssuer = "https://localhost",
-            ValidAudience = "https://localhost",
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
             ValidateAudience = true,
@@ -105,7 +114,12 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(PolicyName.ReadUsers, policy => policy.AddRequirements(PermissionConstants.ReadUsers))
     .AddPolicy(PolicyName.UpdateUsers, policy => policy.AddRequirements(PermissionConstants.UpdateUsers))
-    .AddPolicy(PolicyName.ReadPermissions, policy => policy.RequireClaim(Permission.ClaimName,Permission.ReadPermissions.Name));
+    .AddPolicy(PolicyName.ReadPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadPermissions.Code))
+    .AddPolicy(PolicyName.AssignPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.AssignPermissions.Code))
+    .AddPolicy(PolicyName.ReadRoles, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadRoles.Code))
+    .AddPolicy(PolicyName.ManageOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageOrders.Code))
+    .AddPolicy(PolicyName.PlaceOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.PlaceOrders.Code))
+    ;
 
 var app = builder.Build();
 

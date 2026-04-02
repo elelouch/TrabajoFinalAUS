@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MissTortas.Infrastructure\MissTortas.Infrastructure.csproj" />
     <ProjectReference Include="..\MissTortas.Services\MissTortas.Services.csproj" />
   </ItemGroup>
 

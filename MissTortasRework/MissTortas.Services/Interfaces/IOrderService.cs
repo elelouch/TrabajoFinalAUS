@@ -1,4 +1,4 @@
-﻿using MissTortas.Data.Entity.Orders;
+﻿using MissTortas.Domain.Orders;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using System;
@@ -18,7 +18,7 @@ namespace MissTortas.Services.Interfaces
         public Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto);
         public Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto);
         public Task PlaceOrderAsync(PlaceOrderDTO dto);
-        public Task<OrderDTO> GetOrderAsync(long id);
+        public Task<OrderDTO?> GetOrderAsync(long id);
         internal Task<Order> GetOrderEntityAsync(long id);
         public Task<ConsultancyDTO> UpdateConsultancyAsync(UpdateConsultancyDTO dto);
     }

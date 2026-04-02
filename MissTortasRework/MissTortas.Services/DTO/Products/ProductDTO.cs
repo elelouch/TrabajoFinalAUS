@@ -1,4 +1,4 @@
-﻿using MissTortas.Data.Entity.Products;
+﻿using MissTortas.Domain.Entity.Products;
 using System.Collections;
 
 namespace MissTortas.Services.DTO.Products

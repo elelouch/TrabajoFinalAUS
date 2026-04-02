@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MissTortas.Data.Entity.Products;
+using MissTortas.Domain.Entity.Products;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Services.DTO.Products;

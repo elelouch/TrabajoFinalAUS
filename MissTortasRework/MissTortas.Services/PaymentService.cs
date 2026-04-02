@@ -1,11 +1,10 @@
-﻿using MissTortas.Data.Entity.Payment;
-using MissTortas.Data.Interfaces;
-using MissTortas.Services.DTO.Payment;
+﻿using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper;
 using MissTortas.Services.Exceptions;
-using MissTortas.Data.Entity.Orders;
 using MissTortas.Services.DTO.Orders;
+using MissTortas.Services.Mapper.Interfaces;
+using MissTortas.Domain.Payment;
+using MissTortas.Repository;
 
 namespace MissTortas.Services
 {
@@ -15,7 +14,7 @@ namespace MissTortas.Services
         IOrderService orderService
         ) : IPaymentService
     {
-        private PaymentMethodDetailBase GetPaymentMethodDetail(
+        private static PaymentMethodDetail GetPaymentMethodDetail(
             PayOrderDTO dto,
             Payment payment
             )
@@ -46,7 +45,7 @@ namespace MissTortas.Services
             };
         }
 
-        private async Task<Payment> ExecutePaymentAsync(Payment payment)
+        private static async Task<Payment> ExecutePaymentAsync(Payment payment)
         {
             if (payment.PaymentMethodDetail is null)
             {

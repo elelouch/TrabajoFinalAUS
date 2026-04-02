@@ -1,24 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MissTortas.Data.Entity.Orders;
-using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security.User;
-using MissTortas.Data.Interfaces;
-using MissTortas.Data.Repositories;
+using MissTortas.Domain.Orders;
+using MissTortas.Repository;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper;
+using MissTortas.Services.Mapper.Interfaces;
 
 namespace MissTortas.Services
 {
     public class OrderService(
-        UserManager<ApplicationUser> userManager,
-        ISimpleStorage simpleStorageService,
+        //UserManager<ApplicationUser> userManager,
+        //ISimpleStorage simpleStorage,
         IProductService productService,
         IOrderRepository orderRepository,
-        IOrderMapper orderMapper) : IOrderService
+        IOrderMapper orderMapper
+    ) : IOrderService
     {
         public async Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync()
         {
@@ -35,23 +34,20 @@ namespace MissTortas.Services
             return orderMapper.OrderTypeToDTO(orderType);
         }
 
-        public async Task<OrderDTO> GetOrderAsync(long orderId)
+        public async Task<OrderDTO?> GetOrderAsync(long orderId)
         {
-            try
+            var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId);
+            if (order is null)
             {
-                var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
-                return orderMapper.OrderToDTO(order);
+                return null;
             }
-            catch (InvalidOperationException)
-            {
-                throw new OrderNotFoundException("Order not found.");
-            }
+            return orderMapper.OrderToDTO(order);
         }
 
         public async Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto)
         {
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
-            if(consultancy is null)
+            if (consultancy is null)
             {
                 var createConsultancyDTO = new CreateConsultancyDTO
                 {
@@ -87,7 +83,7 @@ namespace MissTortas.Services
                 {
                     throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
                 }
-                if(productForSale.SaleQuantity < d.QuantityAsked)
+                if (productForSale.SaleQuantity < d.QuantityAsked)
                 {
                     throw new AskQuantityException($"Quantity asked of product is greater than what it's available. Product {productForSale.Id}");
                 }
@@ -139,22 +135,22 @@ namespace MissTortas.Services
                 stockProduct.Quantity += ask;
             }
         }
-        
+
         public async Task PlaceOrderAsync(PlaceOrderDTO dto)
         {
-            var order = await orderRepository.GetOrderWithAllProductsRelated(dto.OrderId);
+            var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(dto.OrderId) ?? throw new OrderNotFoundException("Order not found.");
             var askedProducts = order.ProductsAsked;
-            if(order.OrderStatus != OrderStatus.Created)
+            if (order.OrderStatus != OrderStatus.Created)
             {
                 throw new InvalidOrderStateException("Order should be just created.");
             }
             ReserveProductQuantities(askedProducts);
             order.OrderStatus = OrderStatus.Pending;
             var assignee = order.Consultancy.Assignee;
-            var preparation = new OrderPreparation 
-            { 
+            var preparation = new OrderPreparation
+            {
                 Order = order,
-                Done = false, 
+                Done = false,
                 Assignee = assignee,
                 CreationTime = DateTime.Now
             };
@@ -168,12 +164,12 @@ namespace MissTortas.Services
             var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId);
             var order = orderPreparation.Order;
             var orderStatus = order.OrderStatus;
-            if(orderStatus != OrderStatus.Pending || orderStatus != OrderStatus.InProgress)
+            if (orderStatus != OrderStatus.Pending || orderStatus != OrderStatus.InProgress)
             {
                 throw new InvalidOrderStateException("Order should be Pending or In Progress.");
             }
 
-            if(orderPreparation.Done)
+            if (orderPreparation.Done)
             {
                 throw new InvalidOrderPreparationStateException("Order preparation mustn't be done");
             }
@@ -184,15 +180,14 @@ namespace MissTortas.Services
             var areOrderPreparationsLeft = order.Preparations.Any(op => op.Id != orderPreparation.Id && !op.Done);
 
             order.OrderStatus = areOrderPreparationsLeft ? OrderStatus.InProgress : OrderStatus.Finished;
-            
+
             orderRepository.Update(order);
             await orderRepository.SaveChangesAsync();
         }
 
         public async Task CancelOrderAsync(long orderId)
         {
-            var order = await orderRepository.GetOrderWithAllProductsRelated(orderId);
-            switch (order.OrderStatus)
+            var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId) ?? throw new OrderNotFoundException("Order not found."); switch (order.OrderStatus)
             {
                 case OrderStatus.Created:
                     break;
@@ -221,7 +216,7 @@ namespace MissTortas.Services
             };
             await orderRepository.InsertConsultancyAsync(consultancy);
             await orderRepository.SaveChangesAsync();
-            await simpleStorageService.SaveConsultancyFileAsync(dto.Files, consultancy);
+            await simpleStorage.SaveConsultancyFileAsync(dto.Files, consultancy);
             return orderMapper.ConsultancyToDTO(consultancy);
         }
 
@@ -229,11 +224,11 @@ namespace MissTortas.Services
         {
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId) ?? throw new ConsultancyNotFoundException($"Consultancy {dto.ConsultancyId} not found");
             consultancy.BakeryNotes = dto.BakeryNotes;
-            if(!Enum.IsDefined(typeof(ConsultancyStatus), dto.Status))
+            if (!Enum.IsDefined(typeof(ConsultancyStatus), dto.Status))
             {
                 throw new InvalidStateException($"Cannot assign {dto.Status} as a consultancy status.");
             }
-            consultancy.Status = (ConsultancyStatus) dto.Status;
+            consultancy.Status = (ConsultancyStatus)dto.Status;
             await orderRepository.SaveChangesAsync();
             return orderMapper.ConsultancyToDTO(consultancy);
         }

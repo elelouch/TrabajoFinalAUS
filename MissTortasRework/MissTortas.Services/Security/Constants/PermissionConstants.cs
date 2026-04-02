@@ -1,4 +1,4 @@
-﻿using MissTortas.Data.Entity.Security.Permissions;
+﻿using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services.Security.Requirements;
 using System;
 using System.Collections.Generic;

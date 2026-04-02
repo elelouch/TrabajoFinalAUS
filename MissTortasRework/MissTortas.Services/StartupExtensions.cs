@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MissTortas.Data.Context;
-using MissTortas.Data.Entity.Security.User;
-using MissTortas.Data.Interfaces;
-using MissTortas.Data.Repositories;
+using MissTortas.Infrastructure.Context;
+using MissTortas.Infrastructure.Interfaces;
+using MissTortas.Infrastructure.Repositories;
+using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Repository;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapper;
+using MissTortas.Services.Mapper.Interfaces;
 using MissTortas.Services.Security.Handlers;
 using MissTortas.Services.Security.Requirements;
 
@@ -20,31 +22,19 @@ namespace MissTortas.Services
 {
     public static class StartupExtensions
     {
-        public static IServiceCollection AddMissTortasServiceCore(this IServiceCollection services, IConfigurationRoot configuration)
-        {
-            var connectionString = configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
-            services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
-
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<MissTortasContext>()
-                .AddDefaultTokenProviders();
-
+        public static IServiceCollection AddMissTortasServiceCore(this IServiceCollection services)
+        {            
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentMapper, PaymentMapper>();
-            services.AddScoped<ISimpleStorageRepository, SimpleStorageRepository>();
-            services.AddScoped<ISimpleStorage, SimpleStorage>();
-            services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductMapper, ProductMapper>();
             services.AddScoped<IOrderMapper, OrderMapper>();
+            services.AddScoped<IRoleMapper, RoleMapper>();
 
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();

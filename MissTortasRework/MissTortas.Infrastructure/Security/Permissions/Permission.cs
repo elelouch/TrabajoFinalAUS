@@ -1,0 +1,36 @@
+﻿using System.Collections.ObjectModel;
+
+namespace MissTortas.Infrastructure.Security.Permissions
+{
+    public readonly record struct Permission(string Code)
+    {
+        public override string ToString() => Code;
+        public static readonly Permission ReadAllUser = new("read:user:all");
+        public static readonly Permission ReadSelfUser = new("read:user:self");
+        public static readonly Permission UpdateAllUser = new("update:user:all");
+        public static readonly Permission UpdateSelfUser = new("update:user:self");
+        public static readonly Permission DeleteUser = new("delete:user");
+        public static readonly Permission ReadPermissions = new("read:permissions");
+        public static readonly Permission AssignPermissions = new("assign:permissions");
+        public static readonly Permission ReadRoles = new("read:roles");
+        public static readonly Permission PlaceOrders = new("place:orders");
+        public static readonly Permission ManageOrders = new("manage:orders");
+
+        private static readonly List<Permission> allPermissionList =
+        [
+                ReadAllUser,
+                ReadSelfUser,
+                UpdateAllUser,
+                UpdateSelfUser,
+                DeleteUser,
+                ReadPermissions,
+                AssignPermissions,
+                ReadRoles,
+                PlaceOrders,
+                ManageOrders
+        ];
+
+        public static ReadOnlyCollection<Permission> All { get => allPermissionList.AsReadOnly(); }
+        public static readonly string ClaimName = "permissions";
+    }
+}

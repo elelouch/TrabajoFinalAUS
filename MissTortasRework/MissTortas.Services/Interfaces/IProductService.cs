@@ -1,5 +1,4 @@
-﻿using MissTortas.Data.Entity.Orders;
-using MissTortas.Data.Entity.Products;
+﻿using MissTortas.Domain.Products;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using System;

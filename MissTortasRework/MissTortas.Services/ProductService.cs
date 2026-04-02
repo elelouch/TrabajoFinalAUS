@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MissTortas.Data.Entity.Orders;
-using MissTortas.Data.Entity.Products;
-using MissTortas.Data.Entity.Security;
-using MissTortas.Data.Interfaces;
+using MissTortas.Domain.Products;
+using MissTortas.Infrastructure.Interfaces;
+using MissTortas.Repository;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.Services.Mapper;
+using MissTortas.Services.Mapper.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

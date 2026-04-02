@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MissTortas.Data.Entity.Security.Permissions;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Security.Constants;
 using MissTortas.Services.Security.Requirements;
@@ -18,7 +18,7 @@ namespace MissTortas.Services.Security.Handlers
         {
             var currentUsername = context.User.Identity?.Name;
             var claimType = Permission.ClaimName;
-            var updateAllValue = Permission.UpdateAllUser.Name;
+            var updateAllValue = Permission.UpdateAllUser.Code;
 
             if (context.User.HasClaim(claimType, updateAllValue))
             {
@@ -26,10 +26,9 @@ namespace MissTortas.Services.Security.Handlers
                 return;
             }
 
-            var updateSelfValue = Permission.UpdateSelfUser.Name;
+            var updateSelfValue = Permission.UpdateSelfUser.Code;
             if (context.User.HasClaim(claimType, updateSelfValue) && currentUsername == userModification.Username)
             {
-
                 if (userModification.IsEnabled == null && !userModification.Roles.Any())
                 {
                     context.Succeed(requirement);

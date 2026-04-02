@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MissTortas.Data.Entity.Security.Permissions;
+using MissTortas.Infrastructure.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
