@@ -1,6 +1,8 @@
 ﻿using MissTortas.Domain.Products;
 using MissTortas.Domain.Repositories;
+using MissTortas.Domain.Security.Authorization;
 using MissTortas.Services.DTO.Products;
+using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapping.Interfaces;
@@ -9,7 +11,8 @@ namespace MissTortas.Services
 {
     public class ProductService(
         IProductRepository productRepository,
-        IProductMapper productMapper
+        IProductMapper productMapper,
+        IRightsService rightsService
         ) : IProductService
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
@@ -37,6 +40,7 @@ namespace MissTortas.Services
             {
                 throw new ChildAppendException("Cannot append a product on a Category that is not final");
             }
+
             var product = new Product
             {
                 Name = dto.Name,
@@ -64,43 +68,21 @@ namespace MissTortas.Services
 
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
-            var product = await productRepository.FindAsync(dto.ProductId) ?? throw new EntityNotFoundException("No stock product related found");
-            if (product.SaleProduct is not null)
-            {
-                throw new SaleProductAlreadyVinculatedException("Sale product already vinculated. Try another stock product.");
-            }
-            if (product.Quantity < dto.Quantity)
-            {
-                throw new AskQuantityException("Cannot place more for sale than what's available from the stock.");
-            }
-            var qties = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
-
+            var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
+            var productDetail = new ProductDetail { Description = dto.SaleDescription, ImagePath = dto.SaleImagePath };
+            await productRepository.InsertProductDetailAsync(productDetail);
+            await productRepository.SaveChangesAsync();
             var saleProduct = new SaleProduct
             {
-                StockProduct = product,
+                ProductDetail = productDetail,
+                ProductCategory = productCategory,
                 SalePrice = dto.SalePrice,
                 IsAvailable = dto.IsAvailable,
-                SaleQuantity = qties.DecimalQuantity,
-                SaleDescription = dto.SaleDescription
+                Quantity = dto.Quantity,
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
             await productRepository.SaveChangesAsync();
             return productMapper.SaleProductToDTO(saleProduct);
-        }
-
-        private static QuantityHolder ValidateQuantity(double qty, bool mustBeInteger)
-        {
-            var qtyIsInteger = Math.Floor(qty) == qty;
-            if (mustBeInteger && !qtyIsInteger)
-            {
-                throw new AskQuantityException("Quantity is not valid, try an integer quantity.");
-            }
-            var intQty = (long)Math.Floor(qty);
-            if (mustBeInteger && intQty < 0 && intQty > (long.MaxValue - 1024))
-            {
-                throw new AskQuantityException("The quantity is negative. It is not valid.");
-            }
-            return new QuantityHolder { DecimalQuantity = qty };
         }
 
         public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
@@ -110,6 +92,7 @@ namespace MissTortas.Services
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
             }
+
             var productCategory = new ProductCategory
             {
                 Name = dto.Name,
@@ -118,12 +101,22 @@ namespace MissTortas.Services
                 Products = [],
                 IsFinal = dto.IsFinal
             };
+
             await productRepository.InsertProductCategoryAsync(productCategory);
+            if (parent is not null)
+            {
+                var resourceId = productCategory.ResourceId;
+                var rightsDTO = parent.Rights
+                    .Select(r => new RightDTO { ResourceId = resourceId, AccessType = (int)r.AccessType, SubjectId = r.SubjectId })
+                    .Where(r => r.Transferable);
+                var newViewers = dto.ViewerSubjectsIds.Select(id => new Right { Transferable = true, SubjectId = id, ResourceId = resourceId, AccessType = AccessType.Read });
+                await rightsService.GiveAccessBulkAsync(rightsDTO);
+            }
             await productRepository.SaveChangesAsync();
             return productMapper.ProductCategoryToDTO(productCategory);
         }
 
-        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoriesAsync()
+        public async Task<IEnumerable<ProductCategoryDTO>> AllCategoriesAsync()
         {
             var categories = productRepository.GetAllProductCategories();
             var categoriesList = await categories.ToListAsync();
@@ -167,6 +160,64 @@ namespace MissTortas.Services
             productRepository.Update(product);
             await productRepository.SaveChangesAsync();
             return productMapper.ProductToDTO(product);
+        }
+
+        private static QuantityHolder ValidateQuantity(double qty, bool mustBeInteger)
+        {
+            var qtyIsInteger = Math.Floor(qty) == qty;
+            if (mustBeInteger && !qtyIsInteger)
+            {
+                throw new AskQuantityException("Quantity is not valid, try an integer quantity.");
+            }
+            var intQty = (long)Math.Floor(qty);
+            if (mustBeInteger && intQty < 0 && intQty > (long.MaxValue - 1024))
+            {
+                throw new AskQuantityException("The quantity is negative. It is not valid.");
+            }
+            return new QuantityHolder { DecimalQuantity = qty };
+        }
+
+        public async Task<List<ProductCategoryDTO>> AllCategoriesForUserAsync(long userId)
+        {
+            var categories = await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userId);
+            var dtoLookup = new Dictionary<long, ProductCategoryDTO>(categories.Count());
+
+            foreach (var cat in categories)
+            {
+                dtoLookup[cat.ResourceId] = new ProductCategoryDTO
+                {
+                    Id = cat.ResourceId,
+                    Name = cat.Name,
+                    IsFinal = cat.IsFinal
+                };
+            }
+
+            var roots = new List<ProductCategoryDTO>();
+
+            foreach (var c in categories)
+            {
+                var dto = dtoLookup[c.ResourceId];
+
+                if (c.ParentId == 0)
+                {
+                    roots.Add(dto);
+                }
+                else
+                {
+                    if (dtoLookup.TryGetValue(c.ParentId, out var parent))
+                    {
+                        parent.Children.Add(dto);
+                    }
+                    else
+                    {
+                        roots.Add(dto);
+                    }
+                }
+
+
+            }
+
+            return roots;
         }
     }
 }

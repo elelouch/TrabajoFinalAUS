@@ -16,9 +16,9 @@ namespace MissTortas.Infrastructure.Security.Handlers
         {
             var currentUserId = Int64.Parse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? "0");
             var orderBelongsToUser = await orderRepository.BelongsToUserAsync(orderId, currentUserId);
-            var userCanManageOrder = context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code);
+            var userCanManageAllOrder = context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code);
             var userCanPlaceOrder = context.User.HasClaim(Permission.ClaimName, Permission.PlaceOrders.Code);
-            if (userCanManageOrder || orderBelongsToUser && userCanPlaceOrder)
+            if (userCanManageAllOrder || orderBelongsToUser && userCanPlaceOrder)
             {
                 context.Succeed(requirement);
             }

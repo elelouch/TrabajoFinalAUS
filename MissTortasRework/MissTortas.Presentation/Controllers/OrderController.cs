@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.Validators.Orders;
 using MissTortas.Services.DTO.Orders;
@@ -153,9 +154,9 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpGet("user/{id}/consultancy")]
-        public async Task<ActionResult<IEnumerable<ConsultancyDTO>>> GetConsultancies(long id)
+        public async Task<ActionResult<IEnumerable<ConsultancyDTO>>> GetUserConsultancies(long userId)
         {
-            var ret = await orderService.GetUserConsultanciesAsync(id);
+            var ret = await orderService.GetUserConsultanciesAsync(userId);
             return ret.ToList();
         }
     }

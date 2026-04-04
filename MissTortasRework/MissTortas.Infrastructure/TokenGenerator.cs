@@ -5,6 +5,7 @@ using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 
@@ -15,12 +16,12 @@ namespace MissTortas.Infrastructure
         public async Task<string> GenerateToken(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = "VerySecureSymmetricKeySaracatungueanos"u8.ToArray();
+            var key = Encoding.UTF8.GetBytes(jwtOptions.Value.Key);
 
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Sub, user.Id),
             };
 
             var roleClaims = user.UserRoles

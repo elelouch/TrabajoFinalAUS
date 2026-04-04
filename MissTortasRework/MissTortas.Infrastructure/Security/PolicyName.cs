@@ -9,5 +9,7 @@
         public const string ReadRoles = "read.roles";
         public const string ManageOrders = "manage.orders";
         public const string PlaceOrders = "place.orders";
+        public const string ManageProducts = "manage.products";
+        
     }
 }

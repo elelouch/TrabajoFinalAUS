@@ -6,6 +6,7 @@
         public double Quantity { get; set; }
         public bool IsAvailable { get; set; }
         public long ProductId { get; set; }
+        public long CategoryId { get; set; }
         public string SaleDescription { get; set; } = string.Empty;
         public string SaleImagePath { get; set; } = string.Empty;
     }

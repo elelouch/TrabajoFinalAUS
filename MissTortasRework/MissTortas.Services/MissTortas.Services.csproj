@@ -12,8 +12,4 @@
     <ProjectReference Include="..\MissTortas.Repository\MissTortas.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Security\" />
-  </ItemGroup>
-
 </Project>

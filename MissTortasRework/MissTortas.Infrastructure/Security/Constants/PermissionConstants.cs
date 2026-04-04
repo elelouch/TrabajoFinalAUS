@@ -7,7 +7,6 @@ namespace MissTortas.Infrastructure.Security.Constants
     {
         public static PermissionRequirement ReadUsers { get; set; } = new(
             [
-                Permission.ReadSelfUser,
                 Permission.ReadAllUser
             ]
         );

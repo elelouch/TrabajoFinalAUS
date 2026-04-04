@@ -1,10 +1,14 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.Validators.Products;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
-
+using System.Security.Claims;
 using UpdateProduct = MissTortas.Presentation.DTO.Products.UpdateProduct;
 using UpdateProductServiceDTO = MissTortas.Services.DTO.Products.UpdateProductDTO;
 
@@ -14,22 +18,28 @@ namespace MissTortas.Presentation.Controllers
     [ApiController]
     public class ProductController(
             IProductService productService,
-            IProductsDTOValidator validators
+            IProductsDTOValidator validators,
+            UserManager<ApplicationUser> userManager
         ) : Controller
     {
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpDelete("category/{id}")]
         public async Task DeleteProductCategory(long id)
         {
             await productService.DeleteProductCategory(id);
         }
 
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
         {
-            var ps = await productService.AllProductCategoriesAsync();
-            return ps.ToList();
+            var userId = User.FindFirstValue("sub") ?? "";
+            var applicationUser = await userManager.FindByIdAsync(userId);
+            var ps = await productService.AllCategoriesForUserAsync(applicationUser!.User.SubjectId);
+            return ps;
         }
-
+        
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost("category")]
         public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)
         {
@@ -44,6 +54,7 @@ namespace MissTortas.Presentation.Controllers
             return pc;
         }
 
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
@@ -51,13 +62,14 @@ namespace MissTortas.Presentation.Controllers
             return ps.ToList();
         }
 
-        [HttpPut("{productId}")]
-        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProduct dto)
+        [Authorize(Policy = PolicyName.ManageProducts)]
+        [HttpPut]
+        public async Task<ActionResult<ProductDTO>> PutProduct(UpdateProduct dto)
         {
             await validators.UpdateProductValidator().ValidateAndThrowAsync(dto);
             var productDto = new UpdateProductServiceDTO
             {
-                ProductId = productId,
+                ProductId = dto.ProductId,
                 CategoryId = dto.CategoryId,
                 Quantity = dto.Quantity,
                 Description = dto.Description
@@ -66,6 +78,7 @@ namespace MissTortas.Presentation.Controllers
             return product;
         }
 
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(CreateProduct dto)
         {
@@ -81,6 +94,7 @@ namespace MissTortas.Presentation.Controllers
             return p;
         }
 
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost("sale")]
         public async Task<ActionResult<SaleProductDTO>> PostSaleProduct(CreateSaleProduct dto)
         {

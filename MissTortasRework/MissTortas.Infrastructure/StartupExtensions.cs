@@ -17,6 +17,7 @@ using MissTortas.Infrastructure.Security.Handlers;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using System.Text;
 
 namespace MissTortas.Infrastructure
 {
@@ -61,13 +62,17 @@ namespace MissTortas.Infrastructure
             services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
 
             var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>();
+            if(jwtOptions is null)
+            {
+                throw new InvalidOperationException("Jwt options not found in appsettings.json");
+            }
             services.AddAuthorization();
             services.AddAuthentication()
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        IssuerSigningKey = new SymmetricSecurityKey("VerySecureSymmetricKeySaracatungueanos"u8.ToArray()),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Key)),
                         ValidIssuer = jwtOptions.Issuer,
                         ValidAudience = jwtOptions.Audience,
                         ValidateIssuerSigningKey = true,

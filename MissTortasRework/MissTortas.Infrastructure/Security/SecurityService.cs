@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Interfaces;
+using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
@@ -20,11 +21,7 @@ namespace MissTortas.Infrastructure.Security
     {
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.Users.Include(u => u.UserRoles)
-                .ThenInclude(ur => ur.Role.RoleClaims)
-                .Include(u => u.Claims)
-                .Where(u => u.UserName == request.Username)
-                .SingleOrDefaultAsync();
+            var user = await userManager.FindByNameAsync(request.Username);
 
             if (user == null)
             {
@@ -44,11 +41,15 @@ namespace MissTortas.Infrastructure.Security
 
         public async Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO request)
         {
+            if (request.UserId == 0)
+            {
+                throw new InvalidOperationException("UserId is not valid.");
+            }
             var newUser = new ApplicationUser
             {
+                UserId = request.UserId,
                 Email = request.Username,
                 UserName = request.Username,
-                Guid = Guid.NewGuid(),
                 EmailConfirmed = false,
                 LockoutEnabled = true,
                 LockoutEnd = DateTimeOffset.MaxValue
@@ -63,9 +64,14 @@ namespace MissTortas.Infrastructure.Security
             return new SignUpUserResultDTO() { Id = newUser.Id, Email = newUser.Email };
         }
 
-        public async Task ModifyUserAsync(UserModificationDTO dto)
+        public async Task ModifyUserAsync(ApplicationUserModificationDTO dto)
         {
-            var user = await userManager.FindByIdAsync(dto.UserId.ToString()) ?? throw new UserNotFoundException("User not found.");
+            var user = await userManager.FindByIdAsync(dto.UserId);
+            if (user is null)
+            {
+                return;
+            }
+
             user.UserName = dto.Username;
             user.Email = dto.Email;
             user.LockoutEnabled = dto.IsEnabled is false;
@@ -123,12 +129,16 @@ namespace MissTortas.Infrastructure.Security
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return await userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToListAsync();
+            return await userManager.Users.Include(u => u.User).ThenInclude(ur => ur.Roles).ToListAsync();
         }
 
         public async Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto)
         {
-            var role = await roleManager.FindByIdAsync(dto.RoleId.ToString()) ?? throw new RoleNotFound("Role not found.");
+            var role = await roleManager.FindByIdAsync(dto.RoleId.ToString());
+            if (role is null)
+            {
+                return;
+            }
             var permissionsAsked = dto.Permissions;
             PermissionsExist(permissionsAsked);
             await UpdatePermissionsAsync(role, permissionsAsked);
@@ -164,12 +174,13 @@ namespace MissTortas.Infrastructure.Security
             return roleMapper.RoleToSimpleDTO(roles);
         }
 
-        public async Task<RoleDTO> GetRoleAsync(long id)
+        public async Task<RoleDTO?> GetRoleAsync(string name)
         {
-            var role = await roleManager.Roles
-                .Include(r => r.RoleClaims)
-                .Where(r => r.Id == id)
-                .SingleAsync();
+            var role = await roleManager.FindByNameAsync(name);
+            if(role is null)
+            {
+                return null;
+            }
             return roleMapper.RoleToDTO(role);
         }
 
@@ -186,29 +197,6 @@ namespace MissTortas.Infrastructure.Security
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto)
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<ApplicationUser>> GetUsersForAsync(CurrentUserDTO user)
-        {
-            var readAllUserPermission = Permission.ReadAllUser.Code;
-            var canSeeAllUsers = user.Permissions.Any(p => readAllUserPermission == p);
-            if (canSeeAllUsers)
-            {
-                return await GetAllUsersAsync();
-            }
-            var currentUser = await userManager.FindByNameAsync(user.Username);
-            return currentUser == null ? throw new UserNotFoundException($"User {user.Id} - {user.Username} not found.") : [currentUser];
-        }
-
-        public async Task<IEnumerable<Claim>> GetUserClaimsAsync(long userId)
-        {
-            var user = await userManager.FindByIdAsync(userId.ToString()) ?? throw new UserNotFoundException("User not found."); ;
-            var roleClaims = user.UserRoles
-                .SelectMany(ur => ur.Role.RoleClaims)
-                .Select(rc => rc.ToClaim());
-            var userClaims = user.Claims.Select(userClaim => userClaim.ToClaim());
-            var allClaims = roleClaims.Concat(userClaims).Distinct();
-            return allClaims;
         }
 
     }

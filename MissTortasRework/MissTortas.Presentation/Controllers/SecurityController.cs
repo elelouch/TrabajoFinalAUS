@@ -6,6 +6,7 @@ using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Presentation.DTO.Security;
 using MissTortas.Presentation.Mappers;
 using MissTortas.Presentation.Validators.Security;
@@ -17,8 +18,7 @@ namespace MissTortas.Presentation.Controllers
     public class SecurityController(
         ISecurityService securityService,
         IAuthorizationService authorizationService,
-        ISecurityDTOValidator validator,
-        IUserMapper userMapper
+        ISecurityDTOValidator validator
     ) : Controller
     {
 
@@ -26,13 +26,12 @@ namespace MissTortas.Presentation.Controllers
         [HttpGet("user")]
         public async Task<ActionResult<List<SimpleUser>>> Users()
         {
-            var currentUserDto = userMapper.UserToCurrentUserDTO(User);
-            var allUsers = await securityService.GetUsersForAsync(currentUserDto);
+            var allUsers = await securityService.GetAllUsersAsync();
             var allUserDTO = allUsers.Select(user => new SimpleUser
             {
                 Id = user.Id,
                 Username = user.UserName!,
-                Roles = [.. user.UserRoles.Select(ur => ur.Role.Name ?? "")]
+                Roles = [.. user.User.Roles.Select(r => r.Name)]
             }).ToList();
             return Ok(allUserDTO);
         }
@@ -113,7 +112,7 @@ namespace MissTortas.Presentation.Controllers
         public async Task<ActionResult> UserModification(UserModification userModificationDTO)
         {
             await validator.UserModificationValidator().ValidateAndThrowAsync(userModificationDTO);
-            var serviceDto = new UserModificationDTO
+            var serviceDto = new ApplicationUserModificationDTO
             {
                 UserId = userModificationDTO.UserId,
                 IsEnabled = userModificationDTO.Enabled,

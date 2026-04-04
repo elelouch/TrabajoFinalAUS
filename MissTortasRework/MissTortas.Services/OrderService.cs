@@ -1,5 +1,6 @@
 ﻿using MissTortas.Domain.Orders;
 using MissTortas.Domain.Repositories;
+using MissTortas.Domain.Security.Authorization;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
@@ -79,10 +80,6 @@ namespace MissTortas.Services
                 {
                     throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
                 }
-                if (productForSale.SaleQuantity < d.QuantityAsked)
-                {
-                    throw new AskQuantityException($"Quantity asked of product is greater than what it's available. Product {productForSale.Id}");
-                }
                 var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(orderSaleProduct);
             }
@@ -94,25 +91,18 @@ namespace MissTortas.Services
             foreach (var ap in askedProducts)
             {
                 var saleProduct = ap.SaleProduct;
-                var stockProduct = saleProduct.StockProduct;
                 var ask = ap.QuantityAsked;
 
-                if (saleProduct.SaleQuantity < ask)
+                if (saleProduct.Quantity < ask)
                 {
                     throw new AskQuantityException("Couldn't execute order, asked quantity is not available for sale.");
                 }
-                saleProduct.SaleQuantity -= ask;
+                saleProduct.Quantity -= ask;
 
-                if (saleProduct.SaleQuantity <= 0)
+                if (saleProduct.Quantity <= 0)
                 {
                     saleProduct.IsAvailable = false;
                 }
-
-                if (stockProduct.Quantity < ask)
-                {
-                    throw new AskQuantityException("Cannot ask more than what's available from the stock.");
-                }
-                stockProduct.Quantity -= ask;
             }
         }
 
@@ -121,14 +111,8 @@ namespace MissTortas.Services
             foreach (var ap in askedProducts)
             {
                 var saleProduct = ap.SaleProduct;
-                var stockProduct = saleProduct.StockProduct;
                 var ask = ap.QuantityAsked;
-                saleProduct.SaleQuantity += ask;
-                if (saleProduct.SaleQuantity >= 0)
-                {
-                    saleProduct.IsAvailable = true;
-                }
-                stockProduct.Quantity += ask;
+                saleProduct.Quantity += ask;
             }
         }
 
@@ -199,8 +183,8 @@ namespace MissTortas.Services
 
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
-            var client = await userRepository.FindByIdAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
-            var assignee = await userRepository.FindByIdAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found."); ;
+            var client = await userRepository.FindAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
+            var assignee = await userRepository.FindAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found.");
             var consultancy = new Consultancy
             {
                 Client = client,

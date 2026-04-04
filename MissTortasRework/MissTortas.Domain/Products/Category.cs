@@ -4,7 +4,10 @@ namespace MissTortas.Domain.Products
 {
     public abstract class Category : Resource
     {
-        public abstract string Name { get; set; }
-        public abstract bool IsFinal { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public bool IsFinal { get; set; }
+        public virtual ICollection<Category> Children { get; set; } = [];
+        public long ParentId { get; set; }
+        public virtual Category? Parent { get; set; }
     }
 }

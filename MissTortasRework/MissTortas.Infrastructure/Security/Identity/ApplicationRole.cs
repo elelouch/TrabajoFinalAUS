@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Identity;
+using MissTortas.Domain.Security.Users;
 
 namespace MissTortas.Infrastructure.Security.Identity
 {
-    public class ApplicationRole : IdentityRole<long>
+    public class ApplicationRole : IdentityRole
     {
-        public DateTime LastTimeModified { get; set; }
-        public bool Deleted { get; set; }
-        public bool Trivial { get; set; }
-        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; } = [];
-        public virtual ICollection<ApplicationRoleClaim> RoleClaims { get; set; } = [];
-
+        public long RoleId { get; set; }
+        public Role Role { get; set; } = null!;
         public static ApplicationRole AdminRole { get; set; } = new() { Name = "Admin", NormalizedName = "ADMIN" };
         public static ApplicationRole UserRole { get; set; } = new() { Name = "User", NormalizedName = "USER" };
     }

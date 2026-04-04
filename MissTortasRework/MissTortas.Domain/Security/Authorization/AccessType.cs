@@ -2,9 +2,8 @@
 {
     public enum AccessType
     {
-        Create,
         Read,
-        Update,
+        Write,
         Delete
     }
 }

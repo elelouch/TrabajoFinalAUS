@@ -2,8 +2,8 @@
 
 namespace MissTortas.Domain.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepositoryCrud<User>
     {
-        public Task<User?> FindByIdAsync(long id);
+        public Task<User?> FindByIdAsync(long userId);
     }
 }
