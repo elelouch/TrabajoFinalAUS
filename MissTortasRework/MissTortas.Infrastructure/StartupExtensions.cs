@@ -46,6 +46,8 @@ namespace MissTortas.Infrastructure
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddScoped<IRoleMapper, RoleMapper>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRightsRepository, RightsRepository>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireNonAlphanumeric = true;

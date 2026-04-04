@@ -85,7 +85,7 @@ namespace MissTortas.Services
             return productMapper.SaleProductToDTO(saleProduct);
         }
 
-        public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
+        public async Task<CategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
             var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
             if (parent is not null && parent.IsFinal)
@@ -116,7 +116,7 @@ namespace MissTortas.Services
             return productMapper.ProductCategoryToDTO(productCategory);
         }
 
-        public async Task<IEnumerable<ProductCategoryDTO>> AllCategoriesAsync()
+        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAsync()
         {
             var categories = productRepository.GetAllProductCategories();
             var categoriesList = await categories.ToListAsync();
@@ -177,14 +177,14 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-        public async Task<List<ProductCategoryDTO>> AllCategoriesForUserAsync(long userId)
+        public async Task<List<CategoryDTO>> AllCategoriesForUserAsync(long userId)
         {
             var categories = await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userId);
-            var dtoLookup = new Dictionary<long, ProductCategoryDTO>(categories.Count());
+            var dtoLookup = new Dictionary<long, CategoryDTO>(categories.Count());
 
             foreach (var cat in categories)
             {
-                dtoLookup[cat.Id] = new ProductCategoryDTO
+                dtoLookup[cat.Id] = new CategoryDTO
                 {
                     Id = cat.Id,
                     Name = cat.Name,
@@ -192,7 +192,7 @@ namespace MissTortas.Services
                 };
             }
 
-            var roots = new List<ProductCategoryDTO>();
+            var roots = new List<CategoryDTO>();
 
             foreach (var c in categories)
             {

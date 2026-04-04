@@ -17,7 +17,6 @@ namespace MissTortas.Infrastructure.Repositories
         {
             var order = await orderSet.Include(order => order.ProductsAsked)
                 .ThenInclude(asked => asked.SaleProduct)
-                .ThenInclude(sp => sp.StockProduct)
                 .Include(order => order.Consultancy)
                 .ThenInclude(c => c.Assignee)
                 .Include(order => order.Consultancy)
@@ -75,7 +74,6 @@ namespace MissTortas.Infrastructure.Repositories
         public IAsyncEnumerable<Consultancy> GetConsultanciesByClientId(long clientId)
         {
             return consultanciesSet
-                .Include(c => c.ConsultancyFiles)
                 .Include(c => c.Client)
                 .Where(c => c.Client.Id == clientId)
                 .AsAsyncEnumerable();

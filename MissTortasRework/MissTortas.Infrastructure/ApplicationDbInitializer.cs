@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MissTortas.Domain.Security.Users;
+using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
 using System.Security.Claims;
@@ -8,72 +12,109 @@ namespace MissTortas.Infrastructure
 {
     public static class ApplicationDbInitializer
     {
-        public static void SeedPermissions(RoleManager<ApplicationRole> roleManager)
+        public static async Task SeedPermissionsAsync(IServiceProvider services)
         {
-            var allPermissions = Permission.All;
-            var adminRole = roleManager.FindByNameAsync(ApplicationRole.AdminRole.Name!).Result;
+            var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            var adminPermissionsAssigned = roleManager.GetClaimsAsync(adminRole!).Result.Where(c => c.Type == Permission.ClaimName);
+            var allPermissions = Permission.All;
+
+            var adminRole = await roleManager.FindByNameAsync(ApplicationRole.AdminRole.Name!) ?? throw new InvalidOperationException("Admin role not seeded.");
+
+            var adminPermissionsAssigned = (await roleManager.GetClaimsAsync(adminRole))
+                .Where(c => c.Type == Permission.ClaimName)
+                .Select(c => c.Value)
+                .ToHashSet();
+
             foreach (var p in allPermissions)
             {
-                if (!adminPermissionsAssigned.Any(pAssigned => pAssigned.Value == p.Code))
+                if (!adminPermissionsAssigned.Contains(p.Code))
                 {
-                    roleManager.AddClaimAsync(adminRole!, new Claim(Permission.ClaimName, p.Code)).Wait();
+                    await roleManager.AddClaimAsync(adminRole!, new Claim(Permission.ClaimName, p.Code));
                 }
             }
 
             List<Permission> userRolePermission = [Permission.ReadSelfUser];
-            var userRole = roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!).Result;
-            var userPermissionsAssigned = roleManager.GetClaimsAsync(userRole!).Result.Where(c => c.Type == Permission.ClaimName);
+
+            var userRole = await roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!) ?? throw new InvalidOperationException("Admin role not seeded.");
+
+            var userPermissionsAssigned = (await roleManager.GetClaimsAsync(userRole!))
+                .Where(c => c.Type == Permission.ClaimName)
+                .Select(c => c.Value)
+                .ToHashSet();
+
             foreach (var p in userRolePermission)
             {
-                if (!userPermissionsAssigned.Any(pAssigned => pAssigned.Value == p.Code))
+                if (!userPermissionsAssigned.Contains(p.Code))
                 {
-                    roleManager.AddClaimAsync(userRole!, new Claim(Permission.ClaimName, p.Code)).Wait();
+                    await roleManager.AddClaimAsync(userRole!, new Claim(Permission.ClaimName, p.Code));
                 }
             }
-
+        }
+        public static async Task SeedDatabase(IServiceProvider services)
+        {
+            await SeedRolesAsync(services);
+            await SeedUsers(services);
+            await SeedPermissionsAsync(services);
         }
 
-        public static void SeedDatabase(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager
-        )
+        public static async Task SeedRolesAsync(IServiceProvider services)
         {
-            SeedRoles(roleManager);
-            SeedUsers(userManager);
-            SeedPermissions(roleManager);
-        }
+            var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-        public static void SeedRoles(RoleManager<ApplicationRole> roleManager)
-        {
             var userRole = ApplicationRole.UserRole;
-            var uRole = roleManager.FindByNameAsync(userRole.Name!);
-            if (uRole.Result is null)
+            var existingUserRole = await roleManager.FindByNameAsync(userRole.Name!);
+
+            if (existingUserRole is null)
             {
-                roleManager.CreateAsync(userRole).Wait();
+                await roleManager.CreateAsync(userRole);
             }
+
             var adminRole = ApplicationRole.AdminRole;
-            var aRole = roleManager.FindByNameAsync(adminRole.Name!);
-            if (aRole.Result is null)
+            var existingAdminRole = await roleManager.FindByNameAsync(adminRole.Name!);
+
+            if (existingAdminRole is null)
             {
-                roleManager.CreateAsync(adminRole).Wait();
+                await roleManager.CreateAsync(adminRole);
             }
         }
 
-        public static void SeedUsers(UserManager<ApplicationUser> userManager)
+
+
+        public async static Task SeedUsers(IServiceProvider services)
         {
+            using var scope = services.CreateScope();
+
+            var context = scope.ServiceProvider.GetRequiredService<MissTortasContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var userTask = userManager.FindByEmailAsync("admin@admin.com");
-            if (userTask.Result is null)
+
+            var domainUser = await context.DomainUsers.FirstOrDefaultAsync(u => u.FirstName == "Admin" && u.LastName == "Admin");
+            if (domainUser == null)
+            {
+                domainUser = new User
+                {
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    Birthday = new DateOnly(2000, 1, 1)
+                };
+
+                await context.DomainUsers.AddAsync(domainUser);
+                await context.SaveChangesAsync();
+            }
+
+            var identityUser = await userManager.FindByNameAsync("admin");
+
+            if (identityUser is null)
             {
                 ApplicationUser newUser = new()
                 {
-                    UserName = "admin@admin.com",
+                    UserId = domainUser.Id,
+                    UserName = "admin",
                     Email = "admin@admin.com"
                 };
 
-                var createUserTask = userManager.CreateAsync(newUser, "C0rr0s!v3Cy4n!d3");
-                if (createUserTask.Result.Succeeded)
+                var createUserTask = await userManager.CreateAsync(newUser, "C0rr0s!v3Cy4n!d3");
+                if (createUserTask.Succeeded)
                 {
                     userManager.AddToRoleAsync(newUser, ApplicationRole.AdminRole.Name!).Wait();
                 }

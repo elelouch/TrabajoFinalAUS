@@ -90,9 +90,8 @@ app.UseAuthorization();
 
 using (var scope = app.Services.CreateScope())
 {
-    var userManager = scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>)) as UserManager<ApplicationUser>;
-    var roleManager = scope.ServiceProvider.GetService(typeof(RoleManager<ApplicationRole>)) as RoleManager<ApplicationRole>;
-    ApplicationDbInitializer.SeedDatabase(userManager!, roleManager!);
+    var services = scope.ServiceProvider;
+    await ApplicationDbInitializer.SeedDatabase(services);
 }
 
 app.UseHttpsRedirection();

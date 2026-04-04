@@ -15,6 +15,8 @@ namespace MissTortas.Services
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductMapper, ProductMapper>();
             services.AddScoped<IOrderMapper, OrderMapper>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRightsService, RightsService>();
             return services;
         }
     }

@@ -31,7 +31,7 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet("category")]
-        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllProductCategory()
         {
             var userId = User.FindFirstValue("sub") ?? "";
             var applicationUser = await userManager.FindByIdAsync(userId);
@@ -41,7 +41,7 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost("category")]
-        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)
+        public async Task<ActionResult<CategoryDTO>> PostProductCategory(CreateProductCategory dto)
         {
             await validators.ProductCategoryValidator().ValidateAndThrowAsync(dto);
             var productCategoryDto = new ProductCategoryCreateDTO()

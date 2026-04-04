@@ -2,7 +2,7 @@
 {
     public class RoleDTO
     {
-        public long Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public IEnumerable<string> Permissions { get; set; } = [];
     }

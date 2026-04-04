@@ -88,9 +88,14 @@ namespace MissTortas.Presentation.Controllers
 
         [Authorize(Policy = PolicyName.ReadRoles)]
         [HttpGet("role/{id}")]
-        public async Task<RoleDTO> GetRole(long id)
+        public async Task<ActionResult<RoleDTO>> GetRole(string id)
         {
-            return await securityService.GetRoleAsync(id);
+            var ret = await securityService.GetRoleAsync(id);
+            if(ret is null)
+            {
+                return NotFound();
+            }
+            return ret;
         }
 
         [Authorize(Policy = PolicyName.AssignPermissions)]

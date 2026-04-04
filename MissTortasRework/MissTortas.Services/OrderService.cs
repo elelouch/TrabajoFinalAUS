@@ -75,7 +75,7 @@ namespace MissTortas.Services
             {
                 var productForSale = await productService.GetSaleProductEntityAsync(d.SaleProductId);
                 var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
-                if (!(productForSale.AllowDecimalAsk || askIsUnit))
+                if (!(productForSale.ManageQuantityAsInteger || askIsUnit))
                 {
                     throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
                 }

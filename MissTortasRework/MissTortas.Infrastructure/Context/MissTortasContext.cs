@@ -40,6 +40,12 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Subject>().UseTptMappingStrategy();
             modelBuilder.Entity<Resource>().UseTptMappingStrategy();
 
+            modelBuilder.Entity<Right>(r =>
+            {
+                r.HasKey(r => new { r.SubjectId, r.ResourceId });
+            });
+
+
             modelBuilder.Entity<ApplicationUser>(appUser =>
             {
                 appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.Id); ;
@@ -57,7 +63,6 @@ namespace MissTortas.Infrastructure.Context
                 p.HasIndex(p => new { p.Name }).IsUnique();
                 p.HasOne(p => p.ProductDetail).WithOne(pd => pd.Product).HasForeignKey<Product>(p => p.Id);
                 p.HasOne(p => p.ProductCategory).WithMany(pc => pc.Products);
-                p.UseTpcMappingStrategy();
             });
 
             modelBuilder.Entity<ProductCategory>()
@@ -69,10 +74,10 @@ namespace MissTortas.Infrastructure.Context
                 o.HasMany(o => o.ProductsAsked).WithOne(ps => ps.Order);
                 o.HasMany(o => o.Preparations).WithOne(prep => prep.Order).HasForeignKey(prep => prep.Id);
                 o.HasOne(o => o.Consultancy).WithMany(c => c.Orders).HasForeignKey(o => o.ConsultancyId);
-                o.HasOne(o => o.PaymentRequest).WithOne(pr => pr.Order).HasForeignKey("PaymentRequestId");
+                o.HasOne(o => o.PaymentRequest).WithOne(pr => pr.Order).HasForeignKey<PaymentRequest>(pr => pr.OrderId);
             });
 
-            modelBuilder.Entity<OrderSaleProduct>().HasKey(osp => new { osp.OrderId, osp.SaleProductId });
+            modelBuilder.Entity<OrderSaleProduct>().HasIndex(osp => new { osp.OrderId, osp.SaleProductId });
 
             modelBuilder.Entity<OrderPreparation>()
                 .HasOne(op => op.Assignee)

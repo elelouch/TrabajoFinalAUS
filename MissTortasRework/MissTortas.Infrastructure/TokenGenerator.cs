@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Infrastructure.Interfaces;
@@ -11,31 +13,47 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace MissTortas.Infrastructure
 {
-    public class TokenGenerator(IOptions<JwtOptions> jwtOptions) : ITokenGenerator
+    public class TokenGenerator(
+        IOptions<JwtOptions> jwtOptions,
+        RoleManager<ApplicationRole> roleManager,
+        UserManager<ApplicationUser> userManager
+    ) : ITokenGenerator
     {
         public async Task<string> GenerateToken(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtOptions.Value.Key);
 
-            var claims = new List<Claim>
+            var tokenClaims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtRegisteredClaimNames.Sub, user.Id),
             };
 
-            var roleClaims = user.UserRoles
-                .SelectMany(ur => ur.Role.RoleClaims)
-                .Select(rc => rc.ToClaim());
-            var userClaims = user.Claims.Select(userClaim => userClaim.ToClaim());
-            var allClaims = roleClaims.Concat(userClaims).Distinct();
+            var roleIds = user.User.Roles.Select(role => role.Id);
+            
+            var allUserClaims = new HashSet<(string type, string value)>();
+            var roles = roleManager.Roles.Where(appRole => roleIds.Contains(appRole.RoleId)).ToAsyncEnumerable();
+            await foreach (var role in roles)
+            {
+                var roleClaims = await roleManager.GetClaimsAsync(role);
+                foreach (var claim in roleClaims)
+                {
+                    allUserClaims.Add((claim.ValueType, claim.Value));
+                }
+            }
+            var userClaims = (await userManager.GetClaimsAsync(user));
+            foreach (var userClaim in userClaims)
+            {
+                allUserClaims.Add((userClaim.ValueType, userClaim.Value));
+            }
 
-            claims.AddRange(allClaims);
+            tokenClaims.AddRange(allUserClaims.Select(c => new Claim(c.type, c.value)));
 
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(tokenClaims),
                 Expires = DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpirationMinutes),
                 Issuer = jwtOptions.Value.Issuer,
                 Audience = jwtOptions.Value.Audience,

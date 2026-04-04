@@ -6,19 +6,19 @@ namespace MissTortas.Services.Mapping
 {
     public class ProductMapper : IProductMapper
     {
-        public ProductCategoryDTO ProductCategoryToDTO(ProductCategory product)
+        public CategoryDTO ProductCategoryToDTO(Category category)
         {
-            return new ProductCategoryDTO
+            return new CategoryDTO
             {
-                Id = product.Id,
-                ParentId = product.Parent?.Id ?? 0,
-                IsFinal = product.IsFinal,
-                Name = product.Name,
-                Children = [.. product.Children.Select(child => ChildrenProductCategoryToDTO(child))]
+                Id = category.Id,
+                ParentId = category.Parent?.Id ?? 0,
+                IsFinal = category.IsFinal,
+                Name = category.Name,
+                Children = [.. category.Children.Select(child => ProductCategoryToDTO(child))]
             };
         }
 
-        public IEnumerable<ProductCategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> products)
+        public IEnumerable<CategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> products)
         {
             return products.Select(pc => ProductCategoryToDTO(pc));
         }
@@ -44,10 +44,7 @@ namespace MissTortas.Services.Mapping
             return new SaleProductDTO
             {
                 Id = product.Id,
-                Price = product.SalePrice,
-                Description = product.SaleDescription,
-                Quantity = product.SaleQuantity,
-                AllowDecimalAsk = product.AllowDecimalAsk
+                Price = product.SalePrice
             };
         }
 
