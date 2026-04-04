@@ -1,11 +1,7 @@
-﻿using MissTortas.Domain.Products;
-using MissTortas.Domain.Repositories;
+﻿using MissTortas.Domain.Repositories;
 using MissTortas.Domain.Security.Authorization;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services
 {
@@ -14,18 +10,18 @@ namespace MissTortas.Services
         public async Task<IEnumerable<T>> GetAvailableResourceForUser<T>(AccessType accessType, long userId) where T : Resource
         {
             var user = await userRepository.FindByIdAsync(userId);
-            if(user is null)
+            if (user is null)
             {
                 return [];
             }
-            var subjectsIds = user.Roles.Select(r => r.SubjectId).Append(user.SubjectId).ToArray(); 
+            var subjectsIds = user.Roles.Select(r => r.Id).Append(user.Id).ToArray();
             return await rightsRepository.GetAvailableResourceForSubjects<T>(accessType, subjectsIds);
         }
 
         public async Task GiveAccessAsync(RightDTO rightDTO)
         {
             var hasRight = await HasAccessAsync(rightDTO);
-            if(hasRight)
+            if (hasRight)
             {
                 return;
             }

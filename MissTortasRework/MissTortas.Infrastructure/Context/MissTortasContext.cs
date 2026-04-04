@@ -42,7 +42,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationUser>(appUser =>
             {
-                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.SubjectId); ;
+                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.Id); ;
                 appUser.Property(u => u.Id).ValueGeneratedNever();
             });
 
@@ -104,7 +104,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationRole>(b =>
             {
-                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.SubjectId);
+                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.Id);
             });
 
         }

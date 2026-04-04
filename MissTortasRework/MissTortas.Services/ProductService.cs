@@ -105,7 +105,7 @@ namespace MissTortas.Services
             await productRepository.InsertProductCategoryAsync(productCategory);
             if (parent is not null)
             {
-                var resourceId = productCategory.ResourceId;
+                var resourceId = productCategory.Id;
                 var rightsDTO = parent.Rights
                     .Select(r => new RightDTO { ResourceId = resourceId, AccessType = (int)r.AccessType, SubjectId = r.SubjectId })
                     .Where(r => r.Transferable);
@@ -184,9 +184,9 @@ namespace MissTortas.Services
 
             foreach (var cat in categories)
             {
-                dtoLookup[cat.ResourceId] = new ProductCategoryDTO
+                dtoLookup[cat.Id] = new ProductCategoryDTO
                 {
-                    Id = cat.ResourceId,
+                    Id = cat.Id,
                     Name = cat.Name,
                     IsFinal = cat.IsFinal
                 };
@@ -196,7 +196,7 @@ namespace MissTortas.Services
 
             foreach (var c in categories)
             {
-                var dto = dtoLookup[c.ResourceId];
+                var dto = dtoLookup[c.Id];
 
                 if (c.ParentId == 0)
                 {

@@ -1,6 +1,5 @@
 ﻿using MissTortas.Domain.Orders;
 using MissTortas.Domain.Repositories;
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;

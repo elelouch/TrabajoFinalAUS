@@ -35,10 +35,10 @@ namespace MissTortas.Presentation.Controllers
         {
             var userId = User.FindFirstValue("sub") ?? "";
             var applicationUser = await userManager.FindByIdAsync(userId);
-            var ps = await productService.AllCategoriesForUserAsync(applicationUser!.User.SubjectId);
+            var ps = await productService.AllCategoriesForUserAsync(applicationUser!.User.Id);
             return ps;
         }
-        
+
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost("category")]
         public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)

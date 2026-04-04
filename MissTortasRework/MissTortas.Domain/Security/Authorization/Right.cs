@@ -6,8 +6,8 @@
         public bool Constraint { get; set; }
         public required AccessType AccessType { get; set; }
         public long SubjectId { get; set; }
-        public Subject Subject { get; set; }
+        public Subject Subject { get; set; } = null!;
         public long ResourceId { get; set; }
-        public Resource Resource { get; set; }
+        public Resource Resource { get; set; } = null!;
     }
 }

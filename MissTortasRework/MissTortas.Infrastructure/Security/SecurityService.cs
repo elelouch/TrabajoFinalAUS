@@ -177,7 +177,7 @@ namespace MissTortas.Infrastructure.Security
         public async Task<RoleDTO?> GetRoleAsync(string name)
         {
             var role = await roleManager.FindByNameAsync(name);
-            if(role is null)
+            if (role is null)
             {
                 return null;
             }

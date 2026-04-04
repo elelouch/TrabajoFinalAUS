@@ -2,9 +2,6 @@
 using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Services
 {
@@ -20,7 +17,7 @@ namespace MissTortas.Services
             };
             await userRepository.InsertAsync(user);
             await userRepository.SaveChangesAsync();
-            return user.SubjectId;
+            return user.Id;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace MissTortas.Infrastructure
             services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
 
             var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>();
-            if(jwtOptions is null)
+            if (jwtOptions is null)
             {
                 throw new InvalidOperationException("Jwt options not found in appsettings.json");
             }

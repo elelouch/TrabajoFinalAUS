@@ -15,7 +15,7 @@ namespace MissTortas.Infrastructure.Security.Constants
                 Permission.UpdateSelfUser,
                 Permission.UpdateAllUser
             ]
-);
+        );
 
     }
 

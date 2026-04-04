@@ -1,7 +1,6 @@
 ﻿using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
-using System.Security.Claims;
 
 namespace MissTortas.Infrastructure.Security.Interface
 {

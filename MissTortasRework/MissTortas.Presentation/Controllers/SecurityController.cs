@@ -8,7 +8,6 @@ using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Presentation.DTO.Security;
-using MissTortas.Presentation.Mappers;
 using MissTortas.Presentation.Validators.Security;
 
 namespace MissTortas.Presentation.Controllers
