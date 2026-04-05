@@ -7,7 +7,5 @@ namespace MissTortas.Infrastructure.Security.Identity
     {
         public long RoleId { get; set; }
         public Role Role { get; set; } = null!;
-        public static ApplicationRole AdminRole { get; set; } = new() { Name = "Admin", NormalizedName = "ADMIN" };
-        public static ApplicationRole UserRole { get; set; } = new() { Name = "User", NormalizedName = "USER" };
     }
 }

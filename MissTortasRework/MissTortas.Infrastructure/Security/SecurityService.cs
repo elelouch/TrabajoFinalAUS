@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.DTO.Security;
+using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
@@ -59,7 +60,7 @@ namespace MissTortas.Infrastructure.Security
             {
                 return new SignUpUserResultDTO() { IdentityResult = userCreation };
             }
-            await userManager.AddToRoleAsync(newUser, ApplicationRole.UserRole.Name!);
+            await userManager.AddToRoleAsync(newUser, UserConstants.UserRoleName);
 
             return new SignUpUserResultDTO() { Id = newUser.Id, Email = newUser.Email };
         }

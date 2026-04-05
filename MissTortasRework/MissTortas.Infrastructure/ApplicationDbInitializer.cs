@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MissTortas.Domain.Security.Contacts;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.Context;
+using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
 using System.Security.Claims;
@@ -12,13 +14,14 @@ namespace MissTortas.Infrastructure
 {
     public static class ApplicationDbInitializer
     {
+
         public static async Task SeedPermissionsAsync(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-
+            
             var allPermissions = Permission.All;
 
-            var adminRole = await roleManager.FindByNameAsync(ApplicationRole.AdminRole.Name!) ?? throw new InvalidOperationException("Admin role not seeded.");
+            var adminRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName) ?? throw new InvalidOperationException("Admin role not seeded.");
 
             var adminPermissionsAssigned = (await roleManager.GetClaimsAsync(adminRole))
                 .Where(c => c.Type == Permission.ClaimName)
@@ -35,7 +38,7 @@ namespace MissTortas.Infrastructure
 
             List<Permission> userRolePermission = [Permission.ReadSelfUser];
 
-            var userRole = await roleManager.FindByNameAsync(ApplicationRole.UserRole.Name!) ?? throw new InvalidOperationException("Admin role not seeded.");
+            var userRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName) ?? throw new InvalidOperationException("Admin role not seeded.");
 
             var userPermissionsAssigned = (await roleManager.GetClaimsAsync(userRole!))
                 .Where(c => c.Type == Permission.ClaimName)
@@ -59,22 +62,37 @@ namespace MissTortas.Infrastructure
 
         public static async Task SeedRolesAsync(IServiceProvider services)
         {
-            var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+            using var scope = services.CreateScope();
 
-            var userRole = ApplicationRole.UserRole;
-            var existingUserRole = await roleManager.FindByNameAsync(userRole.Name!);
+            var context = scope.ServiceProvider.GetRequiredService<MissTortasContext>();
 
-            if (existingUserRole is null)
+            var userDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.AdminRoleName);
+            if (userDomainRole is null)
             {
-                await roleManager.CreateAsync(userRole);
+                userDomainRole = new Role { Name = UserConstants.AdminRoleName };
+                await context.DomainRoles.AddAsync(userDomainRole);
+                await context.SaveChangesAsync();
+            }
+            var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+            var appUserRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName);
+            if (appUserRole is null)
+            {
+                appUserRole = new ApplicationRole { RoleId = userDomainRole.Id, Name = UserConstants.AdminRoleName };
+                await roleManager.CreateAsync(appUserRole);
             }
 
-            var adminRole = ApplicationRole.AdminRole;
-            var existingAdminRole = await roleManager.FindByNameAsync(adminRole.Name!);
-
-            if (existingAdminRole is null)
+            var adminDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.AdminRoleName);
+            if (adminDomainRole is null)
             {
-                await roleManager.CreateAsync(adminRole);
+                adminDomainRole = new Role { Name = UserConstants.AdminRoleName };
+                await context.DomainRoles.AddAsync(adminDomainRole);
+                await context.SaveChangesAsync();
+            }
+            var appAdminRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName);
+            if (appAdminRole is null)
+            {
+                appAdminRole = new ApplicationRole { Name = UserConstants.AdminRoleName, RoleId = adminDomainRole.Id };
+                await roleManager.CreateAsync(appAdminRole);
             }
         }
 
@@ -84,15 +102,14 @@ namespace MissTortas.Infrastructure
 
             var context = scope.ServiceProvider.GetRequiredService<MissTortasContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var userTask = userManager.FindByEmailAsync("admin@admin.com");
 
-            var domainUser = await context.DomainUsers.FirstOrDefaultAsync(u => u.FirstName == "Admin" && u.LastName == "Admin");
+            var domainUser = await context.DomainUsers.FirstOrDefaultAsync(u => u.FirstName == UserConstants.AdminUserName && u.LastName == UserConstants.AdminUserName);
             if (domainUser == null)
             {
                 domainUser = new User
                 {
-                    FirstName = "Admin",
-                    LastName = "Admin",
+                    FirstName = UserConstants.AdminUserName,
+                    LastName = UserConstants.AdminUserName,
                     Birthday = new DateOnly(2000, 1, 1)
                 };
 
@@ -100,21 +117,21 @@ namespace MissTortas.Infrastructure
                 await context.SaveChangesAsync();
             }
 
-            var identityUser = await userManager.FindByNameAsync("admin");
+            var identityUser = await userManager.FindByNameAsync(UserConstants.AdminUserName);
 
             if (identityUser is null)
             {
                 ApplicationUser newUser = new()
                 {
                     UserId = domainUser.Id,
-                    UserName = "admin",
+                    UserName = UserConstants.AdminUserName,
                     Email = "admin@admin.com"
                 };
 
                 var createUserTask = await userManager.CreateAsync(newUser, "C0rr0s!v3Cy4n!d3");
                 if (createUserTask.Succeeded)
                 {
-                    userManager.AddToRoleAsync(newUser, ApplicationRole.AdminRole.Name!).Wait();
+                    await userManager.AddToRoleAsync(newUser, UserConstants.AdminRoleName);
                 }
             }
         }
