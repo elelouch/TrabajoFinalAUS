@@ -91,7 +91,7 @@ namespace MissTortas.Presentation.Controllers
         public async Task<ActionResult<RoleDTO>> GetRole(string id)
         {
             var ret = await securityService.GetRoleAsync(id);
-            if(ret is null)
+            if (ret is null)
             {
                 return NotFound();
             }

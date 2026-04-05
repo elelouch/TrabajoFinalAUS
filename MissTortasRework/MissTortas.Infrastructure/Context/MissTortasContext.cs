@@ -81,7 +81,7 @@ namespace MissTortas.Infrastructure.Context
             {
                 c.HasOne(c => c.Parent).WithMany(c => c.Children).OnDelete(DeleteBehavior.Restrict);
             });
-            
+
             modelBuilder.Entity<ProductCategory>()
                 .HasMany(pc => pc.Products)
                 .WithOne(p => p.ProductCategory);

@@ -183,7 +183,7 @@ namespace MissTortas.Infrastructure.Security
             }
             var claims = (await roleManager.GetClaimsAsync(role))
                 .Where(c => c.ValueType == Permission.ClaimName)
-                .Select(c => new Permission { Code = c.ValueType});
+                .Select(c => new Permission { Code = c.ValueType });
 
             return roleMapper.RoleWithPermissionsToDTO(role, claims);
         }

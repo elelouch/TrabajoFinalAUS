@@ -1,5 +1,4 @@
-﻿using MissTortas.Domain.Orders;
-using MissTortas.Domain.Products;
+﻿using MissTortas.Domain.Products;
 using MissTortas.Domain.Repositories;
 using MissTortas.Infrastructure.Entity.Orders;
 

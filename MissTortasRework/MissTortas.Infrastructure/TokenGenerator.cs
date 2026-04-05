@@ -31,7 +31,7 @@ namespace MissTortas.Infrastructure
             };
 
             var roleIds = user.User.Roles.Select(role => role.Id);
-            
+
             var allUserClaims = new HashSet<(string type, string value)>();
             var roles = roleManager.Roles.Where(appRole => roleIds.Contains(appRole.RoleId)).ToAsyncEnumerable();
             await foreach (var role in roles)

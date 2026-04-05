@@ -1,10 +1,8 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi;
 using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Configuration;
-using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Presentation.DTO.Orders;
 using MissTortas.Presentation.DTO.Products;
 using MissTortas.Presentation.DTO.Security;
