@@ -9,5 +9,6 @@ namespace MissTortas.Domain.Products
         public virtual ICollection<Category> Children { get; set; } = [];
         public long ParentId { get; set; }
         public virtual Category? Parent { get; set; }
+        public bool Deleted { get; set; }
     }
 }

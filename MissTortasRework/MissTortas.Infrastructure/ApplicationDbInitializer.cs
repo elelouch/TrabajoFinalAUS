@@ -78,8 +78,6 @@ namespace MissTortas.Infrastructure
             }
         }
 
-
-
         public async static Task SeedUsers(IServiceProvider services)
         {
             using var scope = services.CreateScope();

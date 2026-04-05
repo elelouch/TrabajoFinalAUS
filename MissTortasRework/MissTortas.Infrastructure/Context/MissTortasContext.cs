@@ -48,7 +48,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationUser>(appUser =>
             {
-                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.Id); ;
+                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.Id).OnDelete(DeleteBehavior.NoAction);
                 appUser.Property(u => u.Id).ValueGeneratedNever();
             });
 
@@ -61,10 +61,27 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Product>(p =>
             {
                 p.HasIndex(p => new { p.Name }).IsUnique();
-                p.HasOne(p => p.ProductDetail).WithOne(pd => pd.Product).HasForeignKey<Product>(p => p.Id);
-                p.HasOne(p => p.ProductCategory).WithMany(pc => pc.Products);
+                modelBuilder.Entity<Product>(p =>
+                {
+                    p.HasIndex(p => p.Name).IsUnique();
+
+                    p.HasOne(p => p.ProductDetail)
+                     .WithOne(pd => pd.Product)
+                     .HasForeignKey<Product>(p => p.Id)
+                     .OnDelete(DeleteBehavior.Cascade);
+
+                    p.HasOne(p => p.ProductCategory)
+                     .WithMany(c => c.Products)
+                     .OnDelete(DeleteBehavior.Restrict);
+                });
+
             });
 
+            modelBuilder.Entity<Category>(c =>
+            {
+                c.HasOne(c => c.Parent).WithMany(c => c.Children).OnDelete(DeleteBehavior.Restrict);
+            });
+            
             modelBuilder.Entity<ProductCategory>()
                 .HasMany(pc => pc.Products)
                 .WithOne(p => p.ProductCategory);
@@ -72,12 +89,17 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Order>(o =>
             {
                 o.HasMany(o => o.ProductsAsked).WithOne(ps => ps.Order);
-                o.HasMany(o => o.Preparations).WithOne(prep => prep.Order).HasForeignKey(prep => prep.Id);
-                o.HasOne(o => o.Consultancy).WithMany(c => c.Orders).HasForeignKey(o => o.ConsultancyId);
+                o.HasMany(o => o.Preparations).WithOne(prep => prep.Order).HasForeignKey(prep => prep.Id).OnDelete(DeleteBehavior.Restrict);
+                o.HasOne(o => o.Consultancy).WithMany(c => c.Orders).HasForeignKey(o => o.ConsultancyId).OnDelete(DeleteBehavior.Restrict);
                 o.HasOne(o => o.PaymentRequest).WithOne(pr => pr.Order).HasForeignKey<PaymentRequest>(pr => pr.OrderId);
             });
 
-            modelBuilder.Entity<OrderSaleProduct>().HasIndex(osp => new { osp.OrderId, osp.SaleProductId });
+            modelBuilder.Entity<OrderSaleProduct>(osp =>
+            {
+                osp.HasIndex(osp => new { osp.OrderId, osp.SaleProductId });
+                osp.HasOne(o => o.SaleProduct).WithMany().OnDelete(DeleteBehavior.Restrict);
+                osp.HasOne(orderSaleProduct => orderSaleProduct.Order).WithMany(o => o.ProductsAsked).OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<OrderPreparation>()
                 .HasOne(op => op.Assignee)
@@ -100,12 +122,14 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.PaymentMethodDetail)
                 .WithOne(pmd => pmd.Payment)
-                .HasForeignKey<PaymentMethodDetail>(pmd => pmd.PaymentId);
+                .HasForeignKey<PaymentMethodDetail>(pmd => pmd.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PaymentRequest>()
                 .HasOne(pr => pr.Payment)
                 .WithOne(p => p.PaymentRequest)
-                .HasForeignKey<Payment>(p => p.PaymentRequestId);
+                .HasForeignKey<Payment>(p => p.PaymentRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ApplicationRole>(b =>
             {

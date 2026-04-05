@@ -9,6 +9,6 @@ namespace MissTortas.Domain.Orders
         public double QuantityAsked { get; set; }
         public long SaleProductId { get; set; }
         public virtual SaleProduct SaleProduct { get; set; } = null!;
-        public virtual required Order Order { get; set; }
+        public virtual Order Order { get; set; } = null!;
     }
 }
