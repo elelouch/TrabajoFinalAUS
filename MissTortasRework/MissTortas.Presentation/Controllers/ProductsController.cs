@@ -16,7 +16,7 @@ namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ProductController(
+    public class ProductsController(
             IProductService productService,
             IProductsDTOValidator validators,
             UserManager<ApplicationUser> userManager

@@ -9,7 +9,7 @@ namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PaymentController(IPaymentService paymentService) : Controller
+    public class PaymentsController(IPaymentService paymentService) : Controller
     {
         [HttpGet("method")]
         public async Task<IEnumerable<PaymentMethodDTO>> GetPaymentMethods()
