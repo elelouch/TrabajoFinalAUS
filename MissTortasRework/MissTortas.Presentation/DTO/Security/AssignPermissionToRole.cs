@@ -3,6 +3,5 @@
     public class AssignPermissionToRole
     {
         public List<string> Permissions { get; set; } = [];
-        public long RoleId { get; set; }
     }
 }

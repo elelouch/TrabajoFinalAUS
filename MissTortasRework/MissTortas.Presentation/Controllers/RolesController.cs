@@ -33,13 +33,13 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [Authorize(Policy = PolicyName.AssignPermissions)]
-        [HttpPut]
-        public async Task<ActionResult> AssignPermissionToRole(AssignPermissionToRole assignPermissionsDTO)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> AssignPermissionToRole(long id, AssignPermissionToRole assignPermissionsDTO)
         {
             await assignPermissionValidator.ValidateAndThrowAsync(assignPermissionsDTO);
             var serviceDto = new AssignPermissionsToRoleDTO
             {
-                RoleId = assignPermissionsDTO.RoleId,
+                RoleId = id,
                 Permissions = assignPermissionsDTO.Permissions
             };
             await securityService.AssignPermissionsToRoleAsync(serviceDto);

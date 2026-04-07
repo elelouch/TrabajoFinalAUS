@@ -21,13 +21,13 @@ namespace MissTortas.Presentation.Controllers
     {
 
         [Authorize(Policy = PolicyName.ManageOrders)]
-        [HttpPut]
-        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(UpdateConsultancy dto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancy dto)
         {
             var consultancyDTO = new UpdateConsultancyServiceDTO
             {
                 BakeryNotes = dto.BakeryNotes,
-                ConsultancyId = dto.Id,
+                ConsultancyId = id,
                 Status = dto.NewStatus
             };
             var consultancy = await orderService.UpdateConsultancyAsync(consultancyDTO);

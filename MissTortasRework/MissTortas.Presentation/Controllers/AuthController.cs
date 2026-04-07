@@ -5,18 +5,18 @@ using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Presentation.DTO.Security;
+using MissTortas.Services.DTO.Security;
+using MissTortas.Services.Interfaces;
 
 namespace MissTortas.Presentation.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class AuthController(ISecurityService securityService) : Controller
+    public class AuthController(ISecurityService securityService, IUserService userServices) : Controller
     {
         [HttpPost("login")]
-        public async Task<ActionResult<UserLogin>> LoginUser(
-                LoginRequest request
-           )
+        public async Task<ActionResult<UserLogin>> LoginUser(LoginRequest request)
         {
             var loginDto = new LoginUserDTO
             {
@@ -50,12 +50,14 @@ namespace MissTortas.Presentation.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult<UserLogin>> SignUpUser(RegisterRequest request)
         {
+            var createUserDTO = new CreateUserDTO{};
+            var userId = await userServices.CreateUserAsync(createUserDTO);
             var serviceDto = new SignUpUserDTO
             {
+                UserId = userId,
                 Username = request.Email,
                 Password = request.Password
             };
-
             var result = await securityService.SignUpUserAsync(serviceDto);
             var ret = new SignUpUser
             {

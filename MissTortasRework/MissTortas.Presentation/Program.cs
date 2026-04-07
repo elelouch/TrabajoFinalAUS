@@ -40,8 +40,6 @@ builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidat
 
 
 builder.Services.AddScoped<ISecurityDTOValidator, SecurityDTOValidator>();
-builder.Services.AddScoped<IProductsDTOValidator, ProductsDTOValidator>();
-builder.Services.AddScoped<IOrdersDTOValidator, OrdersDTOValidator>();
 
 builder.Services.AddScoped<IOrderMapper, OrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();

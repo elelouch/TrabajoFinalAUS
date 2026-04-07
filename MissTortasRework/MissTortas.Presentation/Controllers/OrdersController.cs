@@ -17,9 +17,8 @@ namespace MissTortas.Presentation.Controllers
     [Route("[controller]")]
     [ApiController]
     public class OrdersController(
-
         IAuthorizationService authorizationService,
-        IOrdersDTOValidator validators,
+        IValidator<CreateOrder> createOrderValidator,
         IOrderService orderService
         ) : Controller
     {
@@ -56,7 +55,7 @@ namespace MissTortas.Presentation.Controllers
         [HttpPost("setup")]
         public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrder dto)
         {
-            await validators.CreateOrderValidator().ValidateAndThrowAsync(dto);
+            await createOrderValidator.ValidateAndThrowAsync(dto);
             var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
             {
                 QuantityAsked = p.QuantityAsked,

@@ -9,6 +9,6 @@ export interface SignUpCredentials {
 export const SecurityEndpoints = {}
 
 export const signUp = async (credentials: SignUpCredentials) => {
-  const response = await apiClient.post("/security/user/signup", credentials);
+  const response = await apiClient.post("/auth/signup", credentials);
   return response.data;
 };

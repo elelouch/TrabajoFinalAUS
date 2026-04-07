@@ -18,42 +18,10 @@ namespace MissTortas.Presentation.Controllers
     [ApiController]
     public class ProductsController(
             IProductService productService,
-            IProductsDTOValidator validators,
-            UserManager<ApplicationUser> userManager
+            IValidator<UpdateProduct> updateProductValidator,
+            IValidator<CreateProduct> createProductValidator
         ) : Controller
     {
-        [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpDelete("category/{id}")]
-        public async Task DeleteProductCategory(long id)
-        {
-            await productService.DeleteProductCategory(id);
-        }
-
-        [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpGet("category")]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllProductCategory()
-        {
-            var userId = User.FindFirstValue("sub") ?? "";
-            var applicationUser = await userManager.FindByIdAsync(userId);
-            var ps = await productService.AllCategoriesForUserAsync(applicationUser!.User.Id);
-            return ps;
-        }
-
-        [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpPost("category")]
-        public async Task<ActionResult<CategoryDTO>> PostProductCategory(CreateProductCategory dto)
-        {
-            await validators.ProductCategoryValidator().ValidateAndThrowAsync(dto);
-            var productCategoryDto = new ProductCategoryCreateDTO()
-            {
-                Name = dto.Name,
-                ParentId = dto.ParentId,
-                IsFinal = dto.IsFinal
-            };
-            var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
-            return pc;
-        }
-
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
@@ -63,13 +31,13 @@ namespace MissTortas.Presentation.Controllers
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpPut]
-        public async Task<ActionResult<ProductDTO>> PutProduct(UpdateProduct dto)
+        [HttpPut("{productId}")]
+        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProduct dto)
         {
-            await validators.UpdateProductValidator().ValidateAndThrowAsync(dto);
+            await updateProductValidator.ValidateAndThrowAsync(dto);
             var productDto = new UpdateProductServiceDTO
             {
-                ProductId = dto.ProductId,
+                ProductId = productId,
                 CategoryId = dto.CategoryId,
                 Quantity = dto.Quantity,
                 Description = dto.Description
@@ -82,7 +50,7 @@ namespace MissTortas.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> PostProduct(CreateProduct dto)
         {
-            await validators.ProductValidator().ValidateAndThrowAsync(dto);
+            await createProductValidator.ValidateAndThrowAsync(dto);
             var productDto = new ProductCreateDTO
             {
                 Name = dto.Name,
@@ -94,20 +62,6 @@ namespace MissTortas.Presentation.Controllers
             return p;
         }
 
-        [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpPost("sale")]
-        public async Task<ActionResult<SaleProductDTO>> PostSaleProduct(CreateSaleProduct dto)
-        {
-            await validators.SaleProductValidator().ValidateAndThrowAsync(dto);
-            var saleProductDto = new SaleProductCreateDTO
-            {
-                SalePrice = dto.SalePrice,
-                SaleDescription = dto.SaleDescription,
-                Quantity = dto.SaleQuantity,
-                ProductId = dto.StockProductId,
-            };
-            var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
-            return saleProduct;
-        }
+
     }
 }
