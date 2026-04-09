@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # wwwroot and upload folders
 **/wwwroot/
+
+**/Migrations/
