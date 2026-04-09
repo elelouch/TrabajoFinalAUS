@@ -14,7 +14,6 @@ namespace MissTortas.Infrastructure
 {
     public static class ApplicationDbInitializer
     {
-
         public static async Task SeedPermissionsAsync(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();

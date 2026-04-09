@@ -20,7 +20,7 @@ namespace MissTortas.Presentation.Controllers
         {
             var loginDto = new LoginUserDTO
             {
-                Username = request.Email,
+                Email = request.Email,
                 Password = request.Password
             };
             var result = await securityService.SignInUserAsync(loginDto);

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ExceptionHandling\" />
     <Folder Include="Security\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

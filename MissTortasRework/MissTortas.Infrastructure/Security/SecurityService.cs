@@ -22,7 +22,7 @@ namespace MissTortas.Infrastructure.Security
     {
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.FindByNameAsync(request.Username);
+            var user = await userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {

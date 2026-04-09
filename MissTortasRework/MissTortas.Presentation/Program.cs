@@ -22,10 +22,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+// error handling
+builder.Services.AddProblemDetails();
 
-
-builder.Services.Configure<JwtOptions>(
-    builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 // DI
 builder.Services.AddScoped<IValidator<AssignPermissionToRole>, AssignPermissionToRoleValidator>();
@@ -78,11 +78,17 @@ if (app.Environment.IsDevelopment())
         RequestPath = "/uploads"
     };
     app.UseStaticFiles(fileOptions);
+    app.UseDeveloperExceptionPage();
+
 }
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseStatusCodePages();
+
+app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {

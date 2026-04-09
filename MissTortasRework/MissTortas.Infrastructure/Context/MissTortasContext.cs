@@ -29,9 +29,9 @@ namespace MissTortas.Infrastructure.Context
         public DbSet<PaymentRequest> PaymentRequests { get; set; } = default!;
         public DbSet<PaymentMethodDetail> PaymentMethodDetails { get; set; } = default!;
 
-        public DbSet<Right> Rights { get; set; }
-        public DbSet<User> DomainUsers { get; set; }
-        public DbSet<Role> DomainRoles { get; set; }
+        public DbSet<Right> Rights { get; set; } = default!;
+        public DbSet<User> DomainUsers { get; set; } = default!;
+        public DbSet<Role> DomainRoles { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

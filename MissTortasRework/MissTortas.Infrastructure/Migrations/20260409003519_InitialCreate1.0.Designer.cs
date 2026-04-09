@@ -12,7 +12,7 @@ using MissTortas.Infrastructure.Context;
 namespace MissTortas.Infrastructure.Migrations
 {
     [DbContext(typeof(MissTortasContext))]
-    [Migration("20260405131103_InitialCreate1.0")]
+    [Migration("20260409003519_InitialCreate1.0")]
     partial class InitialCreate10
     {
         /// <inheritdoc />
