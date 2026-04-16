@@ -22,6 +22,7 @@ namespace MissTortas.Infrastructure.Security
     {
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
+
             var user = await userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
@@ -29,13 +30,13 @@ namespace MissTortas.Infrastructure.Security
                 return null;
             }
 
-            var result = await signInManager.PasswordSignInAsync(user, request.Password, true, true);
+            var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
             var dtoRet = new LoginUserResultDTO
             {
                 Id = user.Id,
                 Username = user.UserName!,
-                AccessToken = await tokenGenerator.GenerateToken(user),
-                SignInResult = result
+                AccessToken = await tokenGenerator.GenerateToken(userPrincipal),
+                SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
             return dtoRet;
         }
@@ -62,7 +63,7 @@ namespace MissTortas.Infrastructure.Security
             }
             await userManager.AddToRoleAsync(newUser, UserConstants.UserRoleName);
 
-            return new SignUpUserResultDTO() { Id = newUser.Id, Email = newUser.Email };
+            return new SignUpUserResultDTO() { UserId = newUser.Id, Email = newUser.Email, IdentityResult = userCreation };
         }
 
         public async Task ModifyUserAsync(ApplicationUserModificationDTO dto)
@@ -183,8 +184,8 @@ namespace MissTortas.Infrastructure.Security
                 return null;
             }
             var claims = (await roleManager.GetClaimsAsync(role))
-                .Where(c => c.ValueType == Permission.ClaimName)
-                .Select(c => new Permission { Code = c.ValueType });
+                .Where(c => c.Type == Permission.ClaimName)
+                .Select(c => new Permission { Code = c.Type });
 
             return roleMapper.RoleWithPermissionsToDTO(role, claims);
         }

@@ -4,8 +4,8 @@ namespace MissTortas.Infrastructure.DTO.Security
 {
     public class SignUpUserResultDTO
     {
-        public string Id { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public IdentityResult? IdentityResult { get; set; }
+        public IdentityResult IdentityResult { get; set; } = default!;
     }
 }

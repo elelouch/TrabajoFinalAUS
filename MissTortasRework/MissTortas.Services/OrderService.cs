@@ -24,6 +24,7 @@ namespace MissTortas.Services
 
         public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
             var orderType = new OrderType { Name = dto.Name };
             await orderRepository.InsertOrderTypeAsync(orderType);
             await orderRepository.SaveChangesAsync();
@@ -32,6 +33,8 @@ namespace MissTortas.Services
 
         public async Task<OrderDTO?> GetOrderAsync(long orderId)
         {
+            if (orderId == 0)
+                throw new InvalidOperationException("Order id must not be 0");
             var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId);
             if (order is null)
             {
@@ -42,6 +45,7 @@ namespace MissTortas.Services
 
         public async Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
             if (consultancy is null)
             {
@@ -166,6 +170,7 @@ namespace MissTortas.Services
 
         public async Task CancelOrderAsync(long orderId)
         {
+
             var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId) ?? throw new OrderNotFoundException("Order not found."); switch (order.OrderStatus)
             {
                 case OrderStatus.Created:
@@ -182,6 +187,7 @@ namespace MissTortas.Services
 
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
             var client = await userRepository.FindAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
             var assignee = await userRepository.FindAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found.");
             var consultancy = new Consultancy
@@ -199,6 +205,7 @@ namespace MissTortas.Services
 
         public async Task<ConsultancyDTO> UpdateConsultancyAsync(UpdateConsultancyDTO dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId) ?? throw new ConsultancyNotFoundException($"Consultancy {dto.ConsultancyId} not found");
             consultancy.BakeryNotes = dto.BakeryNotes;
             if (!Enum.IsDefined(typeof(ConsultancyStatus), dto.Status))
@@ -210,19 +217,18 @@ namespace MissTortas.Services
             return orderMapper.ConsultancyToDTO(consultancy);
         }
 
-        public async Task<Order> GetOrderEntityAsync(long id)
-        {
-            return await orderRepository.FindAsync(id) ?? throw new OrderNotFoundException($"Order: {id} not found");
-        }
-
         public async Task<ConsultancyDTO> GetConsultancyAsync(long id)
         {
+            if (id == 0)
+                throw new InvalidOperationException("Consultancy id must not be 0");
             var consultancy = await orderRepository.FindConsultancyAsync(id) ?? throw new ConsultancyNotFoundException($"Consultancy {id} not found.");
             return orderMapper.ConsultancyToDTO(consultancy);
         }
 
         public async Task<IEnumerable<ConsultancyDTO>> GetUserConsultanciesAsync(long userId)
         {
+            if (userId == 0)
+                throw new InvalidOperationException("User id must not be 0");
             var consultancies = orderRepository.GetConsultanciesByClientId(userId);
             return await consultancies.Select(c => orderMapper.ConsultancyToDTO(c)).ToListAsync();
         }

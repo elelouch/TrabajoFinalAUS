@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MissTortas.Domain.Security.Contacts;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity;
@@ -17,7 +16,7 @@ namespace MissTortas.Infrastructure
         public static async Task SeedPermissionsAsync(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-            
+
             var allPermissions = Permission.All;
 
             var adminRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName) ?? throw new InvalidOperationException("Admin role not seeded.");
@@ -52,10 +51,10 @@ namespace MissTortas.Infrastructure
                 }
             }
         }
-        public static async Task SeedDatabase(IServiceProvider services)
+        public static async Task SeedDatabaseAsync(IServiceProvider services)
         {
             await SeedRolesAsync(services);
-            await SeedUsers(services);
+            await SeedUsersAsync(services);
             await SeedPermissionsAsync(services);
         }
 
@@ -64,22 +63,22 @@ namespace MissTortas.Infrastructure
             using var scope = services.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<MissTortasContext>();
-
-            var userDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.AdminRoleName);
+            // load user
+            var userDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.UserRoleName);
             if (userDomainRole is null)
             {
-                userDomainRole = new Role { Name = UserConstants.AdminRoleName };
+                userDomainRole = new Role { Name = UserConstants.UserRoleName };
                 await context.DomainRoles.AddAsync(userDomainRole);
                 await context.SaveChangesAsync();
             }
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-            var appUserRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName);
+            var appUserRole = await roleManager.FindByNameAsync(UserConstants.UserRoleName);
             if (appUserRole is null)
             {
-                appUserRole = new ApplicationRole { RoleId = userDomainRole.Id, Name = UserConstants.AdminRoleName };
+                appUserRole = new ApplicationRole { RoleId = userDomainRole.Id, Name = UserConstants.UserRoleName };
                 await roleManager.CreateAsync(appUserRole);
             }
-
+            // load admin
             var adminDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.AdminRoleName);
             if (adminDomainRole is null)
             {
@@ -95,7 +94,7 @@ namespace MissTortas.Infrastructure
             }
         }
 
-        public async static Task SeedUsers(IServiceProvider services)
+        public async static Task SeedUsersAsync(IServiceProvider services)
         {
             using var scope = services.CreateScope();
 

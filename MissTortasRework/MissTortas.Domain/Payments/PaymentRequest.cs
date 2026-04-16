@@ -8,6 +8,6 @@ namespace MissTortas.Domain.Payments
         public DateTime RequestTime { get; set; } = DateTime.Now;
         public virtual Payment? Payment { get; set; }
         public long OrderId { get; set; }
-        public virtual required Order Order { get; set; }
+        public virtual Order Order { get; set; } = default!;
     }
 }

@@ -1,114 +1,69 @@
-import { useCallback, useEffect, useState } from "react";
-
-type Credentials = {
-  email: string;
-  password: string;
-};
-
-type LoginResponse = {
-  token: string;
-  [key: string]: any;
-};
+import { useCallback, useState } from "react";
+import { signIn } from "@/features/auth/services/authService";
+import type { LoginCredentials, LoginResult } from "@/features/auth/services/authService";
 
 type UseLoginReturn = {
-  credentials: Credentials;
-  setCredentials: (c: Partial<Credentials>) => void;
+  credentials: LoginCredentials;
+  setCredentials: (c: Partial<LoginCredentials>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  login: () => Promise<LoginResponse | null>;
+  login: () => Promise<LoginResult | null>;
   logout: () => void;
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  token: string | null;
 };
 
-const TOKEN_KEY = "auth_token";
-
 export default function useLogin(
-  initial: Credentials = { email: "", password: "" }
+  initial: LoginCredentials = { email: "", password: "" }
 ): UseLoginReturn {
-  const [credentials, setCredentialsState] = useState<Credentials>(initial);
+  const [credentials, setCredentialsState] = useState<LoginCredentials>(initial);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(() => {
-    try {
-      return localStorage.getItem(TOKEN_KEY);
-    } catch {
-      return null;
-    }
-  });
 
-  const isAuthenticated = Boolean(token);
+  // Using cookie-based auth (server sets cookie). Client should not store or rely on access tokens.
+  const isAuthenticated = false;
 
-  const setCredentials = useCallback((c: Partial<Credentials>) => {
+  const setCredentials = useCallback((c: Partial<LoginCredentials>) => {
     setCredentialsState((prev) => ({ ...prev, ...c }));
   }, []);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials({ [name]: value } as Partial<Credentials>);
+    setCredentials({ [name]: value } as Partial<LoginCredentials>);
   }, [setCredentials]);
 
-  const login = useCallback(async (): Promise<LoginResponse | null> => {
-    setLoading(true);
-    setError(null);
+    const login = useCallback(async (): Promise<LoginResult | null> => {
+        setLoading(true);
+        setError(null);
 
-    try {
-      const base = (process.env.REACT_APP_API_BASE_URL ?? "").replace(/\/$/, "");
-      const res = await fetch(`${base}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        const msg =
-          (data && (data.message || data.error)) ||
-          `Login failed with status ${res.status}`;
-        setError(msg);
-        setLoading(false);
-        return null;
-      }
-
-      const loginData = data as LoginResponse;
-      if (loginData?.token) {
         try {
-          localStorage.setItem(TOKEN_KEY, loginData.token);
-        } catch {
-          // ignore localStorage errors
-        }
-        setToken(loginData.token);
-      }
+            const result = await signIn(credentials);
+            // Server handles authentication via cookies (Set-Cookie). No client-side token storage.
+            setLoading(false);
 
-      setLoading(false);
-      return loginData;
-    } catch (err) {
-      setError((err as Error)?.message ?? "Network error");
-      setLoading(false);
-      return null;
-    }
-  }, [credentials]);
+            // Display success message for 204 response
+            setError("Login successful");
+            return result;
+        } catch (err: unknown) {
+            console.log(err);
+            const extractMessage = (error: unknown): string | undefined => {
+                if (typeof error === "string") return error;
+                if (error instanceof Error) return error.message;
+                const maybe = error as Record<string, unknown> | undefined;
+                const response = maybe?.response as Record<string, unknown> | undefined;
+                const data = response?.data as Record<string, unknown> | undefined;
+                const msg = data?.message as string | undefined || data?.Message as string | undefined;
+                return msg;
+            };
+            const serverMessage = extractMessage(err);
+            setError(serverMessage || "Login failed");
+            setLoading(false);
+            return null;
+        }
+    }, [credentials]);
 
   const logout = useCallback(() => {
-    try {
-      localStorage.removeItem(TOKEN_KEY);
-    } catch {
-      // ignore errors
-    }
-    setToken(null);
-  }, []);
-
-  // keep token in sync if it changes elsewhere
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === TOKEN_KEY) {
-        setToken(e.newValue);
-      }
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    // no-op client side; server should clear auth cookie via endpoint
   }, []);
 
   return {
@@ -120,6 +75,6 @@ export default function useLogin(
     loading,
     error,
     isAuthenticated,
-    token,
+
   };
 }

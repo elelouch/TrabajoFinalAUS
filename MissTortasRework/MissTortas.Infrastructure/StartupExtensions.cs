@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -66,12 +67,20 @@ namespace MissTortas.Infrastructure
             var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>();
             if (jwtOptions is null)
             {
-                throw new InvalidOperationException("Jwt options not found in appsettings.json");
+                throw new InvalidOperationException("Jwt options not found in appsettings");
             }
             services.AddAuthorization();
-            services.AddAuthentication()
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["X-Access-Token"];
+                            return Task.CompletedTask;
+                        }
+                    };
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Key)),
@@ -83,6 +92,7 @@ namespace MissTortas.Infrastructure
                         ValidateIssuer = true
                     };
                 });
+
 
             services.AddAuthorizationBuilder()
                 .AddPolicy(PolicyName.ReadUsers, policy => policy.AddRequirements(PermissionConstants.ReadUsers))

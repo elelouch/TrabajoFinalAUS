@@ -9,11 +9,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="components\" />
-    <Folder Include="hooks\" />
-    <Folder Include="router\" />
-    <Folder Include="services\" />
     <Folder Include="src\features\hooks\" />
-    <Folder Include="utils\" />
   </ItemGroup>
 </Project>

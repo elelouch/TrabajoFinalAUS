@@ -60,8 +60,7 @@ namespace MissTortas.Services
 
         public async Task PayOrderAsync(PayOrderDTO dto)
         {
-            var order = await orderService.GetOrderEntityAsync(dto.OrderId);
-            var paymentRequest = new PaymentRequest() { Order = order };
+            var paymentRequest = new PaymentRequest() { OrderId = dto.OrderId };
             var payment = new Payment()
             {
                 PaymentStatus = PaymentStatus.Pending,
@@ -84,7 +83,7 @@ namespace MissTortas.Services
             }
             await paymentRepository.SaveChangesAsync();
 
-            var placeOrderDTO = new PlaceOrderDTO { OrderId = order.Id };
+            var placeOrderDTO = new PlaceOrderDTO { OrderId = dto.OrderId };
             await orderService.PlaceOrderAsync(placeOrderDTO);
         }
 

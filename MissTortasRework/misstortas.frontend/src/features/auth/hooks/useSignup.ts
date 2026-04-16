@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { signUp } from "@/features/auth/services/authService";
+import type { AxiosRequestConfig } from "axios";
 
 export interface SignupData {
   name: string;
@@ -23,8 +25,6 @@ export interface UseSignupReturn {
   error: string | null;
   reset: () => void;
 }
-
-const API_BASE = process.env.REACT_APP_API_URL || "";
 
 function validate(values: SignupData): string | null {
   if (!values.name?.trim()) return "Name is required.";
@@ -90,47 +90,23 @@ export default function useSignup(initial?: Partial<SignupData>): UseSignupRetur
       abortRef.current = ac;
 
       try {
-        const res = await fetch(`${API_BASE}/auth/signup`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: payload.name,
-            email: payload.email,
-            password: payload.password,
-          }),
-          signal: ac.signal,
-        });
-
-        const data = await (res.headers.get("content-type")?.includes("application/json")
-          ? res.json()
-          : Promise.resolve({ message: await res.text() }));
+        const config: AxiosRequestConfig = { signal: ac.signal };
+        const data = await signUp({ name: payload.name, email: payload.email, password: payload.password }, config);
 
         if (!mountedRef.current) return null;
-
-        if (!res.ok) {
-          const msg = (data && (data.message || data.error)) || "Signup failed.";
-          setError(typeof msg === "string" ? msg : JSON.stringify(msg));
-          setIsLoading(false);
-          setIsSuccess(false);
-          return null;
-        }
 
         setIsSuccess(true);
         setIsLoading(false);
         setError(null);
 
-        // Optionally persist token/user as needed by the app:
-        // if (data.token) localStorage.setItem('token', data.token);
-
         return { user: data.user, token: data.token, message: data.message };
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (!mountedRef.current) return null;
-        if (err.name === "AbortError") {
-          setError("Request was cancelled.");
+        if (err && typeof err === 'object' && 'name' in err && (err as any).name === 'AbortError') {
+          setError('Request was cancelled.');
         } else {
-          setError(err?.message ?? "Network error.");
+          const message = err instanceof Error ? err.message : undefined;
+          setError(message ?? 'Network error.');
         }
         setIsLoading(false);
         setIsSuccess(false);

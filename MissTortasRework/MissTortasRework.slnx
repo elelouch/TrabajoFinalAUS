@@ -5,6 +5,6 @@
     <Deploy />
   </Project>
   <Project Path="MissTortas.Infrastructure/MissTortas.Infrastructure.csproj" Id="8b1d78d6-4027-4fb1-8e07-498d9ec7635e" />
-  <Project Path="MissTortas.Presentation/MissTortas.Presentation.csproj" Id="06d662e1-bb9a-4184-98ec-1c774ae43584" />
   <Project Path="MissTortas.Services/MissTortas.Services.csproj" Id="d2511529-5717-4cae-a62b-a7ae42660ddd" />
+  <Project Path="MissTortas.View/MissTortas.View.csproj" Id="9c278881-5245-4fd0-b68d-9ef4d9c303b6" />
 </Solution>

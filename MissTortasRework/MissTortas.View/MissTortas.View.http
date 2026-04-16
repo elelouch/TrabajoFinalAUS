@@ -1,0 +1,6 @@
+@MissTortas.View_HostAddress = http://localhost:5189
+
+GET {{MissTortas.View_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
