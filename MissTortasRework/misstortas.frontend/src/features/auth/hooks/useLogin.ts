@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { signIn } from "@/features/auth/services/authService";
 import type { LoginCredentials, LoginResult } from "@/features/auth/services/authService";
 
 type UseLoginReturn = {
