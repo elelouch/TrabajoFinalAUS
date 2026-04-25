@@ -43,6 +43,32 @@ builder.Services.AddScoped<IUserMapper, UserMapper>();
 builder.Services.AddMissTortasInfrastructure(builder.Configuration);
 builder.Services.AddMissTortasServices();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    };
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -63,7 +89,8 @@ using (var scope = app.Services.CreateScope())
     await ApplicationDbInitializer.SeedDatabaseAsync(scope.ServiceProvider);
 }
 
-app.UseCors();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 

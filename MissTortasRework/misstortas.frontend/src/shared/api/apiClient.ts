@@ -1,4 +1,4 @@
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 type FetchOptions = RequestInit & {
     auth?: boolean; // allow turning auth on/off
@@ -28,13 +28,15 @@ async function apiClient<T = any>(
 
     // Response "interceptor"
     if (!response.ok) {
-        if (response.status === 401) {
-            console.error("Unauthorized access - redirecting to login");
-            // you could trigger redirect here
+        const contentType = response.headers.get("content-type");
+
+        if (contentType?.includes("application/json")) {
+            const data = await response.json();
+            throw new Error(data.message || data.errors || "Request failed");
         }
 
-        const errorBody = await response.text();
-        throw new Error(errorBody || "Request failed");
+        const text = await response.text();
+        throw new Error(text || "Request failed");
     }
 
     // Try to parse JSON safely

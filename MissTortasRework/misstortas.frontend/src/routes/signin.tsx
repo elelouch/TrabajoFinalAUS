@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import LoginForm from '#/features/auth/components/LoginForm';
+import SignInForm from '#/features/auth/components/SignInForm';
 
 export const Route = createFileRoute('/signin')({
     component: SignInPage,
@@ -11,7 +11,7 @@ function SignInPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow">
-                <LoginForm
+                <SignInForm
                     onSuccess={() => {navigate({ to: '/' });
                     }}
                 />

@@ -34,20 +34,22 @@ export interface AuthState {
   remember?: boolean;
 }
 
-export type LoginCredentials = {
+export type SignInCredentials = {
   email: string;
   password: string;
   remember?: boolean;
 };
 
-export type LoginResult = {
+export type SignInResult = {
+};
+export type SignUpResult = {
+    message:string
+    errors:string
 };
 
-export type RegisterData = {
-  name?: string;
+export type SignUpCredentials = {
   email: string;
   password: string;
-  confirmPassword?: string;
 };
 
 export type AuthResponse = {
@@ -77,10 +79,10 @@ export enum AuthActionType {
 }
 
 export type AuthAction =
-  | { type: AuthActionType.LoginRequest; payload: LoginCredentials }
+  | { type: AuthActionType.LoginRequest; payload: SignInCredentials }
   | { type: AuthActionType.LoginSuccess; payload: AuthResponse }
   | { type: AuthActionType.LoginFailure; error: string }
-  | { type: AuthActionType.RegisterRequest; payload: RegisterData }
+  | { type: AuthActionType.RegisterRequest; payload: SignUpCredentials }
   | { type: AuthActionType.RegisterSuccess; payload: AuthResponse }
   | { type: AuthActionType.RegisterFailure; error: string }
   | { type: AuthActionType.Logout }

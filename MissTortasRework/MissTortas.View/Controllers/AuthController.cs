@@ -15,7 +15,7 @@ namespace MissTortas.View.Controllers
     public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
     {
         [HttpPost("signin")]
-        public async Task<ActionResult> LoginUser(LoginRequest request)
+        public async Task<ActionResult> SignInUser(LoginRequest request)
         {
             ArgumentNullException.ThrowIfNull(request);
 

@@ -1,23 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signin } from "#/features/auth/api/auth.ts";
-import type { LoginCredentials, LoginResult } from "#/features/auth/types/authTypes";
+import type { SignInCredentials, SignInResult } from "#/features/auth/types/authTypes";
 import { useState } from "react";
 
 type UseSigninReturn = {
-    credentials: LoginCredentials;
-    setCredentials: (c: Partial<LoginCredentials>) => void;
-    signin: () => Promise<LoginResult>;
+    credentials: SignInCredentials;
+    setCredentials: (c: Partial<SignInCredentials>) => void;
+    signin: () => Promise<SignInResult>;
     loading: boolean;
     error: string | null;
 };
 
 export default function useSignin(
-    initial: LoginCredentials = { email: "", password: "" }
+    initial: SignInCredentials = { email: "", password: "" }
 ): UseSigninReturn {
-    const [credentials, setCredentialsState] = useState<LoginCredentials>(initial);
+    const [credentials, setCredentialsState] = useState<SignInCredentials>(initial);
     const queryClient = useQueryClient();
 
-    const setCredentials = (c: Partial<LoginCredentials>) => {
+    const setCredentials = (c: Partial<SignInCredentials>) => {
         setCredentialsState((prev) => ({ ...prev, ...c }));
     };
 

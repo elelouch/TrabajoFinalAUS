@@ -2,15 +2,7 @@
 import React, { useState } from "react";
 import useSignin from "#/features/auth/hooks/useSignin";
 
-export interface LoginCredentials {
-    email: string;
-    password: string;
-}
-
 export interface LoginFormProps {
-    /**
-     * Called on successful login with the resolved access token.
-     */
     onSuccess?: (credentials?: { email: string, password: string }) => void;
     initialEmail?: string;
     className?: string;
@@ -18,7 +10,7 @@ export interface LoginFormProps {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const LoginForm: React.FC<LoginFormProps> = ({
+const SignInForm: React.FC<LoginFormProps> = ({
     onSuccess,
     initialEmail = "",
     className,
@@ -48,13 +40,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
         e.preventDefault();
         if (!validate()) return;
 
-        try {
-            await signin();
-            onSuccess?.();
-        } catch (err) {
-            // Set a user-friendly error message
-            setErrors((prev) => ({ ...prev, general: "Login failed. Please try again." }));
-        }
+        await signin();
+        onSuccess?.(credentials);
     };
 
     return (
@@ -114,4 +101,4 @@ const LoginForm: React.FC<LoginFormProps> = ({
     );
 };
 
-export default LoginForm;
+export default SignInForm;
