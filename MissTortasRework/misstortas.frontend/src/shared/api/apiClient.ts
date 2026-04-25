@@ -1,34 +1,49 @@
-import axios from 'axios';
-import type { AxiosInstance } from 'axios';
+const BASE_URL = "/api";
 
-const apiClient: AxiosInstance = axios.create({
-    baseURL: "/api",
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    withCredentials: true
-});
+type FetchOptions = RequestInit & {
+    auth?: boolean; // allow turning auth on/off
+};
 
-apiClient.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+async function apiClient<T = any>(
+    endpoint: string,
+    options: FetchOptions = {}
+): Promise<T> {
+    const token = localStorage.getItem("authToken");
 
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            // Handle unauthorized access, e.g., redirect to login
-            console.error('Unauthorized access - redirecting to login');
-        }
-        return Promise.reject(error);
+    const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+    };
+
+    // Request "interceptor"
+    if (options.auth && token) {
+        headers["Authorization"] = `Bearer ${token}`;
     }
-);
+
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+        ...options,
+        headers,
+        credentials: "include",
+    });
+
+    // Response "interceptor"
+    if (!response.ok) {
+        if (response.status === 401) {
+            console.error("Unauthorized access - redirecting to login");
+            // you could trigger redirect here
+        }
+
+        const errorBody = await response.text();
+        throw new Error(errorBody || "Request failed");
+    }
+
+    // Try to parse JSON safely
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return response.json();
+    }
+
+    return response.text() as unknown as T;
+}
 
 export default apiClient;

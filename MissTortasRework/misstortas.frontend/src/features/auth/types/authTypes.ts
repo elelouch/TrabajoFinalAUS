@@ -40,6 +40,9 @@ export type LoginCredentials = {
   remember?: boolean;
 };
 
+export type LoginResult = {
+};
+
 export type RegisterData = {
   name?: string;
   email: string;

@@ -1,6 +1,6 @@
 ﻿using MissTortas.Domain.Products;
-using MissTortas.Domain.Repositories;
 using MissTortas.Infrastructure.Entity.Orders;
+using MissTortas.Services.Repositories;
 
 namespace MissTortas.Infrastructure.Interfaces
 {

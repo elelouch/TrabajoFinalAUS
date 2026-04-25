@@ -1,6 +1,6 @@
 ﻿using MissTortas.Domain.Security.Authorization;
 
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IRightsRepository : IRepositoryCrud<Right>
     {

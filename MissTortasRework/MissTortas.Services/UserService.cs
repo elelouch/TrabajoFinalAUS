@@ -1,7 +1,7 @@
-﻿using MissTortas.Domain.Repositories;
-using MissTortas.Domain.Security.Users;
+﻿using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
+using MissTortas.Services.Repositories;
 
 namespace MissTortas.Services
 {

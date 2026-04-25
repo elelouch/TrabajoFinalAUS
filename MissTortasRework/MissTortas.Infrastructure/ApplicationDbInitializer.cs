@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MissTortas.Domain.Security.Contacts;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity;
@@ -17,40 +18,35 @@ namespace MissTortas.Infrastructure
         {
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            var allPermissions = Permission.All;
+            var adminRole = await GetRoleOrThrowAsync(roleManager, UserConstants.AdminRoleName);
+            await AddPermissionsToRoleAsync(roleManager, adminRole, Permission.All);
 
-            var adminRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName) ?? throw new InvalidOperationException("Admin role not seeded.");
+            var userRole = await GetRoleOrThrowAsync(roleManager, UserConstants.UserRoleName);
+            await AddPermissionsToRoleAsync(roleManager, userRole, [Permission.ReadSelfUser]);
+        }
 
-            var adminPermissionsAssigned = (await roleManager.GetClaimsAsync(adminRole))
+        private static async Task<ApplicationRole> GetRoleOrThrowAsync(RoleManager<ApplicationRole> roleManager, string roleName)
+        {
+            return await roleManager.FindByNameAsync(roleName)
+                ?? throw new InvalidOperationException($"{roleName} role not seeded.");
+        }
+
+        private static async Task AddPermissionsToRoleAsync(RoleManager<ApplicationRole> roleManager, ApplicationRole role, IEnumerable<Permission> permissions)
+        {
+            var existingPermissions = (await roleManager.GetClaimsAsync(role))
                 .Where(c => c.Type == Permission.ClaimName)
                 .Select(c => c.Value)
                 .ToHashSet();
 
-            foreach (var p in allPermissions)
+            foreach (var permission in permissions)
             {
-                if (!adminPermissionsAssigned.Contains(p.Code))
+                if (!existingPermissions.Contains(permission.Code))
                 {
-                    await roleManager.AddClaimAsync(adminRole!, new Claim(Permission.ClaimName, p.Code));
-                }
-            }
-
-            List<Permission> userRolePermission = [Permission.ReadSelfUser];
-
-            var userRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName) ?? throw new InvalidOperationException("Admin role not seeded.");
-
-            var userPermissionsAssigned = (await roleManager.GetClaimsAsync(userRole!))
-                .Where(c => c.Type == Permission.ClaimName)
-                .Select(c => c.Value)
-                .ToHashSet();
-
-            foreach (var p in userRolePermission)
-            {
-                if (!userPermissionsAssigned.Contains(p.Code))
-                {
-                    await roleManager.AddClaimAsync(userRole!, new Claim(Permission.ClaimName, p.Code));
+                    await roleManager.AddClaimAsync(role, new Claim(Permission.ClaimName, permission.Code));
                 }
             }
         }
+
         public static async Task SeedDatabaseAsync(IServiceProvider services)
         {
             await SeedRolesAsync(services);
@@ -63,34 +59,36 @@ namespace MissTortas.Infrastructure
             using var scope = services.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<MissTortasContext>();
-            // load user
-            var userDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.UserRoleName);
-            if (userDomainRole is null)
-            {
-                userDomainRole = new Role { Name = UserConstants.UserRoleName };
-                await context.DomainRoles.AddAsync(userDomainRole);
-                await context.SaveChangesAsync();
-            }
             var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
-            var appUserRole = await roleManager.FindByNameAsync(UserConstants.UserRoleName);
-            if (appUserRole is null)
+
+            // Define required roles
+            var requiredRoles = new[]
             {
-                appUserRole = new ApplicationRole { RoleId = userDomainRole.Id, Name = UserConstants.UserRoleName };
-                await roleManager.CreateAsync(appUserRole);
+                UserConstants.AdminRoleName,
+                UserConstants.UserRoleName,
+                UserConstants.GuestRoleName
+            };
+
+            foreach (var roleName in requiredRoles)
+            {
+                await EnsureRoleExistsAsync(roleName, context, roleManager);
             }
-            // load admin
-            var adminDomainRole = await context.DomainRoles.FirstOrDefaultAsync(u => u.Name == UserConstants.AdminRoleName);
-            if (adminDomainRole is null)
+        }
+
+        private static async Task EnsureRoleExistsAsync(string roleName, MissTortasContext context, RoleManager<ApplicationRole> roleManager)
+        {
+            var domainRole = await context.DomainRoles.FirstOrDefaultAsync(r => r.Name == roleName);
+            if (domainRole is null)
             {
-                adminDomainRole = new Role { Name = UserConstants.AdminRoleName };
-                await context.DomainRoles.AddAsync(adminDomainRole);
+                domainRole = new Role { Name = roleName };
+                await context.DomainRoles.AddAsync(domainRole);
                 await context.SaveChangesAsync();
             }
-            var appAdminRole = await roleManager.FindByNameAsync(UserConstants.AdminRoleName);
-            if (appAdminRole is null)
+            var appRole = await roleManager.FindByNameAsync(roleName);
+            if (appRole is null)
             {
-                appAdminRole = new ApplicationRole { Name = UserConstants.AdminRoleName, RoleId = adminDomainRole.Id };
-                await roleManager.CreateAsync(appAdminRole);
+                appRole = new ApplicationRole { RoleId = domainRole.Id, Name = roleName };
+                await roleManager.CreateAsync(appRole);
             }
         }
 

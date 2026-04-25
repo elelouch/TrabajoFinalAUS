@@ -18,7 +18,6 @@ export default function ProductPage() {
             </aside>
 
             < main style={{ flex: 1, padding: '16px' }}>
-                {/* whatever content depends on selected category */}
             </main>
         </div>
     );

@@ -1,6 +1,6 @@
 ﻿using MissTortas.Domain.Products;
 
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IProductRepository : IRepositoryCrud<Product>
     {

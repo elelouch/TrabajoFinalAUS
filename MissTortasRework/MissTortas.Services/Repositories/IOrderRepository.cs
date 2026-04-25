@@ -1,6 +1,6 @@
 using MissTortas.Domain.Orders;
 
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IOrderRepository : IRepositoryCrud<Order>
     {

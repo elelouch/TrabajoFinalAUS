@@ -13,7 +13,7 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ProductsCategoriesController(UserManager<ApplicationUser> userManager, IProductService productService, IValidator<CreateProductCategory> productCategoryValidator) : ControllerBase
+    public class ProductsCategoriesController(IProductService productService, IValidator<CreateProductCategory> productCategoryValidator) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpDelete("{id}")]
@@ -22,14 +22,11 @@ namespace MissTortas.View.Controllers
             await productService.DeleteProductCategory(id);
         }
 
-        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllProductCategory()
         {
-            var userId = this.User.FindFirstValue("sub") ?? "";
-            var applicationUser = await userManager.FindByIdAsync(userId);
-            var ps = await productService.AllCategoriesForUserAsync(applicationUser!.User.Id);
-            return ps;
+            var ps = await productService.AllCategoriesAsync();
+            return Ok(ps);
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]

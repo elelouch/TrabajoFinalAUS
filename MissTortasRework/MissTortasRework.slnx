@@ -1,5 +1,9 @@
 <Solution>
   <Project Path="MissTortas.Domain/MissTortas.Domain.csproj" Id="9509ae24-bdcb-49c3-8c91-ef061736d687" />
+  <Project Path="misstortas.front/misstortas.front.client/misstortas.front.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="MissTortas.Frontend/misstortas.frontend.esproj">
     <Build />
     <Deploy />

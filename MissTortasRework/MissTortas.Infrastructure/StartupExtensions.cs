@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MissTortas.Domain.Repositories;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Interfaces;
@@ -18,6 +17,8 @@ using MissTortas.Infrastructure.Security.Handlers;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Services.Interfaces;
+using MissTortas.Services.Repositories;
 using System.Text;
 
 namespace MissTortas.Infrastructure
@@ -49,6 +50,7 @@ namespace MissTortas.Infrastructure
             services.AddScoped<IRoleMapper, RoleMapper>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRightsRepository, RightsRepository>();
+            services.AddScoped<IUserContextProvider, UserContextProvider>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireNonAlphanumeric = true;
@@ -101,6 +103,7 @@ namespace MissTortas.Infrastructure
                 .AddPolicy(PolicyName.AssignPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.AssignPermissions.Code))
                 .AddPolicy(PolicyName.ReadRoles, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadRoles.Code))
                 .AddPolicy(PolicyName.ManageOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageOrders.Code))
+                .AddPolicy(PolicyName.ManageProducts, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageProducts.Code))
                 .AddPolicy(PolicyName.PlaceOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.PlaceOrders.Code))
              ;
             return services;

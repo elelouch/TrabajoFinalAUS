@@ -1,18 +1,20 @@
 ﻿using MissTortas.Domain.Products;
-using MissTortas.Domain.Repositories;
 using MissTortas.Domain.Security.Authorization;
+using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapping.Interfaces;
+using MissTortas.Services.Repositories;
 
 namespace MissTortas.Services
 {
     public class ProductService(
         IProductRepository productRepository,
         IProductMapper productMapper,
-        IRightsService rightsService
+        IRightsService rightsService,
+        IUserContextProvider userContextProvider
         ) : IProductService
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
@@ -113,14 +115,7 @@ namespace MissTortas.Services
                 await rightsService.GiveAccessBulkAsync(rightsDTO);
             }
             await productRepository.SaveChangesAsync();
-            return productMapper.ProductCategoryToDTO(productCategory);
-        }
-
-        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAsync()
-        {
-            var categories = productRepository.GetAllProductCategories();
-            var categoriesList = await categories.ToListAsync();
-            return productMapper.ProductCategoryToDTO(categoriesList);
+            return productMapper.CategoryToDTO(productCategory);
         }
 
         public async Task DeleteProductCategory(long id)
@@ -177,47 +172,18 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-        public async Task<List<CategoryDTO>> AllCategoriesForUserAsync(long userId)
+        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAsync()
         {
-            var categories = await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userId);
-            var dtoLookup = new Dictionary<long, CategoryDTO>(categories.Count());
-
-            foreach (var cat in categories)
+            var userContext = await userContextProvider.GetCurrentAsync();
+            if (!userContext.IsAuthenticated)
             {
-                dtoLookup[cat.Id] = new CategoryDTO
-                {
-                    Id = cat.Id,
-                    Name = cat.Name,
-                    IsFinal = cat.IsFinal
-                };
+                return productMapper.CategoryToDTO(
+                    await rightsService.GetAvailableResourceForSubject<ProductCategory>(AccessType.Read, userContext.DefaultSubjectId)
+                );
             }
-
-            var roots = new List<CategoryDTO>();
-
-            foreach (var c in categories)
-            {
-                var dto = dtoLookup[c.Id];
-
-                if (c.ParentId == 0)
-                {
-                    roots.Add(dto);
-                }
-                else
-                {
-                    if (dtoLookup.TryGetValue(c.ParentId, out var parent))
-                    {
-                        parent.Children.Add(dto);
-                    }
-                    else
-                    {
-                        roots.Add(dto);
-                    }
-                }
-
-
-            }
-
-            return roots;
+            return productMapper.CategoryToDTO(
+                await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userContext.UserId)
+            );
         }
     }
 }

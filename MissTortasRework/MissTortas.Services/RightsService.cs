@@ -1,7 +1,7 @@
-﻿using MissTortas.Domain.Repositories;
-using MissTortas.Domain.Security.Authorization;
+﻿using MissTortas.Domain.Security.Authorization;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
+using MissTortas.Services.Repositories;
 
 namespace MissTortas.Services
 {
@@ -75,6 +75,11 @@ namespace MissTortas.Services
             var rights = ToEntity(rightsDTO);
             await rightsRepository.BulkInsertAsync(rights);
             await rightsRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAvailableResourceForSubject<T>(AccessType accessType, long subjectId) where T : Resource
+        {
+            return await rightsRepository.GetAvailableResourceForSubjects<T>(accessType, subjectId);
         }
     }
 }

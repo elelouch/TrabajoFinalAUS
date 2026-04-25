@@ -8,8 +8,8 @@ namespace MissTortas.Services.Mapping.Interfaces
         public IEnumerable<ProductDTO> ProductToDTO(IEnumerable<Product> products);
         public ProductDTO ProductToDTO(Product product);
         public SaleProductDTO SaleProductToDTO(SaleProduct product);
-        public CategoryDTO ProductCategoryToDTO(Category product);
-        public IEnumerable<CategoryDTO> ProductCategoryToDTO(IEnumerable<ProductCategory> product);
+        public CategoryDTO CategoryToDTO(Category product);
+        public IEnumerable<CategoryDTO> CategoryToDTO(IEnumerable<Category> product);
         public ChildrenProductCategoryDTO ChildrenProductCategoryToDTO(ProductCategory pc);
         public IEnumerable<ChildrenProductCategoryDTO> ChildrenProductCategoryToDTO(IEnumerable<ProductCategory> pc);
     }

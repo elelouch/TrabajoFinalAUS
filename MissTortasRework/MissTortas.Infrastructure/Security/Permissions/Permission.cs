@@ -15,6 +15,7 @@ namespace MissTortas.Infrastructure.Security.Permissions
         public static readonly Permission ReadRoles = new("read:roles");
         public static readonly Permission PlaceOrders = new("place:orders");
         public static readonly Permission ManageOrders = new("manage:orders");
+        public static readonly Permission ManageProducts = new("manage:products");
 
         private static readonly List<Permission> allPermissionList =
         [

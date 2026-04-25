@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import useLogin from "@/features/auth/hooks/useLogin";
+import useSignin from "#/features/auth/hooks/useSignin";
 
 export interface LoginCredentials {
     email: string;
@@ -23,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     initialEmail = "",
     className,
 }) => {
-    const { credentials, setCredentials, login, loading, error } = useLogin({
+    const { credentials, setCredentials, signin, loading, error } = useSignin({
         email: initialEmail,
         password: "",
     });
@@ -49,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         if (!validate()) return;
 
         try {
-            await login();
+            await signin();
             onSuccess?.();
         } catch (err) {
             // Set a user-friendly error message

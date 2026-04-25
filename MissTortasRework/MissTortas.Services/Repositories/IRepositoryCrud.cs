@@ -1,4 +1,4 @@
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IRepositoryCrud<TEntity> where TEntity : class
     {

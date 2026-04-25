@@ -1,6 +1,6 @@
 ﻿using MissTortas.Domain.Payments;
 
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IPaymentRepository : IRepositoryCrud<Payment>
     {

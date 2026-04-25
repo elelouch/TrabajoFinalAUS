@@ -1,6 +1,6 @@
 ﻿using MissTortas.Domain.Security.Users;
 
-namespace MissTortas.Domain.Repositories
+namespace MissTortas.Services.Repositories
 {
     public interface IUserRepository : IRepositoryCrud<User>
     {
