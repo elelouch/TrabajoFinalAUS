@@ -1,3 +1,5 @@
+import { ApiError, type ApiErrorData } from "../../features/auth/types/authTypes";
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 type FetchOptions = RequestInit & {
@@ -31,12 +33,16 @@ async function apiClient<T = any>(
         const contentType = response.headers.get("content-type");
 
         if (contentType?.includes("application/json")) {
-            const data = await response.json();
-            throw new Error(data.message || data.errors || "Request failed");
+            const data = await response.json() as ApiErrorData;
+            throw new ApiError(data);
         }
-
+        const apierror: ApiErrorData = {
+            message: "Request failed.",
+            code: "",
+            details:""
+        }
         const text = await response.text();
-        throw new Error(text || "Request failed");
+        throw new ApiError(apierror);
     }
 
     // Try to parse JSON safely

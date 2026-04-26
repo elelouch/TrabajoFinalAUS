@@ -5,7 +5,9 @@ using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
+using MissTortas.View.DTO.Error;
 using MissTortas.View.DTO.Security;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MissTortas.View.Controllers
 {
@@ -28,7 +30,13 @@ namespace MissTortas.View.Controllers
 
             if (result == null)
             {
-                return NotFound("User not found.");
+                var errorDTO = new ErrorDTO
+                {
+                    Message = "User not found.",
+                    Code = "USRNF0",
+                    Details = ""
+                };
+                return NotFound(errorDTO);
             }
             if (!result.SignInResult.Succeeded)
             {
@@ -64,7 +72,13 @@ namespace MissTortas.View.Controllers
             if (!identityResult.Succeeded)
             {
                 var errors = string.Join(",", identityResult.Errors.Select(err => err.Description));
-                return BadRequest(new { Message = "Signup failed.", Errors = errors });
+                var errorDTO = new ErrorDTO
+                {
+                    Message = "Signup failed.",
+                    Code = "AUTHSU0",
+                    Details = errors
+                };
+                return Conflict(errorDTO);
             }
             return Created();
         }

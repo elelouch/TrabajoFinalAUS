@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useSignup from "#/features/auth/hooks/useSignup";
 import { useNavigate } from "@tanstack/react-router";
+import { ApiError } from "#/features/auth/types/authTypes";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{10,}$/;
@@ -47,20 +48,29 @@ const SignUpForm: React.FC<SignUpFormsProps> = ({
         e.preventDefault();
         if (!validate()) return;
 
-        await signup();
-        onSuccess?.(credentials);
+        try {
+            await signup();
+            onSuccess?.(credentials);
+        } catch (apiError: unknown) {
+            if (apiError instanceof ApiError) {
+                var apiErrorData = apiError.data;
+                const nextErrors = {
+                    email: "",
+                    password: "",
+                    general: apiErrorData.details as string
+                };
+                setErrors(nextErrors)
+            }
+
+        }
     };
 
     return (
         <form className={`space-y-6 ${className}`} onSubmit={handleSubmit} noValidate>
             <h2 className="text-2xl font-bold">Sign up</h2>
 
-            {(errors.general || error) && (
-                <div className="text-red-500">{errors.general || error}</div>
-            )}
-
-            {(errors.general || error) && (
-                <div className="text-red-500">{errors.general || error}</div>
+            {(errors.general) && (
+                <div className="text-red-500">{errors.general}</div>
             )}
 
             <div className="flex flex-col space-y-2">

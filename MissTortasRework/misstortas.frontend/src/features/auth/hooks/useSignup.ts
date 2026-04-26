@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signup } from "#/features/auth/api/auth";
-import type { SignUpResult, SignUpCredentials } from "#/features/auth/types/authTypes";
+import type { SignUpResult, SignUpCredentials, ApiError } from "#/features/auth/types/authTypes";
 
 type UseSignupReturn = {
     credentials: SignUpCredentials;
     setCredentials: (c: Partial<SignUpCredentials>) => void;
     signup: () => Promise<SignUpResult>;
     loading: boolean;
-    error: string | null;
+    error: ApiError | null;
 };
 
 export default function useSignup(
@@ -21,11 +21,10 @@ export default function useSignup(
         setCredentialsState((prev) => ({ ...prev, ...c }));
     };
 
-    const mutation = useMutation({
+    const mutation = useMutation<SignUpResult, ApiError>({
         mutationFn: () => signup(credentials),
 
         onSuccess: async () => {
-            // 🔥 if signup logs the user in (common case)
             await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
         },
     });
@@ -35,6 +34,6 @@ export default function useSignup(
         setCredentials,
         signup: mutation.mutateAsync,
         loading: mutation.isPending,
-        error: mutation.error instanceof Error ? mutation.error.message : null,
+        error: mutation.error
     };
 }
