@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import useSignin from "#/features/auth/hooks/useSignin";
+import { ApiError } from "#/features/auth/types/authTypes";
 
 export interface LoginFormProps {
     onSuccess?: (credentials?: { email: string, password: string }) => void;
@@ -40,15 +41,29 @@ const SignInForm: React.FC<LoginFormProps> = ({
         e.preventDefault();
         if (!validate()) return;
 
-        await signin();
-        onSuccess?.(credentials);
+        try {
+            await signin();
+            onSuccess?.(credentials);
+        } catch (apiError: unknown) {
+            if (apiError instanceof ApiError) {
+                var apiErrorData = apiError.data;
+                const nextErrors = {
+                    email: "",
+                    password: "",
+                    general: apiErrorData.message as string
+                };
+                setErrors(nextErrors)
+            }
+        }
     };
 
     return (
         <form className={`space-y-4 ${className ?? ""}`} onSubmit={handleSubmit} noValidate>
             <h2 className="text-2xl font-semibold">Sign in</h2>
 
-            {errors.general && <div className="text-red-600">{errors.general}</div>}
+            {(errors.general) && (
+                <div className="text-red-500">{errors.general}</div>
+            )}
 
             <div className="flex flex-col">
                 <label htmlFor="login-email" className="text-sm font-medium">Email</label>

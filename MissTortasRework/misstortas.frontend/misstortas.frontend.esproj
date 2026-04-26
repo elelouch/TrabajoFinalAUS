@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\features\hooks\" />
+    <Folder Include="src\features\users\hooks\" />
   </ItemGroup>
 </Project>

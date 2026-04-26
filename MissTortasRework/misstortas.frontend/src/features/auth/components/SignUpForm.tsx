@@ -57,11 +57,10 @@ const SignUpForm: React.FC<SignUpFormsProps> = ({
                 const nextErrors = {
                     email: "",
                     password: "",
-                    general: apiErrorData.details as string
+                    general: apiErrorData.message as string
                 };
                 setErrors(nextErrors)
             }
-
         }
     };
 

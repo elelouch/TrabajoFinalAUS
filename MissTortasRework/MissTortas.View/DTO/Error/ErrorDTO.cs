@@ -4,6 +4,6 @@
     {
         public string Message { get; set; } = "";
         public string Code { get; set; } = "";
-        public required Object Details { get; set; }
+        public Object? Details { get; set; }
     }
 }

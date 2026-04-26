@@ -33,8 +33,7 @@ namespace MissTortas.View.Controllers
                 var errorDTO = new ErrorDTO
                 {
                     Message = "User not found.",
-                    Code = "USRNF0",
-                    Details = ""
+                    Code = "USRNF1",
                 };
                 return NotFound(errorDTO);
             }
@@ -42,10 +41,33 @@ namespace MissTortas.View.Controllers
             {
                 return result.SignInResult switch
                 {
-                    { IsLockedOut: true } => Unauthorized(new { Message = "User is locked out." }),
-                    { IsNotAllowed: true } => Unauthorized(new { Message = "User is not allowed to sign in." }),
-                    { RequiresTwoFactor: true } => Unauthorized(new { Message = "Two-factor authentication is required." }),
-                    _ => Unauthorized(new { Message = "Invalid login attempt." })
+                    { IsLockedOut: true } => Unauthorized(new ErrorDTO
+                    {
+                        Message = "User is locked out.",
+                        Code = "USRLO1",
+                        Details = null
+                    }),
+
+                    { IsNotAllowed: true } => Unauthorized(new ErrorDTO
+                    {
+                        Message = "User is not allowed to sign in.",
+                        Code = "USRNO1",
+                        Details = null
+                    }),
+
+                    { RequiresTwoFactor: true } => Unauthorized(new ErrorDTO
+                    {
+                        Message = "Two-factor authentication is required.",
+                        Code = "USR2F1",
+                        Details = new { requiresTwoFactor = true }
+                    }),
+
+                    _ => Unauthorized(new ErrorDTO
+                    {
+                        Message = "Invalid login attempt.",
+                        Code = "USRINV1",
+                        Details = null
+                    })
                 };
             }
             Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
@@ -74,9 +96,8 @@ namespace MissTortas.View.Controllers
                 var errors = string.Join(",", identityResult.Errors.Select(err => err.Description));
                 var errorDTO = new ErrorDTO
                 {
-                    Message = "Signup failed.",
-                    Code = "AUTHSU0",
-                    Details = errors
+                    Message = errors,
+                    Code = "AUTHSU1",
                 };
                 return Conflict(errorDTO);
             }

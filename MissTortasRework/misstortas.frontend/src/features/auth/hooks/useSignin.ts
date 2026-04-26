@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { signin } from "#/features/auth/api/auth.ts";
-import type { SignInCredentials, SignInResult } from "#/features/auth/types/authTypes";
+import { signin } from "#/features/auth/api/authApi";
+import type { ApiError, SignInCredentials, SignInResult } from "#/features/auth/types/authTypes";
 import { useState } from "react";
 
 type UseSigninReturn = {
@@ -21,7 +21,7 @@ export default function useSignin(
         setCredentialsState((prev) => ({ ...prev, ...c }));
     };
 
-    const mutation = useMutation({
+    const mutation = useMutation<SignInResult, ApiError>({
         mutationFn: () => signin(credentials),
 
         onSuccess: async () => {
