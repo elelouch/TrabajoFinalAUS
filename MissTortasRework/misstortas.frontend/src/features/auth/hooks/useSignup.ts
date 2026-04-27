@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signup } from "#/features/auth/api/authApi";
-import type { SignUpResult, SignUpCredentials, ApiError } from "#/features/auth/types/authTypes";
+import type { SignUpResult, SignUpCredentials } from "#/features/auth/types/authTypes";
+import { ApiError } from "#/shared/types/sharedTypes";
 
 type UseSignupReturn = {
     credentials: SignUpCredentials;

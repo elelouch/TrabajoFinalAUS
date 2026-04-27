@@ -48,7 +48,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationUser>(appUser =>
             {
-                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.Id).OnDelete(DeleteBehavior.NoAction);
+                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.SubjectId).OnDelete(DeleteBehavior.NoAction);
                 appUser.Property(u => u.Id).ValueGeneratedNever();
             });
 
@@ -67,7 +67,7 @@ namespace MissTortas.Infrastructure.Context
 
                     p.HasOne(p => p.ProductDetail)
                      .WithOne(pd => pd.Product)
-                     .HasForeignKey<Product>(p => p.Id)
+                     .HasForeignKey<Product>(p => p.ResourceId)
                      .OnDelete(DeleteBehavior.Cascade);
 
                     p.HasOne(p => p.ProductCategory)
@@ -89,7 +89,7 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Order>(o =>
             {
                 o.HasMany(o => o.ProductsAsked).WithOne(ps => ps.Order);
-                o.HasMany(o => o.Preparations).WithOne(prep => prep.Order).HasForeignKey(prep => prep.Id).OnDelete(DeleteBehavior.Restrict);
+                o.HasMany(o => o.Preparations).WithOne(prep => prep.Order).HasForeignKey(prep => prep.ResourceId).OnDelete(DeleteBehavior.Restrict);
                 o.HasOne(o => o.Consultancy).WithMany(c => c.Orders).HasForeignKey(o => o.ConsultancyId).OnDelete(DeleteBehavior.Restrict);
                 o.HasOne(o => o.PaymentRequest).WithOne(pr => pr.Order).HasForeignKey<PaymentRequest>(pr => pr.OrderId);
             });
@@ -133,7 +133,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationRole>(b =>
             {
-                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.Id);
+                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.SubjectId);
             });
 
         }

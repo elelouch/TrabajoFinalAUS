@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MissTortas.Domain.Security.Authorization;
+using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
@@ -7,6 +9,7 @@ using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
 
@@ -89,6 +92,7 @@ namespace MissTortas.Infrastructure.Security
             {
                 await UpdateRolesAsync(user, roles);
             }
+            await userManager.UpdateSecurityStampAsync(user);
         }
 
         private async Task UpdateRolesAsync(ApplicationUser user, IEnumerable<string> roles)
@@ -132,6 +136,16 @@ namespace MissTortas.Infrastructure.Security
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
             return await userManager.Users.Include(u => u.User).ThenInclude(ur => ur.Roles).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUserByIdAsync(string appUserId)
+        {
+            return await userManager
+                .Users
+                .Include(u => u.User)
+                .ThenInclude(ur => ur.Roles)
+                .Where(u => u.UserName == appUserId)
+                .ToListAsync();
         }
 
         public async Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto)

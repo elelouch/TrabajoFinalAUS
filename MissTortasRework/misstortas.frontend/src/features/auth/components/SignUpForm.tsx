@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useSignup from "#/features/auth/hooks/useSignup";
 import { useNavigate } from "@tanstack/react-router";
-import { ApiError } from "#/features/auth/types/authTypes";
+import { ApiError } from "#/shared/types/sharedTypes";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{10,}$/;

@@ -107,7 +107,7 @@ namespace MissTortas.Services
             await productRepository.InsertProductCategoryAsync(productCategory);
             if (parent is not null)
             {
-                var resourceId = productCategory.Id;
+                var resourceId = productCategory.ResourceId;
                 var rightsDTO = parent.Rights
                     .Select(r => new RightDTO { ResourceId = resourceId, AccessType = (int)r.AccessType, SubjectId = r.SubjectId })
                     .Where(r => r.Transferable);

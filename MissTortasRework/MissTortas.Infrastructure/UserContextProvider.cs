@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services;
 using MissTortas.Services.Interfaces;
 using System;
@@ -12,7 +13,7 @@ using System.Text;
 namespace MissTortas.Infrastructure
 {
     public class UserContextProvider(
-        IHttpContextAccessor httpContextAccessor, 
+        IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager
     ) : IUserContextProvider
@@ -29,7 +30,7 @@ namespace MissTortas.Infrastructure
                 {
                     IsAuthenticated = false,
                     UserId = 0,
-                    Roles = [],
+                    Roles = [UserConstants.GuestRoleName],
                     DefaultSubjectId = guestRole?.RoleId ?? 0
                 };
             }
@@ -39,10 +40,15 @@ namespace MissTortas.Infrastructure
             {
                 IsAuthenticated = true,
                 UserId = applicationUser.UserId,
+                AppUserId = applicationUser.Id,
                 Roles = user?.Claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value)
-                    .ToList() ?? []
+                    .ToList() ?? [],
+                Permissions = user?.Claims
+                    .Where(c => c.Type == Permission.ClaimName)
+                    .Select(c => c.Value)
+                    .ToList() ?? [],
             };
         }
     }

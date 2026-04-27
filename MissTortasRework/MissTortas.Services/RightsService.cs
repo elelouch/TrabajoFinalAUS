@@ -14,7 +14,7 @@ namespace MissTortas.Services
             {
                 return [];
             }
-            var subjectsIds = user.Roles.Select(r => r.Id).Append(user.Id).ToArray();
+            var subjectsIds = user.Roles.Select(r => r.SubjectId).Append(user.SubjectId).ToArray();
             return await rightsRepository.GetAvailableResourceForSubjects<T>(accessType, subjectsIds);
         }
 

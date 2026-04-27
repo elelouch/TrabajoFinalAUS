@@ -17,6 +17,9 @@ export function RootLayout() {
                     < Link to="/products" className="text-blue-600 hover:underline" >
                         Products
                     </Link>
+                    < Link to="/users" className="text-blue-600 hover:underline" >
+                        Users
+                    </Link>
                 </div>
             </nav>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace MissTortas.Services
@@ -8,7 +9,10 @@ namespace MissTortas.Services
     {
         public bool IsAuthenticated { get; init; }
         public long UserId { get; init; }
+        public string AppUserId { get; init; } = "";
+        public string Username { get; init; } = "";
         public IReadOnlyList<string> Roles { get; init; } = [];
         public long DefaultSubjectId { get; init; }
+        public IEnumerable<string> Permissions { get; set; } = [];
     }
 }

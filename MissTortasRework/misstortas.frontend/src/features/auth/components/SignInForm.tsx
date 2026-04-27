@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import useSignin from "#/features/auth/hooks/useSignin";
-import { ApiError } from "#/features/auth/types/authTypes";
+import { ApiError } from "#/shared/types/sharedTypes";
 
 export interface LoginFormProps {
     onSuccess?: (credentials?: { email: string, password: string }) => void;

@@ -13,8 +13,15 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UsersController(IOrderService orderService, IAuthorizationService authorizationService, ISecurityService securityService, IValidator<UserModification> userModificationValidator) : ControllerBase
+    public class UsersController(
+        IOrderService orderService,
+        IAuthorizationService authorizationService,
+        ISecurityService securityService,
+        IValidator<UserModification> userModificationValidator,
+        IUserContextProvider userContextProvider
+        ) : ControllerBase
     {
+
         [Authorize(Policy = PolicyName.ReadUsers)]
         [HttpGet]
         public async Task<ActionResult<List<SimpleUser>>> Users()

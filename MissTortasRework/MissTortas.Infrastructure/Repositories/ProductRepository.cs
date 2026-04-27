@@ -15,7 +15,7 @@ namespace MissTortas.Infrastructure.Repositories
         public IAsyncEnumerable<Product> GetAllWithDetail() => productsSet.Include(p => p.ProductDetail).AsAsyncEnumerable();
 
         public async Task<Product> GetWithDetailAsync(long id) =>
-            await productsSet.Include(p => p.ProductDetail).Where(p => p.Id == id).SingleAsync();
+            await productsSet.Include(p => p.ProductDetail).Where(p => p.ResourceId == id).SingleAsync();
 
         public async Task<Product?> FindProductByNameAsync(string name) =>
             await productsSet.Where(p => p.Name == name).FirstOrDefaultAsync();

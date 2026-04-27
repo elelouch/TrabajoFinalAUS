@@ -1,6 +1,5 @@
-import apiClient from "@/shared/api/apiClient";
-import endpoints from "@/features/products/api/endpoints";
-import { CreateCategory } from "@/features/products/categoryTypes";
+import apiClient from "#/shared/api/apiClient";
+import { CreateCategory } from "#/features/products/categoryTypes";
 
 export async function allCategories() {
     const response = await apiClient.get(endpoints.categories.all);

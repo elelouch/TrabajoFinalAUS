@@ -1,4 +1,4 @@
-import { ApiError, type ApiErrorData } from "../../features/auth/types/authTypes";
+import { ApiError, type ApiErrorData } from "#/shared/types/sharedTypes";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 

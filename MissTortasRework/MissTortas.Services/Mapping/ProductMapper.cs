@@ -10,7 +10,7 @@ namespace MissTortas.Services.Mapping
         {
             return new CategoryDTO
             {
-                Id = category.Id,
+                Id = category.ResourceId,
                 ParentId = category.ParentId,
                 IsFinal = category.IsFinal,
                 Name = category.Name,
@@ -24,14 +24,14 @@ namespace MissTortas.Services.Mapping
 
             foreach (var cat in categories)
             {
-                dtoLookup[cat.Id] = CategoryToDTO(cat);
+                dtoLookup[cat.ResourceId] = CategoryToDTO(cat);
             }
 
             var roots = new List<CategoryDTO>();
 
             foreach (var c in categories)
             {
-                var dto = dtoLookup[c.Id];
+                var dto = dtoLookup[c.ResourceId];
 
                 if (c.ParentId == 0)
                 {
@@ -61,10 +61,10 @@ namespace MissTortas.Services.Mapping
         {
             return new ProductDTO
             {
-                Id = product.Id,
+                Id = product.ResourceId,
                 Name = product.Name,
                 Description = product.ProductDetail?.Description ?? string.Empty,
-                CategoryId = product.ProductCategory?.Id ?? 0
+                CategoryId = product.ProductCategory?.ResourceId ?? 0
             };
         }
 
@@ -72,7 +72,7 @@ namespace MissTortas.Services.Mapping
         {
             return new SaleProductDTO
             {
-                Id = product.Id,
+                Id = product.ResourceId,
                 Price = product.SalePrice
             };
         }
@@ -81,7 +81,7 @@ namespace MissTortas.Services.Mapping
         {
             return new ChildrenProductCategoryDTO
             {
-                Id = pc.Id,
+                Id = pc.ResourceId,
                 Name = pc.Name
             };
         }

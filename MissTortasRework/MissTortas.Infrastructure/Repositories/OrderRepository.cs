@@ -22,7 +22,7 @@ namespace MissTortas.Infrastructure.Repositories
                 .Include(order => order.Consultancy)
                 .ThenInclude(c => c.Client)
                 .Include(order => order.Preparations)
-                .Where(order => order.Id == id)
+                .Where(order => order.ResourceId == id)
                 .SingleOrDefaultAsync();
             return order;
         }
@@ -75,13 +75,13 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return consultanciesSet
                 .Include(c => c.Client)
-                .Where(c => c.Client.Id == clientId)
+                .Where(c => c.Client.SubjectId == clientId)
                 .AsAsyncEnumerable();
         }
 
         public Task<bool> BelongsToUserAsync(long orderId, long userId)
         {
-            return orderSet.AnyAsync(o => o.Id == orderId && o.Consultancy.Client.Id == userId);
+            return orderSet.AnyAsync(o => o.ResourceId == orderId && o.Consultancy.Client.SubjectId == userId);
         }
     }
 }

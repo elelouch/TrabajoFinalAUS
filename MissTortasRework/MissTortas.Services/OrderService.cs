@@ -81,7 +81,7 @@ namespace MissTortas.Services
                 var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
                 if (!(productForSale.ManageQuantityAsInteger || askIsUnit))
                 {
-                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
+                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.ResourceId}");
                 }
                 var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(orderSaleProduct);
@@ -160,7 +160,7 @@ namespace MissTortas.Services
             orderPreparation.FinalizationTime = DateTime.Now;
             orderPreparation.Done = true;
 
-            var areOrderPreparationsLeft = order.Preparations.Any(op => op.Id != orderPreparation.Id && !op.Done);
+            var areOrderPreparationsLeft = order.Preparations.Any(op => op.ResourceId != orderPreparation.ResourceId && !op.Done);
 
             order.OrderStatus = areOrderPreparationsLeft ? OrderStatus.InProgress : OrderStatus.Finished;
 

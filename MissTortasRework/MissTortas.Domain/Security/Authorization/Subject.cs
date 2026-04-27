@@ -2,7 +2,7 @@
 {
     public abstract class Subject
     {
-        public long Id { get; set; }
+        public long SubjectId { get; set; }
         public ICollection<Right> Rights { get; set; } = [];
     }
 }

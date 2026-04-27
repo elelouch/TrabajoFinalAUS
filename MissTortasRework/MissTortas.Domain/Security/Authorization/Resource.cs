@@ -2,7 +2,7 @@
 {
     public abstract class Resource
     {
-        public long Id { get; set; }
+        public long ResourceId { get; set; }
         public ICollection<Right> Rights { get; set; } = [];
     }
 }
