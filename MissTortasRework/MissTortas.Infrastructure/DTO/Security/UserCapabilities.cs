@@ -1,4 +1,4 @@
-﻿namespace MissTortas.View.DTO.Security
+﻿namespace MissTortas.Infrastructure.DTO.Security
 {
     public class UserCapabilities
     {

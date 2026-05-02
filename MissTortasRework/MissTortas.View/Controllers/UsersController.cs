@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
+using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Requirements;
@@ -18,9 +19,18 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         ISecurityService securityService,
         IValidator<UserModification> userModificationValidator,
-        IUserContextProvider userContextProvider
+        IUserMapper userMapper
         ) : ControllerBase
     {
+
+        [Authorize(Policy = PolicyName.ReadUsers)]
+        [HttpGet("me")]
+        public async Task<ActionResult<CurrentUserDTO>> CurrentUserDetails()
+        {
+            var userMetadata = userMapper.ClaimsPrincipalToUserMetadata(User);
+            return new CurrentUserDTO { UserData = userMetadata };
+        }
+
 
         [Authorize(Policy = PolicyName.ReadUsers)]
         [HttpGet]
@@ -31,7 +41,8 @@ namespace MissTortas.View.Controllers
             {
                 Id = user.Id,
                 Username = user.UserName!,
-                Roles = [.. user.User.Roles.Select(r => r.Name)]
+                Roles = [.. user.User.Roles.Select(r => r.Name)],
+                Enabled = !(user.LockoutEnabled && user.LockoutEnd >= DateTimeOffset.UtcNow)
             }).ToList();
             return Ok(allUserDTO);
         }

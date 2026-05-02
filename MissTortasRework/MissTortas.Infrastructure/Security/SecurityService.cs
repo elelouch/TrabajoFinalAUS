@@ -25,19 +25,14 @@ namespace MissTortas.Infrastructure.Security
     {
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-
             var user = await userManager.FindByEmailAsync(request.Email);
-
             if (user == null)
             {
                 return null;
             }
-
             var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
             var dtoRet = new LoginUserResultDTO
             {
-                Id = user.Id,
-                Username = user.UserName!,
                 AccessToken = await tokenGenerator.GenerateToken(userPrincipal),
                 SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
@@ -135,7 +130,7 @@ namespace MissTortas.Infrastructure.Security
 
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return await userManager.Users.Include(u => u.User).ThenInclude(ur => ur.Roles).ToListAsync();
+            return await userManager.Users.Include(u => u.User).ThenInclude(user => user.Roles).ToListAsync();
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetUserByIdAsync(string appUserId)
@@ -197,11 +192,11 @@ namespace MissTortas.Infrastructure.Security
             {
                 return null;
             }
-            var claims = (await roleManager.GetClaimsAsync(role))
+            var permissions = (await roleManager.GetClaimsAsync(role))
                 .Where(c => c.Type == Permission.ClaimName)
                 .Select(c => new Permission { Code = c.Type });
 
-            return roleMapper.RoleWithPermissionsToDTO(role, claims);
+            return roleMapper.RoleWithPermissionsToDTO(role, permissions);
         }
 
         public IEnumerable<Permission> GetAllPermissions()

@@ -1,20 +1,24 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
+import CurrentUserProfile from '#/features/users/components/CurrentUserProfile'
 
 export const Route = createFileRoute('/')({
-    component: Home,
+  component: Home,
 })
 
 function Home() {
-    return (
-        <div>
+  return (
+    <div className="space-y-6 p-8">
+      <div>
+        <h1 className="text-4xl font-bold text-slate-900">
+          Welcome to MissTortas
+        </h1>
+        <p className="mt-4 max-w-2xl text-lg text-slate-600">
+          This dashboard now reads your <code>/users/me</code> payload and shows
+          the current identity, roles, and capabilities returned by the API.
+        </p>
+      </div>
 
-            {/* Page content */}
-            <div className="p-8">
-                <h1 className="text-4xl font-bold">Welcome to TanStack Start</h1>
-                <p className="mt-4 text-lg">
-                    Edit <code>src/routes/index.tsx</code> to get started.
-                </p>
-            </div>
-        </div>
-    )
+      <CurrentUserProfile />
+    </div>
+  )
 }

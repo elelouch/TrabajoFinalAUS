@@ -1,6 +1,6 @@
 import { ApiError, type ApiErrorData } from "#/shared/types/sharedTypes";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_ENDPOINT;
 
 type FetchOptions = RequestInit & {
     auth?: boolean; // allow turning auth on/off

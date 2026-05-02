@@ -37,6 +37,9 @@ namespace MissTortas.Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Roles)
+                .WithMany(r => r.Users);
             modelBuilder.Entity<Subject>().UseTptMappingStrategy();
             modelBuilder.Entity<Resource>().UseTptMappingStrategy();
 

@@ -12,10 +12,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
-    [AllowAnonymous]
     [ApiController]
     public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
     {
+
+        [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<ActionResult> SignInUser(LoginRequest request)
         {
@@ -70,12 +71,13 @@ namespace MissTortas.View.Controllers
                     })
                 };
             }
-            Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
-            Response.Cookies.Append("X-Username", result.Username, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
-            Response.Cookies.Append("X-Refresh-Token", Guid.NewGuid().ToString(), new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+            // refresh token placeholder
+            Response.Cookies.Append("X-Refresh-Token", Guid.NewGuid().ToString(), new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpPost("signup")]
         public async Task<ActionResult<UserLogin>> SignUpUser(RegisterRequest request)
         {
