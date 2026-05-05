@@ -1,0 +1,64 @@
+﻿@page "/signin"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<h3>Sign In</h3>
+
+<EditForm Model="signinModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username</label>
+        <InputText @bind-Value="signinModel.Username" />
+    </div>
+
+    <div>
+        <label>Password</label>
+        <InputText @bind-Value="signinModel.Password" type="password" />
+    </div>
+
+    <button type="submit">Sign In</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color:red">@errorMessage</p>
+}
+
+@code {
+    private LoginModel signinModel = new();
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        errorMessage = null;
+
+        var response = await Http.PostAsJsonAsync("/auth/signin", signinModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            // Store token (example: localStorage via JS interop or a service)
+            // await localStorage.SetItemAsync("token", result.Token);
+
+            Nav.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Invalid credentials";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+    public class LoginResponse
+    {
+        public string Token { get; set; } = "";
+    }
+}
