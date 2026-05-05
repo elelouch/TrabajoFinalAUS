@@ -90,5 +90,10 @@ namespace MissTortas.Services.Mapping
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<SaleProductDTO> SaleProductToDTO(IEnumerable<SaleProduct> products)
+        {
+            return products.Select(prod => SaleProductToDTO(prod));
+        }
     }
 }

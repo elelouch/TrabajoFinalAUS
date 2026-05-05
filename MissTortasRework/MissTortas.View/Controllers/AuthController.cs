@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
@@ -7,7 +8,6 @@ using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Error;
 using MissTortas.View.DTO.Security;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MissTortas.View.Controllers
 {
@@ -15,6 +15,42 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
     {
+        [HttpPost("signout")]
+        public async Task<ActionResult> SignOutUser()
+        {
+            Response.Cookies.Append(
+                "X-Access-Token",
+                Guid.NewGuid().ToString().Replace("-", ""),
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+                    Secure = true,
+                    Expires = DateTimeOffset.UnixEpoch
+                });
+            Response.Cookies.Append(
+                "X-Refresh-Token",
+                Guid.NewGuid().ToString().Replace("-", ""),
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+                    Secure = true,
+                    Expires = DateTimeOffset.UnixEpoch
+                });
+            Response.Cookies.Append(
+                ".AspNetCore.Identity.Application",
+                Guid.NewGuid().ToString().Replace("-", ""),
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+                    Secure = true,
+                    Expires = DateTimeOffset.UnixEpoch
+                });
+
+            return Ok();
+        }
 
         [AllowAnonymous]
         [HttpPost("signin")]

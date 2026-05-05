@@ -185,5 +185,12 @@ namespace MissTortas.Services
                 await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userContext.UserId)
             );
         }
+
+        public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
+        {
+            var saleProducts = productRepository.GetSaleProductsFromCategoryAsync(categoryId);
+            var spList = await saleProducts.ToListAsync();
+            return productMapper.SaleProductToDTO(spList);
+        }
     }
 }

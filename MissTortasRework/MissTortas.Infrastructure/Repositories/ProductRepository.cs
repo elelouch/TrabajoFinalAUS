@@ -52,5 +52,11 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return productCategoriesSet.AsAsyncEnumerable();
         }
+
+        public IAsyncEnumerable<SaleProduct> GetSaleProductsFromCategoryAsync(long categoryId)
+        {
+            var ret = saleProductSet.Where(sp => sp.ProductCategory.ResourceId == categoryId).ToAsyncEnumerable();
+            return ret;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace MissTortas.Services.Repositories
 {
     public interface IProductRepository : IRepositoryCrud<Product>
     {
+        public IAsyncEnumerable<SaleProduct> GetSaleProductsFromCategoryAsync(long categoryId);
         public Task InsertProductCategoryAsync(ProductCategory productCategory);
         public Task<Product> GetWithDetailAsync(long id);
         public Task<ProductCategory?> FindProductCategoryAsync(long id);

@@ -22,7 +22,8 @@ namespace MissTortas.View.Controllers
                 SalePrice = dto.SalePrice,
                 SaleDescription = dto.SaleDescription,
                 Quantity = dto.SaleQuantity,
-                ProductId = dto.StockProductId,
+                CategoryId = dto.CategoryId,
+                SaleImagePath = dto.SaleImagePath
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             return saleProduct;

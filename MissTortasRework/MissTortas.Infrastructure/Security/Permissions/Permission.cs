@@ -28,7 +28,8 @@ namespace MissTortas.Infrastructure.Security.Permissions
                 AssignPermissions,
                 ReadRoles,
                 PlaceOrders,
-                ManageOrders
+                ManageOrders,
+                ManageProducts
         ];
 
         public static ReadOnlyCollection<Permission> All { get => allPermissionList.AsReadOnly(); }

@@ -18,6 +18,7 @@ namespace MissTortas.View.Controllers
             IValidator<CreateProduct> createProductValidator
         ) : ControllerBase
     {
+
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
