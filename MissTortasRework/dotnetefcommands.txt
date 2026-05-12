@@ -1,4 +1,4 @@
 dotnet tool install --global dotnet-ef
 dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet ef migrations add InitialCreatex.x --startup-project .\MissTortas.View --project .\MissTortas.Infrastructure
-dotnet ef database update --startup-project .\MissTortas.View --project .\MissTortas.Infrastructure
+dotnet ef --verbose migrations add InitialCreatex.x --startup-project .\MissTortas.View --project .\MissTortas.Infrastructure
+dotnet ef --verbose database update --startup-project .\MissTortas.View --project .\MissTortas.Infrastructure

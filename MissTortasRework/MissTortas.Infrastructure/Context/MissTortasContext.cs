@@ -33,6 +33,10 @@ namespace MissTortas.Infrastructure.Context
         public DbSet<User> DomainUsers { get; set; } = default!;
         public DbSet<Role> DomainRoles { get; set; } = default!;
 
+        public DbSet<Resource> Resources { get; set; }
+
+        public DbSet<Subject> Subjects { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,18 +44,31 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Roles)
                 .WithMany(r => r.Users);
-            modelBuilder.Entity<Subject>().UseTptMappingStrategy();
-            modelBuilder.Entity<Resource>().UseTptMappingStrategy();
+
+            modelBuilder.Entity<Subject>(s =>
+            {
+                s.UseTpcMappingStrategy();
+            });
+            modelBuilder.Entity<Resource>(r =>
+            {
+                r.UseTpcMappingStrategy();
+
+                r.HasKey(e => e.ResourceId);
+
+                r.Property(e => e.ResourceId)
+                    .ValueGeneratedOnAdd();
+            });
 
             modelBuilder.Entity<Right>(r =>
             {
-                r.HasKey(r => new { r.SubjectId, r.ResourceId });
+                r.HasKey(r => new { r.SubjectId, r.ResourceId, r.AccessType });
+
             });
 
 
             modelBuilder.Entity<ApplicationUser>(appUser =>
             {
-                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.SubjectId).OnDelete(DeleteBehavior.NoAction);
+                appUser.HasOne(e => e.User).WithOne().HasForeignKey<ApplicationUser>(e => e.UserId).HasPrincipalKey<User>(u => u.ResourceId).OnDelete(DeleteBehavior.NoAction);
                 appUser.Property(u => u.Id).ValueGeneratedNever();
             });
 
@@ -61,23 +78,19 @@ namespace MissTortas.Infrastructure.Context
                 c.HasOne(c => c.Client).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
 
+
             modelBuilder.Entity<Product>(p =>
             {
-                p.HasIndex(p => new { p.Name }).IsUnique();
-                modelBuilder.Entity<Product>(p =>
-                {
-                    p.HasIndex(p => p.Name).IsUnique();
+                p.HasIndex(p => p.Name).IsUnique();
 
-                    p.HasOne(p => p.ProductDetail)
-                     .WithOne(pd => pd.Product)
-                     .HasForeignKey<Product>(p => p.ResourceId)
-                     .OnDelete(DeleteBehavior.Cascade);
+                p.HasOne(p => p.ProductDetail)
+                 .WithOne(pd => pd.Product)
+                 .HasForeignKey<Product>(p => p.ResourceId)
+                 .OnDelete(DeleteBehavior.Cascade);
 
-                    p.HasOne(p => p.ProductCategory)
-                     .WithMany(c => c.Products)
-                     .OnDelete(DeleteBehavior.Restrict);
-                });
-
+                //p.HasOne(p => p.ProductCategory)
+                // .WithMany(c => c.Products)
+                // .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Category>(c =>
@@ -85,9 +98,11 @@ namespace MissTortas.Infrastructure.Context
                 c.HasOne(c => c.Parent).WithMany(c => c.Children).OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<ProductCategory>()
-                .HasMany(pc => pc.Products)
-                .WithOne(p => p.ProductCategory);
+            modelBuilder.Entity<ProductCategory>(pc =>
+            {
+                pc.HasMany(pc => pc.Products).WithOne(p => p.ProductCategory);
+            });
+                
 
             modelBuilder.Entity<Order>(o =>
             {
@@ -136,7 +151,7 @@ namespace MissTortas.Infrastructure.Context
 
             modelBuilder.Entity<ApplicationRole>(b =>
             {
-                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.SubjectId);
+                b.HasOne(r => r.Role).WithOne().HasForeignKey<ApplicationRole>(r => r.RoleId).HasPrincipalKey<Role>(r => r.ResourceId);
             });
 
         }

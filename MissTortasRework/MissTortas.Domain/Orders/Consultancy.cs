@@ -3,8 +3,11 @@ using MissTortas.Domain.Security.Users;
 
 namespace MissTortas.Domain.Orders
 {
-    public class Consultancy : Resource
+    public class Consultancy : IHasResource
     {
+        public long ConsultancyId { get; set; }
+        public virtual Resource Resource { get; set; } = default!;
+        public long ResourceId { get; set; } = default!;
         public string Title { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
         public string BakeryNotes { get; set; } = string.Empty;

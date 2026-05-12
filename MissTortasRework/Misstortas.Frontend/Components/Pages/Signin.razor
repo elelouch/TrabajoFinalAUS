@@ -1,64 +1,64 @@
 ﻿@page "/signin"
-@inject HttpClient Http
-@inject NavigationManager Nav
+@using Misstortas.Frontend.Services.Auth
+@inject NavigationManager Navigation
+@inject IAuthClient AuthClient
+@rendermode InteractiveServer
 
-<h3>Sign In</h3>
-
-<EditForm Model="signinModel" OnValidSubmit="HandleLogin">
+<EditForm Model="userSignin" OnValidSubmit="HandleSubmit" FormName="signInForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div>
-        <label>Username</label>
-        <InputText @bind-Value="signinModel.Username" />
+    <div class="mb-3">
+        <label>Email</label>
+        <InputText class="form-control"
+                   @bind-Value="userSignin.Email" />
     </div>
 
-    <div>
+    <div class="mb-3">
         <label>Password</label>
-        <InputText @bind-Value="signinModel.Password" type="password" />
+        <InputText type="password"
+                   class="form-control"
+                   @bind-Value="userSignin.Password" />
     </div>
 
-    <button type="submit">Sign In</button>
+    <button type="submit"
+            class="btn btn-primary"
+            disabled="@isLoading">
+        @(isLoading ? "Signing in..." : "Sign In")
+    </button>
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <p class="text-danger mt-2">@errorMessage</p>
+    }
+
 </EditForm>
 
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <p style="color:red">@errorMessage</p>
-}
-
 @code {
-    private LoginModel signinModel = new();
+    private UserSignin userSignin = new();
+
+    private bool isLoading;
+
     private string? errorMessage;
 
-    private async Task HandleLogin()
+    private async Task HandleSubmit()
     {
-        errorMessage = null;
-
-        var response = await Http.PostAsJsonAsync("/auth/signin", signinModel);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            isLoading = true;
+            errorMessage = null;
 
-            // Store token (example: localStorage via JS interop or a service)
-            // await localStorage.SetItemAsync("token", result.Token);
-
-            Nav.NavigateTo("/");
+            await AuthClient.SignInUserAsync(userSignin);
+            // Optional:
+            // Navigation.NavigateTo("/");
         }
-        else
+        catch (Exception ex)
         {
-            errorMessage = "Invalid credentials";
+            errorMessage = ex.Message;
         }
-    }
-
-    public class LoginModel
-    {
-        public string Username { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-
-    public class LoginResponse
-    {
-        public string Token { get; set; } = "";
+        finally
+        {
+            isLoading = false;
+        }
     }
 }

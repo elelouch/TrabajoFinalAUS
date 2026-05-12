@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Products;
+using MissTortas.Domain.Security.Authorization;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Services.Repositories;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Infrastructure.Repositories
 {
@@ -26,7 +28,10 @@ namespace MissTortas.Infrastructure.Repositories
 
         public async Task<ProductCategory?> FindProductCategoryAsync(long id) => await productCategoriesSet.FindAsync(id);
 
-        public async Task InsertProductCategoryAsync(ProductCategory productCategory) => await productCategoriesSet.AddAsync(productCategory);
+        public async Task InsertProductCategoryAsync(ProductCategory productCategory)
+        {
+            await productCategoriesSet.AddAsync(productCategory);
+        }
 
         public IAsyncEnumerable<ProductCategory> GetAllProductCategoriesAsync()
         {
@@ -57,6 +62,33 @@ namespace MissTortas.Infrastructure.Repositories
         {
             var ret = saleProductSet.Where(sp => sp.ProductCategory.ResourceId == categoryId).ToAsyncEnumerable();
             return ret;
+        }
+
+        public async Task<ProductCategoryRightsDto?> GetProductCategoryWithRights(long id)
+        {
+            var ret = await productCategoriesSet.Select(p => new ProductCategoryRightsDto
+            {
+                IsFinal = p.IsFinal,
+                Rights = p.Resource.Rights,
+                ProductCategoryId = p.ProductCategoryId
+            })
+                .Where(p => p.ProductCategoryId == id)
+                .SingleOrDefaultAsync();
+            return ret;
+        }
+
+        public IAsyncEnumerable<ProductCategory> GetProductCategoriesForSubjects(AccessType[] accessTypes, long[] subjects)
+        {
+            productCategoriesSet.Join(
+                context.Resources,
+                pc => pc.ResourceId,
+                res => res.ResourceId,
+                (pc, res) => new
+                {
+                    ProductCategory = pc,
+                    Rights = res.Rights.Select(r => new { r.SubjectId, r.AccessType })
+                                .Where(r => subjects.Contains(r.SubjectId) && )
+                });
         }
     }
 }

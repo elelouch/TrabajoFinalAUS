@@ -1,0 +1,25 @@
+﻿@page "/testing"
+@using Misstortas.Frontend.Services.Auth
+@inject NavigationManager Navigation
+@inject IAuthClient AuthClient
+@rendermode InteractiveServer
+
+<button @onclick="TestApi">Test API</button>
+
+<p>@message</p>
+
+@code {
+    private string message = "";
+
+    private async Task TestApi()
+    {
+        try
+        {
+            await AuthClient.TestEndpoint();
+        }
+        catch (Exception ex)
+        {
+            message = ex.ToString();
+        }
+    }
+}

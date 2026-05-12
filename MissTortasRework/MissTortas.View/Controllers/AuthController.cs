@@ -15,6 +15,16 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
     {
+
+        [AllowAnonymous]
+        [HttpGet("test")]
+        public async Task<ActionResult> Testing()
+        {
+            Console.WriteLine("received!");
+            var o = new { Pedro = "pedro" };
+            return Ok(o);
+        }
+
         [HttpPost("signout")]
         public async Task<ActionResult> SignOutUser()
         {

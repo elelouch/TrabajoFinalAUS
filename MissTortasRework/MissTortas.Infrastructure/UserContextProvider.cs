@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
@@ -20,35 +21,42 @@ namespace MissTortas.Infrastructure
     {
         public async Task<UserContext> GetCurrentAsync()
         {
-            var user = httpContextAccessor.HttpContext?.User;
-            var userId = user?.FindFirstValue("sub");
-            var userIsAuthenticated = user?.Identity?.IsAuthenticated ?? false;
+            var userPrincipal = httpContextAccessor.HttpContext?.User;
+            var userId = userPrincipal?.FindFirstValue("sub");
+            var userIsAuthenticated = userPrincipal?.Identity?.IsAuthenticated ?? false;
             if (string.IsNullOrEmpty(userId) || !userIsAuthenticated)
             {
-                var guestRole = await roleManager.FindByNameAsync(UserConstants.GuestRoleName);
+                var guestRole = await roleManager.Roles
+                    .Select(r => new {r.Role.SubjectId, r.NormalizedName})
+                    .Where(r => r.NormalizedName != null && r.NormalizedName == UserConstants.GuestRoleName)
+                    .SingleAsync();
                 return new UserContext
                 {
                     IsAuthenticated = false,
                     UserId = 0,
                     Roles = [UserConstants.GuestRoleName],
-                    DefaultSubjectId = guestRole?.RoleId ?? 0
+                    RelatedSubjectId = [guestRole.SubjectId]
                 };
             }
 
-            var applicationUser = await userManager.FindByIdAsync(userId) ?? throw new InvalidOperationException("User not found.");
+            var appUser = await userManager.Users
+                .Select(user => new {user.UserId, user.Id, user.User.SubjectId, RolesSubjectId = user.User.Roles.Select(r => r.SubjectId)})
+                .Where(user => user.Id == userId)
+                .SingleAsync();
             return new UserContext
             {
                 IsAuthenticated = true,
-                UserId = applicationUser.UserId,
-                AppUserId = applicationUser.Id,
-                Roles = user?.Claims
+                UserId = appUser.UserId,
+                AppUserId = appUser.Id,
+                Roles = userPrincipal?.Claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList() ?? [],
-                Permissions = user?.Claims
+                Permissions = userPrincipal?.Claims
                     .Where(c => c.Type == Permission.ClaimName)
                     .Select(c => c.Value)
                     .ToList() ?? [],
+                RelatedSubjectId = [appUser.SubjectId, ..appUser.RolesSubjectId]
             };
         }
     }

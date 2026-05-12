@@ -1,11 +1,29 @@
+using Misstortas.Frontend;
 using Misstortas.Frontend.Components;
+using Misstortas.Frontend.Services.Auth;
+using Misstortas.Frontend.Services.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddHttpClient();
+
+var sape = builder.Configuration.GetSection("APIHostsOptions");
+
+builder.Services.Configure<APIHostsOptions>(builder.Configuration.GetSection("APIHostsOptions"));
+
+var apiConfig = sape.Get<APIHostsOptions>();
+
+builder.Services.AddHttpClient<IAuthClient, AuthClient>("Auth.Client", httpClient =>
+{
+    httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
+});
+
+builder.Services.AddHttpClient<IProductsClient, ProductsClient>("Products.Client", httpClient =>
+{
+    httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
+});
 
 var app = builder.Build();
 

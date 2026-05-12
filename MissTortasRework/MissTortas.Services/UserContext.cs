@@ -12,7 +12,7 @@ namespace MissTortas.Services
         public string AppUserId { get; init; } = "";
         public string Username { get; init; } = "";
         public IReadOnlyList<string> Roles { get; init; } = [];
-        public long DefaultSubjectId { get; init; }
+        public long[] RelatedSubjectId { get; init; } = [];
         public IEnumerable<string> Permissions { get; set; } = [];
     }
 }

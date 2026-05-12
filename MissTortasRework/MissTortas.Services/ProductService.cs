@@ -89,7 +89,7 @@ namespace MissTortas.Services
 
         public async Task<CategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
-            var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
+            var parent = await productRepository.GetProductCategoryWithRights(dto.ParentId);
             if (parent is not null && parent.IsFinal)
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
@@ -98,16 +98,18 @@ namespace MissTortas.Services
             var productCategory = new ProductCategory
             {
                 Name = dto.Name,
-                Parent = parent,
+                ParentId = parent?.ProductCategoryId ?? 0,
                 Children = [],
                 Products = [],
                 IsFinal = dto.IsFinal
             };
 
             await productRepository.InsertProductCategoryAsync(productCategory);
+            await productRepository.SaveChangesAsync();
             if (parent is not null)
             {
                 var resourceId = productCategory.ResourceId;
+                // we need to get parents rights to inherit them to the child if required
                 var rightsDTO = parent.Rights
                     .Select(r => new RightDTO { ResourceId = resourceId, AccessType = (int)r.AccessType, SubjectId = r.SubjectId })
                     .Where(r => r.Transferable);
@@ -172,18 +174,10 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAsync()
+        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAvailableAsync()
         {
             var userContext = await userContextProvider.GetCurrentAsync();
-            if (!userContext.IsAuthenticated)
-            {
-                return productMapper.CategoryToDTO(
-                    await rightsService.GetAvailableResourceForSubject<ProductCategory>(AccessType.Read, userContext.DefaultSubjectId)
-                );
-            }
-            return productMapper.CategoryToDTO(
-                await rightsService.GetAvailableResourceForUser<ProductCategory>(AccessType.Read, userContext.UserId)
-            );
+            return
         }
 
         public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)

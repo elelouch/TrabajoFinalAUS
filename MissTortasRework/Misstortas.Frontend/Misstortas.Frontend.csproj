@@ -8,8 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
+    <Compile Remove="Services\ServiceClient\**" />
+    <Content Remove="Services\ServiceClient\**" />
+    <EmbeddedResource Remove="Services\ServiceClient\**" />
+    <None Remove="Services\ServiceClient\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Categories\" />
+    <Folder Include="Services\Users\" />
   </ItemGroup>
 
 </Project>

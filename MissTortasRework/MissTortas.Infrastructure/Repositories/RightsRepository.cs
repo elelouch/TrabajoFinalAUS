@@ -8,6 +8,8 @@ namespace MissTortas.Infrastructure.Repositories
     public class RightsRepository(MissTortasContext context) : RepositoryCrud<Right>(context), IRightsRepository
     {
         private readonly DbSet<Right> rightsSet = context.Rights;
+        private readonly DbSet<Resource> resourcesSet = context.Resources;
+
         public Task<bool> ExistsAsync(long subjectId, long resourceId, AccessType accessType)
         {
             return rightsSet.AnyAsync(r => r.SubjectId == subjectId && r.ResourceId == resourceId && r.AccessType == accessType);
@@ -24,12 +26,25 @@ namespace MissTortas.Infrastructure.Repositories
             await rightsSet.AddRangeAsync(rights);
         }
 
-        public async Task<IEnumerable<T>> GetAvailableResourceForSubjects<T>(
-            AccessType accessType, params long[] subjectsId) where T : Resource
+        public IAsyncEnumerable<Resource> GetAvailableResourceForSubjects(AccessType[] accessTypes, params long[] subjectsId)
         {
-            return await context.Set<T>()
-                .Where(r => r.Rights.Any(rt => subjectsId.Contains(rt.SubjectId) && rt.AccessType == accessType))
-                .ToListAsync();
+            return resourcesSet
+                .Where(r => r.Rights.Any(rt => subjectsId.Contains(rt.SubjectId) && accessTypes.Contains(rt.AccessType)))
+                .ToAsyncEnumerable();
+        }
+
+        public static IQueryable<T> WhereHasRight<T>(
+            this IQueryable<T> query,
+            IQueryable<Right> rights,
+            IReadOnlyCollection<long> subjectsIds,
+            IReadOnlyCollection<AccessType> accessTypes)
+            where T : IHasResource
+        {
+            return query.Where(entity =>
+                rights.Any(r =>
+                    subjectsIds.Contains(r.SubjectId) &&
+                    r.ResourceId == entity.ResourceId &&
+                    accessTypes.Contains(r.AccessType)));
         }
     }
 }

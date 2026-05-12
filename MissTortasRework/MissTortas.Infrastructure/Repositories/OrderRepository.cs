@@ -75,13 +75,13 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return consultanciesSet
                 .Include(c => c.Client)
-                .Where(c => c.Client.SubjectId == clientId)
+                .Where(c => c.Client.ResourceId == clientId)
                 .AsAsyncEnumerable();
         }
 
         public Task<bool> BelongsToUserAsync(long orderId, long userId)
         {
-            return orderSet.AnyAsync(o => o.ResourceId == orderId && o.Consultancy.Client.SubjectId == userId);
+            return orderSet.AnyAsync(o => o.ResourceId == orderId && o.Consultancy.Client.ResourceId == userId);
         }
     }
 }

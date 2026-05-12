@@ -5,19 +5,8 @@ using MissTortas.Services.Repositories;
 
 namespace MissTortas.Services
 {
-    public class RightsService(IRightsRepository rightsRepository, IUserRepository userRepository) : IRightsService
+    public class RightsService(IRightsRepository rightsRepository) : IRightsService
     {
-        public async Task<IEnumerable<T>> GetAvailableResourceForUser<T>(AccessType accessType, long userId) where T : Resource
-        {
-            var user = await userRepository.FindByIdAsync(userId);
-            if (user is null)
-            {
-                return [];
-            }
-            var subjectsIds = user.Roles.Select(r => r.SubjectId).Append(user.SubjectId).ToArray();
-            return await rightsRepository.GetAvailableResourceForSubjects<T>(accessType, subjectsIds);
-        }
-
         public async Task GiveAccessAsync(RightDTO rightDTO)
         {
             var hasRight = await HasAccessAsync(rightDTO);
@@ -52,7 +41,6 @@ namespace MissTortas.Services
             return (rightDTO.SubjectId, rightDTO.ResourceId, (AccessType)rightDTO.AccessType, rightDTO.Transferable);
         }
 
-
         private static Right ToEntity(RightDTO rightDTO)
         {
             var (subjectId, resourceId, accessType, transferable) = DeconstructDTO(rightDTO);
@@ -75,11 +63,6 @@ namespace MissTortas.Services
             var rights = ToEntity(rightsDTO);
             await rightsRepository.BulkInsertAsync(rights);
             await rightsRepository.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetAvailableResourceForSubject<T>(AccessType accessType, long subjectId) where T : Resource
-        {
-            return await rightsRepository.GetAvailableResourceForSubjects<T>(accessType, subjectId);
         }
     }
 }
