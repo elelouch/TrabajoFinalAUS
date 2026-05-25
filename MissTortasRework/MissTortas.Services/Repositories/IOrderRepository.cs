@@ -6,6 +6,7 @@ namespace MissTortas.Services.Repositories
     {
         public IAsyncEnumerable<Consultancy> GetConsultanciesByClientId(long clientId);
         public Task InsertConsultancyAsync(Consultancy consultancy);
+        public Task<bool> OrderBelongsToUserAsync(long orderId, long userId);
         public Task<OrderType?> FindOrderTypeAsync(long id);
         public Task<OrderPreparation> GetOrderPreparationAsync(long id);
         public Task InsertOrderTypeAsync(OrderType ot);

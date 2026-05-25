@@ -13,7 +13,7 @@ namespace MissTortas.Services.Mapping
                 Id = category.ProductCategoryId,
                 ParentId = category.ParentId,
                 IsFinal = category.IsFinal,
-                Name = category.Name,
+                Name = category.Name,                
                 Children = []
             };
         }
@@ -61,10 +61,10 @@ namespace MissTortas.Services.Mapping
         {
             return new ProductDTO
             {
-                Id = product.ResourceId,
+                Id = product.ProductId,
                 Name = product.Name,
                 Description = product.ProductDetail?.Description ?? string.Empty,
-                CategoryId = product.ProductCategory?.ResourceId ?? 0
+                CategoryId = product.ProductCategory?.ProductCategoryId ?? 0
             };
         }
 
@@ -72,7 +72,7 @@ namespace MissTortas.Services.Mapping
         {
             return new SaleProductDTO
             {
-                Id = product.ResourceId,
+                Id = product.SaleProductId,
                 Price = product.SalePrice
             };
         }
@@ -81,7 +81,7 @@ namespace MissTortas.Services.Mapping
         {
             return new ChildrenProductCategoryDTO
             {
-                Id = pc.ResourceId,
+                Id = pc.ProductCategoryId,
                 Name = pc.Name
             };
         }

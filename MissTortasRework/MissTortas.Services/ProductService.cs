@@ -1,5 +1,4 @@
 ﻿using MissTortas.Domain.Products;
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.DTO.Security;
@@ -12,9 +11,7 @@ namespace MissTortas.Services
 {
     public class ProductService(
         IProductRepository productRepository,
-        IProductMapper productMapper,
-        IRightsService rightsService,
-        IUserContextProvider userContextProvider
+        IProductMapper productMapper
         ) : IProductService
     {
         public async Task<ProductDTO?> GetProductByNameAsync(string name)
@@ -76,11 +73,8 @@ namespace MissTortas.Services
             await productRepository.SaveChangesAsync();
             var saleProduct = new SaleProduct
             {
-                ProductDetail = productDetail,
-                ProductCategory = productCategory,
                 SalePrice = dto.SalePrice,
-                IsAvailable = dto.IsAvailable,
-                Quantity = dto.Quantity,
+                IsAvailable = dto.IsAvailable
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
             await productRepository.SaveChangesAsync();
@@ -89,7 +83,7 @@ namespace MissTortas.Services
 
         public async Task<CategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
-            var parent = await productRepository.GetProductCategoryWithRights(dto.ParentId);
+            var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
             if (parent is not null && parent.IsFinal)
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
@@ -106,16 +100,6 @@ namespace MissTortas.Services
 
             await productRepository.InsertProductCategoryAsync(productCategory);
             await productRepository.SaveChangesAsync();
-            if (parent is not null)
-            {
-                var resourceId = productCategory.ResourceId;
-                // we need to get parents rights to inherit them to the child if required
-                var rightsDTO = parent.Rights
-                    .Select(r => new RightDTO { ResourceId = resourceId, AccessType = (int)r.AccessType, SubjectId = r.SubjectId })
-                    .Where(r => r.Transferable);
-                var newViewers = dto.ViewerSubjectsIds.Select(id => new Right { Transferable = true, SubjectId = id, ResourceId = resourceId, AccessType = AccessType.Read });
-                await rightsService.GiveAccessBulkAsync(rightsDTO);
-            }
             await productRepository.SaveChangesAsync();
             return productMapper.CategoryToDTO(productCategory);
         }
@@ -174,11 +158,6 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-        public async Task<IEnumerable<CategoryDTO>> AllCategoriesAvailableAsync()
-        {
-            var userContext = await userContextProvider.GetCurrentAsync();
-            return
-        }
 
         public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
         {

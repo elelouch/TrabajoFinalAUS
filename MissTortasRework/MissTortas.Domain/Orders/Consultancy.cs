@@ -1,13 +1,10 @@
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Domain.Security.Users;
 
 namespace MissTortas.Domain.Orders
 {
-    public class Consultancy : IHasResource
+    public class Consultancy
     {
         public long ConsultancyId { get; set; }
-        public virtual Resource Resource { get; set; } = default!;
-        public long ResourceId { get; set; } = default!;
         public string Title { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
         public string BakeryNotes { get; set; } = string.Empty;

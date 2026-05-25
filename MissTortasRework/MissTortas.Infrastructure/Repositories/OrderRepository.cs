@@ -15,14 +15,15 @@ namespace MissTortas.Infrastructure.Repositories
 
         public async Task<Order?> GetOrderWithAllProductsRelatedAsync(long id)
         {
-            var order = await orderSet.Include(order => order.ProductsAsked)
+            var order = await orderSet
+                .Include(order => order.ProductsAsked)
                 .ThenInclude(asked => asked.SaleProduct)
                 .Include(order => order.Consultancy)
                 .ThenInclude(c => c.Assignee)
                 .Include(order => order.Consultancy)
                 .ThenInclude(c => c.Client)
                 .Include(order => order.Preparations)
-                .Where(order => order.ResourceId == id)
+                .Where(order => order.OrderId == id)
                 .SingleOrDefaultAsync();
             return order;
         }
@@ -75,13 +76,13 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return consultanciesSet
                 .Include(c => c.Client)
-                .Where(c => c.Client.ResourceId == clientId)
+                .Where(c => c.Client.UserId == clientId)
                 .AsAsyncEnumerable();
         }
 
-        public Task<bool> BelongsToUserAsync(long orderId, long userId)
+        public Task<bool> OrderBelongsToUserAsync(long orderId, long userId)
         {
-            return orderSet.AnyAsync(o => o.ResourceId == orderId && o.Consultancy.Client.ResourceId == userId);
+            return orderSet.AnyAsync(o => o.OrderId == orderId && o.Consultancy.ClientId == userId);
         }
     }
 }

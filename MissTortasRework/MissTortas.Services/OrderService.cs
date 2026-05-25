@@ -79,9 +79,9 @@ namespace MissTortas.Services
             {
                 var productForSale = await productService.GetSaleProductEntityAsync(d.SaleProductId);
                 var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
-                if (!(productForSale.ManageQuantityAsInteger || askIsUnit))
+                if (!(productForSale.Product.ManageQuantityAsInteger || askIsUnit))
                 {
-                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.ResourceId}");
+                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.SaleProductId}");
                 }
                 var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(orderSaleProduct);
@@ -96,13 +96,13 @@ namespace MissTortas.Services
                 var saleProduct = ap.SaleProduct;
                 var ask = ap.QuantityAsked;
 
-                if (saleProduct.Quantity < ask)
+                if (saleProduct.SaleQuantity < ask)
                 {
                     throw new AskQuantityException("Couldn't execute order, asked quantity is not available for sale.");
                 }
-                saleProduct.Quantity -= ask;
+                saleProduct.SaleQuantity -= ask;
 
-                if (saleProduct.Quantity <= 0)
+                if (saleProduct.SaleQuantity <= 0)
                 {
                     saleProduct.IsAvailable = false;
                 }
@@ -115,7 +115,7 @@ namespace MissTortas.Services
             {
                 var saleProduct = ap.SaleProduct;
                 var ask = ap.QuantityAsked;
-                saleProduct.Quantity += ask;
+                saleProduct.SaleQuantity += ask;
             }
         }
 
@@ -160,7 +160,7 @@ namespace MissTortas.Services
             orderPreparation.FinalizationTime = DateTime.Now;
             orderPreparation.Done = true;
 
-            var areOrderPreparationsLeft = order.Preparations.Any(op => op.ResourceId != orderPreparation.ResourceId && !op.Done);
+            var areOrderPreparationsLeft = order.Preparations.Any(op => op.OrderPreparationId != orderPreparation.OrderPreparationId && !op.Done);
 
             order.OrderStatus = areOrderPreparationsLeft ? OrderStatus.InProgress : OrderStatus.Finished;
 
@@ -183,6 +183,7 @@ namespace MissTortas.Services
                     throw new InvalidOrderStateException("Order state must be Pending, In Progress or Waiting For Payment");
             }
             order.OrderStatus = OrderStatus.Cancelled;
+            await orderRepository.SaveChangesAsync();
         }
 
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)

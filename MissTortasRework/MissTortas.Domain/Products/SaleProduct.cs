@@ -1,8 +1,12 @@
 namespace MissTortas.Domain.Products
 {
-    public partial class SaleProduct : Product
+    public partial class SaleProduct
     {
+        public long SaleProductId { get; set; }
+        public long ProductId { get; set; }
+        public Product Product { get; set; } = default!;
+        public double SaleQuantity { get; set; }
         public double SalePrice { get; set; }
-        public bool IsAvailable { get; set; } // used to help whether to show up on a view or modify the view, the quantity can be 0 and the product still be available to view
+        public bool IsAvailable { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace MissTortas.Infrastructure.Repositories
         public DbSet<User> userSet = context.DomainUsers;
         public Task<User?> FindByIdAsync(long userId)
         {
-            return userSet.Include(u => u.Roles).Where(u => u.ResourceId == userId).SingleOrDefaultAsync();
+            return userSet.Include(u => u.Roles).Where(u => u.UserId == userId).SingleOrDefaultAsync();
         }
     }
 }

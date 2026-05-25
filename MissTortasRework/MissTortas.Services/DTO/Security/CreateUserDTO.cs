@@ -5,6 +5,5 @@
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateOnly BirthDay { get; set; }
-        public IEnumerable<RightDTO> ACL { get; set; } = [];
     }
 }

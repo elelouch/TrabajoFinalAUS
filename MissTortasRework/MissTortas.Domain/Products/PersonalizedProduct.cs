@@ -1,8 +1,6 @@
-using MissTortas.Domain.Security.Authorization;
-
 namespace MissTortas.Domain.Products
 {
-    public class PersonalizedProduct : IHasResource
+    public class PersonalizedProduct
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;

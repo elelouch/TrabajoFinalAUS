@@ -42,15 +42,12 @@ namespace MissTortas.Infrastructure
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<ISimpleStorageRepository, SimpleStorageRepository>();
             services.AddScoped<ISimpleStorage, SimpleStorage>();
-            services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddScoped<IRoleMapper, RoleMapper>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRightsRepository, RightsRepository>();
-            services.AddScoped<IUserContextProvider, UserContextProvider>();
             services.AddScoped<IUserMapper, UserMapper>();
             services.Configure<IdentityOptions>(options =>
             {
@@ -67,11 +64,7 @@ namespace MissTortas.Infrastructure
 
             services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
 
-            var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>();
-            if (jwtOptions is null)
-            {
-                throw new InvalidOperationException("Jwt options not found in appsettings");
-            }
+            var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt options not found in appsettings");
             services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

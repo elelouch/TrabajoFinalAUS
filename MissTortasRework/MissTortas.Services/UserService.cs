@@ -17,7 +17,7 @@ namespace MissTortas.Services
             };
             await userRepository.InsertAsync(user);
             await userRepository.SaveChangesAsync();
-            return user.ResourceId;
+            return user.UserId;
         }
     }
 }

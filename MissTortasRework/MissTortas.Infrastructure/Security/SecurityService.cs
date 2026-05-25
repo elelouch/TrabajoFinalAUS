@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Entity;

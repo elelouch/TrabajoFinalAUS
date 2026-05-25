@@ -10,7 +10,7 @@ namespace MissTortas.Services.Mapping
         {
             var ret = new ConsultancyDTO
             {
-                Id = consultancy.ResourceId,
+                Id = consultancy.ConsultancyId,
                 Title = consultancy.Title,
                 Notes = consultancy.Notes,
                 StatusId = (int)consultancy.Status,
@@ -24,7 +24,7 @@ namespace MissTortas.Services.Mapping
             var preparations = order.Preparations.Select(
                 prep => new OrderPreparationDTO
                 {
-                    Id = prep.ResourceId,
+                    Id = prep.OrderPreparationId,
                     Detail = prep.Detail,
                     Done = prep.Done
                 }).ToList();
@@ -33,9 +33,9 @@ namespace MissTortas.Services.Mapping
             {
                 Status = order.OrderStatus.ToString(),
                 StatusId = (long)order.OrderStatus,
-                Id = order.ResourceId,
-                ClientId = order.Consultancy?.Client?.ResourceId ?? 0,
-                OrderMangerId = order.Consultancy?.Assignee?.ResourceId ?? 0,
+                Id = order.OrderId,
+                ClientId = order.Consultancy?.Client?.UserId ?? 0,
+                OrderMangerId = order.Consultancy?.Assignee?.UserId ?? 0,
                 Preparations = preparations
             };
         }

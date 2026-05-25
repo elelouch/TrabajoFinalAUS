@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Products;
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Services.Repositories;
-using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Infrastructure.Repositories
 {
@@ -17,7 +15,7 @@ namespace MissTortas.Infrastructure.Repositories
         public IAsyncEnumerable<Product> GetAllWithDetail() => productsSet.Include(p => p.ProductDetail).AsAsyncEnumerable();
 
         public async Task<Product> GetWithDetailAsync(long id) =>
-            await productsSet.Include(p => p.ProductDetail).Where(p => p.ResourceId == id).SingleAsync();
+            await productsSet.Include(p => p.ProductDetail).Where(p => p.ProductId == id).SingleAsync();
 
         public async Task<Product?> FindProductByNameAsync(string name) =>
             await productsSet.Where(p => p.Name == name).FirstOrDefaultAsync();
@@ -60,35 +58,9 @@ namespace MissTortas.Infrastructure.Repositories
 
         public IAsyncEnumerable<SaleProduct> GetSaleProductsFromCategoryAsync(long categoryId)
         {
-            var ret = saleProductSet.Where(sp => sp.ProductCategory.ResourceId == categoryId).ToAsyncEnumerable();
+            var ret = saleProductSet.Where(sp => sp.Product.ProductCategoryId == categoryId).ToAsyncEnumerable();
             return ret;
         }
 
-        public async Task<ProductCategoryRightsDto?> GetProductCategoryWithRights(long id)
-        {
-            var ret = await productCategoriesSet.Select(p => new ProductCategoryRightsDto
-            {
-                IsFinal = p.IsFinal,
-                Rights = p.Resource.Rights,
-                ProductCategoryId = p.ProductCategoryId
-            })
-                .Where(p => p.ProductCategoryId == id)
-                .SingleOrDefaultAsync();
-            return ret;
-        }
-
-        public IAsyncEnumerable<ProductCategory> GetProductCategoriesForSubjects(AccessType[] accessTypes, long[] subjects)
-        {
-            productCategoriesSet.Join(
-                context.Resources,
-                pc => pc.ResourceId,
-                res => res.ResourceId,
-                (pc, res) => new
-                {
-                    ProductCategory = pc,
-                    Rights = res.Rights.Select(r => new { r.SubjectId, r.AccessType })
-                                .Where(r => subjects.Contains(r.SubjectId) && )
-                });
-        }
     }
 }

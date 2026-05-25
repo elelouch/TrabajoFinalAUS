@@ -1,8 +1,6 @@
-using MissTortas.Domain.Security.Authorization;
-
 namespace MissTortas.Domain.Products
 {
-    public class ProductCategory : IHasResource
+    public class ProductCategory
     {
         public long ProductCategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -12,7 +10,5 @@ namespace MissTortas.Domain.Products
         public virtual ProductCategory? Parent { get; set; }
         public bool Deleted { get; set; }
         public virtual ICollection<Product> Products { get; set; } = [];
-        public virtual Resource Resource { get; set; } = default!;
-        public long ResourceId { get; set; } = default!;
     }
 }

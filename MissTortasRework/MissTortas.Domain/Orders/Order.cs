@@ -1,14 +1,11 @@
 using MissTortas.Domain.Payments;
 using MissTortas.Domain.Products;
-using MissTortas.Domain.Security.Authorization;
 
 namespace MissTortas.Domain.Orders
 {
-    public class Order : IHasResource
+    public class Order
     {
         public long OrderId { get; set; }
-        public virtual Resource Resource { get; set; } = default!;
-        public long ResourceId { get; set; } = default!;
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public virtual required OrderStatus OrderStatus { get; set; }
         public required OrderType OrderType;

@@ -87,7 +87,7 @@ namespace MissTortas.Infrastructure
             var appRole = await roleManager.FindByNameAsync(roleName);
             if (appRole is null)
             {
-                appRole = new ApplicationRole { RoleId = domainRole.ResourceId, Name = roleName };
+                appRole = new ApplicationRole { RoleId = domainRole.RoleId, Name = roleName };
                 await roleManager.CreateAsync(appRole);
             }
         }
@@ -119,7 +119,7 @@ namespace MissTortas.Infrastructure
             {
                 ApplicationUser newUser = new()
                 {
-                    UserId = domainUser.ResourceId,
+                    UserId = domainUser.UserId,
                     UserName = UserConstants.AdminUserName,
                     Email = "admin@admin.com"
                 };

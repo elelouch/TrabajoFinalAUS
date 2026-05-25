@@ -1,13 +1,10 @@
-using MissTortas.Domain.Security.Authorization;
 using MissTortas.Domain.Security.Users;
 
 namespace MissTortas.Domain.Orders
 {
-    public class OrderPreparation : IHasResource
+    public class OrderPreparation
     {
-        public long OrderPrepartionId { get; set; }
-        public virtual Resource Resource { get; set; } = default!;
-        public long ResourceId { get; set; } = default!;
+        public long OrderPreparationId { get; set; }
         public long OrderId { get; set; }
         public Order Order { get; set; } = null!;
         public long AssigneeId { get; set; }
