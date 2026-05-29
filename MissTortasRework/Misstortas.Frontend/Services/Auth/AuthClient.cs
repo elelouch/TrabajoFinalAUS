@@ -1,38 +1,25 @@
-﻿using System.Text;
+﻿using Misstortas.Frontend.Services.DTO;
+using System.Text;
 using System.Text.Json;
 
 namespace Misstortas.Frontend.Services.Auth
 {
     public class AuthClient(HttpClient httpClient) : IAuthClient
     {
-        public async Task SignInUserAsync(UserSignin userSignin)
+        public async Task<SigninResponseDTO> SignInUserAsync(UserSignin userSignin)
         {
-            var res = await httpClient.PostAsJsonAsync("/auth/signin",userSignin);
-            if(!res.IsSuccessStatusCode)
+            var res = await httpClient.PostAsJsonAsync("/auth/signin", userSignin);
+            if (!res.IsSuccessStatusCode)
             {
-
-                StringBuilder sb = new();
-
-                foreach (var header in res.Headers)
+                var responseBody = await res.Content.ReadFromJsonAsync<ErrorDTO>();
+                var response = new SigninResponseDTO
                 {
-                    sb.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
-                }
-
-                foreach (var header in res.Content.Headers)
-                {
-                    sb.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
-                }
-
-                string allHeaders = sb.ToString();
-                Console.WriteLine(allHeaders);
+                    Success = res.IsSuccessStatusCode,
+                    Result = responseBody!.Message
+                };
+                return response;
             }
-        }
-
-        public async Task TestEndpoint()
-        {
-            Console.WriteLine(httpClient.BaseAddress);
-            var res = await httpClient.GetFromJsonAsync<JsonElement>("/auth/test");
-            Console.WriteLine(res.ToString());
+            return new SigninResponseDTO { Success = res.IsSuccessStatusCode };
         }
     }
 }

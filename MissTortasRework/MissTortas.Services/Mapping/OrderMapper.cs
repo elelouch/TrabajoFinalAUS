@@ -49,9 +49,9 @@ namespace MissTortas.Services.Mapping
             };
         }
 
-        public IEnumerable<OrderTypeDTO> OrderTypeToDTO(IEnumerable<OrderType> ots)
+        public List<OrderTypeDTO> OrderTypeToDTO(IEnumerable<OrderType> ots)
         {
-            return ots.Select(ot => OrderTypeToDTO(ot));
+            return [.. ots.Select(ot => OrderTypeToDTO(ot))];
         }
     }
 }

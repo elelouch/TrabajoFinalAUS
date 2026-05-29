@@ -15,16 +15,6 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
     {
-
-        [AllowAnonymous]
-        [HttpGet("test")]
-        public async Task<ActionResult> Testing()
-        {
-            Console.WriteLine("received!");
-            var o = new { Pedro = "pedro" };
-            return Ok(o);
-        }
-
         [HttpPost("signout")]
         public async Task<ActionResult> SignOutUser()
         {
@@ -92,14 +82,12 @@ namespace MissTortas.View.Controllers
                     {
                         Message = "User is locked out.",
                         Code = "USRLO1",
-                        Details = null
                     }),
 
                     { IsNotAllowed: true } => Unauthorized(new ErrorDTO
                     {
                         Message = "User is not allowed to sign in.",
                         Code = "USRNO1",
-                        Details = null
                     }),
 
                     { RequiresTwoFactor: true } => Unauthorized(new ErrorDTO
@@ -113,7 +101,6 @@ namespace MissTortas.View.Controllers
                     {
                         Message = "Invalid login attempt.",
                         Code = "USRINV1",
-                        Details = null
                     })
                 };
             }

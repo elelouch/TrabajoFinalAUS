@@ -19,11 +19,13 @@ namespace MissTortas.View.Controllers
             await createSaleProductValidator.ValidateAndThrowAsync(dto);
             var saleProductDto = new SaleProductCreateDTO
             {
+                Name = dto.SaleProductName,
                 SalePrice = dto.SalePrice,
                 SaleDescription = dto.SaleDescription,
                 Quantity = dto.SaleQuantity,
                 CategoryId = dto.CategoryId,
-                SaleImagePath = dto.SaleImagePath
+                SaleImagePath = dto.SaleImagePath,
+                IsAvailable = false
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             return saleProduct;

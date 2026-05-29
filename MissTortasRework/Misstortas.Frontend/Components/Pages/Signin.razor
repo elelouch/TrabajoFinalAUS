@@ -48,9 +48,15 @@
             isLoading = true;
             errorMessage = null;
 
-            await AuthClient.SignInUserAsync(userSignin);
-            // Optional:
-            // Navigation.NavigateTo("/");
+            var responseDTO = await AuthClient.SignInUserAsync(userSignin);
+            if (responseDTO.Success)
+            {
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = responseDTO.Result;
+            }
         }
         catch (Exception ex)
         {

@@ -15,11 +15,10 @@ namespace MissTortas.Services
         IOrderMapper orderMapper
     ) : IOrderService
     {
-        public async Task<IEnumerable<OrderTypeDTO>> AllOrderTypeAsync()
+        public async Task<List<OrderTypeDTO>> AllOrderTypeAsync()
         {
-            var orders = orderRepository.GetAllOrderType();
-            var orderList = await orders.ToListAsync();
-            return orderMapper.OrderTypeToDTO(orderList);
+            var orders = await orderRepository.GetAllOrderTypeAsync();
+            return orderMapper.OrderTypeToDTO(orders);
         }
 
         public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
@@ -170,7 +169,6 @@ namespace MissTortas.Services
 
         public async Task CancelOrderAsync(long orderId)
         {
-
             var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId) ?? throw new OrderNotFoundException("Order not found."); switch (order.OrderStatus)
             {
                 case OrderStatus.Created:
@@ -226,12 +224,12 @@ namespace MissTortas.Services
             return orderMapper.ConsultancyToDTO(consultancy);
         }
 
-        public async Task<IEnumerable<ConsultancyDTO>> GetUserConsultanciesAsync(long userId)
+        public async Task<List<ConsultancyDTO>> GetUserConsultanciesAsync(long userId)
         {
             if (userId == 0)
                 throw new InvalidOperationException("User id must not be 0");
-            var consultancies = orderRepository.GetConsultanciesByClientId(userId);
-            return await consultancies.Select(c => orderMapper.ConsultancyToDTO(c)).ToListAsync();
+            var consultancies = await orderRepository.GetConsultanciesByClientIdAsync(userId);
+            return [.. consultancies.Select(c => orderMapper.ConsultancyToDTO(c))];
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿@using Misstortas.Frontend.Models
+@rendermode InteractiveServer
+
+<li class="list-unstyled">
+    <div class="d-flex align-items-center gap-2 px-2 py-1 rounded hover-bg"
+         role="button"
+         @onclick="Toggle">
+
+        @if (!Category.IsFinal)
+        {
+            <span class="small">
+                @(isOpen ? "▼" : "▶")
+            </span>
+        }
+        else
+        {
+            <span style="width: 12px;"></span>
+        }
+
+        <span>@Category.Name</span>
+    </div>
+
+    @if (!Category.IsFinal && isOpen)
+    {
+        <ul class="list-unstyled ms-4 border-start ps-3 mt-1">
+            @foreach (var cat in Category.Children)
+            {
+                <CategoryNode Category="cat"
+                              OnFinalCategorySelected="OnFinalCategorySelected" />
+            }
+        </ul>
+    }
+</li>
+
+@code {
+    [Parameter]
+    public Category Category { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<long> OnFinalCategorySelected { get; set; }
+
+    private bool isOpen;
+
+    private async Task Toggle()
+    {
+        if (Category.IsFinal)
+        {
+            await OnFinalCategorySelected.InvokeAsync(Category.ProductCategoryId);
+            return;
+        }
+
+        isOpen = !isOpen;
+    }
+}

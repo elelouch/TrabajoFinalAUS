@@ -6,11 +6,11 @@ namespace MissTortas.Services.Mapping
 {
     public class ProductMapper : IProductMapper
     {
-        public CategoryDTO CategoryToDTO(ProductCategory category)
+        public ProductCategoryDTO CategoryToDTO(ProductCategory category)
         {
-            return new CategoryDTO
+            return new ProductCategoryDTO
             {
-                Id = category.ProductCategoryId,
+                ProductCategoryId = category.ProductCategoryId,
                 ParentId = category.ParentId,
                 IsFinal = category.IsFinal,
                 Name = category.Name,                
@@ -18,16 +18,16 @@ namespace MissTortas.Services.Mapping
             };
         }
 
-        public IEnumerable<CategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories)
+        public IEnumerable<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories)
         {
-            var dtoLookup = new Dictionary<long, CategoryDTO>(categories.Count());
+            var dtoLookup = new Dictionary<long, ProductCategoryDTO>(categories.Count());
 
             foreach (var cat in categories)
             {
                 dtoLookup[cat.ProductCategoryId] = CategoryToDTO(cat);
             }
 
-            var roots = new List<CategoryDTO>();
+            var roots = new List<ProductCategoryDTO>();
 
             foreach (var c in categories)
             {
@@ -39,7 +39,7 @@ namespace MissTortas.Services.Mapping
                 }
                 else
                 {
-                    if (dtoLookup.TryGetValue(c.ParentId, out var parent))
+                    if (dtoLookup.TryGetValue(c.ParentId ?? 0, out var parent))
                     {
                         parent.Children.Add(dto);
                     }

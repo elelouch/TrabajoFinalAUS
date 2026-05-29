@@ -15,7 +15,7 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class CategoriesController(IProductService productService, IValidator<CreateProductCategory> productCategoryValidator) : ControllerBase
     {
-
+        [AllowAnonymous]
         [HttpGet("{categoryId}/saleproducts")]
         public async Task<ActionResult<IEnumerable<SaleProductDTO>>> GetSaleProductsFromCategory(long categoryId)
         {
@@ -32,15 +32,15 @@ namespace MissTortas.View.Controllers
         
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllProductCategory()
+        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
         {
-            var ps = await productService.AllAsync();
+            var ps = await productService.AllProductCategoryAsync();
             return Ok(ps);
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
-        public async Task<ActionResult<CategoryDTO>> PostProductCategory(CreateProductCategory dto)
+        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)
         {
             await productCategoryValidator.ValidateAndThrowAsync(dto);
             var productCategoryDto = new ProductCategoryCreateDTO()

@@ -2,6 +2,7 @@
 {
     public class SaleProductCreateDTO
     {
+        public string Name { get; set; } = string.Empty;
         public double SalePrice { get; set; }
         public double Quantity { get; set; }
         public bool IsAvailable { get; set; }

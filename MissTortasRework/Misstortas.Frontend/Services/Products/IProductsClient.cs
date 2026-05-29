@@ -4,6 +4,7 @@ namespace Misstortas.Frontend.Services.Products
 {
     public interface IProductsClient
     {
-        public Task<IEnumerable<Category>> GetCategoriesAsync();
+        public Task<Category[]> GetCategoriesAsync();
+        public Task<SaleProduct[]> GetSaleProductsAsync(long categoryId);
     }
 }

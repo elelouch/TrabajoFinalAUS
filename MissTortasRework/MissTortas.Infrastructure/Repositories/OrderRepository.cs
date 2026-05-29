@@ -43,9 +43,9 @@ namespace MissTortas.Infrastructure.Repositories
             return await orderTypeSet.FindAsync(id);
         }
 
-        public IAsyncEnumerable<OrderType> GetAllOrderType()
+        public async Task<List<OrderType>> GetAllOrderTypeAsync()
         {
-            return orderTypeSet.AsAsyncEnumerable();
+            return await orderTypeSet.ToListAsync();
         }
 
         public async Task InsertOrderSaleProductAsync(OrderSaleProduct osp)
@@ -72,12 +72,12 @@ namespace MissTortas.Infrastructure.Repositories
             return op;
         }
 
-        public IAsyncEnumerable<Consultancy> GetConsultanciesByClientId(long clientId)
+        public Task<List<Consultancy>> GetConsultanciesByClientIdAsync(long clientId)
         {
             return consultanciesSet
                 .Include(c => c.Client)
                 .Where(c => c.Client.UserId == clientId)
-                .AsAsyncEnumerable();
+                .ToListAsync();
         }
 
         public Task<bool> OrderBelongsToUserAsync(long orderId, long userId)

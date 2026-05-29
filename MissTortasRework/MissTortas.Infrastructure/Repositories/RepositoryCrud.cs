@@ -34,6 +34,6 @@ namespace MissTortas.Infrastructure.Repositories
             return rowsAffected;
         }
 
-        public IAsyncEnumerable<TEntity> GetAll() => dbSet.AsAsyncEnumerable();
+        public Task<List<TEntity>> GetAllAsync() => dbSet.ToListAsync();
     }
 }

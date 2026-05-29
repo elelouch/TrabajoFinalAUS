@@ -12,7 +12,7 @@ namespace MissTortas.Infrastructure.Repositories
         private readonly DbSet<SaleProduct> saleProductSet = context.SaleProducts;
         private readonly DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
 
-        public IAsyncEnumerable<Product> GetAllWithDetail() => productsSet.Include(p => p.ProductDetail).AsAsyncEnumerable();
+        public Task<List<Product>> GetAllWithDetailAsync() => productsSet.Include(p => p.ProductDetail).ToListAsync();
 
         public async Task<Product> GetWithDetailAsync(long id) =>
             await productsSet.Include(p => p.ProductDetail).Where(p => p.ProductId == id).SingleAsync();
@@ -31,17 +31,15 @@ namespace MissTortas.Infrastructure.Repositories
             await productCategoriesSet.AddAsync(productCategory);
         }
 
-        public IAsyncEnumerable<ProductCategory> GetAllProductCategoriesAsync()
+        public Task<List<ProductCategory>> GetAllProductCategoriesAsync()
         {
-            var categoriesTask = productCategoriesSet.Include(c => c.Parent)
-                    .AsAsyncEnumerable();
-            return categoriesTask;
+            return productCategoriesSet.Include(c => c.Parent).ToListAsync();
         }
 
-        public async Task DeleteProductCategory(ProductCategory cat) =>
+        public async Task DeleteProductCategoryAsync(ProductCategory cat) =>
             productCategoriesSet.Remove(cat);
 
-        public async Task<ProductCategory?> GetProductCategory(long id)
+        public async Task<ProductCategory?> GetProductCategoryAsync(long id)
         {
             return (await productCategoriesSet.FindAsync(id));
         }
@@ -51,14 +49,10 @@ namespace MissTortas.Infrastructure.Repositories
             return (await saleProductSet.FindAsync(id));
         }
 
-        public IAsyncEnumerable<ProductCategory> GetAllProductCategories()
-        {
-            return productCategoriesSet.AsAsyncEnumerable();
-        }
 
-        public IAsyncEnumerable<SaleProduct> GetSaleProductsFromCategoryAsync(long categoryId)
+        public Task<List<SaleProduct>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
-            var ret = saleProductSet.Where(sp => sp.Product.ProductCategoryId == categoryId).ToAsyncEnumerable();
+            var ret = saleProductSet.Where(sp => sp.Product.ProductCategoryId == categoryId).ToListAsync();
             return ret;
         }
 

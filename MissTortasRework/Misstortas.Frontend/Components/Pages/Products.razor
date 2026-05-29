@@ -1,0 +1,81 @@
+﻿@using Misstortas.Frontend.Components.Categories
+@using Misstortas.Frontend.Services.Products
+@using Misstortas.Frontend.Models
+
+@inject IProductsClient ProductsClient
+
+@rendermode InteractiveServer
+@page "/products"
+
+<h3 class="mb-3">Categories</h3>
+
+@if (categories is null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var cat in categories)
+                        {
+                            <CategoryNode Category="cat"
+                                          OnFinalCategorySelected="LoadProducts" />
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h5>Products</h5>
+
+                    @if (saleProducts is null)
+                    {
+                        <p>Select a category</p>
+                    }
+                    else if (!saleProducts.Any())
+                    {
+                        <p>No products found</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            @foreach (var product in saleProducts)
+                            {
+                                <li class="list-group-item">
+                                    @product.Name
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Category>? categories;
+
+    private SaleProduct[]? saleProducts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (await ProductsClient.GetCategoriesAsync()).ToList();
+    }
+
+    private async Task LoadProducts(long categoryId)
+    {
+        saleProducts = await ProductsClient.GetSaleProductsAsync(categoryId);
+    }
+}

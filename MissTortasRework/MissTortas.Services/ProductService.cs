@@ -24,9 +24,9 @@ namespace MissTortas.Services
             return null;
         }
 
-        public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
+        private async Task<Product> CreateProductEntityAsync(ProductCreateDTO dto)
         {
-            var productDetail = new ProductDetail { Description = dto.Description };
+            var productDetail = new ProductDetail { Description = dto.Description, ImagePath = dto.ImagePath };
             await productRepository.InsertProductDetailAsync(productDetail);
             await productRepository.SaveChangesAsync();
             var result = await productRepository.FindProductByNameAsync(dto.Name);
@@ -49,41 +49,57 @@ namespace MissTortas.Services
             };
             await productRepository.InsertAsync(product);
             await productRepository.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
+        {
+            var product =  await CreateProductEntityAsync(dto);
             return productMapper.ProductToDTO(product);
         }
 
         public async Task<IEnumerable<ProductDTO>> AllAsync()
         {
-            var products = productRepository.GetAll();
-            var productList = await products.ToListAsync();
-            return productMapper.ProductToDTO(productList);
+            var products = await productRepository.GetAllAsync();
+            return productMapper.ProductToDTO(products);
         }
+
         public async Task<IEnumerable<ProductDTO>> AllWithDetailAsync()
         {
-            var products = productRepository.GetAllWithDetail();
-            var productList = await products.ToListAsync();
-            return productMapper.ProductToDTO(productList);
+            var products = await productRepository.GetAllWithDetailAsync();
+            return productMapper.ProductToDTO(products);
         }
 
         public async Task<SaleProductDTO> CreateSaleProductAsync(SaleProductCreateDTO dto)
         {
-            var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
-            var productDetail = new ProductDetail { Description = dto.SaleDescription, ImagePath = dto.SaleImagePath };
-            await productRepository.InsertProductDetailAsync(productDetail);
-            await productRepository.SaveChangesAsync();
+            var productCreateDTO = new ProductCreateDTO
+            {
+                Name = dto.Name,
+                CategoryId = dto.CategoryId,
+                Description = dto.SaleDescription,
+                ImagePath = dto.SaleImagePath,
+                ManageQuantityAsInteger = true // sale products are offered by units.
+            };
+            var stockProduct = await CreateProductEntityAsync(productCreateDTO);
             var saleProduct = new SaleProduct
             {
                 SalePrice = dto.SalePrice,
-                IsAvailable = dto.IsAvailable
+                IsAvailable = dto.IsAvailable,
+                ProductId = stockProduct.ProductId
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
             await productRepository.SaveChangesAsync();
             return productMapper.SaleProductToDTO(saleProduct);
         }
 
-        public async Task<CategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
+        public async Task<ProductCategoryDTO> CreateProductCategoryAsync(ProductCategoryCreateDTO dto)
         {
-            var parent = await productRepository.FindProductCategoryAsync(dto.ParentId);
+            ProductCategory? parent = null;
+            if (dto.ParentId is not null)
+            {
+                var parentId = dto.ParentId.Value;
+                parent = await productRepository.FindProductCategoryAsync(parentId); 
+            }
             if (parent is not null && parent.IsFinal)
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
@@ -92,7 +108,7 @@ namespace MissTortas.Services
             var productCategory = new ProductCategory
             {
                 Name = dto.Name,
-                ParentId = parent?.ProductCategoryId ?? 0,
+                ParentId = parent?.ProductCategoryId,
                 Children = [],
                 Products = [],
                 IsFinal = dto.IsFinal
@@ -106,8 +122,8 @@ namespace MissTortas.Services
 
         public async Task DeleteProductCategory(long id)
         {
-            var pc = await productRepository.GetProductCategory(id) ?? throw new ProductCategoryNotFoundException("Product category not found");
-            await productRepository.DeleteProductCategory(pc);
+            var pc = await productRepository.GetProductCategoryAsync(id) ?? throw new ProductCategoryNotFoundException("Product category not found");
+            await productRepository.DeleteProductCategoryAsync(pc);
             await productRepository.SaveChangesAsync();
         }
 
@@ -161,9 +177,14 @@ namespace MissTortas.Services
 
         public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
-            var saleProducts = productRepository.GetSaleProductsFromCategoryAsync(categoryId);
-            var spList = await saleProducts.ToListAsync();
-            return productMapper.SaleProductToDTO(spList);
+            var saleProducts = await productRepository.GetSaleProductsFromCategoryAsync(categoryId);
+            return productMapper.SaleProductToDTO(saleProducts);
+        }
+
+        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync()
+        {
+            var cats = await productRepository.GetAllProductCategoriesAsync();
+            return productMapper.CategoryToDTO(cats);
         }
     }
 }
