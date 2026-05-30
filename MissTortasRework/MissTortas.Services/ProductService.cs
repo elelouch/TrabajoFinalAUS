@@ -123,7 +123,7 @@ namespace MissTortas.Services
         public async Task DeleteProductCategory(long id)
         {
             var pc = await productRepository.GetProductCategoryAsync(id) ?? throw new ProductCategoryNotFoundException("Product category not found");
-            await productRepository.DeleteProductCategoryAsync(pc);
+            await productRepository.DeleteProductCategory(pc);
             await productRepository.SaveChangesAsync();
         }
 

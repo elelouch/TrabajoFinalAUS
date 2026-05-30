@@ -36,8 +36,7 @@ namespace MissTortas.Infrastructure.Repositories
             return productCategoriesSet.Include(c => c.Parent).ToListAsync();
         }
 
-        public async Task DeleteProductCategoryAsync(ProductCategory cat) =>
-            productCategoriesSet.Remove(cat);
+        public async Task DeleteProductCategory(ProductCategory cat) => productCategoriesSet.Remove(cat);
 
         public async Task<ProductCategory?> GetProductCategoryAsync(long id)
         {
@@ -52,7 +51,10 @@ namespace MissTortas.Infrastructure.Repositories
 
         public Task<List<SaleProduct>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
-            var ret = saleProductSet.Where(sp => sp.Product.ProductCategoryId == categoryId).ToListAsync();
+            var ret = saleProductSet
+                .Include(sp => sp.Product)
+                .Where(sp => sp.Product.ProductCategoryId == categoryId)
+                .ToListAsync();
             return ret;
         }
 

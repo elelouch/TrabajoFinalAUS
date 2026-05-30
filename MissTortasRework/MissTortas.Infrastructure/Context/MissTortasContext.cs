@@ -6,6 +6,7 @@ using MissTortas.Domain.Payments;
 using MissTortas.Domain.Products;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.Entity.Orders;
+using MissTortas.Infrastructure.Entity.Products;
 using MissTortas.Infrastructure.Security.Identity;
 
 namespace MissTortas.Infrastructure.Context
@@ -16,8 +17,8 @@ namespace MissTortas.Infrastructure.Context
         public DbSet<ProductDetail> ProductDetails { get; set; } = default!;
         public DbSet<SaleProduct> SaleProducts { get; set; } = default!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = default!;
-        public DbSet<ProductFile> ProductFiles { get; set; } = default!;
         public DbSet<OrderSaleProduct> AskedProducts { get; set; } = default!;
+        public DbSet<ProductFile> ProductFiles { get; set; } = default!;
 
         public DbSet<Order> Orders { get; set; } = default!;
         public DbSet<OrderType> OrderTypes { get; set; } = default!;

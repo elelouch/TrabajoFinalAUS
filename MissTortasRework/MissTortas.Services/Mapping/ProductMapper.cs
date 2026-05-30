@@ -73,7 +73,10 @@ namespace MissTortas.Services.Mapping
             return new SaleProductDTO
             {
                 Id = product.SaleProductId,
-                Price = product.SalePrice
+                Name = product.Product.Name,
+                Price = product.SalePrice,
+                Quantity = product.SaleQuantity,
+                AllowDecimalAsk = product.Product.ManageQuantityAsInteger
             };
         }
 

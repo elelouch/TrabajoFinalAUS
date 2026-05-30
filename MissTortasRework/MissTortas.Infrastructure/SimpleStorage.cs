@@ -1,12 +1,25 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using MissTortas.Domain.Orders;
 using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Entity.Orders;
+using MissTortas.Infrastructure.Entity.Products;
 using MissTortas.Infrastructure.Exceptions;
 using MissTortas.Infrastructure.Interfaces;
 
 namespace MissTortas.Infrastructure
 {
+    public class SaveFileDTO 
+    {
+        public required IFormFile FormFile { get; set; }
+        public required string StorageDirectory { get; set; }
+    }
+
+    public class FileDTO
+    {
+        public string RelativePath { get; set; } = string.Empty;
+    }
+
     public class SimpleStorage(
         IWebHostEnvironment? webHostEnvironment,
         ISimpleStorageRepository simpleStorageRepository,
@@ -14,26 +27,36 @@ namespace MissTortas.Infrastructure
         ) : ISimpleStorage
     {
         private readonly string _root = webHostEnvironment?.WebRootPath ?? root;
+
+        private async Task<FileDTO> SaveFileAsync(SaveFileDTO saveFileDTO)
+        {
+            var extension = Path.GetExtension(saveFileDTO.FormFile.FileName);
+            var storageDirectory = Path.Combine(_root, saveFileDTO.StorageDirectory);
+            var filename = Guid.NewGuid().ToString() + extension;
+            var relativePath = $"{saveFileDTO.StorageDirectory}/{filename}";
+            using var fsOut = File.Create(Path.Combine(storageDirectory, filename));
+            await saveFileDTO.FormFile.CopyToAsync(fsOut);
+            return new FileDTO
+            {
+                RelativePath = relativePath
+            };
+        }
+
         public async Task SaveConsultancyFileAsync(IFormFile fsIn, long consultancyId)
         {
             if (consultancyId == 0)
             {
-                throw new ConsultancyException("Consultancy doesn't have an ID");
+                throw new ConsultancyException("ConsultancyID is zero");
             }
-            var extension = Path.GetExtension(fsIn.FileName);
-            var guid = Guid.NewGuid();
-            var storageDirectory = Path.Combine(_root, "consultancy");
-            var filename = guid.ToString() + extension;
-            var relativePath = $"consultancy/{filename}";
+
+            var saveFileDTO = new SaveFileDTO { StorageDirectory = "consultancies", FormFile = fsIn };
+            var fileDTO = await SaveFileAsync(saveFileDTO);
+            
             var consultancyFile = new ConsultancyFile()
             {
-                Guid = guid,
                 ConsultancyId = consultancyId,
-                Extension = extension,
-                Path = relativePath
+                Path = fileDTO.RelativePath
             };
-            using var fsOut = File.Create(Path.Combine(storageDirectory, filename));
-            await fsIn.CopyToAsync(fsOut);
             await simpleStorageRepository.InsertConsultancyFileAsync(consultancyFile);
             await simpleStorageRepository.SaveChangesAsync();
         }
@@ -46,14 +69,31 @@ namespace MissTortas.Infrastructure
             }
         }
 
-        public Task SaveProductFileAsync(FileStream file, Product product)
+        public async Task SaveProductFileAsync(IEnumerable<IFormFile> files, long productId)
         {
-            throw new NotImplementedException();
+            foreach (var file in files)
+            {
+                await SaveProductFileAsync(file, productId);
+            }
         }
 
-        public Task SaveProductFileAsync(IEnumerable<FileStream> files, Product product)
+        public async Task SaveProductFileAsync(IFormFile file, long productId)
         {
-            throw new NotImplementedException();
+            if (productId == 0)
+            {
+                throw new ConsultancyException("ProductID is zero");
+            }
+
+            var saveFileDTO = new SaveFileDTO { StorageDirectory = "products", FormFile = file };
+            var fileDTO = await SaveFileAsync(saveFileDTO);
+
+            var productFile = new ProductFile()
+            {
+                ProductId = productId,
+                Path = fileDTO.RelativePath
+            };
+            await simpleStorageRepository.InsertProductFileAsync(productFile);
+            await simpleStorageRepository.SaveChangesAsync();
         }
     }
 }
