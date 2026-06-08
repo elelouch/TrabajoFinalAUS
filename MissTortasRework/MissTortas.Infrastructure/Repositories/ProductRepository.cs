@@ -48,7 +48,6 @@ namespace MissTortas.Infrastructure.Repositories
             return (await saleProductSet.FindAsync(id));
         }
 
-
         public Task<List<SaleProduct>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
             var ret = saleProductSet
@@ -58,5 +57,12 @@ namespace MissTortas.Infrastructure.Repositories
             return ret;
         }
 
+        public Task<SaleProduct?> GetSaleProductWithStockAsync(long id)
+        {
+            return saleProductSet
+                .Include(sp => sp.Product)
+                .ThenInclude(product => product.ProductDetail)
+                .Where(sp => sp.SaleProductId == id).SingleOrDefaultAsync();
+        }
     }
 }

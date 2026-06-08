@@ -8,7 +8,7 @@ namespace MissTortas.Domain.Products
         public long ProductDetailId { get; set; }
         public virtual ProductCategory ProductCategory { get; set; } = default!;
         public long ProductCategoryId { get; set; }
-        public double Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public bool ManageQuantityAsInteger { get; set; }
         public string Unit { get; set; } = string.Empty;
     }

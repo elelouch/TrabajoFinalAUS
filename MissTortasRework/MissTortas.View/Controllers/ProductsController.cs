@@ -5,8 +5,6 @@ using MissTortas.Infrastructure.Security;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Products;
-using UpdateProduct = MissTortas.View.DTO.Products.UpdateProduct;
-using UpdateProductServiceDTO = MissTortas.Services.DTO.Products.UpdateProductDTO;
 
 namespace MissTortas.View.Controllers
 {
@@ -14,8 +12,8 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class ProductsController(
             IProductService productService,
-            IValidator<UpdateProduct> updateProductValidator,
-            IValidator<CreateProduct> createProductValidator
+            IValidator<UpdateProductRequest> updateProductValidator,
+            IValidator<CreateProductRequest> createProductValidator
         ) : ControllerBase
     {
 
@@ -29,10 +27,10 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPut("{productId}")]
-        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProduct dto)
+        public async Task<ActionResult<ProductDTO>> PutProduct(long productId, UpdateProductRequest dto)
         {
             await updateProductValidator.ValidateAndThrowAsync(dto);
-            var productDto = new UpdateProductServiceDTO
+            var productDto = new UpdateProductDTO
             {
                 ProductId = productId,
                 CategoryId = dto.CategoryId,
@@ -45,7 +43,7 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> PostProduct(CreateProduct dto)
+        public async Task<ActionResult<ProductDTO>> PostProduct(CreateProductRequest dto)
         {
             await createProductValidator.ValidateAndThrowAsync(dto);
             var productDto = new ProductCreateDTO

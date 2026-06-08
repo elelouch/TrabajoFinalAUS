@@ -86,7 +86,6 @@ namespace MissTortas.Infrastructure.Context
                 .WithOne(p => p.PaymentRequest)
                 .HasForeignKey<Payment>(p => p.PaymentRequestId)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
 
     }

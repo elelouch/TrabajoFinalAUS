@@ -3,6 +3,6 @@
     public class QuantityHolder
     {
         public long IntegerQuantity { get; set; }
-        public double DecimalQuantity { get; set; }
+        public decimal DecimalQuantity { get; set; }
     }
 }

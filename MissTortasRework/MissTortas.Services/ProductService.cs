@@ -26,7 +26,7 @@ namespace MissTortas.Services
 
         private async Task<Product> CreateProductEntityAsync(ProductCreateDTO dto)
         {
-            var productDetail = new ProductDetail { Description = dto.Description, ImagePath = dto.ImagePath };
+            var productDetail = new ProductDetail { Description = dto.Description };
             await productRepository.InsertProductDetailAsync(productDetail);
             await productRepository.SaveChangesAsync();
             var result = await productRepository.FindProductByNameAsync(dto.Name);
@@ -77,7 +77,6 @@ namespace MissTortas.Services
                 Name = dto.Name,
                 CategoryId = dto.CategoryId,
                 Description = dto.SaleDescription,
-                ImagePath = dto.SaleImagePath,
                 ManageQuantityAsInteger = true // sale products are offered by units.
             };
             var stockProduct = await CreateProductEntityAsync(productCreateDTO);
@@ -85,7 +84,8 @@ namespace MissTortas.Services
             {
                 SalePrice = dto.SalePrice,
                 IsAvailable = dto.IsAvailable,
-                ProductId = stockProduct.ProductId
+                ProductId = stockProduct.ProductId,
+                SaleQuantity = dto.Quantity
             };
             await productRepository.InsertSaleProductAsync(saleProduct);
             await productRepository.SaveChangesAsync();
@@ -146,20 +146,29 @@ namespace MissTortas.Services
         public async Task<ProductDTO> UpdateProductAsync(UpdateProductDTO dto)
         {
             var product = await productRepository.GetWithDetailAsync(dto.ProductId);
-            var category = await productRepository.FindProductCategoryAsync(dto.CategoryId);
-            product.ProductDetail.Description = dto.Description;
-            var qty = ValidateQuantity(dto.Quantity, product.ManageQuantityAsInteger);
-            product.Quantity = qty.DecimalQuantity;
-            if (category is not null)
+            if(dto.Description is not null)
             {
-                product.ProductCategory = category;
+                product.ProductDetail.Description = dto.Description;
+            }
+            if(dto.Quantity is decimal quantity)
+            {
+                var qty = ValidateQuantity(quantity, product.ManageQuantityAsInteger);
+                product.Quantity = qty.DecimalQuantity;
+            }
+            if(dto.CategoryId is long categoryId)
+            {
+                var category = await productRepository.FindProductCategoryAsync(categoryId);
+                if (category is not null)
+                {
+                    product.ProductCategory = category;
+                }
             }
             productRepository.Update(product);
             await productRepository.SaveChangesAsync();
             return productMapper.ProductToDTO(product);
         }
 
-        private static QuantityHolder ValidateQuantity(double qty, bool mustBeInteger)
+        private static QuantityHolder ValidateQuantity(decimal qty, bool mustBeInteger)
         {
             var qtyIsInteger = Math.Floor(qty) == qty;
             if (mustBeInteger && !qtyIsInteger)
@@ -185,6 +194,34 @@ namespace MissTortas.Services
         {
             var cats = await productRepository.GetAllProductCategoriesAsync();
             return productMapper.CategoryToDTO(cats);
+        }
+
+        public async Task<SaleProductDTO> UpdateSaleProductAsync(UpdateSaleProductDTO dto)
+        {
+            var saleProduct = await productRepository.GetSaleProductWithStockAsync(dto.SaleProductId) ?? throw new EntityNotFoundException($"Sale Product not found. ID: {dto.SaleProductId}");
+            var stockQuantity = saleProduct.Product.Quantity;
+            if(dto.Quantity is not null && stockQuantity < dto.Quantity)
+            {
+                throw new InvalidOperationException($"Cannot place more quantity than available. asked: {dto.Quantity}, available: {stockQuantity}");
+            }
+            if(dto.Quantity is decimal qty)
+            {
+                saleProduct.SaleQuantity = qty;
+            }
+            if(dto.Price is decimal price)
+            {
+                saleProduct.SalePrice = price;
+            }
+            if (dto.Name is not null)
+            {
+                saleProduct.Product.Name = dto.Name;
+            }
+            if(dto.Description is not null)
+            {
+                saleProduct.Product.ProductDetail.Description = dto.Description;
+            }
+            await productRepository.SaveChangesAsync();
+            return productMapper.SaleProductToDTO(saleProduct);
         }
     }
 }

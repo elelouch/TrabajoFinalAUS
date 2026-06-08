@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Products;
@@ -13,13 +14,20 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoriesController(IProductService productService, IValidator<CreateProductCategory> productCategoryValidator) : ControllerBase
+    public class CategoriesController(IProductService productService, IValidator<CreateProductCategoryRequest> productCategoryValidator, ISimpleStorage simpleStorage) : ControllerBase
     {
         [AllowAnonymous]
         [HttpGet("{categoryId}/saleproducts")]
-        public async Task<ActionResult<IEnumerable<SaleProductDTO>>> GetSaleProductsFromCategory(long categoryId)
+        public async Task<ActionResult<IEnumerable<SaleProductResponse>>> GetSaleProductsFromCategory(long categoryId)
         {
-            var ret = await productService.GetSaleProductsFromCategoryAsync(categoryId);
+            var saleProducts = await productService.GetSaleProductsFromCategoryAsync(categoryId);
+            List<SaleProductResponse> ret = [];
+            foreach (var sp in saleProducts)
+            {
+                var saleProductFiles = await simpleStorage.GetProductFilesAsync(sp.Id);
+                var spDTO = new SaleProductResponse(sp) { FilePaths = [.. saleProductFiles.Select(f => f.Path)] };
+                ret.Add(spDTO);
+            }
             return Ok(ret);
         }
 
@@ -40,7 +48,7 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
-        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategory dto)
+        public async Task<ActionResult<ProductCategoryDTO>> PostProductCategory(CreateProductCategoryRequest dto)
         {
             await productCategoryValidator.ValidateAndThrowAsync(dto);
             var productCategoryDto = new ProductCategoryCreateDTO()

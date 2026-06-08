@@ -7,9 +7,9 @@ using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
 using System.Security.Claims;
-using CreateConsultancy = MissTortas.View.DTO.Orders.CreateConsultancy;
+using CreateConsultancyRequest = MissTortas.View.DTO.Orders.CreateConsultancyRequest;
 using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
-using UpdateConsultancy = MissTortas.View.DTO.Orders.UpdateConsultancy;
+using UpdateConsultancyRequest = MissTortas.View.DTO.Orders.UpdateConsultancyRequest;
 using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
 
 namespace MissTortas.View.Controllers
@@ -25,7 +25,7 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpPut("{id}")]
-        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancy dto)
+        public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancyRequest dto)
         {
             var consultancyDTO = new UpdateConsultancyServiceDTO
             {
@@ -61,7 +61,7 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpPost]
-        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy([FromForm] CreateConsultancy dto, [FromForm] List<IFormFile> files)
+        public async Task<ActionResult<ConsultancyDTO>> PostConsultancy([FromForm] CreateConsultancyRequest dto, [FromForm] List<IFormFile> files)
         {
             var consultancyDTO = new CreateConsultancyServiceDTO
             {

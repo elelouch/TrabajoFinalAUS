@@ -1,10 +1,10 @@
 ﻿namespace MissTortas.View.DTO.Products
 {
-    public class CreateSaleProduct
+    public class CreateSaleProductRequest
     {
         public string SaleProductName { get; set; } = string.Empty;
-        public double SalePrice { get; set; }
-        public double SaleQuantity { get; set; }
+        public decimal SalePrice { get; set; }
+        public decimal SaleQuantity { get; set; }
         public long CategoryId { get; set; }
         public string SaleDescription { get; set; } = string.Empty;
         public string SaleImagePath { get; set; } = string.Empty;

@@ -31,7 +31,7 @@ namespace MissTortas.Infrastructure
             )
         {
             var connectionString = configuration.GetConnectionString("MissTortasContext") ?? throw new InvalidOperationException("Connection string not found");
-            services.AddDbContext<MissTortasContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MissTortasContext>(options => options.UseSqlite(connectionString));
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;

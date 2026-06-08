@@ -5,8 +5,8 @@ namespace MissTortas.Domain.Products
         public long SaleProductId { get; set; }
         public long ProductId { get; set; }
         public Product Product { get; set; } = default!;
-        public double SaleQuantity { get; set; }
-        public double SalePrice { get; set; }
+        public decimal SaleQuantity { get; set; }
+        public decimal SalePrice { get; set; }
         public bool IsAvailable { get; set; }
     }
 }

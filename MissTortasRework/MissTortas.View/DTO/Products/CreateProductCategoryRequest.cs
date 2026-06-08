@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.View.DTO.Products
 {
-    public class CreateProductCategory
+    public class CreateProductCategoryRequest
     {
         public long? ParentId { get; set; }
         public bool IsFinal { get; set; }

@@ -1,0 +1,135 @@
+﻿@using Misstortas.Frontend.Models
+@using Microsoft.Extensions.Options
+@using Misstortas.Frontend.Services.Files
+@using Misstortas.Frontend.Services.Products
+
+@inject IFileUrlBuilder FileUrlBuilder
+@inject IOptions<APIHostsOptions> APIHostsOptions
+@inject ISaleProductCartService Cart
+
+@rendermode InteractiveServer
+
+<div class="card shadow-sm rounded-3 h-100">
+
+    @if (Product.FilePaths.Any())
+    {
+        <img src="@FileUrlBuilder.GetUploadUrl(Product.FilePaths.First())"
+             class="card-img-top"
+             alt="@Product.Name"
+             style="height:220px; object-fit:cover;" />
+    }
+    else
+    {
+        <div class="d-flex justify-content-center align-items-center bg-light"
+             style="height:220px;">
+            <span class="text-muted">No image</span>
+        </div>
+    }
+
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">@Product.Name</h5>
+
+        <div>
+            <strong>Price:</strong>
+            @Product.Price
+        </div>
+
+
+        @if (Product.Quantity > 0)
+        {
+            <div class="mt-auto pt-3">
+                <div class="input-group">
+
+                    <button class="btn btn-outline-secondary"
+                            @onclick="Decrease">
+                        -
+                    </button>
+
+                    <InputNumber @bind-Value="QuantityAsked"
+                                 class="form-control text-center"
+                                 step="@Step"
+                                 @bind-Value:after="OnQuantityChanged" />
+
+                    <button class="btn btn-outline-primary"
+                            @onclick="Increase">
+                        +
+                    </button>
+
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mt-auto pt-3">
+                <div class="alert alert-warning text-center mb-0">
+                    <strong>Not stock available</strong>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public SaleProduct Product { get; set; } = default!;
+
+    private decimal QuantityAsked;
+
+    private string Step =>
+        Product.AllowDecimalAsk
+            ? "0.1"
+            : "1";
+
+    protected override void OnInitialized()
+    {
+        QuantityAsked = Cart.GetQuantityAsked(Product.Id);
+    }
+
+    private decimal Increment =>
+        Product.AllowDecimalAsk
+            ? 0.1m
+            : 1m;
+
+    private void Increase()
+    {
+        QuantityAsked += Increment;
+
+        if (QuantityAsked > Product.Quantity)
+        {
+            QuantityAsked = Product.Quantity;
+        }
+        Cart.SetQuantity(Product, QuantityAsked);
+    }
+
+    private void Decrease()
+    {
+        QuantityAsked -= Increment;
+
+        if (QuantityAsked < 0)
+        {
+            QuantityAsked = 0;
+        }
+        Cart.SetQuantity(Product, QuantityAsked);
+    }
+
+    private void OnQuantityChanged()
+    {
+        if (!Product.AllowDecimalAsk)
+        {
+            QuantityAsked = decimal.Truncate(QuantityAsked);
+        }
+
+        if (QuantityAsked < 0)
+        {
+            QuantityAsked = 0;
+        }
+
+        if (QuantityAsked > Product.Quantity)
+        {
+            QuantityAsked = Product.Quantity;
+        }
+
+        Cart.SetQuantity(Product, QuantityAsked);
+    }
+}

@@ -10,6 +10,7 @@ namespace MissTortas.Services.Repositories
         public Task<ProductCategory?> FindProductCategoryAsync(long id);
         public Task InsertProductDetailAsync(ProductDetail productDetail);
         public Task InsertSaleProductAsync(SaleProduct saleProduct);
+        public Task<SaleProduct?> GetSaleProductWithStockAsync(long id);
         public Task<SaleProduct?> FindSaleProductAsync(long id);
         public Task<Product?> FindProductByNameAsync(string name);
         public Task<List<Product>> GetAllWithDetailAsync();

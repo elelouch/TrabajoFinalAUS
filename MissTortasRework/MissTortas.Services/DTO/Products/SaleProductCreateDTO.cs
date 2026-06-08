@@ -3,8 +3,8 @@
     public class SaleProductCreateDTO
     {
         public string Name { get; set; } = string.Empty;
-        public double SalePrice { get; set; }
-        public double Quantity { get; set; }
+        public decimal SalePrice { get; set; }
+        public decimal Quantity { get; set; }
         public bool IsAvailable { get; set; }
         public long CategoryId { get; set; }
         public string SaleDescription { get; set; } = string.Empty;

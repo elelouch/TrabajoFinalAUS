@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.View.DTO.Products
 {
-    public class CreateProduct
+    public class CreateProductRequest
     {
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";

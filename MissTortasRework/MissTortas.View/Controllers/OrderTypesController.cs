@@ -4,18 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
-using CreateOrderType = MissTortas.View.DTO.Orders.CreateOrderType;
+using CreateOrderTypeRequest = MissTortas.View.DTO.Orders.CreateOrderTypeRequest;
 using CreateOrderTypeServiceDTO = MissTortas.Services.DTO.Orders.CreateOrderTypeDTO;
 
 namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class OrderTypesController(IValidator<CreateOrderType> createOrderTypeValidator, IOrderService orderService) : ControllerBase
+    public class OrderTypesController(IValidator<CreateOrderTypeRequest> createOrderTypeValidator, IOrderService orderService) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpPost("type")]
-        public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderType dto)
+        public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeRequest dto)
         {
             await createOrderTypeValidator.ValidateAndThrowAsync(dto);
             var orderTypeDTO = new CreateOrderTypeServiceDTO { Name = dto.Name };

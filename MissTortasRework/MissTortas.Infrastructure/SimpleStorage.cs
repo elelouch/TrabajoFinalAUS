@@ -34,6 +34,10 @@ namespace MissTortas.Infrastructure
             var storageDirectory = Path.Combine(_root, saveFileDTO.StorageDirectory);
             var filename = Guid.NewGuid().ToString() + extension;
             var relativePath = $"{saveFileDTO.StorageDirectory}/{filename}";
+            if (!Directory.Exists(storageDirectory))
+            {
+                Directory.CreateDirectory(storageDirectory);
+            }
             using var fsOut = File.Create(Path.Combine(storageDirectory, filename));
             await saveFileDTO.FormFile.CopyToAsync(fsOut);
             return new FileDTO
@@ -69,24 +73,25 @@ namespace MissTortas.Infrastructure
             }
         }
 
-        public async Task SaveProductFileAsync(IEnumerable<IFormFile> files, long productId)
+        public async Task<List<ProductFile>> SaveProductFileAsync(IEnumerable<IFormFile> files, long productId)
         {
+            List<ProductFile> ret = [];
             foreach (var file in files)
             {
-                await SaveProductFileAsync(file, productId);
+                var res = await SaveProductFileAsync(file, productId);
+                ret.Add(res);
             }
+            return ret;
         }
 
-        public async Task SaveProductFileAsync(IFormFile file, long productId)
+        public async Task<ProductFile> SaveProductFileAsync(IFormFile file, long productId)
         {
             if (productId == 0)
             {
                 throw new ConsultancyException("ProductID is zero");
             }
-
             var saveFileDTO = new SaveFileDTO { StorageDirectory = "products", FormFile = file };
             var fileDTO = await SaveFileAsync(saveFileDTO);
-
             var productFile = new ProductFile()
             {
                 ProductId = productId,
@@ -94,6 +99,12 @@ namespace MissTortas.Infrastructure
             };
             await simpleStorageRepository.InsertProductFileAsync(productFile);
             await simpleStorageRepository.SaveChangesAsync();
+            return productFile;
+        }
+
+        public Task<List<ProductFile>> GetProductFilesAsync(long productId)
+        {
+            return simpleStorageRepository.GetProductFilesAsync(productId);
         }
     }
 }

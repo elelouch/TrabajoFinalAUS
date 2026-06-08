@@ -3,7 +3,7 @@ using MissTortas.View.DTO.Products;
 
 namespace MissTortas.View.Validators.Products
 {
-    public class CreateProductDTOValidator : AbstractValidator<CreateProduct>
+    public class CreateProductDTOValidator : AbstractValidator<CreateProductRequest>
     {
         public long MaxProductId = long.MaxValue - 1024;
         public int NameMinLength = 3;

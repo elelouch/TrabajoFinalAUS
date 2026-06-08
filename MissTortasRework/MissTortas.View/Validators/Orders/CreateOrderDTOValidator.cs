@@ -29,7 +29,7 @@ namespace MissTortas.View.Validators.Orders
         public class AskedProductDTOValidator : AbstractValidator<AskedProduct>
         {
             public long SaleProductIdMax = long.MaxValue - 1024;
-            public double MaxAskedQuantity = double.MaxValue - 1;
+            public decimal MaxAskedQuantity = decimal.MaxValue - 1;
             public AskedProductDTOValidator()
             {
                 RuleFor(ap => ap.SaleProductId).NotEmpty().InclusiveBetween(1, SaleProductIdMax);

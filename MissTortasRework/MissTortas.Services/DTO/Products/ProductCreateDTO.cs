@@ -6,6 +6,5 @@
         public string Description { get; set; } = string.Empty;
         public long CategoryId { get; set; }
         public bool ManageQuantityAsInteger { get; set; }
-        public string ImagePath { get; set; } = string.Empty;
     }
 }

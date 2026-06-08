@@ -3,6 +3,6 @@
     public class AskedProduct
     {
         public long SaleProductId { get; set; }
-        public double QuantityAsked { get; set; }
+        public decimal QuantityAsked { get; set; }
     }
 }

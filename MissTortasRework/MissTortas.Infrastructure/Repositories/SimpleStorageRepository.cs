@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity.Orders;
@@ -11,6 +12,11 @@ namespace MissTortas.Infrastructure.Repositories
     {
         private readonly DbSet<ConsultancyFile> consultancyFiles = context.ConsultancyFiles;
         private readonly DbSet<ProductFile> productFiles = context.ProductFiles;
+
+        public Task<List<ProductFile>> GetProductFilesAsync(long productId)
+        {
+            return productFiles.Where(p => p.ProductId == productId).ToListAsync();
+        }
 
         public async Task InsertConsultancyFileAsync(ConsultancyFile cf)
         {

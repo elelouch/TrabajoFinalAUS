@@ -1,0 +1,28 @@
+﻿@using Misstortas.Frontend.Models
+@using Misstortas.Frontend.Components.Products
+@rendermode InteractiveServer
+
+@if (Products is null)
+{
+    <p>Select a category</p>
+}
+else if (!Products.Any())
+{
+    <p>No products found</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var product in Products)
+        {
+            <div class="col-md-6 col-lg-4">
+                <ProductCard Product="product" />
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public SaleProduct[]? Products { get; set; }
+}
