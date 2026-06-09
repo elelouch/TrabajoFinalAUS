@@ -2,10 +2,12 @@
 @using Microsoft.Extensions.Options
 @using Misstortas.Frontend.Services.Files
 @using Misstortas.Frontend.Services.Products
+@using Misstortas.Frontend.Services
 
 @inject IFileUrlBuilder FileUrlBuilder
 @inject IOptions<APIHostsOptions> APIHostsOptions
 @inject ISaleProductCartService Cart
+@inject ToastService ToastService
 
 @rendermode InteractiveServer
 
@@ -34,7 +36,12 @@
             @Product.Price
         </div>
 
-
+        @if (!string.IsNullOrWhiteSpace(ValidationMessage))
+        {
+            <div class="alert alert-danger py-2 mt-2">
+                @ValidationMessage
+            </div>
+        }
         @if (Product.Quantity > 0)
         {
             <div class="mt-auto pt-3">
@@ -45,10 +52,9 @@
                         -
                     </button>
 
-                    <InputNumber @bind-Value="QuantityAsked"
+                    <InputNumber @bind-Value="QuantityDelta"
                                  class="form-control text-center"
-                                 step="@Step"
-                                 @bind-Value:after="OnQuantityChanged" />
+                                 step="@Step"/>
 
                     <button class="btn btn-outline-primary"
                             @onclick="Increase">
@@ -62,7 +68,7 @@
         {
             <div class="mt-auto pt-3">
                 <div class="alert alert-warning text-center mb-0">
-                    <strong>Not stock available</strong>
+                    <strong>No stock available</strong>
                 </div>
             </div>
         }
@@ -73,8 +79,9 @@
 @code {
     [Parameter, EditorRequired]
     public SaleProduct Product { get; set; } = default!;
+    private string? ValidationMessage;
 
-    private decimal QuantityAsked;
+    private decimal QuantityDelta;
 
     private string Step =>
         Product.AllowDecimalAsk
@@ -83,7 +90,7 @@
 
     protected override void OnInitialized()
     {
-        QuantityAsked = Cart.GetQuantityAsked(Product.Id);
+        QuantityDelta = Cart.GetQuantityAsked(Product.Id);
     }
 
     private decimal Increment =>
@@ -93,43 +100,32 @@
 
     private void Increase()
     {
-        QuantityAsked += Increment;
+        var lastQty = Cart.GetQuantityAsked(Product.Id);
+        var newQuantity = lastQty + QuantityDelta;
 
-        if (QuantityAsked > Product.Quantity)
+        if (newQuantity > Product.Quantity)
         {
-            QuantityAsked = Product.Quantity;
+            ValidationMessage =
+                $"Only {Product.Quantity} available in stock.";
+
+            return;
         }
-        Cart.SetQuantity(Product, QuantityAsked);
+
+        ValidationMessage = null;
+        Cart.SetQuantity(Product, newQuantity);
+        ToastService.Success($"{Product.Name} added to cart");
     }
 
     private void Decrease()
     {
-        QuantityAsked -= Increment;
+        var lastQty = Cart.GetQuantityAsked(Product.Id);
+        var newQuantity = lastQty - QuantityDelta;
 
-        if (QuantityAsked < 0)
+        if (newQuantity < 0)
         {
-            QuantityAsked = 0;
+            newQuantity = 0;
         }
-        Cart.SetQuantity(Product, QuantityAsked);
-    }
-
-    private void OnQuantityChanged()
-    {
-        if (!Product.AllowDecimalAsk)
-        {
-            QuantityAsked = decimal.Truncate(QuantityAsked);
-        }
-
-        if (QuantityAsked < 0)
-        {
-            QuantityAsked = 0;
-        }
-
-        if (QuantityAsked > Product.Quantity)
-        {
-            QuantityAsked = Product.Quantity;
-        }
-
-        Cart.SetQuantity(Product, QuantityAsked);
+        Cart.SetQuantity(Product, newQuantity);
+        ToastService.Success($"{Product.Name} removed from cart");
     }
 }

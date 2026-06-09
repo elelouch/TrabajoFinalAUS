@@ -3,13 +3,13 @@ using MissTortas.View.DTO.Products;
 
 namespace MissTortas.View.Validators.Products
 {
-    public class CreateProductDTOValidator : AbstractValidator<CreateProductRequest>
+    public class CreateProductValidator : AbstractValidator<CreateProductRequest>
     {
         public long MaxProductId = long.MaxValue - 1024;
         public int NameMinLength = 3;
         public int NameMaxLength = 256;
         public int DescriptionMaxLength = 256;
-        public CreateProductDTOValidator()
+        public CreateProductValidator()
         {
             RuleFor(cp => cp.ManageQuantityAsInteger).NotEmpty();
             RuleFor(createProduct => createProduct.Name).NotEmpty().Length(NameMinLength, NameMaxLength);

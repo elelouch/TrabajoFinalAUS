@@ -1,0 +1,59 @@
+﻿@using Misstortas.Frontend.Services
+@implements IDisposable
+@inject ToastService ToastService
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <div class="toast show">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+            </div>
+
+            <div class="toast-body">
+                @Message
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private string? Message;
+    private CancellationTokenSource? cts;
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnSuccess += ShowSuccess;
+    }
+
+    private async void ShowSuccess(string message)
+    {
+        cts?.Cancel();
+
+        Message = message;
+
+        await InvokeAsync(StateHasChanged);
+
+        cts = new();
+
+        try
+        {
+            await Task.Delay(3000, cts.Token);
+
+            Message = null;
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (TaskCanceledException)
+        {
+        }
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnSuccess -= ShowSuccess;
+        cts?.Dispose();
+    }
+}

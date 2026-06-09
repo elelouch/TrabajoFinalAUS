@@ -40,7 +40,7 @@ namespace MissTortas.View.Controllers
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]
-        [HttpPost("{saleProductId}")]
+        [HttpPut("{saleProductId}")]
         public async Task<ActionResult<SaleProductResponse>> PutSaleProduct(long saleProductId, UpdateSaleProductRequest updateSaleProductDTO)
         {
             var saleProductDto = new UpdateSaleProductDTO

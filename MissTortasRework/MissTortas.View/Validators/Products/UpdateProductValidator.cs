@@ -3,14 +3,14 @@ using MissTortas.View.DTO.Products;
 
 namespace MissTortas.View.Validators.Products
 {
-    public class UpdateProductDTOValidator : AbstractValidator<UpdateProductRequest>
+    public class UpdateProductValidator : AbstractValidator<UpdateProductRequest>
     {
         private readonly long CategoryIdMax = long.MaxValue - 1024;
         private readonly long CategoryIdMin = 0;
         private readonly int MaxLengthDescription = 256;
         private readonly decimal MaxQuantity = decimal.MaxValue - 1024;
 
-        public UpdateProductDTOValidator()
+        public UpdateProductValidator()
         {
             RuleFor(up => up.CategoryId).InclusiveBetween(CategoryIdMin, CategoryIdMax);
             RuleFor(up => up.Description).MaximumLength(MaxLengthDescription);

@@ -13,6 +13,7 @@ namespace MissTortas.View.DTO.Products
             this.AllowDecimalAsk = dto.AllowDecimalAsk;
             this.Quantity = dto.Quantity;
             this.Name = dto.Name;
+            this.StockProductId = dto.StockProductId;
         }
         public List<string> FilePaths { get; set; } = [];
     }

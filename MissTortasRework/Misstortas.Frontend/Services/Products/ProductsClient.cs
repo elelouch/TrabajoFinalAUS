@@ -29,10 +29,8 @@ namespace Misstortas.Frontend.Services.Products
                 Console.WriteLine("GetCategoriesAsync had an error");
                 return [];
             }
-
             var result = await response.Content.ReadFromJsonAsync<SaleProduct[]>() ?? [];
             return result;
-
         }
 
 

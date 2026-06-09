@@ -27,10 +27,10 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 // DI
 
 builder.Services.AddScoped<IValidator<AssignPermissionToRole>, AssignPermissionToRoleValidator>();
-builder.Services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateProductCategoryRequest>, CreateProductCategoryDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateProductRequest>, CreateProductDTOValidator>();
-builder.Services.AddScoped<IValidator<CreateSaleProductRequest>, CreateSaleProductDTOValidator>();
+builder.Services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductValidator>();
+builder.Services.AddScoped<IValidator<CreateProductCategoryRequest>, CreateProductCategoryValidator>();
+builder.Services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidator>();
+builder.Services.AddScoped<IValidator<CreateSaleProductRequest>, CreateSaleProductValidator>();
 builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderTypeRequest>, CreateOrderTypeDTOValidator>();
 builder.Services.AddScoped<IValidator<PlaceOrderRequest>, PlaceOrderDTOValidator>();

@@ -64,7 +64,7 @@ namespace MissTortas.Services.Mapping
                 Id = product.ProductId,
                 Name = product.Name,
                 Description = product.ProductDetail?.Description ?? string.Empty,
-                CategoryId = product.ProductCategory?.ProductCategoryId ?? 0
+                CategoryId = product.ProductCategoryId
             };
         }
 
@@ -76,7 +76,8 @@ namespace MissTortas.Services.Mapping
                 Name = product.Product.Name,
                 Price = product.SalePrice,
                 Quantity = product.SaleQuantity,
-                AllowDecimalAsk = product.Product.ManageQuantityAsInteger
+                AllowDecimalAsk = product.Product.ManageQuantityAsInteger,
+                StockProductId = product.ProductId
             };
         }
 
