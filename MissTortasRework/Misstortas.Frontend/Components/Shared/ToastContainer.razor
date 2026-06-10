@@ -1,18 +1,23 @@
-﻿@using Misstortas.Frontend.Services
+﻿@using Misstortas.Frontend.Services.Shared
+
+
 @implements IDisposable
-@inject ToastService ToastService
+@inject IToastService ToastService
+
 
 <div class="toast-container position-fixed top-0 end-0 p-3">
 
-    @if (!string.IsNullOrEmpty(Message))
+    @foreach (var toast in Toasts)
     {
-        <div class="toast show">
-            <div class="toast-header">
-                <strong class="me-auto">Success</strong>
+        <div class="toast show mb-2 @toast.BackgroundClass">
+            <div class="toast-header @toast.BackgroundClass">
+                <strong class="me-auto @toast.TextClass">
+                    @toast.Type
+                </strong>
             </div>
 
-            <div class="toast-body">
-                @Message
+            <div class="toast-body @toast.TextClass">
+                @toast.Message
             </div>
         </div>
     }
@@ -22,38 +27,32 @@
 @code {
     private string? Message;
     private CancellationTokenSource? cts;
+    private readonly List<ToastMessage> Toasts = new();
 
     protected override void OnInitialized()
     {
-        ToastService.OnSuccess += ShowSuccess;
+        ToastService.OnToast += ShowToast;
     }
-
-    private async void ShowSuccess(string message)
+    private async void ShowToast(ToastMessage toast)
     {
-        cts?.Cancel();
-
-        Message = message;
+        Toasts.Add(toast);
 
         await InvokeAsync(StateHasChanged);
 
-        cts = new();
+        _ = RemoveLater(toast);
+    }
+    private async Task RemoveLater(ToastMessage toast)
+    {
+        await Task.Delay(toast.DurationMs);
 
-        try
-        {
-            await Task.Delay(3000, cts.Token);
+        Toasts.Remove(toast);
 
-            Message = null;
-
-            await InvokeAsync(StateHasChanged);
-        }
-        catch (TaskCanceledException)
-        {
-        }
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
     {
-        ToastService.OnSuccess -= ShowSuccess;
+        ToastService.OnToast -= ShowToast;
         cts?.Dispose();
     }
 }

@@ -1,9 +1,9 @@
 using Misstortas.Frontend;
 using Misstortas.Frontend.Components;
-using Misstortas.Frontend.Services;
 using Misstortas.Frontend.Services.Auth;
 using Misstortas.Frontend.Services.Files;
 using Misstortas.Frontend.Services.Products;
+using Misstortas.Frontend.Services.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +26,10 @@ builder.Services.AddHttpClient<IProductsClient, ProductsClient>("Products.Client
 {
     httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
 });
+
 builder.Services.AddScoped<ISaleProductCartService, SaleProductCartService>();
 builder.Services.AddScoped<IFileUrlBuilder, FileUrlBuilder>();
-builder.Services.AddScoped<ToastService>();
+builder.Services.AddScoped<IToastService, ToastService>();
 
 var app = builder.Build();
 

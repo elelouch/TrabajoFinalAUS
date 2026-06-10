@@ -2,12 +2,12 @@
 @using Microsoft.Extensions.Options
 @using Misstortas.Frontend.Services.Files
 @using Misstortas.Frontend.Services.Products
-@using Misstortas.Frontend.Services
+@using Misstortas.Frontend.Services.Shared
 
 @inject IFileUrlBuilder FileUrlBuilder
 @inject IOptions<APIHostsOptions> APIHostsOptions
 @inject ISaleProductCartService Cart
-@inject ToastService ToastService
+@inject IToastService ToastService
 
 @rendermode InteractiveServer
 
@@ -103,6 +103,11 @@
         var lastQty = Cart.GetQuantityAsked(Product.Id);
         var newQuantity = lastQty + QuantityDelta;
 
+        if(QuantityDelta <= 0)
+        {
+            return;
+        }
+
         if (newQuantity > Product.Quantity)
         {
             ValidationMessage =
@@ -113,7 +118,7 @@
 
         ValidationMessage = null;
         Cart.SetQuantity(Product, newQuantity);
-        ToastService.Success($"{Product.Name} added to cart");
+        ToastService.Success($"Added {QuantityDelta} {Product.Name} to cart");
     }
 
     private void Decrease()
@@ -121,11 +126,16 @@
         var lastQty = Cart.GetQuantityAsked(Product.Id);
         var newQuantity = lastQty - QuantityDelta;
 
+        if (QuantityDelta <= 0)
+        {
+            return;
+        }
+
         if (newQuantity < 0)
         {
             newQuantity = 0;
         }
         Cart.SetQuantity(Product, newQuantity);
-        ToastService.Success($"{Product.Name} removed from cart");
+        ToastService.Info($"Removed {QuantityDelta} {Product.Name} from cart");
     }
 }
