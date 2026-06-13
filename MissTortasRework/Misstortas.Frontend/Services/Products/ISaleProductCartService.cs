@@ -16,20 +16,11 @@ namespace Misstortas.Frontend.Services.Products
 
         bool Contains(long productId);
 
-        void SetQuantity(
-            SaleProduct product,
-            decimal quantityAsked);
-
-        void Increase(
-            SaleProduct product,
-            decimal amount);
-
-        void Decrease(
-            SaleProduct product,
-            decimal amount);
-
-        void Remove(long productId);
-
-        void Clear();
+        public Task SetQuantity(SaleProduct product, decimal quantityAsked);
+        public Task Increase(SaleProduct product, decimal amount);
+        public Task Decrease(SaleProduct product, decimal amount);
+        public Task Remove(long productId);
+        public Task Clear();
+        public Task LoadAsync();
     }
 }

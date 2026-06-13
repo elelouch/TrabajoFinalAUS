@@ -14,6 +14,11 @@
                 <strong class="me-auto @toast.TextClass">
                     @toast.Type
                 </strong>
+
+                <button type="button"
+                        class="btn-close"
+                        @onclick="() => DismissToast(toast)">
+                </button>
             </div>
 
             <div class="toast-body @toast.TextClass">
@@ -25,7 +30,7 @@
 </div>
 
 @code {
-    private string? Message;
+    // private string? Message;
     private CancellationTokenSource? cts;
     private readonly List<ToastMessage> Toasts = new();
 
@@ -41,18 +46,27 @@
 
         _ = RemoveLater(toast);
     }
+    
     private async Task RemoveLater(ToastMessage toast)
     {
         await Task.Delay(toast.DurationMs);
 
-        Toasts.Remove(toast);
-
-        await InvokeAsync(StateHasChanged);
+        if (Toasts.Remove(toast))
+        {
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     public void Dispose()
     {
         ToastService.OnToast -= ShowToast;
         cts?.Dispose();
+    }
+    private async Task DismissToast(ToastMessage toast)
+    {
+        if (Toasts.Remove(toast))
+        {
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

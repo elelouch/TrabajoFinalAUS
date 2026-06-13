@@ -6,6 +6,7 @@
 
 @inject IOptions<APIHostsOptions> APIHostsOptions
 @inject IProductsClient ProductsClient
+@inject ISaleProductCartService Cart
 
 @rendermode InteractiveServer
 @page "/products"
@@ -52,7 +53,15 @@ else
     private SaleProduct[]? saleProducts;
     protected override async Task OnInitializedAsync()
     {
-        categories = (await ProductsClient.GetCategoriesAsync()).ToList();
+        categories = (await ProductsClient.GetCategoriesAsync()).ToList();   
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await Cart.LoadAsync();
+        }
     }
 
     private async Task LoadProducts(long categoryId)

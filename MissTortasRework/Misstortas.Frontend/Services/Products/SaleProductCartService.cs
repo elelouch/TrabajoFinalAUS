@@ -1,9 +1,15 @@
-﻿using Misstortas.Frontend.Models;
+﻿using Microsoft.JSInterop;
+using Misstortas.Frontend.Models;
+using System.Text.Json;
 
 namespace Misstortas.Frontend.Services.Products
 {
-    public class SaleProductCartService : ISaleProductCartService
+    public class SaleProductCartService(IJSRuntime jsRuntime) : ISaleProductCartService
     {
+        private bool _loaded;
+
+        private const string StorageKey = "sale-cart";
+
         private readonly Dictionary<long, SaleProductCartEntry> _items = [];
 
         public IReadOnlyCollection<SaleProductCartEntry> Items
@@ -30,13 +36,13 @@ namespace Misstortas.Frontend.Services.Products
             return _items.ContainsKey(productId);
         }
 
-        public void SetQuantity(
+        public async Task SetQuantity(
             SaleProduct product,
             decimal quantityAsked)
         {
             if (quantityAsked <= 0)
             {
-                Remove(product.Id);
+                await Remove(product.Id);
                 return;
             }
 
@@ -45,45 +51,81 @@ namespace Misstortas.Frontend.Services.Products
                 Product = product,
                 QuantityAsked = quantityAsked
             };
-
+            await SaveToSessionStorageAsync();
             NotifyStateChanged();
         }
 
-        public void Increase(
+        public async Task Increase(
             SaleProduct product,
             decimal amount)
         {
             var current = GetQuantityAsked(product.Id);
-
-            SetQuantity(product, current + amount);
+            await SetQuantity(product, current + amount);
         }
 
-        public void Decrease(
+        public async Task Decrease(
             SaleProduct product,
             decimal amount)
         {
             var current = GetQuantityAsked(product.Id);
-
-            SetQuantity(product, current - amount);
+            await SetQuantity(product, current - amount);
         }
 
-        public void Remove(long productId)
+        public async Task Remove(long productId)
         {
             if (_items.Remove(productId))
             {
                 NotifyStateChanged();
+                await SaveToSessionStorageAsync();
             }
         }
 
-        public void Clear()
+        public async Task Clear()
         {
             _items.Clear();
+
+            await SaveToSessionStorageAsync();
             NotifyStateChanged();
         }
 
         private void NotifyStateChanged()
         {
             StateChanged?.Invoke();
+        }
+
+        private async Task SaveToSessionStorageAsync()
+        {
+            var json = JsonSerializer.Serialize(_items);
+            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", StorageKey,json);
+        }
+        public async Task LoadAsync()
+        {
+            if (_loaded)
+                return;
+
+            var json = await jsRuntime.InvokeAsync<string>(
+                "sessionStorage.getItem",
+                StorageKey);
+
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                var items = JsonSerializer.Deserialize<
+                    Dictionary<long, SaleProductCartEntry>>(json);
+
+                if (items != null)
+                {
+                    _items.Clear();
+
+                    foreach (var item in items)
+                    {
+                        _items[item.Key] = item.Value;
+                    }
+
+                    NotifyStateChanged();
+                }
+            }
+
+            _loaded = true;
         }
     }
 }

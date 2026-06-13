@@ -1,0 +1,76 @@
+﻿
+@using Misstortas.Frontend.Services.Products
+@using System.Security.Claims
+
+@rendermode InteractiveServer
+
+@page "/cart"
+
+@implements IDisposable
+
+@inject ISaleProductCartService CartService
+<h3>Shopping Cart</h3>
+
+@if (!CartService.Items.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in CartService.Items)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.QuantityAsked</td>
+                    <td>$@item.Product.Price</td>
+                    <td>$@(item.QuantityAsked * (decimal)item.Product.Price)</td>
+
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => Remove(item.Product.Id)">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5>Total: $@CartService.TotalPrice</h5>
+}
+@code 
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        CartService.StateChanged += OnCartChanged;
+        await CartService.LoadAsync();
+    }
+
+    private void OnCartChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Remove(long productId)
+    {
+        await CartService.Remove(productId);
+    }
+
+    public void Dispose()
+    {
+        CartService.StateChanged -= OnCartChanged;
+    }
+}

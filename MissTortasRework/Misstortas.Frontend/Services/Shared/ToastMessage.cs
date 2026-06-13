@@ -5,7 +5,7 @@
         public Guid Id { get; init; } = Guid.NewGuid();
         public string Message { get; init; } = string.Empty;
         public ToastType Type { get; init; }
-        public int DurationMs { get; init; } = 2000;
+        public int DurationMs { get; init; } = 3000;
 
         public string BackgroundClass => Type switch
         {

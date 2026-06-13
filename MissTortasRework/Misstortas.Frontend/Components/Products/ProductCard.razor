@@ -1,11 +1,9 @@
 ﻿@using Misstortas.Frontend.Models
-@using Microsoft.Extensions.Options
 @using Misstortas.Frontend.Services.Files
 @using Misstortas.Frontend.Services.Products
 @using Misstortas.Frontend.Services.Shared
 
 @inject IFileUrlBuilder FileUrlBuilder
-@inject IOptions<APIHostsOptions> APIHostsOptions
 @inject ISaleProductCartService Cart
 @inject IToastService ToastService
 
@@ -33,7 +31,7 @@
 
         <div>
             <strong>Price:</strong>
-            @Product.Price
+            @Product.Price.ToString("C")
         </div>
 
         @if (!string.IsNullOrWhiteSpace(ValidationMessage))
@@ -47,16 +45,19 @@
             <div class="mt-auto pt-3">
                 <div class="input-group">
 
-                    <button class="btn btn-outline-secondary"
+                    <button disabled="@(QuantityInput <= 0 || Cart.GetQuantityAsked(Product.Id) <= 0)"
+                            class="btn btn-outline-secondary"
                             @onclick="Decrease">
                         -
                     </button>
 
-                    <InputNumber @bind-Value="QuantityDelta"
+                    <InputNumber
+                                @bind-Value="QuantityInput" min="0"
                                  class="form-control text-center"
-                                 step="@Step"/>
+                                 step="@Step" />
 
-                    <button class="btn btn-outline-primary"
+                    <button disabled="@(QuantityInput <= 0)"
+                            class="btn btn-outline-primary"
                             @onclick="Increase">
                         +
                     </button>
@@ -81,61 +82,52 @@
     public SaleProduct Product { get; set; } = default!;
     private string? ValidationMessage;
 
-    private decimal QuantityDelta;
+    private decimal _quantityInput;
 
-    private string Step =>
-        Product.AllowDecimalAsk
-            ? "0.1"
-            : "1";
-
-    protected override void OnInitialized()
+    public decimal QuantityInput
     {
-        QuantityDelta = Cart.GetQuantityAsked(Product.Id);
+        get => _quantityInput;
+        set 
+        {
+            _quantityInput = Math.Max(0m, value);
+            ValidationMessage = null;
+        }
     }
 
-    private decimal Increment =>
-        Product.AllowDecimalAsk
-            ? 0.1m
-            : 1m;
+    private string Step => Product.AllowDecimalAsk ? "0.1" : "1";
 
-    private void Increase()
+
+    private async Task Increase()
     {
         var lastQty = Cart.GetQuantityAsked(Product.Id);
-        var newQuantity = lastQty + QuantityDelta;
-
-        if(QuantityDelta <= 0)
-        {
-            return;
-        }
+        var newQuantity = lastQty + QuantityInput;
 
         if (newQuantity > Product.Quantity)
         {
-            ValidationMessage =
-                $"Only {Product.Quantity} available in stock.";
-
+            ValidationMessage = $"Only {Product.Quantity} available in stock.";
             return;
         }
 
-        ValidationMessage = null;
-        Cart.SetQuantity(Product, newQuantity);
-        ToastService.Success($"Added {QuantityDelta} {Product.Name} to cart");
+        var added = QuantityInput;
+
+        await Cart.SetQuantity(Product, newQuantity);
+        ToastService.Success($"Added {added} {Product.Name} to cart. Current: {Cart.GetQuantityAsked(Product.Id)}");
     }
 
-    private void Decrease()
+    private async Task Decrease()
     {
         var lastQty = Cart.GetQuantityAsked(Product.Id);
-        var newQuantity = lastQty - QuantityDelta;
+        var newQuantity = lastQty - QuantityInput;
 
-        if (QuantityDelta <= 0)
-        {
-            return;
-        }
+        var removed = QuantityInput;
 
-        if (newQuantity < 0)
+        if (newQuantity <= 0)
         {
+            removed = lastQty;
             newQuantity = 0;
         }
-        Cart.SetQuantity(Product, newQuantity);
-        ToastService.Info($"Removed {QuantityDelta} {Product.Name} from cart");
+
+        await Cart.SetQuantity(Product, newQuantity);
+        ToastService.Info($"Removed {removed} {Product.Name} from cart. Current: {Cart.GetQuantityAsked(Product.Id)}");
     }
 }

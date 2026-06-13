@@ -10,7 +10,6 @@ namespace Misstortas.Frontend.Services.Products
             var response = await httpClient.GetAsync("/categories");
             if(!response.IsSuccessStatusCode)
             {
-                Console.WriteLine("GetCategoriesAsync had an error");
                 return [];
             }
             var ret = await response.Content.ReadFromJsonAsync<Category[]>() ?? [];
@@ -26,7 +25,6 @@ namespace Misstortas.Frontend.Services.Products
             var response = await httpClient.GetAsync($"/categories/{categoryId}/saleproducts");
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine("GetCategoriesAsync had an error");
                 return [];
             }
             var result = await response.Content.ReadFromJsonAsync<SaleProduct[]>() ?? [];
