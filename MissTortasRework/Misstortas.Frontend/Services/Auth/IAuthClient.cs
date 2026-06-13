@@ -2,6 +2,6 @@
 {
     public interface IAuthClient
     {
-        public Task<SigninResponseDTO> SignInUserAsync(UserSignin userSignin);
+        public Task<SigninDTO> SignInUserAsync(UserSignin userSignin);
     }
 }

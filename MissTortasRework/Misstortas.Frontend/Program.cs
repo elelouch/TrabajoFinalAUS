@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Misstortas.Frontend;
 using Misstortas.Frontend.Components;
@@ -29,7 +30,8 @@ builder.Services.AddHttpClient<IProductsClient, ProductsClient>("Products.Client
 {
     httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
 });
-
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISaleProductCartService, SaleProductCartService>();
 builder.Services.AddScoped<IFileUrlBuilder, FileUrlBuilder>();
 builder.Services.AddScoped<IToastService, ToastService>();
@@ -43,9 +45,7 @@ builder.Services
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey =
-        new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtOptions!.Key)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Key)),
 
             ValidIssuer = jwtOptions.Issuer,
             ValidAudience = jwtOptions.Audience,

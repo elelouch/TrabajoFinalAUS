@@ -1,6 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 
 @page "/checkout"
-@attribute [Authorize]
+<AuthorizeView>
+    <NotAuthorized>
+        <h3>Not authorized</h3>
+    </NotAuthorized>
+    <Authorized>
+        <h3>Payment</h3>
+    </Authorized>
+</AuthorizeView>
 
-<h3>Payment</h3>

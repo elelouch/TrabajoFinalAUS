@@ -107,7 +107,7 @@ namespace MissTortas.View.Controllers
             Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
             // refresh token placeholder
             Response.Cookies.Append("X-Refresh-Token", Guid.NewGuid().ToString(), new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
-            return NoContent();
+            return Ok(new { accessToken = result.AccessToken });
         }
 
         [AllowAnonymous]

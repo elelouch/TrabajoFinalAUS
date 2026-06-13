@@ -53,7 +53,7 @@ else
 @code 
 {
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         CartService.StateChanged += OnCartChanged;
         await CartService.LoadAsync();

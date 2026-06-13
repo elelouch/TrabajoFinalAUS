@@ -1,0 +1,23 @@
+﻿@using Misstortas.Frontend.Services.Auth
+
+@page "/postlogin"
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
+
+@code {
+    [SupplyParameterFromQuery]
+    private string? Token { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(string.IsNullOrEmpty(Token))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            HttpContextAccessor.HttpContext!.Response.Cookies.Append(AuthConstants.CookieAccessToken, Token, new CookieOptions { Expires = DateTimeOffset.Now.AddMinutes(5), HttpOnly = true, Secure = true});
+        }
+        NavigationManager.NavigateTo("/");
+    }
+}

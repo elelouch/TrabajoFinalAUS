@@ -51,7 +51,7 @@
             var responseDTO = await AuthClient.SignInUserAsync(userSignin);
             if (responseDTO.Success)
             {
-                Navigation.NavigateTo("/");
+                Navigation.NavigateTo($"/postlogin?Token={responseDTO.AccessToken}");
             }
             else
             {
