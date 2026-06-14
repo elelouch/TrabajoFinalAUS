@@ -5,7 +5,7 @@
 @using Microsoft.Extensions.Options
 
 @inject IOptions<APIHostsOptions> APIHostsOptions
-@inject IProductsClient ProductsClient
+@inject IProductsService ProductsService
 @inject ISaleProductCartService Cart
 
 @rendermode InteractiveServer
@@ -53,7 +53,7 @@ else
     private SaleProduct[]? saleProducts;
     protected override async Task OnInitializedAsync()
     {
-        categories = (await ProductsClient.GetCategoriesAsync()).ToList();   
+        categories = (await ProductsService.GetCategoriesAsync()).ToList();   
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -66,7 +66,7 @@ else
 
     private async Task LoadProducts(long categoryId)
     {
-        saleProducts = await ProductsClient.GetSaleProductsAsync(categoryId);
+        saleProducts = await ProductsService.GetSaleProductsAsync(categoryId);
     }
 
 }

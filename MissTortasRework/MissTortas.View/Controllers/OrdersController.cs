@@ -9,6 +9,7 @@ using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Orders;
+using MissTortas.View.Mappers;
 
 
 
@@ -20,9 +21,10 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         IValidator<CreateOrder> createOrderValidator,
         IOrderService orderService,
-        UserManager<ApplicationUser> userManager
+        IOrderMapper orderMapper
         ) : ControllerBase
     {
+        [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDTO>> GetOrder(long id)
         {
@@ -32,14 +34,15 @@ namespace MissTortas.View.Controllers
                 return NotFound();
             }
 
-            var order = await orderService.GetOrderAsync(id);
-            if (order is null)
+            var orderDTO = await orderService.GetOrderAsync(id);
+            if (orderDTO is null)
             {
                 return NotFound();
             }
-            return Ok(order);
+            return Ok(orderMapper.FromOrderDTOToResponse(orderDTO));
         }
 
+        [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> CancelOrder(long id)
         {
@@ -54,28 +57,12 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpPost("setup")]
-        public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrder dto)
+        public async Task<ActionResult<OrderResponse>> PostSetupOrder(CreateOrder dto)
         {
-            var idMap = await userManager.Users
-                .Include(u => u.UserId)
-                .Where(u => u.Id == dto.ClientGuid || u.Id == dto.OrderManagerGuid)
-                .ToDictionaryAsync(u => u.Id, u => u.UserId) ?? [];
             await createOrderValidator.ValidateAndThrowAsync(dto);
-            var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
-            {
-                QuantityAsked = p.QuantityAsked,
-                SaleProductId = p.SaleProductId
-            });
-            var placeOrder = new SetupOrderDTO
-            {
-                OrderManagerId = idMap[dto.OrderManagerGuid],
-                OrderTypeId = dto.OrderTypeId,
-                ClientId = idMap[dto.ClientGuid],
-                AskedProduct = [.. asks],
-                ConsultancyId = 0,
-                Description = dto.Description
-            };
-            return await orderService.SetupOrderAsync(placeOrder);
+            var setupOrderDTO = await orderMapper.FromCreateOrderToSetupOrder(dto);
+            var newOrder = await orderService.SetupOrderAsync(setupOrderDTO);
+            return orderMapper.FromOrderDTOToResponse(newOrder);
         }
 
 

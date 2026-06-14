@@ -5,6 +5,7 @@ using Misstortas.Frontend;
 using Misstortas.Frontend.Components;
 using Misstortas.Frontend.Services.Auth;
 using Misstortas.Frontend.Services.Files;
+using Misstortas.Frontend.Services.Order;
 using Misstortas.Frontend.Services.Products;
 using Misstortas.Frontend.Services.Shared;
 using System.Text;
@@ -15,26 +16,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var sape = builder.Configuration.GetSection("APIHostsOptions");
+var apiHostsOptions = builder.Configuration.GetSection("APIHostsOptions");
 
 builder.Services.Configure<APIHostsOptions>(builder.Configuration.GetSection("APIHostsOptions"));
 
-var apiConfig = sape.Get<APIHostsOptions>();
+var apiConfig = apiHostsOptions.Get<APIHostsOptions>();
 
-builder.Services.AddHttpClient<IAuthClient, AuthClient>("Auth.Client", httpClient =>
+builder.Services.AddHttpClient<IMissTortasClient, MissTortasClient>(options =>
 {
-    httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
+    options.BaseAddress = apiConfig!.APIBaseEndpoint;
 });
 
-builder.Services.AddHttpClient<IProductsClient, ProductsClient>("Products.Client", httpClient =>
-{
-    httpClient.BaseAddress = apiConfig!.APIBaseEndpoint;
-});
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<ISaleProductCartService, SaleProductCartService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ISaleProductCartService, SaleProductCartService>();
 builder.Services.AddScoped<IFileUrlBuilder, FileUrlBuilder>();
 builder.Services.AddScoped<IToastService, ToastService>();
+
 var jwtOptions = builder.Configuration
     .GetSection("JwtOptions")
     .Get<JwtOptions>();

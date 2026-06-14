@@ -1,7 +1,7 @@
 ﻿@page "/signin"
 @using Misstortas.Frontend.Services.Auth
 @inject NavigationManager Navigation
-@inject IAuthClient AuthClient
+@inject IAuthService AuthClient
 @rendermode InteractiveServer
 
 <EditForm Model="userSignin" OnValidSubmit="HandleSubmit" FormName="signInForm">

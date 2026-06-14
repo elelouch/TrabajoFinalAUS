@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MissTortas.Domain.Orders;
 using MissTortas.Domain.Security.Contacts;
 using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Services.DTO.Orders;
 using System.Security.Claims;
 
 
@@ -52,6 +54,14 @@ namespace MissTortas.Infrastructure
             await SeedRolesAsync(services);
             await SeedUsersAsync(services);
             await SeedPermissionsAsync(services);
+            await SeedOrderTypes(services);
+        }
+
+        public static async Task SeedOrderTypes(IServiceProvider services)
+        {
+            var context = services.GetRequiredService<MissTortasContext>();
+            List<OrderType> orderTypes = [new OrderType { Id = 1, Name = "Default" }, new OrderType { Id = 2, Name = "Automatically Generated" }];
+            await context.OrderTypes.AddRangeAsync(orderTypes);
         }
 
         public static async Task SeedRolesAsync(IServiceProvider services)
