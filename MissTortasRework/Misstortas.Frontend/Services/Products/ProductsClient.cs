@@ -31,6 +31,10 @@ namespace Misstortas.Frontend.Services.Products
             return result;
         }
 
+        public async Task PostCartAsync(Dictionary<long, SaleProduct> cart)
+        {
+            
+        }
 
     }
 }

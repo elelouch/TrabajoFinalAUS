@@ -1,4 +1,6 @@
-﻿namespace MissTortas.Services.DTO.Orders
+﻿using MissTortas.Domain.Orders;
+
+namespace MissTortas.Services.DTO.Orders
 {
     public class CreateConsultancyDTO
     {
@@ -6,6 +8,6 @@
         public string Description { get; set; } = string.Empty;
         public required long AssigneeId { get; set; }
         public required long ClientId { get; set; }
-
+        public ConsultancyStatus? ConsultancyStatus { get; set; }
     }
 }

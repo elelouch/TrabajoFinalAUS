@@ -2,8 +2,8 @@
 {
     public class CreateOrder
     {
-        public long ClientId { get; set; }
-        public long OrderManagerId { get; set; }
+        public string ClientGuid { get; set; }
+        public string OrderManagerGuid { get; set; }
         public List<AskedProduct> AskedProducts { get; set; } = [];
         public long OrderTypeId { get; set; }
         public long ConsultancyId { get; set; }

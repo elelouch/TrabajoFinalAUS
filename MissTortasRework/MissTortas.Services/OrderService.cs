@@ -24,6 +24,10 @@ namespace MissTortas.Services
         public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
         {
             ArgumentNullException.ThrowIfNull(dto);
+            if(string.IsNullOrEmpty(dto.Name) || dto.Name.Length < 3)
+            {
+                throw new InvalidOperationException("Ordertype name must be greater than zero");
+            }
             var orderType = new OrderType { Name = dto.Name };
             await orderRepository.InsertOrderTypeAsync(orderType);
             await orderRepository.SaveChangesAsync();
@@ -45,23 +49,32 @@ namespace MissTortas.Services
         public async Task<OrderDTO> SetupOrderAsync(SetupOrderDTO dto)
         {
             ArgumentNullException.ThrowIfNull(dto);
+            if (dto.ClientId == 0)
+            {
+                throw new InvalidOperationException("ClientId cannot be zero");
+            }
+            if (dto.AskedProduct.Count <= 0 && dto.ConsultancyId == 0)
+            {
+                throw new InvalidOperationException("Order must have products or a consultancy");
+            }
             var consultancy = await orderRepository.FindConsultancyAsync(dto.ConsultancyId);
+            long consultancyId = dto.ConsultancyId;
             if (consultancy is null)
             {
                 var createConsultancyDTO = new CreateConsultancyDTO
                 {
                     ClientId = dto.ClientId,
                     AssigneeId = dto.OrderManagerId,
+                    ConsultancyStatus = ConsultancyStatus.Approved
                 };
                 var newConsultancyDTO = await CreateConsultancyAsync(createConsultancyDTO);
-                consultancy = await orderRepository.FindConsultancyAsync(newConsultancyDTO.Id);
-                consultancy!.Status = ConsultancyStatus.Approved;
+                consultancyId = newConsultancyDTO.Id;
             }
 
             var orderType = await orderRepository.FindOrderTypeAsync(dto.OrderTypeId) ?? throw new OrderTypeNotFoundException("Order type not found");
             var order = new Order
             {
-                Consultancy = consultancy,
+                ConsultancyId = consultancyId,
                 OrderType = orderType,
                 OrderStatus = OrderStatus.Created
             };
@@ -120,11 +133,12 @@ namespace MissTortas.Services
 
         public async Task PlaceOrderAsync(PlaceOrderDTO dto)
         {
+            ArgumentNullException.ThrowIfNull(dto);
             var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(dto.OrderId) ?? throw new OrderNotFoundException("Order not found.");
             var askedProducts = order.ProductsAsked;
             if (order.OrderStatus != OrderStatus.Created)
             {
-                throw new InvalidOrderStateException("Order should be just created.");
+                throw new InvalidOrderStateException("Order must have a 'Created' status.");
             }
             ReserveProductQuantities(askedProducts);
             order.OrderStatus = OrderStatus.Pending;
@@ -143,6 +157,10 @@ namespace MissTortas.Services
 
         public async Task EndOrderPreparationAsync(long orderPreparationId)
         {
+            if(orderPreparationId == 0)
+            {
+                throw new InvalidOperationException("Order preparation must be valid");
+            }
             var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId);
             var order = orderPreparation.Order;
             var orderStatus = order.OrderStatus;
@@ -187,6 +205,10 @@ namespace MissTortas.Services
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
             ArgumentNullException.ThrowIfNull(dto);
+            if(string.IsNullOrEmpty(dto.Title) || dto.Title.Length < 3)
+            {
+                throw new InvalidOperationException("The title must have at least 3 characters");
+            }
             var client = await userRepository.FindAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
             var assignee = await userRepository.FindAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found.");
             var consultancy = new Consultancy
@@ -195,7 +217,7 @@ namespace MissTortas.Services
                 Assignee = assignee,
                 Title = dto.Title,
                 Notes = dto.Description,
-                Status = ConsultancyStatus.Pending,
+                Status = dto.ConsultancyStatus ?? ConsultancyStatus.Pending,
             };
             await orderRepository.InsertConsultancyAsync(consultancy);
             await orderRepository.SaveChangesAsync();

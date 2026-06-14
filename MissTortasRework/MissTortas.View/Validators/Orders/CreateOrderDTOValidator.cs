@@ -12,16 +12,10 @@ namespace MissTortas.View.Validators.Orders
         public int DescriptionMax = 1024;
         public CreateOrderDTOValidator()
         {
-
             RuleFor(c => c.AskedProducts).NotEmpty();
             RuleForEach(c => c.AskedProducts).NotNull().SetValidator(new AskedProductDTOValidator());
-            //            public long ClientId { get; set; }
-            //public long OrderManagerId { get; set; }
-            //public List<AskedProductDTO> AskedProducts { get; set; } = [];
-            //public long OrderTypeId { get; set; }
-            //public long ConsultancyId { get; set; }
-            RuleFor(c => c.ClientId).NotEmpty().InclusiveBetween(1, ClientIdMax);
-            RuleFor(c => c.OrderManagerId).NotEmpty().InclusiveBetween(1, OrderManagerIdMax);
+            RuleFor(c => c.ClientGuid).NotEmpty().MaximumLength(512);
+            RuleFor(c => c.OrderManagerGuid).MaximumLength(512);
             RuleFor(c => c.ConsultancyId).InclusiveBetween(0, ConsultancyIdMax);
             RuleFor(c => c.Description).MaximumLength(DescriptionMax);
         }

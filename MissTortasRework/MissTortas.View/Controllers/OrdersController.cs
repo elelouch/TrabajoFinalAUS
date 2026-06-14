@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
@@ -16,7 +19,8 @@ namespace MissTortas.View.Controllers
     public class OrdersController(
         IAuthorizationService authorizationService,
         IValidator<CreateOrder> createOrderValidator,
-        IOrderService orderService
+        IOrderService orderService,
+        UserManager<ApplicationUser> userManager
         ) : ControllerBase
     {
         [HttpGet("{id}")]
@@ -52,6 +56,10 @@ namespace MissTortas.View.Controllers
         [HttpPost("setup")]
         public async Task<ActionResult<OrderDTO>> PostSetupOrder(CreateOrder dto)
         {
+            var idMap = await userManager.Users
+                .Include(u => u.UserId)
+                .Where(u => u.Id == dto.ClientGuid || u.Id == dto.OrderManagerGuid)
+                .ToDictionaryAsync(u => u.Id, u => u.UserId) ?? [];
             await createOrderValidator.ValidateAndThrowAsync(dto);
             var asks = dto.AskedProducts.Select(p => new Services.DTO.Products.AskedProductDTO
             {
@@ -60,9 +68,9 @@ namespace MissTortas.View.Controllers
             });
             var placeOrder = new SetupOrderDTO
             {
-                OrderManagerId = dto.OrderManagerId,
+                OrderManagerId = idMap[dto.OrderManagerGuid],
                 OrderTypeId = dto.OrderTypeId,
-                ClientId = dto.ClientId,
+                ClientId = idMap[dto.ClientGuid],
                 AskedProduct = [.. asks],
                 ConsultancyId = 0,
                 Description = dto.Description
