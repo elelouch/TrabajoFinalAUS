@@ -28,9 +28,14 @@ namespace MissTortas.Services
             {
                 throw new InvalidOperationException("Ordertype name must be greater than zero");
             }
-            var orderType = new OrderType { Name = dto.Name };
-            await orderRepository.InsertOrderTypeAsync(orderType);
-            await orderRepository.SaveChangesAsync();
+            var orderType = await orderRepository.FindOrderTypeByNameAsync(dto.Name);
+            if (orderType is null)
+            {
+                var newOrderType = new OrderType { Name = dto.Name };
+                await orderRepository.InsertOrderTypeAsync(newOrderType);
+                await orderRepository.SaveChangesAsync();
+                return orderMapper.OrderTypeToDTO(newOrderType);
+            }
             return orderMapper.OrderTypeToDTO(orderType);
         }
 
@@ -63,6 +68,7 @@ namespace MissTortas.Services
             {
                 var createConsultancyDTO = new CreateConsultancyDTO
                 {
+                    Title = "Automatically generated order.",
                     ClientId = dto.ClientId,
                     AssigneeId = dto.OrderManagerId,
                     ConsultancyStatus = ConsultancyStatus.Approved
@@ -89,13 +95,14 @@ namespace MissTortas.Services
             var askedProducts = new List<OrderSaleProduct>(dtos.Count);
             foreach (var d in dtos)
             {
-                var productForSale = await productService.GetSaleProductEntityAsync(d.SaleProductId);
+                var productForSale = await productService.GetSaleProductAsync(d.SaleProductId);
                 var askIsUnit = Math.Floor(d.QuantityAsked) == d.QuantityAsked;
-                if (!(productForSale.Product.ManageQuantityAsInteger || askIsUnit))
+                if (!(productForSale.AllowDecimalAsk || askIsUnit))
                 {
-                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.SaleProductId}");
+                    // sale product properties required -> {saleproductid, managequantityasinteger}
+                    throw new AskQuantityException($"Quantity asked must be integer for the following product: {productForSale.Id}");
                 }
-                var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProduct = productForSale, QuantityAsked = d.QuantityAsked };
+                var orderSaleProduct = new OrderSaleProduct { Order = order, SaleProductId = productForSale.Id, QuantityAsked = d.QuantityAsked };
                 askedProducts.Add(orderSaleProduct);
             }
             await orderRepository.BulkInsertOrderSaleProductAsync(askedProducts);
@@ -210,7 +217,7 @@ namespace MissTortas.Services
                 throw new InvalidOperationException("The title must have at least 3 characters");
             }
             var client = await userRepository.FindAsync(dto.ClientId) ?? throw new UserNotFoundException($"Client with ID:{dto.ClientId} couldn't be found.");
-            var assignee = await userRepository.FindAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"Assigneed with ID:{dto.AssigneeId} couldn't be found.");
+            var assignee = await userRepository.FindAsync(dto.AssigneeId);
             var consultancy = new Consultancy
             {
                 Client = client,

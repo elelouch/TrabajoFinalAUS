@@ -1,16 +1,22 @@
-﻿
+﻿@using Microsoft.AspNetCore.Components.Server
 @using Misstortas.Frontend.Services.Products
+@using Misstortas.Frontend.Services.Order
+@using Misstortas.Frontend.Components.Checkout
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
 
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
 
 @page "/cart"
 
 @implements IDisposable
 
 @inject ISaleProductCartService CartService
-<h3>Shopping Cart</h3>
+@inject IOrderService OrderService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
+<h3>Shopping Cart</h3>
 @if (!CartService.Items.Any())
 {
     <p>Your cart is empty.</p>
@@ -27,7 +33,6 @@ else
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
             @foreach (var item in CartService.Items)
             {
@@ -36,7 +41,6 @@ else
                     <td>@item.QuantityAsked</td>
                     <td>$@item.Product.Price</td>
                     <td>$@(item.QuantityAsked * (decimal)item.Product.Price)</td>
-
                     <td>
                         <button class="btn btn-danger btn-sm"
                                 @onclick="() => Remove(item.Product.Id)">
@@ -49,17 +53,52 @@ else
     </table>
 
     <h5>Total: $@CartService.TotalPrice</h5>
+
+    @if (!showCheckout)
+    {
+        <AuthorizeView>
+            <Authorized>
+                <button class="btn btn-primary mt-3" @onclick="ShowCheckout">
+                    Pay Order
+                </button>
+            </Authorized>
+            <NotAuthorized>
+                <a href="/signin" class="btn btn-primary mt-3">
+                    Sign In to Pay
+                </a>
+            </NotAuthorized>
+        </AuthorizeView>
+    }
+    else
+    {
+        <Checkout OrderId="createdOrderId" OnPaymentSuccess="HandlePaymentSuccess" />
+    }
 }
-@code 
+
+@code
 {
+    private bool showCheckout = false;
+    private long createdOrderId = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CartService.StateChanged += OnCartChanged;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        CartService.StateChanged += OnCartChanged;
-        await CartService.LoadAsync();
+        if (firstRender)
+        {
+            await CartService.LoadAsync();
+        }
     }
 
     private void OnCartChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void OnAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         _ = InvokeAsync(StateHasChanged);
     }
@@ -69,8 +108,28 @@ else
         await CartService.Remove(productId);
     }
 
+    private async Task ShowCheckout()
+    {
+        try
+        {
+            createdOrderId = await OrderService.PostCartAsync();
+            showCheckout = true;
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle error - show error message to user
+        }
+    }
+
+    private async Task HandlePaymentSuccess()
+    {
+        await CartService.Clear();
+        showCheckout = false;
+    }
+
     public void Dispose()
     {
         CartService.StateChanged -= OnCartChanged;
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

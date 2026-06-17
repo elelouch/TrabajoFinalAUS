@@ -8,7 +8,9 @@ using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Services;
 using MissTortas.Services.DTO.Orders;
+using MissTortas.Services.Interfaces;
 using System.Security.Claims;
 
 
@@ -59,9 +61,13 @@ namespace MissTortas.Infrastructure
 
         public static async Task SeedOrderTypes(IServiceProvider services)
         {
-            var context = services.GetRequiredService<MissTortasContext>();
-            List<OrderType> orderTypes = [new OrderType { Id = 1, Name = "Default" }, new OrderType { Id = 2, Name = "Automatically Generated" }];
-            await context.OrderTypes.AddRangeAsync(orderTypes);
+            var orderService = services.GetRequiredService<IOrderService>();
+            List<CreateOrderTypeDTO> orderTypeList = [new CreateOrderTypeDTO { Name = "Default"}, new CreateOrderTypeDTO { Name = "Personalized" }];
+            foreach(var ot in orderTypeList) 
+            {
+                await orderService.CreateOrderTypeAsync(ot);
+            }
+            
         }
 
         public static async Task SeedRolesAsync(IServiceProvider services)
@@ -134,7 +140,7 @@ namespace MissTortas.Infrastructure
                     Email = "admin@admin.com"
                 };
 
-                var createUserTask = await userManager.CreateAsync(newUser, "C0rr0s!v3Cy4n!d3");
+                var createUserTask = await userManager.CreateAsync(newUser, "Admin+1234");
                 if (createUserTask.Succeeded)
                 {
                     await userManager.AddToRoleAsync(newUser, UserConstants.AdminRoleName);

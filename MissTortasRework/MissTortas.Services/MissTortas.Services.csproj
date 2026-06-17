@@ -10,8 +10,4 @@
     <ProjectReference Include="..\MissTortas.Domain\MissTortas.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\DTO\" />
-  </ItemGroup>
-
 </Project>

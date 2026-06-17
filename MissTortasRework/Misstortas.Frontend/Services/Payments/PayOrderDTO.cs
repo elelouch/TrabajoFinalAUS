@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Services.DTO.Payment
+﻿namespace Misstortas.Frontend.Services.Payments
 {
     public class PayOrderDTO
     {

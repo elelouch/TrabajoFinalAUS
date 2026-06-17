@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MissTortas.Services.DTO.Payment;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using PaymentMethodDetailsServiceDTO = MissTortas.Services.DTO.Payment.PaymentMethodDetailDTO;
+using MissTortas.View.DTO.Error;
 using PayOrder = MissTortas.View.DTO.Payment.PayOrder;
 using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
 
@@ -20,25 +21,20 @@ namespace MissTortas.View.Controllers
         [HttpPost("order")]
         public async Task<ActionResult> PostPayOrder(PayOrder dto)
         {
-            PaymentMethodDetailsServiceDTO? paymentMethodDetails = null;
-            if (dto.PaymentDetails is not null)
-            {
-                paymentMethodDetails = new PaymentMethodDetailsServiceDTO
-                {
-                    ExpirationDate = dto.PaymentDetails.ExpirationDate,
-                    PAN = dto.PaymentDetails.PAN,
-                    StorePaymentDetails = dto.PaymentDetails.StorePaymentDetails,
-                    CardHolderName = dto.PaymentDetails.CardHolderName
-                };
-            }
             var serviceDto = new PayOrderServiceDTO
             {
                 OrderId = dto.OrderId,
                 PaymentMethod = dto.PaymentMethod,
-                PaymentDetails = paymentMethodDetails
             };
-            await paymentService.PayOrderAsync(serviceDto);
-            return new EmptyResult();
+            try
+            {
+                await paymentService.PayOrderAsync(serviceDto);
+                return new EmptyResult();
+            }
+            catch(PaymentFailedException)
+            {
+                return BadRequest(new ErrorDTO { Code = "PAYFAILED1", Message = "Payment failed" });
+            }
         }
     }
 }

@@ -7,31 +7,37 @@ namespace Misstortas.Frontend.Services.Auth
 {
     public class CustomAuthStateProvider(IHttpContextAccessor httpContext) : AuthenticationStateProvider
     {
+        private AuthenticationState? _cachedState;
+
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
+            if (_cachedState is not null)
+                return Task.FromResult(_cachedState);
+
             try
             {
-                var token = httpContext.HttpContext!.Request.Cookies[AuthConstants.CookieAccessToken];
+                var context = httpContext.HttpContext;
+                var token = context?.Request.Cookies[AuthConstants.CookieAccessToken];
+
                 if (token is not null)
                 {
                     var handler = new JwtSecurityTokenHandler();
                     var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-                    var claims = new List<Claim>();
-                    foreach (var claim in jsonToken!.Claims)
-                    {
-                        claims.Add(new Claim(claim.Type, claim.Value));
-                    }
+                    var claims = jsonToken!.Claims.ToList();
                     var claimsIdentity = new ClaimsIdentity(claims, "jwt");
                     var user = new ClaimsPrincipal(claimsIdentity);
-                    return Task.FromResult(new AuthenticationState(user));
+                    _cachedState = new AuthenticationState(user);
+                    return Task.FromResult(_cachedState);
                 }
-                return Task.FromResult(new AuthenticationState(new ClaimsPrincipal()));
-            } 
+
+                _cachedState = new AuthenticationState(new ClaimsPrincipal());
+                return Task.FromResult(_cachedState);
+            }
             catch (Exception)
             {
-                return Task.FromResult(new AuthenticationState(new ClaimsPrincipal()));
+                _cachedState = new AuthenticationState(new ClaimsPrincipal());
+                return Task.FromResult(_cachedState);
             }
-
         }
     }
 }

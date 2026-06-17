@@ -1,4 +1,5 @@
 ﻿using MissTortas.Domain.Products;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Services.Repositories
 {
@@ -11,6 +12,7 @@ namespace MissTortas.Services.Repositories
         public Task InsertProductDetailAsync(ProductDetail productDetail);
         public Task InsertSaleProductAsync(SaleProduct saleProduct);
         public Task<SaleProduct?> GetSaleProductWithStockAsync(long id);
+        public Task<SaleProductEntityDTO?> FindSaleProductDTOAsync(long id);
         public Task<SaleProduct?> FindSaleProductAsync(long id);
         public Task<Product?> FindProductByNameAsync(string name);
         public Task<List<Product>> GetAllWithDetailAsync();

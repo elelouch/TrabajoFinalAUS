@@ -223,5 +223,15 @@ namespace MissTortas.Services
             await productRepository.SaveChangesAsync();
             return productMapper.SaleProductToDTO(saleProduct);
         }
+
+        public async Task<SaleProductDTO> GetSaleProductAsync(long id)
+        {
+            var saleProductDTO = await productRepository.FindSaleProductDTOAsync(id) ?? throw new SaleProductNotFoundException($"Sale product not found. Id: {id}");
+            return new SaleProductDTO
+            {
+                AllowDecimalAsk = !saleProductDTO.ManageQuantityAsInteger,
+                Id = saleProductDTO.SaleProductId
+            };
+        }
     }
 }

@@ -37,7 +37,7 @@ builder.Services.AddScoped<IValidator<PlaceOrderRequest>, PlaceOrderDTOValidator
 builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidator>();
 
 
-builder.Services.AddScoped<IOrderMapper, OrderMapper>();
+builder.Services.AddScoped<IControllerOrderMapper, ControllerOrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
 builder.Services.AddMissTortasInfrastructure(builder.Configuration);

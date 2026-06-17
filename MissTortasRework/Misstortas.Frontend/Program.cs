@@ -6,6 +6,7 @@ using Misstortas.Frontend.Components;
 using Misstortas.Frontend.Services.Auth;
 using Misstortas.Frontend.Services.Files;
 using Misstortas.Frontend.Services.Order;
+using Misstortas.Frontend.Services.Payments;
 using Misstortas.Frontend.Services.Products;
 using Misstortas.Frontend.Services.Shared;
 using System.Text;
@@ -19,17 +20,19 @@ builder.Services.AddRazorComponents()
 var apiHostsOptions = builder.Configuration.GetSection("APIHostsOptions");
 
 builder.Services.Configure<APIHostsOptions>(builder.Configuration.GetSection("APIHostsOptions"));
-
+builder.Services.AddTransient<AuthTokenHandler>();
 var apiConfig = apiHostsOptions.Get<APIHostsOptions>();
 
 builder.Services.AddHttpClient<IMissTortasClient, MissTortasClient>(options =>
 {
     options.BaseAddress = apiConfig!.APIBaseEndpoint;
-});
+}).AddHttpMessageHandler<AuthTokenHandler>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<ISaleProductCartService, SaleProductCartService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileUrlBuilder, FileUrlBuilder>();

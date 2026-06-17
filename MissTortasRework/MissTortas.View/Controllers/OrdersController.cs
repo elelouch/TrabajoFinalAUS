@@ -21,7 +21,7 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         IValidator<CreateOrder> createOrderValidator,
         IOrderService orderService,
-        IOrderMapper orderMapper
+        IControllerOrderMapper orderMapper
         ) : ControllerBase
     {
         [Authorize(Policy = PolicyName.PlaceOrders)]
@@ -64,8 +64,6 @@ namespace MissTortas.View.Controllers
             var newOrder = await orderService.SetupOrderAsync(setupOrderDTO);
             return orderMapper.FromOrderDTOToResponse(newOrder);
         }
-
-
 
     }
 }

@@ -32,6 +32,9 @@ namespace Misstortas.Frontend.Services.Shared
         {
             if (response.IsSuccessStatusCode)
             {
+                if (response.Content.Headers.ContentLength == 0)
+                    return default;
+
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 

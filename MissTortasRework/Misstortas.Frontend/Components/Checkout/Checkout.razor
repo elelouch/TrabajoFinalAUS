@@ -1,0 +1,129 @@
+﻿@using Misstortas.Frontend.Services.Payments
+@using Microsoft.AspNetCore.Components.Authorization
+@using Misstortas.Frontend.Services.Products
+
+@rendermode InteractiveServer
+
+@inject IPaymentService PaymentService
+@inject ISaleProductCartService CartService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<div class="checkout-section mt-4">
+    <h4>Payment</h4>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <p class="alert alert-info">Please sign in to complete your purchase.</p>
+            <a href="/signin" class="btn btn-primary">Sign In to End Payment</a>
+        </NotAuthorized>
+        <Authorized>
+            <EditForm OnSubmit="HandlePayment">
+                <form @onsubmit="HandlePayment">
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method</label>
+                        <select class="form-control" @bind="selectedPaymentMethod">
+                            <option value="">Select a payment method</option>
+                            <option value="0">Credit Card</option>
+                            <option value="1">Debit Card</option>
+                            <option value="2">Cash</option>
+                            <option value="3">UPI</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3" disabled="@isProcessing">
+                        @if (isProcessing)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            <span>Processing...</span>
+                        }
+                        else
+                        {
+                            <span>Complete Payment</span>
+                        }
+                    </button>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger mt-2">@errorMessage</div>
+                    }
+                </form>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+    
+</div>
+@if (showSuccessModal)
+{
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="text-success mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
+                    </div>
+                    <h4 class="mb-2">Payment Successful!</h4>
+                    <p class="text-muted">Your order has been placed. Redirecting you to products...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public long OrderId { get; set; }
+
+    [Parameter]
+    public EventCallback OnPaymentSuccess { get; set; }
+
+    private string selectedPaymentMethod = "";
+    private bool isProcessing = false;
+    private string errorMessage = "";
+    private bool showSuccessModal = false;
+
+    private async Task HandlePayment()
+    {
+        Console.WriteLine("START");
+        isProcessing = true;
+        errorMessage = "";
+
+        if (string.IsNullOrEmpty(selectedPaymentMethod))  // Fix: removed the !
+        {
+            errorMessage = "Must select a payment method value";
+            isProcessing = false;  // Fix: reset processing state on early return
+            return;
+        }
+
+        try
+        {
+            var successfullCast = int.TryParse(selectedPaymentMethod, out int newval);
+            var payOrder = new PayOrderDTO
+            {
+                OrderId = OrderId,
+                PaymentMethod = successfullCast ? newval : 0
+            };
+
+            await PaymentService.PayOrderAsync(payOrder);
+            await CartService.Clear();
+            // await OnPaymentSuccess.InvokeAsync();
+
+            showSuccessModal = true;
+            Console.WriteLine("MODAL SET");
+            StateHasChanged();
+            await Task.Delay(2500);  // Let the user read the message
+            Console.WriteLine("END");
+            // NavigationManager.NavigateTo("/products");
+        }
+        catch (HttpRequestException ex)
+        {
+            errorMessage = ex.Message ?? "Payment failed. Please try again.";
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+}

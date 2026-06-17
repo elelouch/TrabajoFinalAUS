@@ -4,6 +4,6 @@ namespace Misstortas.Frontend.Services.Order
 {
     public interface IOrderService
     {
-        public Task PostCartAsync(PostCartRequestDTO postCartRequest);
+        public Task<long> PostCartAsync();
     }
 }

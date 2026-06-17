@@ -84,5 +84,10 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return orderSet.AnyAsync(o => o.OrderId == orderId && o.Consultancy.ClientId == userId);
         }
+
+        public Task<OrderType?> FindOrderTypeByNameAsync(string name)
+        {
+            return orderTypeSet.Where(ot => ot.Name == name).SingleOrDefaultAsync();
+        }
     }
 }

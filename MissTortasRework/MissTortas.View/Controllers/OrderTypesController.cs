@@ -14,7 +14,7 @@ namespace MissTortas.View.Controllers
     public class OrderTypesController(IValidator<CreateOrderTypeRequest> createOrderTypeValidator, IOrderService orderService) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageOrders)]
-        [HttpPost("type")]
+        [HttpPost]
         public async Task<ActionResult<OrderTypeDTO>> PostOrderType(CreateOrderTypeRequest dto)
         {
             await createOrderTypeValidator.ValidateAndThrowAsync(dto);
@@ -24,7 +24,7 @@ namespace MissTortas.View.Controllers
         }
 
         [Authorize(Policy = PolicyName.ManageOrders)]
-        [HttpGet("type")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderTypeDTO>>> AllOrderTypes()
         {
             var orderTypes = await orderService.AllOrderTypeAsync();

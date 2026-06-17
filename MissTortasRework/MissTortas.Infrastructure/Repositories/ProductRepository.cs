@@ -2,6 +2,7 @@
 using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Services.Repositories;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Infrastructure.Repositories
 {
@@ -63,6 +64,18 @@ namespace MissTortas.Infrastructure.Repositories
                 .Include(sp => sp.Product)
                 .ThenInclude(product => product.ProductDetail)
                 .Where(sp => sp.SaleProductId == id).SingleOrDefaultAsync();
+        }
+
+        public Task<SaleProductEntityDTO?> FindSaleProductDTOAsync(long id)
+        {
+            var ret = saleProductSet.Select(
+                sp => new SaleProductEntityDTO
+                {
+                    SaleProductId = sp.SaleProductId,
+                    ManageQuantityAsInteger = sp.Product.ManageQuantityAsInteger
+                }).Where(sp => sp.SaleProductId == id)
+                .SingleOrDefaultAsync();
+            return ret;
         }
     }
 }

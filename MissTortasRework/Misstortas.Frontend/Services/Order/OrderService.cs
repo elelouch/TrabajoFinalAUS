@@ -8,7 +8,8 @@ namespace Misstortas.Frontend.Services.Order
 {
     public class OrderService(IMissTortasClient missTortasClient, ISaleProductCartService cartService, AuthenticationStateProvider stateProvider) : IOrderService
     {
-        public async Task PostCartAsync(PostCartRequestDTO postCartRequest)
+        public long DefaultOrderTypeId = 1;
+        public async Task<long> PostCartAsync()
         {
             await cartService.LoadAsync();
             var itemsList = cartService.Items
@@ -27,10 +28,11 @@ namespace Misstortas.Frontend.Services.Order
                 AskedProducts = itemsList,
                 ClientGuid = sub,
                 Description = "Automatically generated.",
-                OrderTypeId = postCartRequest.OrderTypeId
+                OrderTypeId = DefaultOrderTypeId
             };
 
-            await missTortasClient.PostAsync<object>("/orders", req);
+            var ret = await missTortasClient.PostAsync<OrderResponseDTO>("/orders/setup", req);
+            return ret!.Id;
         }
     }
 }
