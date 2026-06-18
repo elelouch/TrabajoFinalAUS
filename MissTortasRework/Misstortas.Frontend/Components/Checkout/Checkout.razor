@@ -12,46 +12,44 @@
 <div class="checkout-section mt-4">
     <h4>Payment</h4>
 
-    <AuthorizeView>
+    <AuthorizeView Context="authorizeContext">
         <NotAuthorized>
             <p class="alert alert-info">Please sign in to complete your purchase.</p>
             <a href="/signin" class="btn btn-primary">Sign In to End Payment</a>
         </NotAuthorized>
-        <Authorized>
+        <Authorized >
             <EditForm OnSubmit="HandlePayment">
-                <form @onsubmit="HandlePayment">
-                    <div class="mb-3">
-                        <label class="form-label">Payment Method</label>
-                        <select class="form-control" @bind="selectedPaymentMethod">
-                            <option value="">Select a payment method</option>
-                            <option value="0">Credit Card</option>
-                            <option value="1">Debit Card</option>
-                            <option value="2">Cash</option>
-                            <option value="3">UPI</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Payment Method</label>
+                    <select class="form-control" @bind="selectedPaymentMethod">
+                        <option value="">Select a payment method</option>
+                        <option value="0">Credit Card</option>
+                        <option value="1">Debit Card</option>
+                        <option value="2">Cash</option>
+                        <option value="3">UPI</option>
+                    </select>
+                </div>
 
-                    <button type="submit" class="btn btn-success mt-3" disabled="@isProcessing">
-                        @if (isProcessing)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2"></span>
-                            <span>Processing...</span>
-                        }
-                        else
-                        {
-                            <span>Complete Payment</span>
-                        }
-                    </button>
-
-                    @if (!string.IsNullOrEmpty(errorMessage))
+                <button type="submit" class="btn btn-success mt-3" disabled="@isProcessing">
+                    @if (isProcessing)
                     {
-                        <div class="alert alert-danger mt-2">@errorMessage</div>
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        <span>Processing...</span>
                     }
-                </form>
+                    else
+                    {
+                        <span>Complete Payment</span>
+                    }
+                </button>
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger mt-2">@errorMessage</div>
+                }
             </EditForm>
         </Authorized>
     </AuthorizeView>
-    
+
 </div>
 @if (showSuccessModal)
 {

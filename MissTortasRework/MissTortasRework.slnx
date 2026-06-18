@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="MissTortas.Desktop/MissTortas.Desktop.csproj" Id="87a2a03e-f6a4-4f78-a8bb-15d1f5519c05" />
   <Project Path="MissTortas.Domain/MissTortas.Domain.csproj" Id="9509ae24-bdcb-49c3-8c91-ef061736d687" />
   <Project Path="Misstortas.Frontend/Misstortas.Frontend.csproj" Id="af0c2bcc-a25f-4f62-bd9b-cdb97511f76a" />
   <Project Path="MissTortas.Infrastructure/MissTortas.Infrastructure.csproj" Id="8b1d78d6-4027-4fb1-8e07-498d9ec7635e" />
