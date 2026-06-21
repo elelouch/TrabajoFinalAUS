@@ -73,10 +73,26 @@ namespace MissTortas.Infrastructure
                     {
                         OnMessageReceived = context =>
                         {
-                            context.Token = context.Request.Cookies["X-Access-Token"];
+                            var token = context.Request.Cookies["X-Access-Token"];
+
+                            if (string.IsNullOrEmpty(token))
+                            {
+                                var authHeader = context.Request.Headers.Authorization.ToString();
+                                if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    token = authHeader["Bearer ".Length..]; // Cleaner substring
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                context.Token = token;
+                            }
+
                             return Task.CompletedTask;
                         }
                     };
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Key)),

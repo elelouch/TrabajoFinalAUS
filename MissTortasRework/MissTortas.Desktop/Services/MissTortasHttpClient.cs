@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Http.Headers;
+using MissTortas.Desktop.Services.AuthService;
 
 namespace MissTortas.Desktop.Services
 {
     public sealed class MissTortasHttpClient
     {
         private static MissTortasHttpClient? misstortasHttpClient;
-        private HttpClient _Client = new();
+        private readonly HttpClient _Client = new();
 
         public HttpClient Client
         {
@@ -22,13 +23,31 @@ namespace MissTortas.Desktop.Services
                 if (misstortasHttpClient is null)
                 {
                     misstortasHttpClient = new MissTortasHttpClient();
-                    misstortasHttpClient._Client.DefaultRequestHeaders.Accept.Clear();
-                    misstortasHttpClient._Client.DefaultRequestHeaders.Accept.Add(
-                        new MediaTypeWithQualityHeaderValue("application/json")
-                        );
-                    misstortasHttpClient._Client.BaseAddress = new Uri("https://localhost:7245/");
+                    misstortasHttpClient.ConfigureClient();
                 }
+
+                misstortasHttpClient.SetAuthorizationHeader();
                 return misstortasHttpClient;
+            }
+        }
+        private void ConfigureClient()
+        {
+            _Client.DefaultRequestHeaders.Accept.Clear();
+            _Client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json")
+            );
+            _Client.BaseAddress = new Uri("https://localhost:7245/");
+        }
+        private void SetAuthorizationHeader()
+        {
+            if (!string.IsNullOrEmpty(AccessToken.Token))
+            {
+                _Client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", AccessToken.Token);
+            }
+            else
+            {
+                _Client.DefaultRequestHeaders.Authorization = null;
             }
         }
     }

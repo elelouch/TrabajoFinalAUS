@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MissTortas.Desktop.Services.AuthService
 {
-    public interface IAuthService
+    public class SigninResponse
     {
-        public Task<string?> SignInAsync(SigninRequest signInDTO);
+        public string AccessToken { get; set; } = string.Empty;
     }
 }

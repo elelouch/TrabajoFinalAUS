@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MissTortas.Desktop.Services.AuthService
 {
-    public class SignInDTO
+    public class SigninRequest
     {
-        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
 }

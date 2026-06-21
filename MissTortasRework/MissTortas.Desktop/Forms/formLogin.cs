@@ -20,13 +20,13 @@ namespace MissTortas.Desktop.Forms
 
         private async void loginButton_Click(object sender, EventArgs e)
         {
-            var dto = new SignInDTO
+            var dto = new SigninRequest
             {
-                Username = this.txtUsername.Text,
+                Email = this.txtUsername.Text,
                 Password = this.txtPassword.Text
             };
-            var success = await _authService.SignIn(dto);
-            if(success)
+            var success = await _authService.SignInAsync(dto);
+            if (success is not null)
             {
                 this.DialogResult = DialogResult.OK;
             }
@@ -34,6 +34,11 @@ namespace MissTortas.Desktop.Forms
             {
                 MessageBox.Show("Username or password invalid. Try again.", "SignIn", MessageBoxButtons.OK);
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

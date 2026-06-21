@@ -1,15 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace MissTortas.Desktop.Services.AuthService
 {
     public class AuthService : IAuthService
     {
-        public async Task<bool> SignIn(SignInDTO signInDTO)
+        public async Task<string?> SignInAsync(SigninRequest signInDTO)
         {
-            var res = await MissTortasHttpClient.Instance.Client.PostAsJsonAsync("auth/signin", signInDTO);
-            return res.IsSuccessStatusCode;
+            var client = MissTortasHttpClient.Instance.Client;
+            var res = await client.PostAsJsonAsync("auth/signin", signInDTO);
+            if(res.IsSuccessStatusCode)
+            {
+                var response = await res.Content.ReadFromJsonAsync<SigninResponse>();
+                AccessToken.Token = response?.AccessToken;
+                return response?.AccessToken;
+            }
+            return null;
         }
     }
 }

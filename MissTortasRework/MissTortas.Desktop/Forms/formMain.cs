@@ -28,8 +28,13 @@ namespace MissTortas.Desktop.Forms
             var dialogRes = appLogin.ShowDialog();
             if (dialogRes != DialogResult.OK)
             {
-                this.Dispose(); 
+                this.Dispose();
             }
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

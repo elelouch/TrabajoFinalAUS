@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             welcomingLabel = new Label();
-            label1 = new Label();
-            label2 = new Label();
+            emailLabel = new Label();
+            passwordLabel = new Label();
             txtUsername = new TextBox();
             txtPassword = new TextBox();
             loginButton = new Button();
@@ -45,23 +45,24 @@
             welcomingLabel.TabIndex = 0;
             welcomingLabel.Text = "Welcome to MissTortas!\r\nPlease, log in with your credentials";
             // 
-            // label1
+            // emailLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(201, 105);
-            label1.Name = "label1";
-            label1.Size = new Size(63, 15);
-            label1.TabIndex = 1;
-            label1.Text = "Username:";
+            emailLabel.AutoSize = true;
+            emailLabel.Location = new Point(201, 105);
+            emailLabel.Name = "emailLabel";
+            emailLabel.Size = new Size(39, 15);
+            emailLabel.TabIndex = 1;
+            emailLabel.Text = "Email:";
+            emailLabel.Click += label1_Click;
             // 
-            // label2
+            // passwordLabel
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(201, 160);
-            label2.Name = "label2";
-            label2.Size = new Size(60, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Password:";
+            passwordLabel.AutoSize = true;
+            passwordLabel.Location = new Point(201, 160);
+            passwordLabel.Name = "passwordLabel";
+            passwordLabel.Size = new Size(60, 15);
+            passwordLabel.TabIndex = 2;
+            passwordLabel.Text = "Password:";
             // 
             // txtUsername
             // 
@@ -96,8 +97,8 @@
             Controls.Add(loginButton);
             Controls.Add(txtPassword);
             Controls.Add(txtUsername);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(passwordLabel);
+            Controls.Add(emailLabel);
             Controls.Add(welcomingLabel);
             Name = "formLogin";
             Text = "Form1";
@@ -108,8 +109,8 @@
         #endregion
 
         private Label welcomingLabel;
-        private Label label1;
-        private Label label2;
+        private Label emailLabel;
+        private Label passwordLabel;
         private TextBox txtUsername;
         private TextBox txtPassword;
         private Button loginButton;
