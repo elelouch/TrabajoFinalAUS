@@ -66,22 +66,22 @@
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(364, 102);
+            txtUsername.Location = new Point(349, 102);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(100, 23);
+            txtUsername.Size = new Size(115, 23);
             txtUsername.TabIndex = 3;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(364, 157);
+            txtPassword.Location = new Point(349, 157);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(100, 23);
+            txtPassword.Size = new Size(115, 23);
             txtPassword.TabIndex = 4;
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(375, 225);
+            loginButton.Location = new Point(367, 228);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(75, 23);
             loginButton.TabIndex = 5;
@@ -91,6 +91,7 @@
             // 
             // formLogin
             // 
+            AcceptButton = loginButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
@@ -101,7 +102,8 @@
             Controls.Add(emailLabel);
             Controls.Add(welcomingLabel);
             Name = "formLogin";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "MissTortas";
             ResumeLayout(false);
             PerformLayout();
         }

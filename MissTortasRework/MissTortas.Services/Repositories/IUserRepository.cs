@@ -5,5 +5,6 @@ namespace MissTortas.Services.Repositories
     public interface IUserRepository : IRepositoryCrud<User>
     {
         public Task<User?> FindByIdAsync(long userId);
+        public Task<List<Role>> GetRolesByNameAsync(ICollection<string> roles);
     }
 }

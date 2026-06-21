@@ -8,6 +8,7 @@ using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
@@ -19,12 +20,16 @@ namespace MissTortas.Infrastructure.Security
         RoleManager<ApplicationRole> roleManager,
         SignInManager<ApplicationUser> signInManager,
         ITokenGenerator tokenGenerator,
+        IUserService userService,
         IRoleMapper roleMapper
         ) : ISecurityService
     {
         public async Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO request)
         {
-            var user = await userManager.FindByEmailAsync(request.Email);
+            var normalizedSearch = request.Email.ToUpper();
+            var user = await userManager.Users
+                .Where(u => u.NormalizedEmail == normalizedSearch || u.NormalizedUserName == normalizedSearch)
+                .SingleOrDefaultAsync();
             if (user == null)
             {
                 return null;
@@ -86,6 +91,14 @@ namespace MissTortas.Infrastructure.Security
             {
                 await UpdateRolesAsync(user, roles);
             }
+            var updateBusinessUserDTO = new UpdateUserDTO 
+            { 
+                FirstName = dto.FirstName,
+                LastName = dto.LastName, 
+                Roles = roles?.ToList() ?? []
+            };
+            await userService.UpdateUserAsync(updateBusinessUserDTO);
+
             await userManager.UpdateSecurityStampAsync(user);
         }
 

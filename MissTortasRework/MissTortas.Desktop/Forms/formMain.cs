@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,14 @@ namespace MissTortas.Desktop.Forms
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void usersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var usersService = new UserService();
+            var usersForm = new formUsers(usersService);
+            usersForm.MdiParent = this;
+            usersForm.Show();
         }
     }
 }

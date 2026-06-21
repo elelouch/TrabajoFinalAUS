@@ -19,6 +19,7 @@ namespace MissTortas.Desktop.Services.UserService
                 return new User
                 {
                     Guid = Guid.Parse(u.Id),
+                    Username = u.Username,
                     Email = u.Email,
                     Roles = u.Roles,
                     IsEnabled = u.Enabled

@@ -19,5 +19,30 @@ namespace MissTortas.Services
             await userRepository.SaveChangesAsync();
             return user.UserId;
         }
+
+        public async Task UpdateUserAsync(UpdateUserDTO updateUserDTO)
+        {
+            ArgumentNullException.ThrowIfNull(updateUserDTO);
+            if(string.IsNullOrEmpty(updateUserDTO.FirstName) || updateUserDTO.FirstName.Length < 3)
+            {
+                throw new InvalidDataException("FirstName must have at least three characters.");
+            }
+            if (string.IsNullOrEmpty(updateUserDTO.LastName) || updateUserDTO.LastName.Length < 3)
+            {
+                throw new InvalidDataException("LastName must have at least three characters.");
+            }
+            var user = await userRepository.FindByIdAsync(updateUserDTO.UserId) ?? throw new InvalidDataException($"UserId must be a valid. UserId: {updateUserDTO.UserId}");
+            user.FirstName = updateUserDTO.FirstName;
+            user.LastName = updateUserDTO.LastName;
+            var rolesFetched = await userRepository.GetRolesByNameAsync([.. updateUserDTO.Roles.Select(r => r.ToUpper())]);
+            var rolesNotFound = rolesFetched.Select(r => r.Name).Except(updateUserDTO.Roles).ToList();
+            if (rolesNotFound.Count > 0)
+            {
+                throw new InvalidOperationException($"The following roles couldnt be fetched: {string.Join(",", rolesNotFound)}");
+            }
+            user.Roles = rolesFetched;
+            
+            await userRepository.SaveChangesAsync();
+        }
     }
 }

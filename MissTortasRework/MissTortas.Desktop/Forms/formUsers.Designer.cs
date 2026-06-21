@@ -39,6 +39,7 @@
             btnRemoveUser = new Button();
             btnSaveUsers = new Button();
             btnRefreshUsers = new Button();
+            Username = new DataGridViewTextBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -48,8 +49,8 @@
             // 
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 90F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.Controls.Add(dgvUsers, 0, 0);
             tableLayoutPanel1.Controls.Add(btnAddUser, 0, 2);
             tableLayoutPanel1.Controls.Add(btnRemoveUser, 1, 2);
@@ -70,14 +71,14 @@
             // 
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { guidDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, isEnabledDataGridViewCheckBoxColumn });
+            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { guidDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, isEnabledDataGridViewCheckBoxColumn, Username });
             tableLayoutPanel1.SetColumnSpan(dgvUsers, 2);
             dgvUsers.DataSource = userBindingSource;
             dgvUsers.Dock = DockStyle.Fill;
             dgvUsers.Location = new Point(3, 3);
             dgvUsers.Name = "dgvUsers";
             tableLayoutPanel1.SetRowSpan(dgvUsers, 2);
-            dgvUsers.Size = new Size(650, 415);
+            dgvUsers.Size = new Size(722, 415);
             dgvUsers.TabIndex = 0;
             // 
             // guidDataGridViewTextBoxColumn
@@ -122,21 +123,27 @@
             // 
             // btnSaveUsers
             // 
-            btnSaveUsers.Location = new Point(659, 3);
+            btnSaveUsers.Location = new Point(731, 3);
             btnSaveUsers.Name = "btnSaveUsers";
-            btnSaveUsers.Size = new Size(75, 23);
+            btnSaveUsers.Size = new Size(66, 23);
             btnSaveUsers.TabIndex = 4;
             btnSaveUsers.Text = "Save";
             btnSaveUsers.UseVisualStyleBackColor = true;
             // 
             // btnRefreshUsers
             // 
-            btnRefreshUsers.Location = new Point(659, 32);
+            btnRefreshUsers.Location = new Point(731, 32);
             btnRefreshUsers.Name = "btnRefreshUsers";
-            btnRefreshUsers.Size = new Size(75, 23);
+            btnRefreshUsers.Size = new Size(66, 23);
             btnRefreshUsers.TabIndex = 5;
             btnRefreshUsers.Text = "Refresh";
             btnRefreshUsers.UseVisualStyleBackColor = true;
+            // 
+            // Username
+            // 
+            Username.DataPropertyName = "Username";
+            Username.HeaderText = "Username";
+            Username.Name = "Username";
             // 
             // formUsers
             // 
@@ -146,6 +153,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "formUsers";
             Text = "Users";
+            Load += formUsers_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).EndInit();
@@ -164,5 +172,6 @@
         private BindingSource userBindingSource;
         private Button btnSaveUsers;
         private Button btnRefreshUsers;
+        private DataGridViewTextBoxColumn Username;
     }
 }

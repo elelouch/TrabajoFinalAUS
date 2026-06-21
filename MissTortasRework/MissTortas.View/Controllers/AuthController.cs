@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthController(ISecurityService securityService, IUserService userServices) : ControllerBase
+    public class AuthController(ISecurityService securityService, IUserService userServices, IValidator<MissTortasRegisterRequest> registerRequestValidator) : ControllerBase
     {
         [HttpPost("signout")]
         public async Task<ActionResult> SignOutUser()
@@ -112,11 +113,14 @@ namespace MissTortas.View.Controllers
 
         [AllowAnonymous]
         [HttpPost("signup")]
-        public async Task<ActionResult<UserLogin>> SignUpUser(RegisterRequest request)
+        public async Task<ActionResult<UserLogin>> SignUpUser(MissTortasRegisterRequest request)
         {
-            ArgumentNullException.ThrowIfNull(request);
-
-            var createUserDTO = new CreateUserDTO { };
+            await registerRequestValidator.ValidateAndThrowAsync(request);
+            var createUserDTO = new CreateUserDTO 
+            { 
+                LastName = request.LastName,
+                FirstName = request.FirstName 
+            };
             var userId = await userServices.CreateUserAsync(createUserDTO);
             var serviceDto = new SignUpUserDTO
             {

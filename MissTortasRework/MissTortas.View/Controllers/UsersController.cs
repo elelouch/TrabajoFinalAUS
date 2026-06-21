@@ -42,7 +42,8 @@ namespace MissTortas.View.Controllers
                 Id = user.Id,
                 Username = user.UserName!,
                 Roles = [.. user.User.Roles.Select(r => r.Name)],
-                Enabled = !(user.LockoutEnabled && user.LockoutEnd >= DateTimeOffset.UtcNow)
+                Enabled = !(user.LockoutEnabled && user.LockoutEnd >= DateTimeOffset.UtcNow),
+                Email = user.Email ?? ""
             }).ToList();
             return Ok(allUserDTO);
         }
