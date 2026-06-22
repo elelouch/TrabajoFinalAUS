@@ -50,9 +50,9 @@
             emailLabel.AutoSize = true;
             emailLabel.Location = new Point(201, 105);
             emailLabel.Name = "emailLabel";
-            emailLabel.Size = new Size(39, 15);
+            emailLabel.Size = new Size(97, 15);
             emailLabel.TabIndex = 1;
-            emailLabel.Text = "Email:";
+            emailLabel.Text = "Username/Email:";
             emailLabel.Click += label1_Click;
             // 
             // passwordLabel

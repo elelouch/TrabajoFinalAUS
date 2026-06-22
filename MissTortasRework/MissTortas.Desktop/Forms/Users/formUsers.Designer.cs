@@ -34,12 +34,12 @@
             guidDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             isEnabledDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
+            Username = new DataGridViewTextBoxColumn();
             userBindingSource = new BindingSource(components);
             btnAddUser = new Button();
             btnRemoveUser = new Button();
-            btnSaveUsers = new Button();
             btnRefreshUsers = new Button();
-            Username = new DataGridViewTextBoxColumn();
+            button1 = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -47,15 +47,16 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnCount = 4;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 90F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.Controls.Add(dgvUsers, 0, 0);
             tableLayoutPanel1.Controls.Add(btnAddUser, 0, 2);
+            tableLayoutPanel1.Controls.Add(btnRefreshUsers, 3, 0);
+            tableLayoutPanel1.Controls.Add(button1, 2, 2);
             tableLayoutPanel1.Controls.Add(btnRemoveUser, 1, 2);
-            tableLayoutPanel1.Controls.Add(btnSaveUsers, 2, 0);
-            tableLayoutPanel1.Controls.Add(btnRefreshUsers, 2, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -69,16 +70,19 @@
             // 
             // dgvUsers
             // 
+            dgvUsers.AllowUserToAddRows = false;
+            dgvUsers.AllowUserToDeleteRows = false;
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUsers.Columns.AddRange(new DataGridViewColumn[] { guidDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, isEnabledDataGridViewCheckBoxColumn, Username });
-            tableLayoutPanel1.SetColumnSpan(dgvUsers, 2);
+            tableLayoutPanel1.SetColumnSpan(dgvUsers, 3);
             dgvUsers.DataSource = userBindingSource;
             dgvUsers.Dock = DockStyle.Fill;
             dgvUsers.Location = new Point(3, 3);
             dgvUsers.Name = "dgvUsers";
+            dgvUsers.ReadOnly = true;
             tableLayoutPanel1.SetRowSpan(dgvUsers, 2);
-            dgvUsers.Size = new Size(722, 415);
+            dgvUsers.Size = new Size(730, 415);
             dgvUsers.TabIndex = 0;
             // 
             // guidDataGridViewTextBoxColumn
@@ -86,18 +90,28 @@
             guidDataGridViewTextBoxColumn.DataPropertyName = "Guid";
             guidDataGridViewTextBoxColumn.HeaderText = "Guid";
             guidDataGridViewTextBoxColumn.Name = "guidDataGridViewTextBoxColumn";
+            guidDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // emailDataGridViewTextBoxColumn
             // 
             emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
             emailDataGridViewTextBoxColumn.HeaderText = "Email";
             emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // isEnabledDataGridViewCheckBoxColumn
             // 
             isEnabledDataGridViewCheckBoxColumn.DataPropertyName = "IsEnabled";
             isEnabledDataGridViewCheckBoxColumn.HeaderText = "IsEnabled";
             isEnabledDataGridViewCheckBoxColumn.Name = "isEnabledDataGridViewCheckBoxColumn";
+            isEnabledDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // Username
+            // 
+            Username.DataPropertyName = "Username";
+            Username.HeaderText = "Username";
+            Username.Name = "Username";
+            Username.ReadOnly = true;
             // 
             // userBindingSource
             // 
@@ -111,6 +125,7 @@
             btnAddUser.TabIndex = 1;
             btnAddUser.Text = "Add";
             btnAddUser.UseVisualStyleBackColor = true;
+            btnAddUser.Click += btnAddUser_Click;
             // 
             // btnRemoveUser
             // 
@@ -121,29 +136,24 @@
             btnRemoveUser.Text = "Remove";
             btnRemoveUser.UseVisualStyleBackColor = true;
             // 
-            // btnSaveUsers
-            // 
-            btnSaveUsers.Location = new Point(731, 3);
-            btnSaveUsers.Name = "btnSaveUsers";
-            btnSaveUsers.Size = new Size(66, 23);
-            btnSaveUsers.TabIndex = 4;
-            btnSaveUsers.Text = "Save";
-            btnSaveUsers.UseVisualStyleBackColor = true;
-            // 
             // btnRefreshUsers
             // 
-            btnRefreshUsers.Location = new Point(731, 32);
+            btnRefreshUsers.Location = new Point(739, 3);
             btnRefreshUsers.Name = "btnRefreshUsers";
-            btnRefreshUsers.Size = new Size(66, 23);
+            btnRefreshUsers.Size = new Size(58, 23);
             btnRefreshUsers.TabIndex = 5;
             btnRefreshUsers.Text = "Refresh";
             btnRefreshUsers.UseVisualStyleBackColor = true;
+            btnRefreshUsers.Click += btnRefreshUsers_Click;
             // 
-            // Username
+            // button1
             // 
-            Username.DataPropertyName = "Username";
-            Username.HeaderText = "Username";
-            Username.Name = "Username";
+            button1.Location = new Point(165, 424);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 6;
+            button1.Text = "Edit";
+            button1.UseVisualStyleBackColor = true;
             // 
             // formUsers
             // 
@@ -170,8 +180,8 @@
         private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn isEnabledDataGridViewCheckBoxColumn;
         private BindingSource userBindingSource;
-        private Button btnSaveUsers;
         private Button btnRefreshUsers;
         private DataGridViewTextBoxColumn Username;
+        private Button button1;
     }
 }

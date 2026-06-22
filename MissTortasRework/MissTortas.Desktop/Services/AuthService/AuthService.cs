@@ -19,5 +19,12 @@ namespace MissTortas.Desktop.Services.AuthService
             }
             return null;
         }
+
+        public async Task<bool> SignUpAsync(SignupRequest signUpDTO)
+        {
+            var client = MissTortasHttpClient.Instance.Client;
+            var res = await client.PostAsJsonAsync("auth/signup", signUpDTO);
+            return res.IsSuccessStatusCode;
+        }
     }
 }

@@ -113,7 +113,7 @@ namespace MissTortas.View.Controllers
 
         [AllowAnonymous]
         [HttpPost("signup")]
-        public async Task<ActionResult<UserLogin>> SignUpUser(MissTortasRegisterRequest request)
+        public async Task<ActionResult> SignUpUser(MissTortasRegisterRequest request)
         {
             await registerRequestValidator.ValidateAndThrowAsync(request);
             var createUserDTO = new CreateUserDTO 
@@ -125,7 +125,8 @@ namespace MissTortas.View.Controllers
             var serviceDto = new SignUpUserDTO
             {
                 UserId = userId,
-                Username = request.Email,
+                Username = request.Username,
+                Email = request.Email,
                 Password = request.Password
             };
             var result = await securityService.SignUpUserAsync(serviceDto);
@@ -142,5 +143,6 @@ namespace MissTortas.View.Controllers
             }
             return Created();
         }
+
     }
 }

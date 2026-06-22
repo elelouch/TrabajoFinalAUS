@@ -1,4 +1,5 @@
-﻿using MissTortas.Desktop.Services.UserService;
+﻿using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,6 +30,26 @@ namespace MissTortas.Desktop.Forms
         }
 
         private async void formUsers_Load(object sender, EventArgs e)
+        {
+            await LoadDataGridView();
+        }
+
+        private async void btnAddUser_Click(object sender, EventArgs e)
+        {
+            var authService = new AuthService();
+            var createUser = new formCreateUser(authService);
+            if(createUser.ShowDialog() == DialogResult.OK)
+            {
+                await LoadDataGridView();
+            }
+        }
+
+        private async void btnRefreshUsers_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private async Task LoadDataGridView()
         {
             var allUsers = await _usersService.GetAllUsersAsync();
             dgvUsers.DataSource = allUsers;

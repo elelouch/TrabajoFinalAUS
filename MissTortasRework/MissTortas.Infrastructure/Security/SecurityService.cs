@@ -52,7 +52,7 @@ namespace MissTortas.Infrastructure.Security
             var newUser = new ApplicationUser
             {
                 UserId = request.UserId,
-                Email = request.Username,
+                Email = request.Email,
                 UserName = request.Username,
                 EmailConfirmed = false,
                 LockoutEnabled = true,
@@ -77,8 +77,19 @@ namespace MissTortas.Infrastructure.Security
             }
 
             user.UserName = dto.Username;
-            user.Email = dto.Email;
             user.LockoutEnabled = dto.IsEnabled is false;
+            if (!string.IsNullOrEmpty(dto.Email))
+            {
+                user.Email = dto.Email;
+            }
+
+            if (!string.IsNullOrEmpty(dto.NewPassword))
+            {
+                string resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
+                var passwordChangeResult = await userManager.ResetPasswordAsync(user, resetToken, dto.NewPassword);
+                var errors = string.Join(",", passwordChangeResult.Errors);
+                throw new InvalidOperationException($"Couldn't change password {errors}");
+            }
 
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
