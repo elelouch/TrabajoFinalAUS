@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.DTO;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
@@ -22,6 +23,18 @@ namespace MissTortas.View.Controllers
         IUserMapper userMapper
         ) : ControllerBase
     {
+
+        [Authorize(Policy = PolicyName.ReadUsers)]
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserFullDTO>> GetUser(string userId)
+        {
+            var ret = await securityService.GetUserByIdAsync(userId);
+            if(ret is not null)
+            {
+                return Ok(ret);
+            }
+            return NotFound();
+        }
 
         [Authorize(Policy = PolicyName.ReadUsers)]
         [HttpGet("me")]

@@ -8,5 +8,6 @@ namespace MissTortas.Desktop.Services.UserService
     public interface IUserService
     {
         public Task<List<User>> GetAllUsersAsync();
+        public Task<User> FindUserByIdAsync(string userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MissTortas.Infrastructure.DTO.Security;
+using MissTortas.Infrastructure.Security.DTO;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
 
@@ -8,6 +9,7 @@ namespace MissTortas.Infrastructure.Security.Interface
     {
         public Task<RoleDTO?> GetRoleAsync(string name);
         public IEnumerable<Permission> GetAllPermissions();
+        public Task<UserFullDTO?> GetUserByIdAsync(string userId);
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
         public Task<LoginUserResultDTO?> SignInUserAsync(LoginUserDTO dto);
         public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);

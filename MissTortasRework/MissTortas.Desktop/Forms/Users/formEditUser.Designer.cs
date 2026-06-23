@@ -32,28 +32,29 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             btnRemoveRole = new Button();
             btnAddRole = new Button();
-            dataGridView1 = new DataGridView();
-            dataGridView2 = new DataGridView();
             txtAvailableRoles = new TextBox();
             txtAddedRole = new TextBox();
+            listBoxAvailableRoles = new ListBox();
+            listBoxAddedRoles = new ListBox();
             tableLayoutPanel3 = new TableLayoutPanel();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            checkBox1 = new CheckBox();
-            textBox5 = new TextBox();
+            txtUsername = new TextBox();
+            txtFirstName = new TextBox();
+            txtEmail = new TextBox();
+            txtLastName = new TextBox();
+            txtPassword = new TextBox();
             textBox6 = new TextBox();
+            lblUsername = new Label();
+            lblEmail = new Label();
+            lblFirstName = new Label();
+            lblLastName = new Label();
+            lblPassword = new Label();
+            txtRepeatPassword = new Label();
+            chkEnabled = new CheckBox();
+            txtUserId = new TextBox();
             label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
+            btnSave = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
@@ -65,6 +66,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 0);
+            tableLayoutPanel1.Controls.Add(btnSave, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -82,10 +84,10 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableLayoutPanel2.Controls.Add(btnRemoveRole, 1, 2);
             tableLayoutPanel2.Controls.Add(btnAddRole, 1, 1);
-            tableLayoutPanel2.Controls.Add(dataGridView1, 0, 1);
-            tableLayoutPanel2.Controls.Add(dataGridView2, 2, 1);
             tableLayoutPanel2.Controls.Add(txtAvailableRoles, 0, 0);
             tableLayoutPanel2.Controls.Add(txtAddedRole, 2, 0);
+            tableLayoutPanel2.Controls.Add(listBoxAvailableRoles, 0, 1);
+            tableLayoutPanel2.Controls.Add(listBoxAddedRoles, 2, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(203, 232);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -101,10 +103,9 @@
             btnRemoveRole.Location = new Point(160, 120);
             btnRemoveRole.Name = "btnRemoveRole";
             btnRemoveRole.Size = new Size(72, 23);
-            btnRemoveRole.TabIndex = 0;
+            btnRemoveRole.TabIndex = 9;
             btnRemoveRole.Text = "Remove";
             btnRemoveRole.UseVisualStyleBackColor = true;
-            btnRemoveRole.Click += this.button1_Click;
             // 
             // btnAddRole
             // 
@@ -112,38 +113,16 @@
             btnAddRole.Location = new Point(160, 91);
             btnAddRole.Name = "btnAddRole";
             btnAddRole.Size = new Size(72, 23);
-            btnAddRole.TabIndex = 1;
+            btnAddRole.TabIndex = 8;
             btnAddRole.Text = "Add";
             btnAddRole.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(3, 23);
-            dataGridView1.Name = "dataGridView1";
-            tableLayoutPanel2.SetRowSpan(dataGridView1, 2);
-            dataGridView1.Size = new Size(151, 189);
-            dataGridView1.TabIndex = 2;
-            // 
-            // dataGridView2
-            // 
-            dataGridView2.AllowUserToAddRows = false;
-            dataGridView2.AllowUserToDeleteRows = false;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Dock = DockStyle.Fill;
-            dataGridView2.Location = new Point(238, 23);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.ReadOnly = true;
-            tableLayoutPanel2.SetRowSpan(dataGridView2, 2);
-            dataGridView2.Size = new Size(153, 189);
-            dataGridView2.TabIndex = 3;
             // 
             // txtAvailableRoles
             // 
             txtAvailableRoles.Dock = DockStyle.Fill;
             txtAvailableRoles.Location = new Point(3, 3);
             txtAvailableRoles.Name = "txtAvailableRoles";
+            txtAvailableRoles.ReadOnly = true;
             txtAvailableRoles.Size = new Size(151, 23);
             txtAvailableRoles.TabIndex = 4;
             txtAvailableRoles.Text = "Available Roles";
@@ -153,30 +132,53 @@
             txtAddedRole.Dock = DockStyle.Fill;
             txtAddedRole.Location = new Point(238, 3);
             txtAddedRole.Name = "txtAddedRole";
+            txtAddedRole.ReadOnly = true;
             txtAddedRole.Size = new Size(153, 23);
             txtAddedRole.TabIndex = 5;
             txtAddedRole.Text = "Added Roles";
             // 
+            // listBoxAvailableRoles
+            // 
+            listBoxAvailableRoles.Dock = DockStyle.Fill;
+            listBoxAvailableRoles.FormattingEnabled = true;
+            listBoxAvailableRoles.Location = new Point(3, 23);
+            listBoxAvailableRoles.Name = "listBoxAvailableRoles";
+            tableLayoutPanel2.SetRowSpan(listBoxAvailableRoles, 2);
+            listBoxAvailableRoles.Size = new Size(151, 189);
+            listBoxAvailableRoles.TabIndex = 10;
+            // 
+            // listBoxAddedRoles
+            // 
+            listBoxAddedRoles.Dock = DockStyle.Fill;
+            listBoxAddedRoles.FormattingEnabled = true;
+            listBoxAddedRoles.Location = new Point(238, 23);
+            listBoxAddedRoles.Name = "listBoxAddedRoles";
+            tableLayoutPanel2.SetRowSpan(listBoxAddedRoles, 2);
+            listBoxAddedRoles.Size = new Size(153, 189);
+            listBoxAddedRoles.TabIndex = 11;
+            // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.ColumnCount = 4;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel3.Controls.Add(textBox1, 1, 0);
-            tableLayoutPanel3.Controls.Add(textBox2, 1, 1);
-            tableLayoutPanel3.Controls.Add(textBox3, 3, 0);
-            tableLayoutPanel3.Controls.Add(textBox4, 3, 1);
-            tableLayoutPanel3.Controls.Add(textBox5, 1, 2);
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel3.Controls.Add(txtUsername, 1, 0);
+            tableLayoutPanel3.Controls.Add(txtFirstName, 1, 1);
+            tableLayoutPanel3.Controls.Add(txtEmail, 3, 0);
+            tableLayoutPanel3.Controls.Add(txtLastName, 3, 1);
+            tableLayoutPanel3.Controls.Add(txtPassword, 1, 2);
             tableLayoutPanel3.Controls.Add(textBox6, 3, 2);
-            tableLayoutPanel3.Controls.Add(label1, 0, 0);
-            tableLayoutPanel3.Controls.Add(label2, 2, 0);
-            tableLayoutPanel3.Controls.Add(label3, 0, 1);
-            tableLayoutPanel3.Controls.Add(label4, 2, 1);
-            tableLayoutPanel3.Controls.Add(label5, 0, 2);
-            tableLayoutPanel3.Controls.Add(label6, 2, 2);
-            tableLayoutPanel3.Controls.Add(checkBox1, 1, 3);
+            tableLayoutPanel3.Controls.Add(lblUsername, 0, 0);
+            tableLayoutPanel3.Controls.Add(lblEmail, 2, 0);
+            tableLayoutPanel3.Controls.Add(lblFirstName, 0, 1);
+            tableLayoutPanel3.Controls.Add(lblLastName, 2, 1);
+            tableLayoutPanel3.Controls.Add(lblPassword, 0, 2);
+            tableLayoutPanel3.Controls.Add(txtRepeatPassword, 2, 2);
+            tableLayoutPanel3.Controls.Add(chkEnabled, 3, 3);
+            tableLayoutPanel3.Controls.Add(txtUserId, 1, 3);
+            tableLayoutPanel3.Controls.Add(label1, 0, 3);
             tableLayoutPanel3.Location = new Point(203, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 4;
@@ -187,112 +189,139 @@
             tableLayoutPanel3.Size = new Size(394, 223);
             tableLayoutPanel3.TabIndex = 1;
             // 
-            // textBox1
+            // txtUsername
             // 
-            textBox1.Location = new Point(101, 3);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(92, 23);
-            textBox1.TabIndex = 0;
+            txtUsername.Location = new Point(81, 3);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(92, 23);
+            txtUsername.TabIndex = 0;
             // 
-            // textBox2
+            // txtFirstName
             // 
-            textBox2.Location = new Point(101, 55);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(92, 23);
-            textBox2.TabIndex = 1;
+            txtFirstName.Location = new Point(81, 55);
+            txtFirstName.Name = "txtFirstName";
+            txtFirstName.Size = new Size(92, 23);
+            txtFirstName.TabIndex = 1;
             // 
-            // textBox3
+            // txtEmail
             // 
-            textBox3.Location = new Point(297, 3);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(94, 23);
-            textBox3.TabIndex = 2;
+            txtEmail.Location = new Point(277, 3);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(94, 23);
+            txtEmail.TabIndex = 3;
             // 
-            // textBox4
+            // txtLastName
             // 
-            textBox4.Location = new Point(297, 55);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(94, 23);
-            textBox4.TabIndex = 3;
+            txtLastName.Location = new Point(277, 55);
+            txtLastName.Name = "txtLastName";
+            txtLastName.Size = new Size(94, 23);
+            txtLastName.TabIndex = 4;
             // 
-            // checkBox1
+            // txtPassword
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(101, 172);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(82, 19);
-            checkBox1.TabIndex = 4;
-            checkBox1.Text = "checkBox1";
-            checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.CheckedChanged += this.checkBox1_CheckedChanged;
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new Point(101, 107);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(92, 23);
-            textBox5.TabIndex = 5;
+            txtPassword.Location = new Point(81, 107);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(92, 23);
+            txtPassword.TabIndex = 2;
             // 
             // textBox6
             // 
-            textBox6.Location = new Point(297, 107);
+            textBox6.Location = new Point(277, 107);
             textBox6.Name = "textBox6";
+            textBox6.PasswordChar = '*';
             textBox6.Size = new Size(94, 23);
-            textBox6.TabIndex = 6;
+            textBox6.TabIndex = 5;
+            // 
+            // lblUsername
+            // 
+            lblUsername.AutoSize = true;
+            lblUsername.Location = new Point(3, 0);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(63, 15);
+            lblUsername.TabIndex = 7;
+            lblUsername.Text = "Username:";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(199, 0);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(39, 15);
+            lblEmail.TabIndex = 8;
+            lblEmail.Text = "Email:";
+            // 
+            // lblFirstName
+            // 
+            lblFirstName.AutoSize = true;
+            lblFirstName.Location = new Point(3, 52);
+            lblFirstName.Name = "lblFirstName";
+            lblFirstName.Size = new Size(67, 15);
+            lblFirstName.TabIndex = 9;
+            lblFirstName.Text = "First Name:";
+            // 
+            // lblLastName
+            // 
+            lblLastName.AutoSize = true;
+            lblLastName.Location = new Point(199, 52);
+            lblLastName.Name = "lblLastName";
+            lblLastName.Size = new Size(66, 15);
+            lblLastName.TabIndex = 10;
+            lblLastName.Text = "Last Name:";
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(3, 104);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(60, 15);
+            lblPassword.TabIndex = 11;
+            lblPassword.Text = "Password:";
+            // 
+            // txtRepeatPassword
+            // 
+            txtRepeatPassword.AutoSize = true;
+            txtRepeatPassword.Location = new Point(199, 104);
+            txtRepeatPassword.Name = "txtRepeatPassword";
+            txtRepeatPassword.Size = new Size(60, 30);
+            txtRepeatPassword.TabIndex = 12;
+            txtRepeatPassword.Text = "Repeat Password:";
+            // 
+            // chkEnabled
+            // 
+            chkEnabled.AutoSize = true;
+            chkEnabled.Location = new Point(277, 172);
+            chkEnabled.Name = "chkEnabled";
+            chkEnabled.Size = new Size(68, 19);
+            chkEnabled.TabIndex = 6;
+            chkEnabled.Text = "Enabled";
+            chkEnabled.UseVisualStyleBackColor = true;
+            // 
+            // txtUserId
+            // 
+            txtUserId.Location = new Point(81, 172);
+            txtUserId.Name = "txtUserId";
+            txtUserId.ReadOnly = true;
+            txtUserId.Size = new Size(100, 23);
+            txtUserId.TabIndex = 13;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 0);
+            label1.Location = new Point(3, 169);
             label1.Name = "label1";
-            label1.Size = new Size(60, 15);
-            label1.TabIndex = 7;
-            label1.Text = "Username";
+            label1.Size = new Size(46, 15);
+            label1.TabIndex = 14;
+            label1.Text = "User Id:";
             // 
-            // label2
+            // btnSave
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(199, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(36, 15);
-            label2.TabIndex = 8;
-            label2.Text = "Email";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(3, 52);
-            label3.Name = "label3";
-            label3.Size = new Size(38, 15);
-            label3.TabIndex = 9;
-            label3.Text = "label3";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(199, 52);
-            label4.Name = "label4";
-            label4.Size = new Size(38, 15);
-            label4.TabIndex = 10;
-            label4.Text = "label4";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(3, 104);
-            label5.Name = "label5";
-            label5.Size = new Size(38, 15);
-            label5.TabIndex = 11;
-            label5.Text = "label5";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(199, 104);
-            label6.Name = "label6";
-            label6.Size = new Size(38, 15);
-            label6.TabIndex = 12;
-            label6.Text = "label6";
+            btnSave.Location = new Point(603, 3);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(75, 23);
+            btnSave.TabIndex = 7;
+            btnSave.Text = "Save";
+            btnSave.UseVisualStyleBackColor = true;
             // 
             // formEditUser
             // 
@@ -301,12 +330,10 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formEditUser";
-            Text = "Form1";
+            Text = "Edit User";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel3.PerformLayout();
             ResumeLayout(false);
@@ -318,23 +345,26 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button btnRemoveRole;
         private Button btnAddRole;
-        private DataGridView dataGridView1;
-        private DataGridView dataGridView2;
         private TextBox txtAvailableRoles;
         private TextBox txtAddedRole;
         private TableLayoutPanel tableLayoutPanel3;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private CheckBox checkBox1;
-        private TextBox textBox5;
+        private TextBox txtUsername;
+        private TextBox txtFirstName;
+        private TextBox txtEmail;
+        private TextBox txtLastName;
+        private CheckBox chkEnabled;
+        private TextBox txtPassword;
         private TextBox textBox6;
+        private Label lblUsername;
+        private Label lblEmail;
+        private Label lblFirstName;
+        private Label lblLastName;
+        private Label lblPassword;
+        private Label txtRepeatPassword;
+        private Button btnSave;
+        private TextBox txtUserId;
         private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Label label6;
+        private ListBox listBoxAvailableRoles;
+        private ListBox listBoxAddedRoles;
     }
 }

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MissTortas.Desktop.Model
+namespace MissTortas.Infrastructure.Security.DTO
 {
-    public class User
+    public class UserFullDTO
     {
-        public Guid Guid { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string[] Roles { get; set; } = [];
-        public bool IsEnabled { get; set; }
-        public string[] Permissions { get; set; } = [];
+        public ICollection<string> Roles { get; set; } = [];
+        public ICollection<string> Permissions { get; set; } = [];
+        public bool Enabled { get; set; }
     }
 }

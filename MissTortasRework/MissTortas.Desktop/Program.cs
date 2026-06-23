@@ -1,4 +1,5 @@
 using MissTortas.Desktop.Forms;
+using MissTortas.Desktop.Forms.Users;
 
 namespace MissTortas.Desktop
 {
@@ -13,7 +14,7 @@ namespace MissTortas.Desktop
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new formMain());
+            Application.Run(new formEditUser());
         }
     }
 }

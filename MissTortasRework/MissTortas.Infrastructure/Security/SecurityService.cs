@@ -5,6 +5,7 @@ using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Mappings.Interfaces;
+using MissTortas.Infrastructure.Security.DTO;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
@@ -156,14 +157,22 @@ namespace MissTortas.Infrastructure.Security
             return await userManager.Users.Include(u => u.User).ThenInclude(user => user.Roles).ToListAsync();
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetUserByIdAsync(string appUserId)
+        public async Task<UserFullDTO?> GetUserByIdAsync(string appUserId)
         {
             return await userManager
                 .Users
-                .Include(u => u.User)
-                .ThenInclude(ur => ur.Roles)
-                .Where(u => u.UserName == appUserId)
-                .ToListAsync();
+                .Select(u => new UserFullDTO
+                {
+                    UserId = u.Id,
+                    Email = u.Email ?? "",
+                    FirstName = u.User.FirstName,
+                    LastName = u.User.LastName,
+                    Username = u.UserName ?? "",
+                    Enabled = u.LockoutEnabled && u.LockoutEnd >= DateTime.Today,
+                    Roles = u.User.Roles.Select(r => r.Name).ToList()
+                })
+                .Where(u => u.UserId == appUserId)
+                .SingleOrDefaultAsync();
         }
 
         public async Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto)
@@ -236,6 +245,5 @@ namespace MissTortas.Infrastructure.Security
         {
             throw new NotImplementedException();
         }
-
     }
 }

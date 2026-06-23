@@ -9,6 +9,13 @@ namespace MissTortas.Desktop.Services.UserService
 {
     public class UserService : IUserService
     {
+        public async Task<User> FindUserByIdAsync(string userId)
+        {
+            var client = MissTortasHttpClient.Instance.Client;
+            var res = await client.GetAsync($"users/{userId}");
+
+        }
+
         public async Task<List<User>> GetAllUsersAsync()
         {
             var client = MissTortasHttpClient.Instance.Client;
