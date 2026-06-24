@@ -9,11 +9,15 @@ namespace MissTortas.Desktop.Services.UserService
 {
     public class UserService : IUserService
     {
-        public async Task<User> FindUserByIdAsync(string userId)
+        public async Task<User?> FindUserByIdAsync(string userId)
         {
             var client = MissTortasHttpClient.Instance.Client;
             var res = await client.GetAsync($"users/{userId}");
-
+            if(res.IsSuccessStatusCode)
+            {
+                return await res.Content.ReadFromJsonAsync<User>();
+            }
+            return null;
         }
 
         public async Task<List<User>> GetAllUsersAsync()
@@ -25,14 +29,31 @@ namespace MissTortas.Desktop.Services.UserService
             {
                 return new User
                 {
-                    Guid = Guid.Parse(u.Id),
+                    UserId = Guid.Parse(u.Id),
                     Username = u.Username,
                     Email = u.Email,
                     Roles = u.Roles,
-                    IsEnabled = u.Enabled
+                    Enabled = u.Enabled
                 };
             }).ToList() ?? [];
             return ret;
+        }
+
+        public User MapRowToUser(DataGridViewRow row)
+        {
+            return new User
+            {
+                UserId = row.Cells["UserId"].Value is Guid guid ? guid : Guid.Empty,
+                FirstName = (string)(row.Cells["FirstName"].Value ?? string.Empty),
+                LastName = (string)(row.Cells["LastName"].Value ?? string.Empty),
+                Username = (string)(row.Cells["Username"].Value ?? string.Empty),
+                Email = (string)(row.Cells["Email"].Value ?? string.Empty),
+                Roles = ((string)(row.Cells["Roles"].Value ?? string.Empty))
+                    .Split(", ", StringSplitOptions.RemoveEmptyEntries),
+                Enabled = row.Cells["Enabled"].Value is bool enabled ? enabled : false,
+                Permissions = ((string)(row.Cells["Permissions"].Value ?? string.Empty))
+                    .Split(", ", StringSplitOptions.RemoveEmptyEntries)
+            };
         }
     }
 }

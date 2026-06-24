@@ -331,6 +331,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "formEditUser";
             Text = "Edit User";
+            Load += formEditUser_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();

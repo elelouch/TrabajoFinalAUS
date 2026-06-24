@@ -168,7 +168,7 @@ namespace MissTortas.Infrastructure.Security
                     FirstName = u.User.FirstName,
                     LastName = u.User.LastName,
                     Username = u.UserName ?? "",
-                    Enabled = u.LockoutEnabled && u.LockoutEnd >= DateTime.Today,
+                    Enabled = !(u.LockoutEnabled && u.LockoutEnd <= DateTime.UtcNow),
                     Roles = u.User.Roles.Select(r => r.Name).ToList()
                 })
                 .Where(u => u.UserId == appUserId)

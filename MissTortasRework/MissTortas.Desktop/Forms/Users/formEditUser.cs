@@ -1,4 +1,5 @@
-﻿using MissTortas.Desktop.Services.UserService;
+﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,11 +21,16 @@ namespace MissTortas.Desktop.Forms.Users
             _userService = userService;
         }
 
-        private void fillEditUserForm(FillUserFormDTO dto)
+
+
+        private void fillEditUserForm(User dto)
         {
-            txtUserId.Text = dto.UserId;
+            txtUserId.Text = dto.UserId.ToString();
             txtUsername.Text = dto.Username;
-            
+            chkEnabled.Checked = dto.Enabled;
+            txtFirstName.Text = dto.FirstName;
+            txtLastName.Text = dto.LastName;
+            listBoxAddedRoles.DataSource = dto.Roles;
         }
 
         private class FillUserFormDTO
@@ -35,6 +41,18 @@ namespace MissTortas.Desktop.Forms.Users
             public string LastName { get; set; } = string.Empty;
             public bool Enabled { get; set; }
             public List<string> Roles { get; set; } = [];
+        }
+
+        private async void formEditUser_Load(object sender, EventArgs e)
+        {
+            var user = await _userService.FindUserByIdAsync(_userId);
+            if(user == null)
+            {
+                MessageBox.Show("User not found. Or error during fetching.");
+                this.Dispose();
+                return;
+            }
+            fillEditUserForm(user);
         }
     }
 }

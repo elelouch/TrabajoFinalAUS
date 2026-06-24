@@ -1,4 +1,5 @@
-﻿using MissTortas.Desktop.Services.AuthService;
+﻿using MissTortas.Desktop.Forms.Users;
+using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace MissTortas.Desktop.Forms
         {
             var authService = new AuthService();
             var createUser = new formCreateUser(authService);
-            if(createUser.ShowDialog() == DialogResult.OK)
+            if (createUser.ShowDialog() == DialogResult.OK)
             {
                 await LoadDataGridView();
             }
@@ -46,13 +47,21 @@ namespace MissTortas.Desktop.Forms
 
         private async void btnRefreshUsers_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private async Task LoadDataGridView()
         {
             var allUsers = await _usersService.GetAllUsersAsync();
             dgvUsers.DataSource = allUsers;
+        }
+
+        private void btnEditUser_Click(object sender, EventArgs e)
+        {
+            var firstRow = dgvUsers.SelectedRows[0];
+            var user = _usersService.MapRowToUser(firstRow);
+            var editUserForm = new formEditUser(user.UserId.ToString(),_usersService);
+            editUserForm.ShowDialog();
         }
     }
 }
