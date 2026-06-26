@@ -13,6 +13,5 @@ namespace MissTortas.Desktop.Model
         public string Email { get; set; } = string.Empty;
         public string[] Roles { get; set; } = [];
         public bool Enabled { get; set; }
-        public string[] Permissions { get; set; } = [];
     }
 }

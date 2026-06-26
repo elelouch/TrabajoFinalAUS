@@ -118,12 +118,14 @@ namespace MissTortas.Infrastructure
             var domainUser = await context.DomainUsers.FirstOrDefaultAsync(u => u.FirstName == UserConstants.AdminUserName && u.LastName == UserConstants.AdminUserName);
             if (domainUser == null)
             {
+                var role = await context.DomainRoles.Where(dr => dr.Name.ToUpper() == UserConstants.AdminRoleName.ToUpper()).SingleAsync();
                 domainUser = new User
                 {
                     FirstName = UserConstants.AdminUserName,
                     LastName = UserConstants.AdminUserName,
                     Birthday = new DateOnly(2000, 1, 1)
                 };
+                domainUser.Roles.Add(role);
 
                 await context.DomainUsers.AddAsync(domainUser);
                 await context.SaveChangesAsync();

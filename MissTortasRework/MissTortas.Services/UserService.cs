@@ -7,6 +7,16 @@ namespace MissTortas.Services
 {
     public class UserService(IUserRepository userRepository) : IUserService
     {
+        public async Task<long> CreateRoleAsync(string name)
+        {
+            if(string.IsNullOrEmpty(name))
+            {
+                throw new InvalidOperationException($"Name is not valid: {name}");
+            }
+            var role = await userRepository.CreateRoleAsync(name);
+            return role.RoleId;
+        }
+
         public async Task<long> CreateUserAsync(CreateUserDTO createUserDTO)
         {
             var user = new User

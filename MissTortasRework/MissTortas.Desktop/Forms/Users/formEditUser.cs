@@ -21,16 +21,16 @@ namespace MissTortas.Desktop.Forms.Users
             _userService = userService;
         }
 
-
-
-        private void fillEditUserForm(User dto)
+        private void fillEditUserForm(User dto, string[] roles)
         {
             txtUserId.Text = dto.UserId.ToString();
             txtUsername.Text = dto.Username;
             chkEnabled.Checked = dto.Enabled;
             txtFirstName.Text = dto.FirstName;
             txtLastName.Text = dto.LastName;
+            txtEmail.Text = dto.Email;
             listBoxAddedRoles.DataSource = dto.Roles;
+            listBoxAvailableRoles.DataSource = roles;
         }
 
         private class FillUserFormDTO
@@ -52,7 +52,8 @@ namespace MissTortas.Desktop.Forms.Users
                 this.Dispose();
                 return;
             }
-            fillEditUserForm(user);
+            var roles = await _userService.GetRolesAsync();
+            fillEditUserForm(user, [..roles.Select(r => r.Name)]);
         }
     }
 }

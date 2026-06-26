@@ -9,6 +9,15 @@ namespace MissTortas.Infrastructure.Repositories
     {
         public DbSet<User> userSet = context.DomainUsers;
         public DbSet<Role> roleSet = context.DomainRoles;
+
+        public async Task<Role> CreateRoleAsync(string name)
+        {
+            var role = new Role { Name = name };
+            await roleSet.AddAsync(role);
+            await context.SaveChangesAsync();
+            return role;
+        }
+
         public Task<User?> FindByIdAsync(long userId)
         {
             return userSet.Include(u => u.Roles).Where(u => u.UserId == userId).SingleOrDefaultAsync();

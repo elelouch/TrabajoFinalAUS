@@ -156,6 +156,7 @@
             // 
             // formCreateUser
             // 
+            AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
@@ -173,7 +174,7 @@
             Controls.Add(lblLastName);
             Controls.Add(lblFirstName);
             Name = "formCreateUser";
-            Text = "Form1";
+            Text = "Create User";
             ResumeLayout(false);
             PerformLayout();
         }

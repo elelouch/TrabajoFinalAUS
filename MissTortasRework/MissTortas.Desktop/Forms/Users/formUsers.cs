@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Forms.Users;
+using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.UserService;
 using System;
@@ -58,8 +59,15 @@ namespace MissTortas.Desktop.Forms
 
         private void btnEditUser_Click(object sender, EventArgs e)
         {
-            var firstRow = dgvUsers.SelectedRows[0];
-            var user = _usersService.MapRowToUser(firstRow);
+            if(dgvUsers.SelectedRows.Count <= 0)
+            {
+                return;
+            }
+            var user = dgvUsers.SelectedRows[0].DataBoundItem as User;
+            if (user is null)
+            {
+                return;
+            }
             var editUserForm = new formEditUser(user.UserId.ToString(),_usersService);
             editUserForm.ShowDialog();
         }

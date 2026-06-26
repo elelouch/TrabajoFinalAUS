@@ -15,7 +15,8 @@ namespace MissTortas.Desktop.Services.UserService
             var res = await client.GetAsync($"users/{userId}");
             if(res.IsSuccessStatusCode)
             {
-                return await res.Content.ReadFromJsonAsync<User>();
+                var ret = await res.Content.ReadFromJsonAsync<User>();
+                return ret;
             }
             return null;
         }
@@ -39,21 +40,16 @@ namespace MissTortas.Desktop.Services.UserService
             return ret;
         }
 
-        public User MapRowToUser(DataGridViewRow row)
+        public async Task<List<Role>> GetRolesAsync()
         {
-            return new User
+            var client = MissTortasHttpClient.Instance.Client;
+            var res = await client.GetAsync("roles");
+            if (res.IsSuccessStatusCode)
             {
-                UserId = row.Cells["UserId"].Value is Guid guid ? guid : Guid.Empty,
-                FirstName = (string)(row.Cells["FirstName"].Value ?? string.Empty),
-                LastName = (string)(row.Cells["LastName"].Value ?? string.Empty),
-                Username = (string)(row.Cells["Username"].Value ?? string.Empty),
-                Email = (string)(row.Cells["Email"].Value ?? string.Empty),
-                Roles = ((string)(row.Cells["Roles"].Value ?? string.Empty))
-                    .Split(", ", StringSplitOptions.RemoveEmptyEntries),
-                Enabled = row.Cells["Enabled"].Value is bool enabled ? enabled : false,
-                Permissions = ((string)(row.Cells["Permissions"].Value ?? string.Empty))
-                    .Split(", ", StringSplitOptions.RemoveEmptyEntries)
-            };
+                var ret = await res.Content.ReadFromJsonAsync<Role[]>();
+                return ret?.ToList() ?? [];
+            }
+            return [];
         }
     }
 }

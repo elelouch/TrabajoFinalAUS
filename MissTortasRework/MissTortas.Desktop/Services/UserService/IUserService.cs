@@ -9,6 +9,6 @@ namespace MissTortas.Desktop.Services.UserService
     {
         public Task<List<User>> GetAllUsersAsync();
         public Task<User?> FindUserByIdAsync(string userId);
-        public User MapRowToUser(DataGridViewRow row);
+        public Task<List<Role>> GetRolesAsync();
     }
 }

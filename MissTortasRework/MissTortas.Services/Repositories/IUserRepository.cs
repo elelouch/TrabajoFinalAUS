@@ -6,5 +6,6 @@ namespace MissTortas.Services.Repositories
     {
         public Task<User?> FindByIdAsync(long userId);
         public Task<List<Role>> GetRolesByNameAsync(ICollection<string> roles);
+        public Task<Role> CreateRoleAsync(string name);
     }
 }
