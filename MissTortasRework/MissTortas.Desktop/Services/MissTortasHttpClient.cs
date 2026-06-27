@@ -40,10 +40,10 @@ namespace MissTortas.Desktop.Services
         }
         private void SetAuthorizationHeader()
         {
-            if (!string.IsNullOrEmpty(AccessToken.Token))
+            if (!string.IsNullOrEmpty(MissTortasToken.AccessToken))
             {
                 _Client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", AccessToken.Token);
+                    new AuthenticationHeaderValue("Bearer", MissTortasToken.AccessToken);
             }
             else
             {

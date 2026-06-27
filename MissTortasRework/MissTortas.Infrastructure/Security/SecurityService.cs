@@ -10,6 +10,7 @@ using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Services.DTO.Security;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using System.Data;
 using System.Security.Claims;
@@ -38,7 +39,8 @@ namespace MissTortas.Infrastructure.Security
             var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
             var dtoRet = new LoginUserResultDTO
             {
-                AccessToken = await tokenGenerator.GenerateAccessToken(userPrincipal),
+                AccessToken = tokenGenerator.GenerateAccessToken(userPrincipal),
+                RefreshToken = tokenGenerator.GenerateRefreshToken(user.Id),
                 SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
             return dtoRet;
@@ -76,7 +78,7 @@ namespace MissTortas.Infrastructure.Security
             {
                 return;
             }
-            if(!string.IsNullOrEmpty(dto.Username))
+            if (!string.IsNullOrEmpty(dto.Username))
             {
                 user.UserName = dto.Username;
             }
@@ -105,11 +107,11 @@ namespace MissTortas.Infrastructure.Security
             {
                 await UpdateRolesAsync(user, roles);
             }
-            var updateBusinessUserDTO = new UpdateUserDTO 
-            { 
+            var updateBusinessUserDTO = new UpdateUserDTO
+            {
                 UserId = user.UserId,
                 FirstName = dto.FirstName,
-                LastName = dto.LastName, 
+                LastName = dto.LastName,
                 Roles = roles?.ToList() ?? []
             };
             await userService.UpdateUserAsync(updateBusinessUserDTO);
@@ -247,6 +249,33 @@ namespace MissTortas.Infrastructure.Security
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto)
         {
             throw new NotImplementedException();
+        }
+
+
+        public async Task<RefreshTokenResultDTO?> RefreshTokenAsync(string refreshToken)
+        {
+            // Validate the refresh token
+            var userId = await tokenGenerator.ValidateRefreshTokenAsync(refreshToken);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return null;
+            }
+            var user = await userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException("Not founden");
+            var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+
+            // Generate new access token
+            var accessToken = tokenGenerator.GenerateAccessToken(userPrincipal);
+
+            // Generate new refresh token
+            var newRefreshToken = tokenGenerator.GenerateRefreshToken(userId);
+            await tokenGenerator.SaveRefreshTokenAsync(userId, newRefreshToken);
+
+            return new RefreshTokenResultDTO
+            {
+                AccessToken = accessToken,
+                RefreshToken = newRefreshToken,
+                ExpiresIn = "15 minutes"
+            };
         }
     }
 }

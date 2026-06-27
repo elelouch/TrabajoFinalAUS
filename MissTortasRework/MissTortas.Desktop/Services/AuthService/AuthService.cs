@@ -14,7 +14,7 @@ namespace MissTortas.Desktop.Services.AuthService
             if(res.IsSuccessStatusCode)
             {
                 var response = await res.Content.ReadFromJsonAsync<SigninResponse>();
-                AccessToken.Token = response?.AccessToken;
+                MissTortasToken.AccessToken = response?.AccessToken;
                 return response?.AccessToken;
             }
             return null;

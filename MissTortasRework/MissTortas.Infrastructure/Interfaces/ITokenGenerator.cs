@@ -4,7 +4,10 @@ namespace MissTortas.Infrastructure.Interfaces
 {
     public interface ITokenGenerator
     {
-        public string GenerateAccessToken(ClaimsPrincipal userPrincipal);
-        public string GenerateRefreshToken(string userId);
+        string GenerateAccessToken(ClaimsPrincipal userPrincipal);
+        string GenerateRefreshToken(string userId);
+        Task<string> ValidateRefreshTokenAsync(string refreshToken);
+        Task SaveRefreshTokenAsync(string userId, string refreshToken);
+        Task RevokeRefreshTokenAsync(string refreshToken);
     }
 }

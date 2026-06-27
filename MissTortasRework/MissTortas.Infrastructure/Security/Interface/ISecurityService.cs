@@ -18,5 +18,6 @@ namespace MissTortas.Infrastructure.Security.Interface
         public Task AssignPermissionsToUserAsync(AssignPermissionsToRoleDTO dto);
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto);
         public Task ModifyUserAsync(ApplicationUserModificationDTO dto);
+        Task<RefreshTokenResultDTO?> RefreshTokenAsync(string refreshToken);
     }
 }

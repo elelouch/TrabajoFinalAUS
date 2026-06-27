@@ -5,6 +5,7 @@ using MissTortas.Domain.Orders;
 using MissTortas.Domain.Payments;
 using MissTortas.Domain.Products;
 using MissTortas.Domain.Security.Users;
+using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Entity.Products;
 using MissTortas.Infrastructure.Security.Identity;
@@ -31,11 +32,21 @@ namespace MissTortas.Infrastructure.Context
 
         public DbSet<User> DomainUsers { get; set; } = default!;
         public DbSet<Role> DomainRoles { get; set; } = default!;
+        public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<RefreshTokenEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Token).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.UserId).IsRequired();
+                entity.Property(e => e.IsRevoked).HasDefaultValue(false);
 
+                entity.HasIndex(e => e.Token).IsUnique();
+                entity.HasIndex(e => e.UserId);
+            });
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Roles)
                 .WithMany(r => r.Users);

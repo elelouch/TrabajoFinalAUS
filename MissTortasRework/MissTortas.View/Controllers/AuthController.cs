@@ -108,8 +108,8 @@ namespace MissTortas.View.Controllers
             }
             Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
             // refresh token placeholder
-            Response.Cookies.Append("X-Refresh-Token", Guid.NewGuid().ToString(), new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
-            return Ok(new { accessToken = result.AccessToken });
+            Response.Cookies.Append("X-Refresh-Token", result.RefreshToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+            return Ok(new { accessToken = result.AccessToken, refreshToken = result.RefreshToken });
         }
 
         [AllowAnonymous]
@@ -146,6 +146,32 @@ namespace MissTortas.View.Controllers
             }
             return Created();
         }
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+        {
+            if (string.IsNullOrEmpty(request.RefreshToken))
+            {
+                return BadRequest("Refresh token is required.");
+            }
 
+            try
+            {
+                var result = await securityService.RefreshTokenAsync(request.RefreshToken);
+                if (result == null)
+                {
+                    return Unauthorized("Invalid or expired refresh token.");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return Unauthorized("Invalid refresh token.");
+            }
+        }
+        public class RefreshTokenRequest
+        {
+            public string RefreshToken { get; set; } = string.Empty;
+        }
     }
 }

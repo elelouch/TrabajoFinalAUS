@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
+            mainMenuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             quitToolStripMenuItem = new ToolStripMenuItem();
             securityToolStripMenuItem = new ToolStripMenuItem();
             usersToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            mainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // mainMenuStrip
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, securityToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
-            menuStrip1.TabIndex = 1;
-            menuStrip1.Text = "menuStrip1";
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, securityToolStripMenuItem });
+            mainMenuStrip.Location = new Point(0, 0);
+            mainMenuStrip.Name = "mainMenuStrip";
+            mainMenuStrip.Size = new Size(800, 24);
+            mainMenuStrip.TabIndex = 1;
+            mainMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -69,7 +69,7 @@
             // usersToolStripMenuItem
             // 
             usersToolStripMenuItem.Name = "usersToolStripMenuItem";
-            usersToolStripMenuItem.Size = new Size(180, 22);
+            usersToolStripMenuItem.Size = new Size(102, 22);
             usersToolStripMenuItem.Text = "Users";
             usersToolStripMenuItem.Click += usersToolStripMenuItem_Click;
             // 
@@ -78,22 +78,22 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(menuStrip1);
+            Controls.Add(mainMenuStrip);
             IsMdiContainer = true;
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = mainMenuStrip;
             Name = "formMain";
             Text = "MissTortas";
             WindowState = FormWindowState.Maximized;
             Shown += formMain_Shown;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            mainMenuStrip.ResumeLayout(false);
+            mainMenuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip mainMenuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem quitToolStripMenuItem;
         private ToolStripMenuItem securityToolStripMenuItem;

@@ -31,11 +31,10 @@ namespace MissTortas.Infrastructure.Mappings
             var permissionsSet = new HashSet<string>(permissionsList);
             return new UserCapabilities
             {
-                //CanViewUsers = permissionsSet.Contains(Permission.ReadAllUser.Code)
-                CanManageSecurity = permissionsSet.Any(p => Permission.SecurityPermissions.Any(sp => sp.Code == p))
+                CanManageSecurity = permissionsSet.Any(p => Permission.SecurityPermissions.Any(sp => sp.Code == p)),
                 CanManageOrders = permissionsSet.Any(p => Permission.OrderPermissions.Any(op => op.Code == p)),
                 CanManageProducts = permissionsSet.Any(p => Permission.OrderPermissions.Any(pp => pp.Code == p)),
-                CanManagePayments = permissionsSet.Any(p => Permission..Any(pp => pp.Code == p))
+                CanManagePayments = permissionsSet.Any(p => Permission.PaymentPermissions.Any(pp => pp.Code == p))
             };
         }
     }

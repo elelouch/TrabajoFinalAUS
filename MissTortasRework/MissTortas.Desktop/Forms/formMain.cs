@@ -26,11 +26,13 @@ namespace MissTortas.Desktop.Forms
         {
             var authService = new AuthService();
             formLogin appLogin = new(authService);
+            mainMenuStrip.Visible = false;
             var dialogRes = appLogin.ShowDialog();
             if (dialogRes != DialogResult.OK)
             {
                 this.Dispose();
             }
+            mainMenuStrip.Visible = true;
         }
 
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
