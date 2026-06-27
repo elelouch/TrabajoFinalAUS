@@ -104,8 +104,9 @@
             btnRemoveRole.Name = "btnRemoveRole";
             btnRemoveRole.Size = new Size(72, 23);
             btnRemoveRole.TabIndex = 9;
-            btnRemoveRole.Text = "Remove";
+            btnRemoveRole.Text = "<<<";
             btnRemoveRole.UseVisualStyleBackColor = true;
+            btnRemoveRole.Click += btnRemoveRole_Click;
             // 
             // btnAddRole
             // 
@@ -114,8 +115,9 @@
             btnAddRole.Name = "btnAddRole";
             btnAddRole.Size = new Size(72, 23);
             btnAddRole.TabIndex = 8;
-            btnAddRole.Text = "Add";
+            btnAddRole.Text = ">>>";
             btnAddRole.UseVisualStyleBackColor = true;
+            btnAddRole.Click += btnAddRole_Click;
             // 
             // txtAvailableRoles
             // 
@@ -322,6 +324,7 @@
             btnSave.TabIndex = 7;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // formEditUser
             // 

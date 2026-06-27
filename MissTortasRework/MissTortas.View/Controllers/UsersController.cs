@@ -21,7 +21,7 @@ namespace MissTortas.View.Controllers
         ISecurityService securityService,
         IValidator<UserModification> userModificationValidator,
         IUserMapper userMapper
-        ) : ControllerBase
+    ) : ControllerBase
     {
 
         [Authorize(Policy = PolicyName.ReadUsers)]
@@ -29,7 +29,7 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<UserFullDTO>> GetUser(string userId)
         {
             var ret = await securityService.GetUserByIdAsync(userId);
-            if(ret is not null)
+            if (ret is not null)
             {
                 return Ok(ret);
             }
@@ -71,7 +71,10 @@ namespace MissTortas.View.Controllers
                 IsEnabled = userModificationDTO.Enabled,
                 Username = userModificationDTO.Username,
                 Email = userModificationDTO.Email,
-                Roles = userModificationDTO.Roles
+                Roles = userModificationDTO.Roles,
+                FirstName = userModificationDTO.FirstName,
+                LastName = userModificationDTO.LastName,
+                NewPassword = userModificationDTO.NewPassword
             };
             var authResult = await authorizationService.AuthorizeAsync(User, serviceDto, new UpdateUserRequirement());
             if (!authResult.Succeeded)

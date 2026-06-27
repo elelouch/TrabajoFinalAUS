@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
+using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Interfaces;
@@ -116,10 +117,12 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult> SignUpUser(MissTortasRegisterRequest request)
         {
             await registerRequestValidator.ValidateAndThrowAsync(request);
+            
             var createUserDTO = new CreateUserDTO 
             { 
                 LastName = request.LastName,
-                FirstName = request.FirstName 
+                FirstName = request.FirstName,
+                Roles = [UserConstants.UserRoleName]
             };
             var userId = await userServices.CreateUserAsync(createUserDTO);
             var serviceDto = new SignUpUserDTO

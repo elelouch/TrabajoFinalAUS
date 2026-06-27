@@ -51,5 +51,12 @@ namespace MissTortas.Desktop.Services.UserService
             }
             return [];
         }
+
+        public async Task<bool> ModifyUserAsync(string userId, UserModificationDTO dto)
+        {
+            var client = MissTortasHttpClient.Instance.Client;
+            var res = await client.PutAsJsonAsync<UserModificationDTO>($"users/{userId}", dto);
+            return res.IsSuccessStatusCode;
+        }
     }
 }

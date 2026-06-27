@@ -16,8 +16,30 @@ namespace MissTortas.Infrastructure.Security.Permissions
         public static readonly Permission PlaceOrders = new("place:orders");
         public static readonly Permission ManageOrders = new("manage:orders");
         public static readonly Permission ManageProducts = new("manage:products");
+        public static readonly Permission ManagePayments = new("manage:payments");
+        public static readonly ReadOnlyCollection<Permission> SecurityPermissions =
+            new([
+                ReadAllUser,
+                UpdateAllUser,
+                DeleteUser,
+                ReadPermissions,
+                AssignPermissions,
+                ReadRoles
+            ]);
+        public static readonly ReadOnlyCollection<Permission> OrderPermissions = new([
+            ManageOrders,
+            PlaceOrders
+        ]);
 
-        private static readonly List<Permission> allPermissionList =
+        public static readonly ReadOnlyCollection<Permission> ProductPermissions = new([
+            ManageProducts
+        ]);
+        
+        public static readonly ReadOnlyCollection<Permission> PaymentPermissions = new([
+            ManageProducts
+        ]);
+
+        public static readonly List<Permission> allPermissionList =
         [
                 ReadAllUser,
                 ReadSelfUser,
@@ -29,7 +51,8 @@ namespace MissTortas.Infrastructure.Security.Permissions
                 ReadRoles,
                 PlaceOrders,
                 ManageOrders,
-                ManageProducts
+                ManageProducts,
+                ManagePayments
         ];
 
         public static ReadOnlyCollection<Permission> All { get => allPermissionList.AsReadOnly(); }

@@ -38,7 +38,7 @@ namespace MissTortas.Infrastructure.Security
             var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
             var dtoRet = new LoginUserResultDTO
             {
-                AccessToken = await tokenGenerator.GenerateToken(userPrincipal),
+                AccessToken = await tokenGenerator.GenerateAccessToken(userPrincipal),
                 SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
             return dtoRet;
@@ -76,8 +76,10 @@ namespace MissTortas.Infrastructure.Security
             {
                 return;
             }
-
-            user.UserName = dto.Username;
+            if(!string.IsNullOrEmpty(dto.Username))
+            {
+                user.UserName = dto.Username;
+            }
             user.LockoutEnabled = dto.IsEnabled is false;
             if (!string.IsNullOrEmpty(dto.Email))
             {
@@ -105,6 +107,7 @@ namespace MissTortas.Infrastructure.Security
             }
             var updateBusinessUserDTO = new UpdateUserDTO 
             { 
+                UserId = user.UserId,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName, 
                 Roles = roles?.ToList() ?? []

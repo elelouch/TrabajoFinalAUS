@@ -16,36 +16,13 @@ namespace MissTortas.Infrastructure
         IOptions<JwtOptions> jwtOptions
     ) : ITokenGenerator
     {
-        public async Task<string> GenerateToken(ApplicationUser user, IEnumerable<Claim> userClaims)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(jwtOptions.Value.Key);
-
-            var tokenClaims = new List<Claim>
-            {
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Sub, user.Id)
-            };
-
-            tokenClaims.AddRange(userClaims.Where(c => c.Type == Permission.ClaimName));
-
-
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(tokenClaims),
-                Expires = DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpirationMinutes),
-                Issuer = jwtOptions.Value.Issuer,
-                Audience = jwtOptions.Value.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<string> GenerateToken(ClaimsPrincipal userPrincipal)
+        public string GenerateAccessToken(ClaimsPrincipal userPrincipal)
         {
             var userId = userPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (jwtOptions?.Value == null)
+            {
+                throw new InvalidOperationException("JWT options are not configured.");
+            }
             if (string.IsNullOrEmpty(userId))
             {
                 throw new InvalidOperationException("The userPrincipal does not contain a valid NameIdentifier claim.");
@@ -65,7 +42,39 @@ namespace MissTortas.Infrastructure
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(tokenClaims),
-                Expires = DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpirationMinutes),
+                Expires = DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpirationMinutesAccessToken),
+                Issuer = jwtOptions.Value.Issuer,
+                Audience = jwtOptions.Value.Audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        public string GenerateRefreshToken(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new InvalidOperationException("The userPrincipal does not contain a valid NameIdentifier claim.");
+            }
+            if (jwtOptions?.Value == null)
+            {
+                throw new InvalidOperationException("JWT options are not configured.");
+            }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(jwtOptions.Value.Key);
+
+            var tokenClaims = new List<Claim>
+            {
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Sub, userId)
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(tokenClaims),
+                Expires = DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpirationMinutesRefreshToken),
                 Issuer = jwtOptions.Value.Issuer,
                 Audience = jwtOptions.Value.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

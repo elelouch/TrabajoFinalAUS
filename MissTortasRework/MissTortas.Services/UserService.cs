@@ -19,11 +19,13 @@ namespace MissTortas.Services
 
         public async Task<long> CreateUserAsync(CreateUserDTO createUserDTO)
         {
+            var normalizedRoles = createUserDTO.Roles.Select(roleName => roleName.ToUpper()).ToList();
             var user = new User
             {
                 Birthday = createUserDTO.BirthDay,
                 FirstName = createUserDTO.FirstName,
-                LastName = createUserDTO.LastName
+                LastName = createUserDTO.LastName,
+                Roles = await userRepository.GetRolesByNameAsync(normalizedRoles)
             };
             await userRepository.InsertAsync(user);
             await userRepository.SaveChangesAsync();

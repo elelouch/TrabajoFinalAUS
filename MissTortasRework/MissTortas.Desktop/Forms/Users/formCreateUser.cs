@@ -46,7 +46,9 @@ namespace MissTortas.Desktop.Forms
                 {
                     Username = txtUsername.Text,
                     Password = txtPassword.Text,
-                    Email = txtEmail.Text
+                    Email = txtEmail.Text,
+                    FirstName = txtFirstName.Text,
+                    LastName = txtLastName.Text
                 };
                 var success = await _authService.SignUpAsync(signUpRequest);
                 if (success)

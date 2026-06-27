@@ -2,6 +2,9 @@
 {
     public class UserCapabilities
     {
-        public bool CanViewUsers { get; set; }
+        public bool CanManageSecurity { get; set; }
+        public bool CanManageProducts { get; set; }
+        public bool CanManageOrders { get; set; }
+        public bool CanManagePayments { get; set; }
     }
 }
