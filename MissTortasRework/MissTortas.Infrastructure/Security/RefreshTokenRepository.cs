@@ -2,9 +2,6 @@
 using MissTortas.Infrastructure.Context;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Infrastructure.Security
 {

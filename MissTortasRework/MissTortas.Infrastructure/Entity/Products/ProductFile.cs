@@ -1,5 +1,4 @@
-﻿using MissTortas.Domain.Orders;
-using MissTortas.Domain.Products;
+﻿using MissTortas.Domain.Products;
 
 namespace MissTortas.Infrastructure.Entity.Products
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Desktop.Model
+﻿namespace MissTortas.Desktop.Model
 {
     public class Role
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Entity.Products;
 
 namespace MissTortas.Infrastructure.Interfaces

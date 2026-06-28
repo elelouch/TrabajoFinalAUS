@@ -1,7 +1,4 @@
 ﻿using MissTortas.Infrastructure.Entity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Infrastructure.Interfaces
 {

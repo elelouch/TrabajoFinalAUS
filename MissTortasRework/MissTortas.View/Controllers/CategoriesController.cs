@@ -1,14 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security;
-using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Products;
-using System.Security.Claims;
 
 namespace MissTortas.View.Controllers
 {
@@ -37,7 +34,7 @@ namespace MissTortas.View.Controllers
         {
             await productService.DeleteProductCategory(id);
         }
-        
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()

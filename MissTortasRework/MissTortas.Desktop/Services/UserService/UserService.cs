@@ -1,32 +1,20 @@
 ﻿using MissTortas.Desktop.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Http.Json;
-using System.Text;
+using MissTortas.Desktop.Services.Shared;
 
 namespace MissTortas.Desktop.Services.UserService
 {
-    public class UserService : IUserService
+    public class UserService(IMissTortasHttpClient httpClient) : IUserService
     {
         public async Task<User?> FindUserByIdAsync(string userId)
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.GetAsync($"users/{userId}");
-            if(res.IsSuccessStatusCode)
-            {
-                var ret = await res.Content.ReadFromJsonAsync<User>();
-                return ret;
-            }
-            return null;
+            var res = await httpClient.GetAsync<User>($"users/{userId}");
+            return res;
         }
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.GetAsync("users");
-            var content = await res.Content.ReadFromJsonAsync<SimpleUser[]>();
-            var ret = content?.Select(u =>
+            var res = await httpClient.GetAsync<SimpleUser[]>("users");
+            var ret = res?.Select(u =>
             {
                 return new User
                 {
@@ -42,21 +30,14 @@ namespace MissTortas.Desktop.Services.UserService
 
         public async Task<List<Role>> GetRolesAsync()
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.GetAsync("roles");
-            if (res.IsSuccessStatusCode)
-            {
-                var ret = await res.Content.ReadFromJsonAsync<Role[]>();
-                return ret?.ToList() ?? [];
-            }
-            return [];
+            var res = await httpClient.GetAsync<Role[]>("roles");
+            var ret = res?.ToList() ?? [];
+            return ret;
         }
 
-        public async Task<bool> ModifyUserAsync(string userId, UserModificationDTO dto)
+        public Task ModifyUserAsync(string userId, UserModificationDTO dto)
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.PutAsJsonAsync<UserModificationDTO>($"users/{userId}", dto);
-            return res.IsSuccessStatusCode;
+            return httpClient.PutAsync<object>($"users/{userId}", dto);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Services.DTO.Products;
@@ -20,7 +19,7 @@ namespace MissTortas.View.Controllers
     {
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
-        public async Task<ActionResult<SaleProductResponse>> PostSaleProduct([FromForm] CreateSaleProductRequest dto ,[FromForm] List<IFormFile> files)
+        public async Task<ActionResult<SaleProductResponse>> PostSaleProduct([FromForm] CreateSaleProductRequest dto, [FromForm] List<IFormFile> files)
         {
             await createSaleProductValidator.ValidateAndThrowAsync(dto);
             var saleProductDto = new SaleProductCreateDTO
@@ -35,7 +34,7 @@ namespace MissTortas.View.Controllers
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             var retFiles = await simpleStorage.SaveProductFileAsync(files, saleProduct.Id);
-            var ret = new SaleProductResponse(saleProduct) { FilePaths = [..retFiles.Select(f => f.Path)] };
+            var ret = new SaleProductResponse(saleProduct) { FilePaths = [.. retFiles.Select(f => f.Path)] };
             return ret;
         }
 

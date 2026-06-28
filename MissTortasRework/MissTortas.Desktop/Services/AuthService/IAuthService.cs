@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MissTortas.Desktop.Services.DTO;
 
 namespace MissTortas.Desktop.Services.AuthService
 {
     public interface IAuthService
     {
-        public Task<string?> SignInAsync(SigninRequest signInDTO);
-        public Task<bool> SignUpAsync(SignupRequest signUpDTO);
+        public Task SignInAsync(SigninRequest signInDTO);
+        public Task<string?> SignUpAsync(SignupRequest signUpDTO);
+        public Task<UserMetadata?> GetUserMetadataAsync(SignupRequest signUpDTO);
     }
 }

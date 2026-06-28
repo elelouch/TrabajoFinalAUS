@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
@@ -117,9 +116,9 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult> SignUpUser(MissTortasRegisterRequest request)
         {
             await registerRequestValidator.ValidateAndThrowAsync(request);
-            
-            var createUserDTO = new CreateUserDTO 
-            { 
+
+            var createUserDTO = new CreateUserDTO
+            {
                 LastName = request.LastName,
                 FirstName = request.FirstName,
                 Roles = [UserConstants.UserRoleName]
@@ -144,7 +143,7 @@ namespace MissTortas.View.Controllers
                 };
                 return Conflict(errorDTO);
             }
-            return Created();
+            return Ok(new { result.UserId });
         }
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)

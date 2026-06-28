@@ -1,7 +1,5 @@
 ﻿using MissTortas.Domain.Products;
-using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Products;
-using MissTortas.Services.DTO.Security;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapping.Interfaces;
@@ -54,7 +52,7 @@ namespace MissTortas.Services
 
         public async Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto)
         {
-            var product =  await CreateProductEntityAsync(dto);
+            var product = await CreateProductEntityAsync(dto);
             return productMapper.ProductToDTO(product);
         }
 
@@ -98,7 +96,7 @@ namespace MissTortas.Services
             if (dto.ParentId is not null)
             {
                 var parentId = dto.ParentId.Value;
-                parent = await productRepository.FindProductCategoryAsync(parentId); 
+                parent = await productRepository.FindProductCategoryAsync(parentId);
             }
             if (parent is not null && parent.IsFinal)
             {
@@ -146,16 +144,16 @@ namespace MissTortas.Services
         public async Task<ProductDTO> UpdateProductAsync(UpdateProductDTO dto)
         {
             var product = await productRepository.GetWithDetailAsync(dto.ProductId);
-            if(dto.Description is not null)
+            if (dto.Description is not null)
             {
                 product.ProductDetail.Description = dto.Description;
             }
-            if(dto.Quantity is decimal quantity)
+            if (dto.Quantity is decimal quantity)
             {
                 var qty = ValidateQuantity(quantity, product.ManageQuantityAsInteger);
                 product.Quantity = qty.DecimalQuantity;
             }
-            if(dto.CategoryId is long categoryId)
+            if (dto.CategoryId is long categoryId)
             {
                 var category = await productRepository.FindProductCategoryAsync(categoryId);
                 if (category is not null)
@@ -200,15 +198,15 @@ namespace MissTortas.Services
         {
             var saleProduct = await productRepository.GetSaleProductWithStockAsync(dto.SaleProductId) ?? throw new EntityNotFoundException($"Sale Product not found. ID: {dto.SaleProductId}");
             var stockQuantity = saleProduct.Product.Quantity;
-            if(dto.Quantity is not null && stockQuantity < dto.Quantity)
+            if (dto.Quantity is not null && stockQuantity < dto.Quantity)
             {
                 throw new InvalidOperationException($"Cannot place more quantity than available. asked: {dto.Quantity}, available: {stockQuantity}");
             }
-            if(dto.Quantity is decimal qty)
+            if (dto.Quantity is decimal qty)
             {
                 saleProduct.SaleQuantity = qty;
             }
-            if(dto.Price is decimal price)
+            if (dto.Price is decimal price)
             {
                 saleProduct.SalePrice = price;
             }
@@ -216,7 +214,7 @@ namespace MissTortas.Services
             {
                 saleProduct.Product.Name = dto.Name;
             }
-            if(dto.Description is not null)
+            if (dto.Description is not null)
             {
                 saleProduct.Product.ProductDetail.Description = dto.Description;
             }

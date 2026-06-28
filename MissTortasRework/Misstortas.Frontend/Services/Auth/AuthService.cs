@@ -1,5 +1,4 @@
-﻿using Misstortas.Frontend.Services.DTO;
-using Misstortas.Frontend.Services.Shared;
+﻿using Misstortas.Frontend.Services.Shared;
 
 namespace Misstortas.Frontend.Services.Auth
 {

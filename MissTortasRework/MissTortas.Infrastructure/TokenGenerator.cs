@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Configuration;
+using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
-using MissTortas.Infrastructure.Repositories;
-using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

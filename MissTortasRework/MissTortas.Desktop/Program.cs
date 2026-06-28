@@ -1,5 +1,7 @@
 using MissTortas.Desktop.Forms;
-using MissTortas.Desktop.Forms.Users;
+using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.Shared;
+using MissTortas.Desktop.Services.UserService;
 
 namespace MissTortas.Desktop
 {
@@ -14,7 +16,11 @@ namespace MissTortas.Desktop
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new formMain());
+            var httpClient = new MissTortasHttpClient();
+            var authService = new AuthService(httpClient);
+            var usersService = new UserService(httpClient);
+            Application.Run(new formMain(httpClient, usersService, authService));
+            //Application.Run(new formUsers(usersService, authService));
         }
     }
 }

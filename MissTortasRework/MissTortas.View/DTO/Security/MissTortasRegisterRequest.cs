@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-
-namespace MissTortas.View.DTO.Security
+﻿namespace MissTortas.View.DTO.Security
 {
     public class MissTortasRegisterRequest
     {

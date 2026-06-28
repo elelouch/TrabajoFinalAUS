@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MissTortas.Domain.Security.Users;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Interfaces;
@@ -173,20 +172,26 @@ namespace MissTortas.Infrastructure.Security
                     FirstName = u.User.FirstName,
                     LastName = u.User.LastName,
                     Username = u.UserName ?? "",
-                    Enabled = !(u.LockoutEnabled && u.LockoutEnd <= DateTime.UtcNow),
+                    Enabled = !(u.LockoutEnabled && u.LockoutEnd >= DateTime.UtcNow),
                     Roles = u.User.Roles.Select(r => r.Name).ToList()
                 })
                 .Where(u => u.UserId == appUserId)
                 .SingleOrDefaultAsync();
         }
 
-        public async Task AssignPermissionsToRoleAsync(AssignPermissionsToRoleDTO dto)
+        public async Task ModifyRoleAsync(ModifyRoleDTO dto)
         {
             var role = await roleManager.FindByIdAsync(dto.RoleId.ToString());
             if (role is null)
             {
                 return;
             }
+            if(!string.IsNullOrEmpty(dto.Name))
+            {
+                await roleManager.SetRoleNameAsync(role, dto.Name);
+            }
+            var updateRole = new UpdateRoleDTO { Id = role.RoleId, Name = dto.Name};
+            await userService.UpdateRoleAsync(updateRole);
             var permissionsAsked = dto.Permissions;
             PermissionsExist(permissionsAsked);
             await UpdatePermissionsAsync(role, permissionsAsked);
@@ -222,7 +227,7 @@ namespace MissTortas.Infrastructure.Security
             return roleMapper.RoleToSimpleDTO(roles);
         }
 
-        public async Task<RoleDTO?> GetRoleAsync(string name)
+        public async Task<RoleDTO?> GetRoleByNameAsync(string name)
         {
             var role = await roleManager.FindByNameAsync(name);
             if (role is null)
@@ -241,7 +246,7 @@ namespace MissTortas.Infrastructure.Security
             return Permission.All;
         }
 
-        public Task AssignPermissionsToUserAsync(AssignPermissionsToRoleDTO dto)
+        public Task AssignPermissionsToUserAsync(ModifyRoleDTO dto)
         {
             throw new NotImplementedException();
         }

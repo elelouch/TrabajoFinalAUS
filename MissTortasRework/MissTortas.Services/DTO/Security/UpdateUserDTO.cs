@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.DTO.Security
+﻿namespace MissTortas.Services.DTO.Security
 {
     public class UpdateUserDTO
     {

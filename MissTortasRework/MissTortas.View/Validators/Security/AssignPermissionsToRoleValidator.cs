@@ -3,7 +3,7 @@ using MissTortas.View.DTO.Security;
 
 namespace MissTortas.View.Validators.Security
 {
-    public class AssignPermissionToRoleValidator : AbstractValidator<AssignPermissionToRole>
+    public class AssignPermissionToRoleValidator : AbstractValidator<ModifyApplicationRole>
     {
         public AssignPermissionToRoleValidator()
         {

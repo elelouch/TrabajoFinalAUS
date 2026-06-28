@@ -10,7 +10,7 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class RolesController(ISecurityService securityService, IValidator<AssignPermissionToRole> assignPermissionValidator) : ControllerBase
+    public class RolesController(ISecurityService securityService, IValidator<ModifyApplicationRole> assignPermissionValidator) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ReadRoles)]
         [HttpGet]
@@ -23,7 +23,7 @@ namespace MissTortas.View.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleDTO>> GetRole(string id)
         {
-            var ret = await securityService.GetRoleAsync(id);
+            var ret = await securityService.GetRoleByNameAsync(id);
             if (ret is null)
             {
                 return NotFound();
@@ -33,15 +33,16 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.AssignPermissions)]
         [HttpPut("{id}")]
-        public async Task<ActionResult> AssignPermissionToRole(long id, AssignPermissionToRole assignPermissionsDTO)
+        public async Task<ActionResult> AssignPermissionToRole(long id, ModifyApplicationRole assignPermissionsDTO)
         {
             await assignPermissionValidator.ValidateAndThrowAsync(assignPermissionsDTO);
-            var serviceDto = new AssignPermissionsToRoleDTO
+            var serviceDto = new ModifyRoleDTO
             {
                 RoleId = id,
+                Name = assignPermissionsDTO.Name,
                 Permissions = assignPermissionsDTO.Permissions
             };
-            await securityService.AssignPermissionsToRoleAsync(serviceDto);
+            await securityService.ModifyRoleAsync(serviceDto);
             return Ok();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Misstortas.Frontend.Models;
 using Misstortas.Frontend.Services.Products;
 using Misstortas.Frontend.Services.Shared;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Infrastructure.Security.DTO
+﻿namespace MissTortas.Infrastructure.Security.DTO
 {
     public class RefreshTokenResultDTO
     {

@@ -1,30 +1,29 @@
-﻿using MissTortas.Desktop.Services.AuthService;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using MissTortas.Desktop.Events;
+using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.DTO;
 using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms
 {
     public partial class formCreateUser : Form
     {
         private readonly IAuthService _authService;
+        public event EventHandler<SignupCompletedArgs> SignUpCompleted;
         public formCreateUser(IAuthService authService)
         {
             InitializeComponent();
             _authService = authService;
         }
-
-        private void label1_Click(object sender, EventArgs e)
+        private void RaiseSignUpCompleted(User user)
         {
-
+            var handler = SignUpCompleted;
+            if(handler == null)
+            {
+                return;
+            }
+            handler(this, new SignupCompletedArgs(user));
         }
-
         private async void btnConfirm_Click(object sender, EventArgs e)
         {
             if (txtRepeatPassword.Text != txtPassword.Text)
@@ -50,28 +49,25 @@ namespace MissTortas.Desktop.Forms
                     FirstName = txtFirstName.Text,
                     LastName = txtLastName.Text
                 };
-                var success = await _authService.SignUpAsync(signUpRequest);
-                if (success)
+                var userId = await _authService.SignUpAsync(signUpRequest);
+                MessageBox.Show(
+                    "User successfully registered.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                var newUser = new User
                 {
-                    MessageBox.Show(
-                        "User successfully registered.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                    DialogResult = DialogResult.OK;
-                    Dispose();
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Error. Try again.",
-                        "Try again",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-
+                    Email = signUpRequest.Email,
+                    FirstName = signUpRequest.FirstName,
+                    LastName = signUpRequest.LastName,
+                    UserId = Guid.Parse(userId ?? ""),
+                    Enabled = false,
+                    Username = signUpRequest.Username
+                };
+                RaiseSignUpCompleted(newUser);
+                DialogResult = DialogResult.OK;
+                Dispose();
             }
             catch (FormatException)
             {
@@ -82,7 +78,16 @@ namespace MissTortas.Desktop.Forms
                     MessageBoxIcon.Warning
                 );
             }
-
+            catch (HttpRequestException)
+            {
+                MessageBox.Show(
+                    "Error during user creation. Try again.",
+                    "Try again",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
+
     }
 }

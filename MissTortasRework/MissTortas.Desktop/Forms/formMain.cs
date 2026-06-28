@@ -1,20 +1,20 @@
 ﻿using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms
 {
     public partial class formMain : Form
     {
-        public formMain()
+        private readonly IMissTortasHttpClient httpClient;
+        private readonly IUserService usersService;
+        private readonly IAuthService authService;
+        public formMain(IMissTortasHttpClient httpClient, IUserService usersService, IAuthService authService)
         {
             InitializeComponent();
+            this.httpClient = httpClient;
+            this.usersService = usersService;
+            this.authService = authService;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -22,9 +22,9 @@ namespace MissTortas.Desktop.Forms
             this.Dispose();
         }
 
-        private void formMain_Shown(object sender, EventArgs e)
+        private async void formMain_Shown(object sender, EventArgs e)
         {
-            var authService = new AuthService();
+            var authService = new AuthService(httpClient);
             formLogin appLogin = new(authService);
             mainMenuStrip.Visible = false;
             var dialogRes = appLogin.ShowDialog();
@@ -42,9 +42,10 @@ namespace MissTortas.Desktop.Forms
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var usersService = new UserService();
-            var usersForm = new formUsers(usersService);
-            usersForm.MdiParent = this;
+            var usersForm = new formUsers(usersService, authService)
+            {
+                MdiParent = this
+            };
             usersForm.Show();
         }
     }

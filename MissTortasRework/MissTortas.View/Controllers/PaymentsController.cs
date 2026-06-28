@@ -31,7 +31,7 @@ namespace MissTortas.View.Controllers
                 await paymentService.PayOrderAsync(serviceDto);
                 return new EmptyResult();
             }
-            catch(PaymentFailedException)
+            catch (PaymentFailedException)
             {
                 return BadRequest(new ErrorDTO { Code = "PAYFAILED1", Message = "Payment failed" });
             }

@@ -1,12 +1,7 @@
-﻿using MissTortas.Domain.Security.Users;
-using MissTortas.Infrastructure.DTO.Security;
+﻿using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Mappings.Interfaces;
 using MissTortas.Infrastructure.Security.Permissions;
-using System;
-using System.Collections.Generic;
-using System.Security;
 using System.Security.Claims;
-using System.Text;
 
 namespace MissTortas.Infrastructure.Mappings
 {

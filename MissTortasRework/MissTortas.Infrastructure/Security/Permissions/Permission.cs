@@ -34,7 +34,7 @@ namespace MissTortas.Infrastructure.Security.Permissions
         public static readonly ReadOnlyCollection<Permission> ProductPermissions = new([
             ManageProducts
         ]);
-        
+
         public static readonly ReadOnlyCollection<Permission> PaymentPermissions = new([
             ManageProducts
         ]);

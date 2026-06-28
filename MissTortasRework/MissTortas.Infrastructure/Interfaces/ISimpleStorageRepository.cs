@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using MissTortas.Domain.Products;
-using MissTortas.Infrastructure.Entity.Orders;
+﻿using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Entity.Products;
 using MissTortas.Services.Repositories;
 

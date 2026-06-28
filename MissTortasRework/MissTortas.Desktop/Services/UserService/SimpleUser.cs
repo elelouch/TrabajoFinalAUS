@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Desktop.Services.UserService
+﻿namespace MissTortas.Desktop.Services.UserService
 {
     public class SimpleUser
     {

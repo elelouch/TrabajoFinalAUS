@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using MissTortas.Infrastructure.Repositories;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Infrastructure.Security.Requirements;
@@ -21,7 +20,7 @@ namespace MissTortas.Infrastructure.Security.Handlers
             var user = await userManager.FindByIdAsync(currentUserId);
             if (user is null)
                 return;
-            
+
             var orderBelongsToUser = await orderRepository.OrderBelongsToUserAsync(orderId, user.UserId);
             var userCanManageAllOrder = context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code);
             var userCanPlaceOrder = context.User.HasClaim(Permission.ClaimName, Permission.PlaceOrders.Code);

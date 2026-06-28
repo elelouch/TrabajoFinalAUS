@@ -23,6 +23,11 @@ namespace MissTortas.Infrastructure.Repositories
             return userSet.Include(u => u.Roles).Where(u => u.UserId == userId).SingleOrDefaultAsync();
         }
 
+        public Task<Role?> FindRoleByIdAsync(long roleId)
+        {
+            return roleSet.Where(r => r.RoleId == roleId).SingleOrDefaultAsync();
+        }
+
         public Task<List<Role>> GetRolesByNameAsync(ICollection<string> roles)
         {
             return roleSet.Where(r => roles.Contains(r.Name)).ToListAsync();

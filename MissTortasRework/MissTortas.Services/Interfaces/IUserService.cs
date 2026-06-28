@@ -7,5 +7,6 @@ namespace MissTortas.Services.Interfaces
         public Task<long> CreateUserAsync(CreateUserDTO createUserDTO);
         public Task<long> CreateRoleAsync(string name);
         public Task UpdateUserAsync(UpdateUserDTO updateUserDTO);
+        public Task UpdateRoleAsync(UpdateRoleDTO updateRoleDTO);
     }
 }

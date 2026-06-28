@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Services.Repositories.DTO
+﻿namespace MissTortas.Services.Repositories.DTO
 {
     public class SaleProductEntityDTO
     {

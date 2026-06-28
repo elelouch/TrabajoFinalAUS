@@ -3,8 +3,6 @@ using Microsoft.Extensions.FileProviders;
 using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Services;
-using MissTortas.Services.Mapping;
-using MissTortas.Services.Mapping.Interfaces;
 using MissTortas.View.DTO.Orders;
 using MissTortas.View.DTO.Products;
 using MissTortas.View.DTO.Security;
@@ -26,7 +24,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 // DI
 
-builder.Services.AddScoped<IValidator<AssignPermissionToRole>, AssignPermissionToRoleValidator>();
+builder.Services.AddScoped<IValidator<ModifyApplicationRole>, AssignPermissionToRoleValidator>();
 builder.Services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductValidator>();
 builder.Services.AddScoped<IValidator<CreateProductCategoryRequest>, CreateProductCategoryValidator>();
 builder.Services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidator>();

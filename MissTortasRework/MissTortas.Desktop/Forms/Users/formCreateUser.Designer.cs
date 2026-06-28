@@ -126,7 +126,6 @@
             lblRepeatPassword.Size = new Size(99, 15);
             lblRepeatPassword.TabIndex = 9;
             lblRepeatPassword.Text = "Repeat Password:";
-            lblRepeatPassword.Click += label1_Click;
             // 
             // btnConfirm
             // 

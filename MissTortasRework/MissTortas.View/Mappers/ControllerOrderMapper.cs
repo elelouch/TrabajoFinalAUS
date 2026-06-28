@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;

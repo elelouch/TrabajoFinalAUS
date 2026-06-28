@@ -1,12 +1,7 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Users
 {
@@ -22,6 +17,8 @@ namespace MissTortas.Desktop.Forms.Users
             InitializeComponent();
             _userId = userId;
             _userService = userService;
+            AvailableRoles = [];
+            AddedRoles = [];
         }
 
         private void fillEditUserForm(User dto, string[] roles)
@@ -85,12 +82,6 @@ namespace MissTortas.Desktop.Forms.Users
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            //txtUserId.Text = dto.UserId.ToString();
-            //txtUsername.Text = dto.Username;
-            //chkEnabled.Checked = dto.Enabled;
-            //txtFirstName.Text = dto.FirstName;
-            //txtLastName.Text = dto.LastName;
-            //txtEmail.Text = dto.Email;
             var newPassword = txtPassword.Text;
             var repeatPassword = txtRepeatPassword.Text;
             var newPasswordNotEmpty = !string.IsNullOrEmpty(newPassword);
@@ -111,16 +102,21 @@ namespace MissTortas.Desktop.Forms.Users
                 NewPassword = newPassword
             };
             var userId = txtUserId.Text;
-            var modifySuccess = await _userService.ModifyUserAsync(userId, user);
-            if(modifySuccess)
+            try
             {
+                await _userService.ModifyUserAsync(userId, user);
                 MessageBox.Show("Modification was successful.");
                 Dispose();
             }
-            else
+            catch (HttpRequestException)
             {
-                MessageBox.Show("Error while saving modfication.");
+                MessageBox.Show("Error while saving modfication. Try again.");
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace MissTortas.View.DTO.Security
+﻿namespace MissTortas.View.DTO.Security
 {
     public class SignUpUser
     {

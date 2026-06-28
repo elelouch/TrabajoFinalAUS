@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using MissTortas.Domain.Orders;
-using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Entity.Orders;
 using MissTortas.Infrastructure.Entity.Products;
 using MissTortas.Infrastructure.Exceptions;
@@ -9,7 +7,7 @@ using MissTortas.Infrastructure.Interfaces;
 
 namespace MissTortas.Infrastructure
 {
-    public class SaveFileDTO 
+    public class SaveFileDTO
     {
         public required IFormFile FormFile { get; set; }
         public required string StorageDirectory { get; set; }
@@ -55,7 +53,7 @@ namespace MissTortas.Infrastructure
 
             var saveFileDTO = new SaveFileDTO { StorageDirectory = "consultancies", FormFile = fsIn };
             var fileDTO = await SaveFileAsync(saveFileDTO);
-            
+
             var consultancyFile = new ConsultancyFile()
             {
                 ConsultancyId = consultancyId,

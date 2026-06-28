@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http.Json;
-using System.Text;
+﻿using MissTortas.Desktop.Services.DTO;
+using MissTortas.Desktop.Services.Shared;
 
 namespace MissTortas.Desktop.Services.AuthService
 {
-    public class AuthService : IAuthService
+    public class AuthService(IMissTortasHttpClient httpClient) : IAuthService
     {
-        public async Task<string?> SignInAsync(SigninRequest signInDTO)
+        public async Task<UserMetadata?> GetUserMetadataAsync(SignupRequest signUpDTO)
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.PostAsJsonAsync("auth/signin", signInDTO);
-            if(res.IsSuccessStatusCode)
-            {
-                var response = await res.Content.ReadFromJsonAsync<SigninResponse>();
-                MissTortasToken.AccessToken = response?.AccessToken;
-                return response?.AccessToken;
-            }
-            return null;
+            var userMetadata = await httpClient.GetAsync<UserMetadata>("auth/me");
+            return userMetadata;
         }
 
-        public async Task<bool> SignUpAsync(SignupRequest signUpDTO)
+        public async Task SignInAsync(SigninRequest signInDTO)
         {
-            var client = MissTortasHttpClient.Instance.Client;
-            var res = await client.PostAsJsonAsync("auth/signup", signUpDTO);
-            return res.IsSuccessStatusCode;
+            var res = await httpClient.PostAsync<SigninResponse>("auth/signin", signInDTO);
+            MissTortasToken.AccessToken = res?.AccessToken;
+            MissTortasToken.RefreshToken = res?.RefreshToken;
+        }
+
+        public async Task<string?> SignUpAsync(SignupRequest signUpDTO)
+        {
+            var res = await httpClient.PostAsync<SignupResponse>("auth/signup", signUpDTO);
+            return res?.UserId;
         }
     }
 }

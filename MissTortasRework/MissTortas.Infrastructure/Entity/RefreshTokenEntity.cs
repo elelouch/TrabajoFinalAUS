@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Infrastructure.Entity
+﻿namespace MissTortas.Infrastructure.Entity
 {
     public class RefreshTokenEntity
     {

@@ -1,11 +1,5 @@
 ﻿using MissTortas.Desktop.Services.AuthService;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using MissTortas.Desktop.Services.DTO;
 
 namespace MissTortas.Desktop.Forms
 {
@@ -25,14 +19,19 @@ namespace MissTortas.Desktop.Forms
                 Email = this.txtUsername.Text,
                 Password = this.txtPassword.Text
             };
-            var success = await _authService.SignInAsync(dto);
-            if (success is not null)
+            try
             {
+                await _authService.SignInAsync(dto);
                 this.DialogResult = DialogResult.OK;
             }
-            else
+            catch (HttpRequestException exc)
             {
-                MessageBox.Show("Username or password invalid. Try again.", "SignIn", MessageBoxButtons.OK);
+                MessageBox.Show(
+                    $"Username or password invalid. Try again. Error: {exc.Message}",
+                    "SignIn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 

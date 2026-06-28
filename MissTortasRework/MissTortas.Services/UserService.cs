@@ -1,5 +1,6 @@
 ﻿using MissTortas.Domain.Security.Users;
 using MissTortas.Services.DTO.Security;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Repositories;
 
@@ -9,7 +10,7 @@ namespace MissTortas.Services
     {
         public async Task<long> CreateRoleAsync(string name)
         {
-            if(string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
                 throw new InvalidOperationException($"Name is not valid: {name}");
             }
@@ -32,10 +33,20 @@ namespace MissTortas.Services
             return user.UserId;
         }
 
+        public async Task UpdateRoleAsync(UpdateRoleDTO updateRoleDTO)
+        {
+            var role = await userRepository.FindRoleByIdAsync(updateRoleDTO.Id) ?? throw new RoleNotFound("Role not found");
+            if(!string.IsNullOrEmpty(updateRoleDTO.Name))
+            {
+                role.Name = updateRoleDTO.Name;
+            }
+            await userRepository.SaveChangesAsync();
+        }
+
         public async Task UpdateUserAsync(UpdateUserDTO updateUserDTO)
         {
             ArgumentNullException.ThrowIfNull(updateUserDTO);
-            if(string.IsNullOrEmpty(updateUserDTO.FirstName) || updateUserDTO.FirstName.Length < 3)
+            if (string.IsNullOrEmpty(updateUserDTO.FirstName) || updateUserDTO.FirstName.Length < 3)
             {
                 throw new InvalidDataException("FirstName must have at least three characters.");
             }
@@ -53,7 +64,7 @@ namespace MissTortas.Services
                 throw new InvalidOperationException($"The following roles couldnt be fetched: {string.Join(",", rolesNotFound)}");
             }
             user.Roles = rolesFetched;
-            
+
             await userRepository.SaveChangesAsync();
         }
     }

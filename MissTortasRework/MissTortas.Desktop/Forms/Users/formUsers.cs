@@ -2,33 +2,23 @@
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms
 {
     public partial class formUsers : Form
     {
-        private readonly IUserService _usersService;
-        public formUsers(IUserService usersService)
+        private readonly IUserService usersService;
+        private readonly IAuthService authService;
+        private List<User> users = [];
+        private BindingList<User> shownUsers = [];
+        private bool filtered;
+        public formUsers(IUserService usersService, IAuthService authService)
         {
             InitializeComponent();
-            _usersService = usersService;
-        }
-
-        private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            this.authService = authService;
+            this.usersService = usersService;
+            dgvUsers.DataSource = shownUsers;
         }
 
         private async void formUsers_Load(object sender, EventArgs e)
@@ -38,38 +28,66 @@ namespace MissTortas.Desktop.Forms
 
         private async void btnAddUser_Click(object sender, EventArgs e)
         {
-            var authService = new AuthService();
             var createUser = new formCreateUser(authService);
-            if (createUser.ShowDialog() == DialogResult.OK)
+            createUser.SignUpCompleted += CreateUser_SignUpCompleted;
+            createUser.ShowDialog();
+        }
+
+        private void CreateUser_SignUpCompleted(object? sender, Events.SignupCompletedArgs e)
+        {
+            users.Add(e.User);
+            if(!filtered)
             {
-                await LoadDataGridView();
+                shownUsers.Add(e.User);
             }
         }
 
         private async void btnRefreshUsers_Click(object sender, EventArgs e)
         {
-
+            await LoadDataGridView();
         }
 
         private async Task LoadDataGridView()
         {
-            var allUsers = await _usersService.GetAllUsersAsync();
-            dgvUsers.DataSource = allUsers;
+            var allUsers = await usersService.GetAllUsersAsync();
+            users = allUsers;
+            shownUsers = new(allUsers);
+            dgvUsers.DataSource = shownUsers;
         }
 
         private void btnEditUser_Click(object sender, EventArgs e)
         {
-            if(dgvUsers.SelectedRows.Count <= 0)
+            if (dgvUsers.SelectedRows.Count <= 0)
             {
                 return;
             }
-            var user = dgvUsers.SelectedRows[0].DataBoundItem as User;
-            if (user is null)
+            if (dgvUsers.SelectedRows[0].DataBoundItem is not User user)
             {
                 return;
             }
-            var editUserForm = new formEditUser(user.UserId.ToString(),_usersService);
+            var editUserForm = new formEditUser(user.UserId.ToString(), usersService);
             editUserForm.ShowDialog();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            if(filtered)
+            {
+                shownUsers = new(users);
+                dgvUsers.DataSource = shownUsers;
+                filtered = false;
+            }
+            else
+            {
+                shownUsers = new([.. shownUsers.Where(u => u.Enabled)]);
+                dgvUsers.DataSource = shownUsers;
+                filtered = true;
+            }
         }
     }
 }

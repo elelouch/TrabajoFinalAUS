@@ -13,7 +13,7 @@ namespace MissTortas.Services.Mapping
                 ProductCategoryId = category.ProductCategoryId,
                 ParentId = category.ParentId,
                 IsFinal = category.IsFinal,
-                Name = category.Name,                
+                Name = category.Name,
                 Children = []
             };
         }

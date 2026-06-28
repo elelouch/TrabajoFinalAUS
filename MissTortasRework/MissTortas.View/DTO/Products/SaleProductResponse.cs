@@ -4,8 +4,8 @@ namespace MissTortas.View.DTO.Products
 {
     public class SaleProductResponse : SaleProductDTO
     {
-        public SaleProductResponse () { }
-        public SaleProductResponse (SaleProductDTO dto)
+        public SaleProductResponse() { }
+        public SaleProductResponse(SaleProductDTO dto)
         {
             this.Id = dto.Id;
             this.Price = dto.Price;

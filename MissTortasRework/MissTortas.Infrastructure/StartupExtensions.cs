@@ -17,7 +17,6 @@ using MissTortas.Infrastructure.Security.Handlers;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
-using MissTortas.Services.Interfaces;
 using MissTortas.Services.Repositories;
 using System.Text;
 

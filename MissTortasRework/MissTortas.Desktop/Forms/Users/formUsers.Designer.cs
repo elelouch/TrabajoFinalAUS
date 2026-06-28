@@ -31,20 +31,23 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvUsers = new DataGridView();
-            userBindingSource = new BindingSource(components);
-            btnAddUser = new Button();
-            btnRefreshUsers = new Button();
-            btnEditUser = new Button();
-            btnRemoveUser = new Button();
             emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             Username = new DataGridViewTextBoxColumn();
             UserId = new DataGridViewTextBoxColumn();
             FirstName = new DataGridViewTextBoxColumn();
             LastName = new DataGridViewTextBoxColumn();
             Enabled = new DataGridViewCheckBoxColumn();
+            userBindingSource = new BindingSource(components);
+            btnAddUser = new Button();
+            btnEditUser = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            btnRefresh = new Button();
+            btnCancel = new Button();
+            btnFilter = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -52,23 +55,20 @@
             tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 90F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.Controls.Add(dgvUsers, 0, 0);
-            tableLayoutPanel1.Controls.Add(btnAddUser, 0, 2);
-            tableLayoutPanel1.Controls.Add(btnRefreshUsers, 3, 0);
-            tableLayoutPanel1.Controls.Add(btnEditUser, 2, 2);
-            tableLayoutPanel1.Controls.Add(btnRemoveUser, 1, 2);
+            tableLayoutPanel1.Controls.Add(btnAddUser, 0, 1);
+            tableLayoutPanel1.Controls.Add(btnEditUser, 1, 1);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 3, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.Size = new Size(800, 450);
             tableLayoutPanel1.TabIndex = 0;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
             // 
             // dgvUsers
             // 
@@ -83,52 +83,8 @@
             dgvUsers.Location = new Point(3, 3);
             dgvUsers.Name = "dgvUsers";
             dgvUsers.ReadOnly = true;
-            tableLayoutPanel1.SetRowSpan(dgvUsers, 2);
-            dgvUsers.Size = new Size(730, 415);
+            dgvUsers.Size = new Size(666, 415);
             dgvUsers.TabIndex = 0;
-            // 
-            // userBindingSource
-            // 
-            userBindingSource.DataSource = typeof(Model.User);
-            // 
-            // btnAddUser
-            // 
-            btnAddUser.Location = new Point(3, 424);
-            btnAddUser.Name = "btnAddUser";
-            btnAddUser.Size = new Size(75, 23);
-            btnAddUser.TabIndex = 1;
-            btnAddUser.Text = "Add";
-            btnAddUser.UseVisualStyleBackColor = true;
-            btnAddUser.Click += btnAddUser_Click;
-            // 
-            // btnRefreshUsers
-            // 
-            btnRefreshUsers.Location = new Point(739, 3);
-            btnRefreshUsers.Name = "btnRefreshUsers";
-            btnRefreshUsers.Size = new Size(58, 23);
-            btnRefreshUsers.TabIndex = 5;
-            btnRefreshUsers.Text = "Refresh";
-            btnRefreshUsers.UseVisualStyleBackColor = true;
-            btnRefreshUsers.Click += btnRefreshUsers_Click;
-            // 
-            // btnEditUser
-            // 
-            btnEditUser.Location = new Point(165, 424);
-            btnEditUser.Name = "btnEditUser";
-            btnEditUser.Size = new Size(75, 23);
-            btnEditUser.TabIndex = 6;
-            btnEditUser.Text = "Edit";
-            btnEditUser.UseVisualStyleBackColor = true;
-            btnEditUser.Click += btnEditUser_Click;
-            // 
-            // btnRemoveUser
-            // 
-            btnRemoveUser.Location = new Point(84, 424);
-            btnRemoveUser.Name = "btnRemoveUser";
-            btnRemoveUser.Size = new Size(75, 23);
-            btnRemoveUser.TabIndex = 2;
-            btnRemoveUser.Text = "Remove";
-            btnRemoveUser.UseVisualStyleBackColor = true;
             // 
             // emailDataGridViewTextBoxColumn
             // 
@@ -172,6 +128,71 @@
             Enabled.Name = "Enabled";
             Enabled.ReadOnly = true;
             // 
+            // userBindingSource
+            // 
+            userBindingSource.DataSource = typeof(Model.User);
+            // 
+            // btnAddUser
+            // 
+            btnAddUser.Location = new Point(3, 424);
+            btnAddUser.Name = "btnAddUser";
+            btnAddUser.Size = new Size(75, 23);
+            btnAddUser.TabIndex = 1;
+            btnAddUser.Text = "Add";
+            btnAddUser.UseVisualStyleBackColor = true;
+            btnAddUser.Click += btnAddUser_Click;
+            // 
+            // btnEditUser
+            // 
+            btnEditUser.Location = new Point(84, 424);
+            btnEditUser.Name = "btnEditUser";
+            btnEditUser.Size = new Size(75, 23);
+            btnEditUser.TabIndex = 6;
+            btnEditUser.Text = "Edit";
+            btnEditUser.UseVisualStyleBackColor = true;
+            btnEditUser.Click += btnEditUser_Click;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(btnRefresh);
+            flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Controls.Add(btnFilter);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(675, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(122, 415);
+            flowLayoutPanel1.TabIndex = 7;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(3, 3);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(75, 23);
+            btnRefresh.TabIndex = 0;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefreshUsers_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(3, 32);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnFilter
+            // 
+            btnFilter.Location = new Point(3, 61);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(75, 23);
+            btnFilter.TabIndex = 2;
+            btnFilter.Text = "Filter";
+            btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += btnFilter_Click;
+            // 
             // formUsers
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -184,25 +205,28 @@
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
-        private DataGridView dgvUsers;
-        private Button btnAddUser;
-        private Button btnRemoveUser;
         private DataGridViewTextBoxColumn guidDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn isEnabledDataGridViewCheckBoxColumn;
         private BindingSource userBindingSource;
-        private Button btnRefreshUsers;
         private Button btnEditUser;
+        private DataGridView dgvUsers;
         private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn Username;
         private DataGridViewTextBoxColumn UserId;
         private DataGridViewTextBoxColumn FirstName;
         private DataGridViewTextBoxColumn LastName;
         private DataGridViewCheckBoxColumn Enabled;
+        private Button btnAddUser;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button btnRefresh;
+        private Button btnCancel;
+        private Button btnFilter;
     }
 }

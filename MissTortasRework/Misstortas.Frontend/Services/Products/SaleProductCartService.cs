@@ -96,7 +96,7 @@ namespace Misstortas.Frontend.Services.Products
         private async Task SaveToSessionStorageAsync()
         {
             var json = JsonSerializer.Serialize(_items);
-            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", StorageKey,json);
+            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", StorageKey, json);
         }
         public async Task LoadAsync()
         {

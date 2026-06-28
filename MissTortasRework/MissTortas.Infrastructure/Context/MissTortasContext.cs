@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
@@ -68,7 +67,7 @@ namespace MissTortas.Infrastructure.Context
                 pc.HasMany(pc => pc.Products).WithOne(p => p.ProductCategory);
                 pc.HasOne(p => p.Parent).WithMany(p => p.Children).OnDelete(DeleteBehavior.NoAction);
             });
-                
+
 
             modelBuilder.Entity<Order>(o =>
             {

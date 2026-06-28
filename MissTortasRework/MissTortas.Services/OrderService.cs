@@ -24,7 +24,7 @@ namespace MissTortas.Services
         public async Task<OrderTypeDTO> CreateOrderTypeAsync(CreateOrderTypeDTO dto)
         {
             ArgumentNullException.ThrowIfNull(dto);
-            if(string.IsNullOrEmpty(dto.Name) || dto.Name.Length < 3)
+            if (string.IsNullOrEmpty(dto.Name) || dto.Name.Length < 3)
             {
                 throw new InvalidOperationException("Ordertype name must be greater than zero");
             }
@@ -164,7 +164,7 @@ namespace MissTortas.Services
 
         public async Task EndOrderPreparationAsync(long orderPreparationId)
         {
-            if(orderPreparationId == 0)
+            if (orderPreparationId == 0)
             {
                 throw new InvalidOperationException("Order preparation must be valid");
             }
@@ -212,7 +212,7 @@ namespace MissTortas.Services
         public async Task<ConsultancyDTO> CreateConsultancyAsync(CreateConsultancyDTO dto)
         {
             ArgumentNullException.ThrowIfNull(dto);
-            if(string.IsNullOrEmpty(dto.Title) || dto.Title.Length < 3)
+            if (string.IsNullOrEmpty(dto.Title) || dto.Title.Length < 3)
             {
                 throw new InvalidOperationException("The title must have at least 3 characters");
             }
