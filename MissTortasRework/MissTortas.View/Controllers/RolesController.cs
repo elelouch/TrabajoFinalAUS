@@ -4,13 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Interface;
+using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Security;
 
 namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class RolesController(ISecurityService securityService, IValidator<ModifyApplicationRole> assignPermissionValidator) : ControllerBase
+    public class RolesController(
+        ISecurityService securityService,
+        IValidator<ModifyApplicationRole> assignPermissionValidator,
+        IValidator<CreateRoleRequest> createRoleRequestValidator
+    ) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ReadRoles)]
         [HttpGet]
@@ -44,6 +49,15 @@ namespace MissTortas.View.Controllers
             };
             await securityService.ModifyRoleAsync(serviceDto);
             return Ok();
+        }
+
+        [Authorize(Policy = PolicyName.AssignPermissions)]
+        [HttpPost]
+        public async Task<ActionResult<SimpleRoleDTO>> CreateRoles(CreateRoleRequest createRoleRequest)
+        {
+            await createRoleRequestValidator.ValidateAndThrowAsync(createRoleRequest);
+            var role = await securityService.CreateRolesAsync(createRoleRequest.Names);
+            return Ok(role);
         }
     }
 }

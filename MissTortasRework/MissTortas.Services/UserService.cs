@@ -8,11 +8,16 @@ namespace MissTortas.Services
 {
     public class UserService(IUserRepository userRepository) : IUserService
     {
-        public async Task<long> CreateRoleAsync(string name)
+        public async Task<long> CreateRoleIfNotExistsAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new InvalidOperationException($"Name is not valid: {name}");
+            }
+            var roles = await userRepository.GetRolesByNameAsync([name]);
+            if(roles.Count > 0)
+            {
+                throw new InvalidOperationException("Rolename must be unique");
             }
             var role = await userRepository.CreateRoleAsync(name);
             return role.RoleId;

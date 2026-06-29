@@ -33,6 +33,7 @@
             quitToolStripMenuItem = new ToolStripMenuItem();
             securityToolStripMenuItem = new ToolStripMenuItem();
             usersToolStripMenuItem = new ToolStripMenuItem();
+            rolesToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,7 +62,7 @@
             // 
             // securityToolStripMenuItem
             // 
-            securityToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { usersToolStripMenuItem });
+            securityToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { usersToolStripMenuItem, rolesToolStripMenuItem });
             securityToolStripMenuItem.Name = "securityToolStripMenuItem";
             securityToolStripMenuItem.Size = new Size(61, 20);
             securityToolStripMenuItem.Text = "Security";
@@ -69,9 +70,16 @@
             // usersToolStripMenuItem
             // 
             usersToolStripMenuItem.Name = "usersToolStripMenuItem";
-            usersToolStripMenuItem.Size = new Size(102, 22);
+            usersToolStripMenuItem.Size = new Size(180, 22);
             usersToolStripMenuItem.Text = "Users";
             usersToolStripMenuItem.Click += usersToolStripMenuItem_Click;
+            // 
+            // rolesToolStripMenuItem
+            // 
+            rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
+            rolesToolStripMenuItem.Size = new Size(180, 22);
+            rolesToolStripMenuItem.Text = "Roles";
+            rolesToolStripMenuItem.Click += rolesToolStripMenuItem_Click;
             // 
             // formMain
             // 
@@ -98,5 +106,6 @@
         private ToolStripMenuItem quitToolStripMenuItem;
         private ToolStripMenuItem securityToolStripMenuItem;
         private ToolStripMenuItem usersToolStripMenuItem;
+        private ToolStripMenuItem rolesToolStripMenuItem;
     }
 }

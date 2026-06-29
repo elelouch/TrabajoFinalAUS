@@ -1,4 +1,4 @@
-﻿namespace MissTortas.Desktop.Forms
+﻿namespace MissTortas.Desktop.Forms.Users
 {
     partial class formUsers
     {
@@ -31,12 +31,6 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvUsers = new DataGridView();
-            emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            Username = new DataGridViewTextBoxColumn();
-            UserId = new DataGridViewTextBoxColumn();
-            FirstName = new DataGridViewTextBoxColumn();
-            LastName = new DataGridViewTextBoxColumn();
-            Enabled = new DataGridViewCheckBoxColumn();
             userBindingSource = new BindingSource(components);
             btnAddUser = new Button();
             btnEditUser = new Button();
@@ -44,6 +38,10 @@
             btnRefresh = new Button();
             btnCancel = new Button();
             btnFilter = new Button();
+            emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            Username = new DataGridViewTextBoxColumn();
+            UserId = new DataGridViewTextBoxColumn();
+            Enabled = new DataGridViewCheckBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -74,9 +72,10 @@
             // 
             dgvUsers.AllowUserToAddRows = false;
             dgvUsers.AllowUserToDeleteRows = false;
+            dgvUsers.AllowUserToOrderColumns = true;
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { emailDataGridViewTextBoxColumn, Username, UserId, FirstName, LastName, Enabled });
+            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { emailDataGridViewTextBoxColumn, Username, UserId, Enabled });
             tableLayoutPanel1.SetColumnSpan(dgvUsers, 3);
             dgvUsers.DataSource = userBindingSource;
             dgvUsers.Dock = DockStyle.Fill;
@@ -85,48 +84,6 @@
             dgvUsers.ReadOnly = true;
             dgvUsers.Size = new Size(666, 415);
             dgvUsers.TabIndex = 0;
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            emailDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // Username
-            // 
-            Username.DataPropertyName = "Username";
-            Username.HeaderText = "Username";
-            Username.Name = "Username";
-            Username.ReadOnly = true;
-            // 
-            // UserId
-            // 
-            UserId.DataPropertyName = "UserId";
-            UserId.HeaderText = "UserId";
-            UserId.Name = "UserId";
-            UserId.ReadOnly = true;
-            // 
-            // FirstName
-            // 
-            FirstName.DataPropertyName = "FirstName";
-            FirstName.HeaderText = "FirstName";
-            FirstName.Name = "FirstName";
-            FirstName.ReadOnly = true;
-            // 
-            // LastName
-            // 
-            LastName.DataPropertyName = "LastName";
-            LastName.HeaderText = "LastName";
-            LastName.Name = "LastName";
-            LastName.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            Enabled.DataPropertyName = "Enabled";
-            Enabled.HeaderText = "Enabled";
-            Enabled.Name = "Enabled";
-            Enabled.ReadOnly = true;
             // 
             // userBindingSource
             // 
@@ -193,6 +150,34 @@
             btnFilter.UseVisualStyleBackColor = true;
             btnFilter.Click += btnFilter_Click;
             // 
+            // emailDataGridViewTextBoxColumn
+            // 
+            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
+            emailDataGridViewTextBoxColumn.HeaderText = "Email";
+            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // Username
+            // 
+            Username.DataPropertyName = "Username";
+            Username.HeaderText = "Username";
+            Username.Name = "Username";
+            Username.ReadOnly = true;
+            // 
+            // UserId
+            // 
+            UserId.DataPropertyName = "UserId";
+            UserId.HeaderText = "UserId";
+            UserId.Name = "UserId";
+            UserId.ReadOnly = true;
+            // 
+            // Enabled
+            // 
+            Enabled.DataPropertyName = "Enabled";
+            Enabled.HeaderText = "Enabled";
+            Enabled.Name = "Enabled";
+            Enabled.ReadOnly = true;
+            // 
             // formUsers
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -217,16 +202,14 @@
         private BindingSource userBindingSource;
         private Button btnEditUser;
         private DataGridView dgvUsers;
-        private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn Username;
-        private DataGridViewTextBoxColumn UserId;
-        private DataGridViewTextBoxColumn FirstName;
-        private DataGridViewTextBoxColumn LastName;
-        private DataGridViewCheckBoxColumn Enabled;
         private Button btnAddUser;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btnRefresh;
         private Button btnCancel;
         private Button btnFilter;
+        private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn Username;
+        private DataGridViewTextBoxColumn UserId;
+        private DataGridViewCheckBoxColumn Enabled;
     }
 }

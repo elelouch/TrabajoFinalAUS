@@ -34,6 +34,7 @@ builder.Services.AddScoped<IValidator<CreateOrderTypeRequest>, CreateOrderTypeDT
 builder.Services.AddScoped<IValidator<PlaceOrderRequest>, PlaceOrderDTOValidator>();
 builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidator>();
 builder.Services.AddScoped<IValidator<MissTortasRegisterRequest>, MissTortasRegisterRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateRoleRequest>, CreateRoleRequestValidator>();
 
 
 builder.Services.AddScoped<IControllerOrderMapper, ControllerOrderMapper>();

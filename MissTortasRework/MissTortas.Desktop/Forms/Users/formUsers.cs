@@ -4,7 +4,7 @@ using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
 
-namespace MissTortas.Desktop.Forms
+namespace MissTortas.Desktop.Forms.Users
 {
     public partial class formUsers : Form
     {

@@ -282,5 +282,32 @@ namespace MissTortas.Infrastructure.Security
                 ExpiresIn = "15 minutes"
             };
         }
+
+        public async Task<SimpleRoleDTO> CreateRoleAsync(string name)
+        {
+            var roleId = await userService.CreateRoleIfNotExistsAsync(name);
+            var applicationRole = new ApplicationRole
+            {
+                RoleId = roleId,
+                Name = name,
+            };
+            var identityResult = await roleManager.CreateAsync(applicationRole);
+            if(!identityResult.Succeeded)
+            {
+                throw new InvalidOperationException($"Couldn't create role: {name}");
+            }
+            return roleMapper.RoleToSimpleDTO(applicationRole);
+        }
+
+        public async Task<List<SimpleRoleDTO>> CreateRolesAsync(List<string> names)
+        {
+            List<SimpleRoleDTO> roles = [];
+            foreach(var name in names)
+            {
+                var role = await CreateRoleAsync(name);
+                roles.Add(role);
+            }
+            return roles;
+        }
     }
 }
