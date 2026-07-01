@@ -7,7 +7,7 @@ namespace MissTortas.View.Validators.Security
     {
         public CreateRoleRequestValidator()
         {
-            RuleFor(r => r.Names).NotEmpty().ForEach(roleName => roleName.Length(3, 256));
+            RuleFor(r => r.Name).NotEmpty().Length(3, 256);
         }
     }
 }

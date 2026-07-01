@@ -34,7 +34,6 @@ namespace MissTortas.Desktop.Forms.Users
             AvailableRoles = [.. roles.Except(AddedRoles)];
             listBoxAddedRoles.DataSource = AddedRoles;
             listBoxAvailableRoles.DataSource = AvailableRoles;
-
         }
 
         private class FillUserFormDTO

@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\Roles\formCreateUser.cs">
+    <Compile Update="Forms\Roles\formCreateRole.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Roles\formEditUser.cs">
+    <Compile Update="Forms\Roles\formEditRole.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Roles\formRoles.cs">

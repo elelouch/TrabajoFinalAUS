@@ -236,7 +236,7 @@ namespace MissTortas.Infrastructure.Security
             }
             var permissions = (await roleManager.GetClaimsAsync(role))
                 .Where(c => c.Type == Permission.ClaimName)
-                .Select(c => new Permission { Code = c.Type });
+                .Select(c => new Permission { Code = c.Value });
 
             return roleMapper.RoleWithPermissionsToDTO(role, permissions);
         }
@@ -308,6 +308,21 @@ namespace MissTortas.Infrastructure.Security
                 roles.Add(role);
             }
             return roles;
+        }
+
+        public async Task<RoleDTO?> FindRoleByIdAsync(string roleId)
+        {
+            var role = await roleManager.FindByIdAsync(roleId);
+            if(role is null)
+            {
+                return null;
+            }
+            var claims = await roleManager.GetClaimsAsync(role);
+            var permissions = (await roleManager.GetClaimsAsync(role))
+                .Where(c => c.Type == Permission.ClaimName)
+                .Select(c => new Permission { Code = c.Value });
+
+            return roleMapper.RoleWithPermissionsToDTO(role, permissions);
         }
     }
 }

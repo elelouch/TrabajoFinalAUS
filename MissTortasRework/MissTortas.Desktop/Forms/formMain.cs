@@ -4,6 +4,7 @@ using MissTortas.Desktop.Services.UserService;
 using MissTortas.Desktop.Forms.Users;
 using MissTortas.Desktop.Forms.Roles;
 using MissTortas.Desktop.Services.RoleService;
+using MissTortas.Desktop.Services.PermissionService;
 
 namespace MissTortas.Desktop.Forms
 {
@@ -13,11 +14,13 @@ namespace MissTortas.Desktop.Forms
         private readonly IRoleService roleService;
         private readonly IUserService usersService;
         private readonly IAuthService authService;
+        private readonly IPermissionService permissionService;
         public formMain(
             IMissTortasHttpClient httpClient, 
             IUserService usersService, 
             IAuthService authService,
-            IRoleService roleService
+            IRoleService roleService,
+            IPermissionService permissionService
         )
         {
             InitializeComponent();
@@ -25,6 +28,7 @@ namespace MissTortas.Desktop.Forms
             this.usersService = usersService;
             this.authService = authService;
             this.roleService = roleService;
+            this.permissionService = permissionService;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,7 +65,7 @@ namespace MissTortas.Desktop.Forms
 
         private void rolesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var usersForm = new formRoles(roleService)
+            var usersForm = new formRoles(roleService, permissionService)
             {
                 MdiParent = this
             };

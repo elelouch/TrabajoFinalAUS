@@ -10,6 +10,7 @@ namespace MissTortas.Infrastructure.Security.Interface
         public Task<SimpleRoleDTO> CreateRoleAsync(string name);
         public Task<List<SimpleRoleDTO>> CreateRolesAsync(List<string> names);
         public Task<RoleDTO?> GetRoleByNameAsync(string name);
+        public Task<RoleDTO?> FindRoleByIdAsync(string roleId);
         public IEnumerable<Permission> GetAllPermissions();
         public Task<UserFullDTO?> GetUserByIdAsync(string userId);
         public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();

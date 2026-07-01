@@ -2,6 +2,6 @@
 {
     public class CreateRoleRequest
     {
-        public List<string> Names { get; set; } = [];
+        public string Name { get; set; } = string.Empty;
     }
 }

@@ -28,7 +28,7 @@ namespace MissTortas.View.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleDTO>> GetRole(string id)
         {
-            var ret = await securityService.GetRoleByNameAsync(id);
+            var ret = await securityService.FindRoleByIdAsync(id);
             if (ret is null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<SimpleRoleDTO>> CreateRoles(CreateRoleRequest createRoleRequest)
         {
             await createRoleRequestValidator.ValidateAndThrowAsync(createRoleRequest);
-            var role = await securityService.CreateRolesAsync(createRoleRequest.Names);
+            var role = await securityService.CreateRoleAsync(createRoleRequest.Name);
             return Ok(role);
         }
     }
