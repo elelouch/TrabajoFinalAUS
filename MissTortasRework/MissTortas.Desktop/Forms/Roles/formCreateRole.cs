@@ -29,7 +29,7 @@ namespace MissTortas.Desktop.Forms.Roles
         private async void btnConfirm_Click(object sender, EventArgs e)
         {
             var roleName = txtRoleName.Text;
-            if(roleName.Length > 256 || roleName.Length < 3)
+            if (roleName.Length > 256 || roleName.Length < 3)
             {
                 MessageBox.Show("Role name must be between 3 and 256 characters");
                 return;
@@ -55,6 +55,11 @@ namespace MissTortas.Desktop.Forms.Roles
         private void lblFirstName_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
         }
     }
 }

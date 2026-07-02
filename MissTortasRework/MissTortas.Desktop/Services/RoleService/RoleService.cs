@@ -34,7 +34,7 @@ namespace MissTortas.Desktop.Services.RoleService
                 throw new InvalidOperationException("Role Id must not be empty.");
             }
             await httpClient.PutAsync<object>($"roles/{role.Id}", role);
-            ;
+            
         }
     }
 }

@@ -31,6 +31,10 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvUsers = new DataGridView();
+            emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            Username = new DataGridViewTextBoxColumn();
+            UserId = new DataGridViewTextBoxColumn();
+            Enabled = new DataGridViewCheckBoxColumn();
             userBindingSource = new BindingSource(components);
             btnAddUser = new Button();
             btnEditUser = new Button();
@@ -38,10 +42,6 @@
             btnRefresh = new Button();
             btnCancel = new Button();
             btnFilter = new Button();
-            emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            Username = new DataGridViewTextBoxColumn();
-            UserId = new DataGridViewTextBoxColumn();
-            Enabled = new DataGridViewCheckBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -84,6 +84,34 @@
             dgvUsers.ReadOnly = true;
             dgvUsers.Size = new Size(666, 415);
             dgvUsers.TabIndex = 0;
+            // 
+            // emailDataGridViewTextBoxColumn
+            // 
+            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
+            emailDataGridViewTextBoxColumn.HeaderText = "Email";
+            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // Username
+            // 
+            Username.DataPropertyName = "Username";
+            Username.HeaderText = "Username";
+            Username.Name = "Username";
+            Username.ReadOnly = true;
+            // 
+            // UserId
+            // 
+            UserId.DataPropertyName = "UserId";
+            UserId.HeaderText = "UserId";
+            UserId.Name = "UserId";
+            UserId.ReadOnly = true;
+            // 
+            // Enabled
+            // 
+            Enabled.DataPropertyName = "Enabled";
+            Enabled.HeaderText = "Enabled";
+            Enabled.Name = "Enabled";
+            Enabled.ReadOnly = true;
             // 
             // userBindingSource
             // 
@@ -150,38 +178,11 @@
             btnFilter.UseVisualStyleBackColor = true;
             btnFilter.Click += btnFilter_Click;
             // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            emailDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // Username
-            // 
-            Username.DataPropertyName = "Username";
-            Username.HeaderText = "Username";
-            Username.Name = "Username";
-            Username.ReadOnly = true;
-            // 
-            // UserId
-            // 
-            UserId.DataPropertyName = "UserId";
-            UserId.HeaderText = "UserId";
-            UserId.Name = "UserId";
-            UserId.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            Enabled.DataPropertyName = "Enabled";
-            Enabled.HeaderText = "Enabled";
-            Enabled.Name = "Enabled";
-            Enabled.ReadOnly = true;
-            // 
             // formUsers
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formUsers";

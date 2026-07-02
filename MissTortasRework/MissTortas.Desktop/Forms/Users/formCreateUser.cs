@@ -18,7 +18,7 @@ namespace MissTortas.Desktop.Forms
         private void RaiseSignUpCompleted(User user)
         {
             var handler = SignUpCompleted;
-            if(handler == null)
+            if (handler == null)
             {
                 return;
             }
@@ -89,5 +89,9 @@ namespace MissTortas.Desktop.Forms
             }
         }
 
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

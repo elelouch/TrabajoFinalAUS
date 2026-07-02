@@ -42,6 +42,7 @@
             lblEmail = new Label();
             txtEmail = new TextBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            btnCancel = new Button();
             SuspendLayout();
             // 
             // lblFirstName
@@ -153,12 +154,24 @@
             txtEmail.Size = new Size(184, 23);
             txtEmail.TabIndex = 3;
             // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(427, 303);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 12;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnClose_Click;
+            // 
             // formCreateUser
             // 
             AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnCancel);
             Controls.Add(txtEmail);
             Controls.Add(lblEmail);
             Controls.Add(btnConfirm);
@@ -194,5 +207,6 @@
         private Label lblEmail;
         private TextBox txtEmail;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Button btnCancel;
     }
 }

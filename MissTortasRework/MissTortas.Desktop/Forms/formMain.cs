@@ -15,6 +15,10 @@ namespace MissTortas.Desktop.Forms
         private readonly IUserService usersService;
         private readonly IAuthService authService;
         private readonly IPermissionService permissionService;
+
+        private formUsers? formUsers;
+        private formRoles? formRoles;
+
         public formMain(
             IMissTortasHttpClient httpClient, 
             IUserService usersService, 
@@ -56,20 +60,50 @@ namespace MissTortas.Desktop.Forms
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var usersForm = new formUsers(usersService, authService)
+            if(formUsers == null)
             {
-                MdiParent = this
-            };
-            usersForm.Show();
+                this.formUsers = new formUsers(usersService, authService)
+                {
+                    MdiParent = this
+                };
+                this.formUsers.Show();
+                this.formUsers.Disposed += FormUsers_Disposed;
+            }
+            else
+            {
+                this.formUsers.WindowState = FormWindowState.Normal;
+                this.formUsers.BringToFront();
+            }
+            
+        }
+
+        private void FormUsers_Disposed(object? sender, EventArgs e)
+        {
+            this.formUsers = null;
         }
 
         private void rolesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var usersForm = new formRoles(roleService, permissionService)
+            if (formRoles == null)
             {
-                MdiParent = this
-            };
-            usersForm.Show();
+                this.formRoles = new formRoles(roleService, permissionService)
+                {
+                    MdiParent = this
+                };
+                this.formRoles.Show();
+                this.formRoles.Disposed += FormRoles_Disposed;
+            }
+            else
+            {
+                this.formRoles.WindowState = FormWindowState.Normal;
+                this.formRoles.BringToFront();
+            }
+
+        }
+
+        private void FormRoles_Disposed(object? sender, EventArgs e)
+        {
+            this.formRoles = null;
         }
     }
 }

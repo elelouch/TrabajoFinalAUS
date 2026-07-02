@@ -181,7 +181,7 @@ namespace MissTortas.Infrastructure.Security
 
         public async Task ModifyRoleAsync(ModifyRoleDTO dto)
         {
-            var role = await roleManager.FindByIdAsync(dto.RoleId.ToString());
+            var role = await roleManager.FindByIdAsync(dto.RoleId);
             if (role is null)
             {
                 return;

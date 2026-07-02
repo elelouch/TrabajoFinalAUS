@@ -38,7 +38,7 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.AssignPermissions)]
         [HttpPut("{id}")]
-        public async Task<ActionResult> AssignPermissionToRole(long id, ModifyApplicationRole assignPermissionsDTO)
+        public async Task<ActionResult> AssignPermissionToRole(string id, ModifyApplicationRole assignPermissionsDTO)
         {
             await assignPermissionValidator.ValidateAndThrowAsync(assignPermissionsDTO);
             var serviceDto = new ModifyRoleDTO

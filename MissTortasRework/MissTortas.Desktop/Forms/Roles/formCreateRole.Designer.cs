@@ -32,6 +32,7 @@
             txtRoleName = new TextBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             btnConfirm = new Button();
+            btnClose = new Button();
             SuspendLayout();
             // 
             // lblFirstName
@@ -61,12 +62,24 @@
             btnConfirm.UseVisualStyleBackColor = true;
             btnConfirm.Click += btnConfirm_Click;
             // 
+            // btnClose
+            // 
+            btnClose.Location = new Point(439, 301);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(75, 23);
+            btnClose.TabIndex = 11;
+            btnClose.Text = "Cancel";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // formCreateRole
             // 
             AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnClose);
             Controls.Add(btnConfirm);
             Controls.Add(txtRoleName);
             Controls.Add(lblFirstName);
@@ -83,5 +96,6 @@
         private TextBox txtRoleName;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Button btnConfirm;
+        private Button btnClose;
     }
 }

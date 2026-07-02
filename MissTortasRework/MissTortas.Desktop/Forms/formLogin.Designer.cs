@@ -34,6 +34,7 @@
             txtUsername = new TextBox();
             txtPassword = new TextBox();
             loginButton = new Button();
+            btnCancel = new Button();
             SuspendLayout();
             // 
             // welcomingLabel
@@ -81,7 +82,7 @@
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(367, 228);
+            loginButton.Location = new Point(411, 272);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(75, 23);
             loginButton.TabIndex = 5;
@@ -89,12 +90,23 @@
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;
             // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(285, 272);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 6;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            // 
             // formLogin
             // 
             AcceptButton = loginButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnCancel);
             Controls.Add(loginButton);
             Controls.Add(txtPassword);
             Controls.Add(txtUsername);
@@ -116,5 +128,6 @@
         private TextBox txtUsername;
         private TextBox txtPassword;
         private Button loginButton;
+        private Button btnCancel;
     }
 }
