@@ -1,8 +1,8 @@
 ﻿using MissTortas.Desktop.Forms.Roles;
-using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.RoleService;
+using MissTortas.Desktop.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +15,7 @@ namespace MissTortas.Desktop.Forms.Products
 {
     public partial class formCategories : Form
     {
+
         private readonly IProductService productService;
         public formCategories(IProductService productService)
         {
@@ -46,7 +47,6 @@ namespace MissTortas.Desktop.Forms.Products
 
             if (!category.IsFinal)
                 return;
-
 
             var formProductsFromCategory = new formProductsFromCategory(category, productService);
             formProductsFromCategory.ShowDialog();
@@ -91,5 +91,19 @@ namespace MissTortas.Desktop.Forms.Products
             return node;
         }
 
+        private void btnAddChild_Click(object sender, EventArgs e)
+        {
+            var selectedNode = tvCategories.SelectedNode;
+            if (selectedNode == null)
+            {
+                MessageBox.Show("Must select a node before adding a child","Add tree warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
+            if(selectedNode.Tag is ProductCategory currentPc)
+            {
+
+                //productService.CreateProductCategoryAsync()
+            }
+        }
     }
 }

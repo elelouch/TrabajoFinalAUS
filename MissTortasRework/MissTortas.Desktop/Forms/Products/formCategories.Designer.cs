@@ -85,6 +85,7 @@
             btnAddChild.TabIndex = 0;
             btnAddChild.Text = "Add Child";
             btnAddChild.UseVisualStyleBackColor = true;
+            btnAddChild.Click += btnAddChild_Click;
             // 
             // button2
             // 
