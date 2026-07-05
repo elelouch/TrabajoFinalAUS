@@ -186,6 +186,7 @@
             Controls.Add(lblLastName);
             Controls.Add(lblFirstName);
             Name = "formCreateUser";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Create User";
             ResumeLayout(false);
             PerformLayout();

@@ -17,7 +17,7 @@
         else
         {
             HttpContextAccessor.HttpContext!.Response.Cookies.Append(AuthConstants.CookieAccessToken, Token, new CookieOptions { Expires = DateTimeOffset.Now.AddMinutes(5), HttpOnly = true, Secure = true});
-            HttpContextAccessor.HttpContext!.Response.Headers.Append("Authentication", $"Bearer: {}");
+            HttpContextAccessor.HttpContext!.Response.Headers.Append("Authentication", $"Bearer: {Token}");
         }
         NavigationManager.NavigateTo("/", forceLoad: true);
     }

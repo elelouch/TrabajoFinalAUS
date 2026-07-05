@@ -1,0 +1,95 @@
+﻿using MissTortas.Desktop.Forms.Roles;
+using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.PermissionService;
+using MissTortas.Desktop.Services.ProductService;
+using MissTortas.Desktop.Services.RoleService;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+
+namespace MissTortas.Desktop.Forms.Products
+{
+    public partial class formCategories : Form
+    {
+        private readonly IProductService productService;
+        public formCategories(IProductService productService)
+        {
+            InitializeComponent();
+            this.productService = productService;
+        }
+
+        private async void formCategories_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                tvCategories.BeginUpdate();
+                var categories = await productService.GetCategoriesAsync();
+                LoadTreeView(categories);
+                tvCategories.EndUpdate();
+                tvCategories.NodeMouseDoubleClick += TvCategories_NodeMouseDoubleClick;
+            }
+            catch (HttpRequestException err)
+            {
+                MessageBox.Show($"Error: {err.Message}");
+            }
+
+        }
+
+        private async void TvCategories_NodeMouseDoubleClick(object? sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node?.Tag is not ProductCategory category)
+                return;
+
+            if (!category.IsFinal)
+                return;
+
+
+            var formProductsFromCategory = new formProductsFromCategory(category, productService);
+            formProductsFromCategory.ShowDialog();
+        }
+
+        private void LoadTreeView(List<ProductCategory> categories)
+        {
+            tvCategories.Nodes.Clear();
+            tvCategories.BeginUpdate();
+            foreach (var category in categories)
+            {
+                var categoryNode = CreateCategoryNode(category);
+                tvCategories.Nodes.Add(categoryNode);
+            }
+            tvCategories.EndUpdate();
+        }
+
+        private TreeNode CreateCategoryNode(ProductCategory category)
+        {
+            var node = new TreeNode(category.Name)
+            {
+                Tag = category, // keep reference to the original object
+                ForeColor = category.Enabled ? Color.Black : Color.Gray
+            };
+
+            // Add child categories (recursive)
+            foreach (var child in category.Children)
+            {
+                node.Nodes.Add(CreateCategoryNode(child));
+            }
+
+            // Add products belonging to this category
+            foreach (var product in category.Products)
+            {
+                var productNode = new TreeNode(product.Name) // adjust to your Product properties
+                {
+                    Tag = product
+                };
+                node.Nodes.Add(productNode);
+            }
+
+            return node;
+        }
+
+    }
+}

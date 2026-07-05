@@ -11,7 +11,11 @@ namespace MissTortas.View.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoriesController(IProductService productService, IValidator<CreateProductCategoryRequest> productCategoryValidator, ISimpleStorage simpleStorage) : ControllerBase
+    public class CategoriesController(
+        IProductService productService,
+        IValidator<CreateProductCategoryRequest> productCategoryValidator,
+        ISimpleStorage simpleStorage
+    ) : ControllerBase
     {
         [AllowAnonymous]
         [HttpGet("{categoryId}/saleproducts")]
@@ -56,6 +60,14 @@ namespace MissTortas.View.Controllers
             };
             var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
             return pc;
+        }
+
+        [Authorize(Policy = PolicyName.ManageProducts)]
+        [HttpGet("{categoryId}/products")]
+        public async Task<ActionResult<List<ProductDTO>>> GetStockProducts(long categoryId)
+        {
+            var ret = await productService.GetProductsFromCategoryAsync(categoryId);
+            return ret.ToList();
         }
     }
 }

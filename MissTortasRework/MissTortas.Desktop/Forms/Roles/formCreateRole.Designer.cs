@@ -84,6 +84,7 @@
             Controls.Add(txtRoleName);
             Controls.Add(lblFirstName);
             Name = "formCreateRole";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Create Role";
             Load += formCreateUser_Load;
             ResumeLayout(false);

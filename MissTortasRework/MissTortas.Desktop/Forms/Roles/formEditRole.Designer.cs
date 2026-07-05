@@ -262,6 +262,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formEditRole";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Edit Role";
             Load += formEditRole_Load;
             tableLayoutPanel1.ResumeLayout(false);

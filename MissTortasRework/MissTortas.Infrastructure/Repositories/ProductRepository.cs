@@ -77,5 +77,20 @@ namespace MissTortas.Infrastructure.Repositories
                 .SingleOrDefaultAsync();
             return ret;
         }
+
+        public async Task<List<ProductDADto>> GetProductsFromCategoryAsync(long categoryId)
+        {
+            var ret = await productsSet
+                .Where(p => p.ProductCategoryId == categoryId)
+                .Select(p => new ProductDADto
+                {
+                    Id = p.ProductId,
+                    CategoryId = p.ProductCategoryId,
+                    Description = p.ProductDetail.Description,
+                    Name = p.Name
+                })
+                .ToListAsync();
+            return ret;
+        }
     }
 }

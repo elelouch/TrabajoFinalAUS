@@ -186,7 +186,9 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formUsers";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Users";
+            WindowState = FormWindowState.Maximized;
             Load += formUsers_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();

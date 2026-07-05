@@ -7,6 +7,8 @@ namespace MissTortas.Desktop.Services.ProductService
 {
     public interface IProductService
     {
-        public Task<List<ProductCategory>> GetCategories();
+        public Task<List<ProductCategory>> GetCategoriesAsync();
+        public Task<List<Product>> GetProductsFromCategoryAsync(long id);
+        public Task<ProductCategory?> CreateProductCategoryAsync(ProductCategory pc);
     }
 }

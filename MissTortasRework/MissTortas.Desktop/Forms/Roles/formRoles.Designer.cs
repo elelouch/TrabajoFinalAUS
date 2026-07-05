@@ -175,7 +175,9 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formRoles";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Roles";
+            WindowState = FormWindowState.Maximized;
             Load += formRoles_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRoles).EndInit();

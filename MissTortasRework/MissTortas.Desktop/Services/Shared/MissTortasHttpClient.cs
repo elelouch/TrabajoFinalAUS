@@ -84,6 +84,11 @@ namespace MissTortas.Desktop.Services.Shared
                 }
             }
 
+            if(response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return default;
+            }
+
             var error = await response.Content.ReadFromJsonAsync<ErrorDTO>();
             throw new HttpRequestException(error?.Message ?? "Request failed");
         }

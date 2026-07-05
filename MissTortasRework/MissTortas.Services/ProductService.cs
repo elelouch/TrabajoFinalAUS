@@ -181,7 +181,6 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-
         public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
             var saleProducts = await productRepository.GetSaleProductsFromCategoryAsync(categoryId);
@@ -230,6 +229,19 @@ namespace MissTortas.Services
                 AllowDecimalAsk = !saleProductDTO.ManageQuantityAsInteger,
                 Id = saleProductDTO.SaleProductId
             };
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetProductsFromCategoryAsync(long categoryId)
+        {
+            var products = await productRepository.GetProductsFromCategoryAsync(categoryId);
+            var ret = products.Select(pdto => new ProductDTO
+            {
+                CategoryId = pdto.CategoryId,
+                Id = pdto.Id,
+                Description = pdto.Description,
+                Name = pdto.Name
+            });
+            return ret;
         }
     }
 }

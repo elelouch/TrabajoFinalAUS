@@ -6,10 +6,12 @@ namespace MissTortas.Desktop.Model
 {
     public class ProductCategory
     {
-        public long Id { get; set; }
+        public long ProductCategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public bool Enable { get; set; }
+        public bool IsFinal { get; set;}
+        public bool Enabled { get; set; }
+        public long? ParentId { get; set; }
         public List<Product> Products { get; set; } = [];
-        public List<Product> Children { get; set; } = [];
+        public List<ProductCategory> Children { get; set; } = [];
     }
 }
