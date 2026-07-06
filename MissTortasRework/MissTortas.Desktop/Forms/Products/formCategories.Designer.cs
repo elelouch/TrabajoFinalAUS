@@ -32,7 +32,8 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             btnAddChild = new Button();
-            button2 = new Button();
+            btnCancel = new Button();
+            btnRemove = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -68,12 +69,14 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(btnAddChild, 0, 0);
-            tableLayoutPanel2.Controls.Add(button2, 0, 1);
+            tableLayoutPanel2.Controls.Add(btnCancel, 0, 2);
+            tableLayoutPanel2.Controls.Add(btnRemove, 0, 1);
             tableLayoutPanel2.Location = new Point(403, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowCount = 3;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 21.212122F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 78.78788F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 82F));
             tableLayoutPanel2.Size = new Size(394, 219);
             tableLayoutPanel2.TabIndex = 1;
             // 
@@ -87,20 +90,30 @@
             btnAddChild.UseVisualStyleBackColor = true;
             btnAddChild.Click += btnAddChild_Click;
             // 
-            // button2
+            // btnCancel
             // 
-            button2.Location = new Point(3, 112);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            btnCancel.Location = new Point(3, 139);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnRemove
+            // 
+            btnRemove.Location = new Point(3, 32);
+            btnRemove.Name = "btnRemove";
+            btnRemove.Size = new Size(75, 23);
+            btnRemove.TabIndex = 3;
+            btnRemove.Text = "Remove";
+            btnRemove.UseVisualStyleBackColor = true;
             // 
             // formCategories
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formCategories";
@@ -119,6 +132,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private Button btnAddChild;
-        private Button button2;
+        private Button btnCancel;
+        private Button btnRemove;
     }
 }

@@ -47,16 +47,6 @@ namespace MissTortas.Desktop.Forms.Roles
             }
         }
 
-        private void formCreateUser_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblFirstName_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Dispose();

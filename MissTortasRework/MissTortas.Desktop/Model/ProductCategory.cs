@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MissTortas.Desktop.Model
 {
-    public class ProductCategory
+    public class ProductCategory : ICloneable
     {
         public long ProductCategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -13,5 +13,11 @@ namespace MissTortas.Desktop.Model
         public long? ParentId { get; set; }
         public List<Product> Products { get; set; } = [];
         public List<ProductCategory> Children { get; set; } = [];
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
     }
 }

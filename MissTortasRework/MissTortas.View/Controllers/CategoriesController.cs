@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Interfaces;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Services.DTO.Products;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Products;
 
@@ -41,9 +42,9 @@ namespace MissTortas.View.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory()
+        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory([FromQuery] bool enabled)
         {
-            var ps = await productService.AllProductCategoryAsync();
+            var ps = await productService.AllProductCategoryAsync(enabled);
             return Ok(ps);
         }
 
@@ -68,6 +69,36 @@ namespace MissTortas.View.Controllers
         {
             var ret = await productService.GetProductsFromCategoryAsync(categoryId);
             return ret.ToList();
+        }
+
+        [Authorize(Policy = PolicyName.ManageProducts)]
+        [HttpPut("{categoryId}")]
+        public async Task<ActionResult> UpdateProductCategory(long categoryId, UpdateProductCategoryRequest updateRequest)
+        {
+            var dto = new UpdateProductCategoryDTO 
+            { 
+                ParentId = updateRequest.ParentId, 
+                Enabled = updateRequest.Enabled,
+                Name = updateRequest.Name, 
+                ProductCategoryId = categoryId 
+            };
+            try
+            {
+                await productService.UpdateProductCategoryAsync(dto);
+                return Ok();
+            }
+            catch (ProductCategoryNotFoundException)
+            {
+                return NotFound("Product category wasn't found.");
+            }
+            catch (ChildAppendException err)
+            {
+                return BadRequest($"Error while appending child:{err.Message}");
+            }
+            catch (InvalidOperationException err)
+            {
+                return BadRequest(err.Message);
+            }
         }
     }
 }

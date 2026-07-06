@@ -15,12 +15,13 @@ namespace MissTortas.Desktop.Forms.Products
 {
     public partial class formCategories : Form
     {
-
+        private readonly Dictionary<long, TreeNode> treeMap;
         private readonly IProductService productService;
         public formCategories(IProductService productService)
         {
             InitializeComponent();
             this.productService = productService;
+            this.treeMap = [];
         }
 
         private async void formCategories_Load(object sender, EventArgs e)
@@ -69,9 +70,9 @@ namespace MissTortas.Desktop.Forms.Products
             var node = new TreeNode(category.Name)
             {
                 Tag = category, // keep reference to the original object
-                ForeColor = category.Enabled ? Color.Black : Color.Gray
+                ForeColor = category.IsFinal ? Color.Black : Color.Gray
             };
-
+            treeMap.Add(category.ProductCategoryId, node);
             // Add child categories (recursive)
             foreach (var child in category.Children)
             {
@@ -96,14 +97,39 @@ namespace MissTortas.Desktop.Forms.Products
             var selectedNode = tvCategories.SelectedNode;
             if (selectedNode == null)
             {
-                MessageBox.Show("Must select a node before adding a child","Add tree warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                var userMessage = MessageBox.Show("Must select a node before adding a child. If you wanted to create a root node, press 'OK' to continue. Else, press 'Cancel'", "Add tree warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if(userMessage == DialogResult.OK)
+                {
+                    var createCategoryForm = new formCreateCategory(null, productService);
+                    createCategoryForm.OnCategoryCreated += CreateCategoryForm_OnCategoryCreated;
+                    createCategoryForm.ShowDialog();
+                }
                 return;
             }
-            if(selectedNode.Tag is ProductCategory currentPc)
+            if (selectedNode.Tag is ProductCategory currentPc)
             {
-
-                //productService.CreateProductCategoryAsync()
+                if (currentPc.IsFinal)
+                {
+                    MessageBox.Show("The node selected is marked as final.", "Can not append category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var createCategoryForm = new formCreateCategory(currentPc, productService);
+                createCategoryForm.OnCategoryCreated += CreateCategoryForm_OnCategoryCreated;
+                createCategoryForm.ShowDialog();
             }
+        }
+
+        private void CreateCategoryForm_OnCategoryCreated(object? sender, Events.CategoryCreatedArgs e)
+        {
+            var productCategory = e.Category;
+            var newNode = CreateCategoryNode(productCategory);
+            treeMap.TryGetValue(productCategory.ParentId ?? 0, out TreeNode? parent);
+            if(parent == null)
+            {
+                tvCategories.Nodes.Add(newNode);
+                return;
+            }
+            parent.Nodes.Add(newNode);
         }
     }
 }

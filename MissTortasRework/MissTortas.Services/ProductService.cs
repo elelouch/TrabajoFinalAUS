@@ -243,5 +243,52 @@ namespace MissTortas.Services
             });
             return ret;
         }
+
+        public async Task UpdateProductCategoryAsync(UpdateProductCategoryDTO dto)
+        {
+            var pc = await productRepository.FindProductCategoryAsync(dto.ProductCategoryId) ?? throw new ProductCategoryNotFoundException("Product category not found");
+            if (dto.ParentId is long newParentId)
+            {
+                if (await IsDescendant(newParentId, dto.ProductCategoryId))
+                {
+                    throw new ChildAppendException("Cannot append a parent to a child.");
+                }
+                pc.ParentId = newParentId;
+            }
+            if (string.IsNullOrEmpty(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 256)
+            {
+                throw new InvalidOperationException("Name must have a length between 3 and 256");
+            }
+            pc.Name = dto.Name;
+            if (dto.Enabled is bool enabled)
+            {
+                pc.Enabled = enabled;
+            }
+
+            await productRepository.SaveChangesAsync();
+        }
+
+        private async Task<bool> IsDescendant(long nodeAId, long nodeBId)
+        {
+            var all = await AllProductCategoryAsync();
+            var lookup = all.ToDictionary(c => c.ProductCategoryId, c => c.ParentId);
+
+            var current = nodeBId;
+            while (lookup.TryGetValue(current, out var parentId))
+            {
+                if (parentId == nodeAId)
+                    return true;
+                if (parentId == null)
+                    return false;
+                current = parentId.Value;
+            }
+            return false;
+        }
+
+        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync(bool enabled)
+        {
+            var categories = await productRepository.GetAllProductCategoriesAsync();
+            return productMapper.CategoryToDTO(categories, enabled);
+        }
     }
 }

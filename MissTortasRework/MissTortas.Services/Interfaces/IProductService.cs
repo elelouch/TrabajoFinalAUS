@@ -7,6 +7,7 @@ namespace MissTortas.Services.Interfaces
     {
         public Task<IEnumerable<ProductDTO>> AllAsync();
         public Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync();
+        public Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync(bool enabled);
         public Task<IEnumerable<ProductDTO>> AllWithDetailAsync();
         public Task<ProductDTO> CreateProductAsync(ProductCreateDTO dto);
         public Task<ProductDTO?> GetProductByNameAsync(string name);
@@ -19,6 +20,7 @@ namespace MissTortas.Services.Interfaces
         public Task DeleteProductCategory(long id);
         public Task<ProductDTO?> FindProduct(long id);
         public Task<ProductDTO> UpdateProductAsync(UpdateProductDTO dto);
+        public Task UpdateProductCategoryAsync(UpdateProductCategoryDTO dto);
         public Task<SaleProductDTO> UpdateSaleProductAsync(UpdateSaleProductDTO dto);
     }
 }

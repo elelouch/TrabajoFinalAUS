@@ -20,10 +20,19 @@ namespace MissTortas.Services.Mapping
 
         public IEnumerable<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories)
         {
+            return CategoryToDTO(categories, false);
+        }
+
+        public IEnumerable<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories, bool onlyEnabled)
+        {
             var dtoLookup = new Dictionary<long, ProductCategoryDTO>(categories.Count());
 
             foreach (var cat in categories)
             {
+                if(onlyEnabled && !cat.Enabled)
+                {
+                    continue;
+                }
                 dtoLookup[cat.ProductCategoryId] = CategoryToDTO(cat);
             }
 
@@ -31,6 +40,10 @@ namespace MissTortas.Services.Mapping
 
             foreach (var c in categories)
             {
+                if (onlyEnabled && !c.Enabled)
+                {
+                    continue;
+                }
                 var dto = dtoLookup[c.ProductCategoryId];
 
                 if (c.ParentId == 0)

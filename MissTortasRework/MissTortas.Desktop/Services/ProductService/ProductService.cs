@@ -22,14 +22,29 @@ namespace MissTortas.Desktop.Services.ProductService
 
         public async Task<List<ProductCategory>> GetCategoriesAsync()
         {
-            var categories = await httpClient.GetAsync<List<ProductCategory>>("categories");
+            var categories = await httpClient.GetAsync<List<ProductCategory>>("categories?enabled=true");
             return categories ?? [];
+        }
+
+        public async Task<Dictionary<long, ProductCategory>> GetProductCategoryDictionaryAsync(ProductCategory pc)
+        {
+            var categories = await httpClient.GetAsync<List<ProductCategory>>("categories");
+            if(categories == null)
+            {
+                throw new InvalidOperationException("Categories can not be null");
+            }
+            return categories.ToDictionary(c => c.ProductCategoryId, c => c);
         }
 
         public async Task<List<Product>> GetProductsFromCategoryAsync(long categoryId)
         {
             var products = await httpClient.GetAsync<List<Product>>($"categories/{categoryId}/products");
             return products ?? [];
+        }
+
+        public async Task UpdateProductCategoryAsync(ProductCategory pc)
+        {
+            await httpClient.PutAsync<object>($"categories/{pc.ProductCategoryId}", pc);
         }
     }
 }

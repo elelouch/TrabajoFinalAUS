@@ -43,7 +43,6 @@
             lblFirstName.Size = new Size(68, 15);
             lblFirstName.TabIndex = 0;
             lblFirstName.Text = "Role Name:";
-            lblFirstName.Click += lblFirstName_Click;
             // 
             // txtRoleName
             // 
@@ -86,7 +85,6 @@
             Name = "formCreateRole";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Create Role";
-            Load += formCreateUser_Load;
             ResumeLayout(false);
             PerformLayout();
         }

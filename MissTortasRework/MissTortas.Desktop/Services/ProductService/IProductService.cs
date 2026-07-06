@@ -10,5 +10,6 @@ namespace MissTortas.Desktop.Services.ProductService
         public Task<List<ProductCategory>> GetCategoriesAsync();
         public Task<List<Product>> GetProductsFromCategoryAsync(long id);
         public Task<ProductCategory?> CreateProductCategoryAsync(ProductCategory pc);
+        public Task UpdateProductCategoryAsync(ProductCategory pc);
     }
 }

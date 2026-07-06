@@ -30,7 +30,7 @@
         {
             lblCategoryName = new Label();
             txtCategoryName = new TextBox();
-            checkBox1 = new CheckBox();
+            chkFinalCategory = new CheckBox();
             btnConfirm = new Button();
             btnCancel = new Button();
             SuspendLayout();
@@ -51,15 +51,15 @@
             txtCategoryName.Size = new Size(100, 23);
             txtCategoryName.TabIndex = 1;
             // 
-            // checkBox1
+            // chkFinalCategory
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(417, 168);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(102, 19);
-            checkBox1.TabIndex = 2;
-            checkBox1.Text = "Final Category";
-            checkBox1.UseVisualStyleBackColor = true;
+            chkFinalCategory.AutoSize = true;
+            chkFinalCategory.Location = new Point(417, 168);
+            chkFinalCategory.Name = "chkFinalCategory";
+            chkFinalCategory.Size = new Size(102, 19);
+            chkFinalCategory.TabIndex = 2;
+            chkFinalCategory.Text = "Final Category";
+            chkFinalCategory.UseVisualStyleBackColor = true;
             // 
             // btnConfirm
             // 
@@ -79,6 +79,7 @@
             btnCancel.TabIndex = 4;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // formCreateCategory
             // 
@@ -89,7 +90,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
-            Controls.Add(checkBox1);
+            Controls.Add(chkFinalCategory);
             Controls.Add(txtCategoryName);
             Controls.Add(lblCategoryName);
             Name = "formCreateCategory";
@@ -102,7 +103,7 @@
 
         private Label lblCategoryName;
         private TextBox txtCategoryName;
-        private CheckBox checkBox1;
+        private CheckBox chkFinalCategory;
         private Button btnConfirm;
         private Button btnCancel;
     }
