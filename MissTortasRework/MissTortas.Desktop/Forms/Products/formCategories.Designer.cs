@@ -34,6 +34,7 @@
             btnAddChild = new Button();
             btnCancel = new Button();
             btnRemove = new Button();
+            btnModifyCategory = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -69,14 +70,16 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(btnAddChild, 0, 0);
-            tableLayoutPanel2.Controls.Add(btnCancel, 0, 2);
             tableLayoutPanel2.Controls.Add(btnRemove, 0, 1);
+            tableLayoutPanel2.Controls.Add(btnCancel, 0, 3);
+            tableLayoutPanel2.Controls.Add(btnModifyCategory, 0, 2);
             tableLayoutPanel2.Location = new Point(403, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 3;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 21.212122F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 78.78788F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 82F));
+            tableLayoutPanel2.RowCount = 4;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.Size = new Size(394, 219);
             tableLayoutPanel2.TabIndex = 1;
             // 
@@ -92,24 +95,36 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(3, 139);
+            btnCancel.Location = new Point(3, 165);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 2;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // btnRemove
             // 
-            btnRemove.Location = new Point(3, 32);
+            btnRemove.Location = new Point(3, 57);
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(75, 23);
             btnRemove.TabIndex = 3;
             btnRemove.Text = "Remove";
             btnRemove.UseVisualStyleBackColor = true;
             // 
+            // btnModifyCategory
+            // 
+            btnModifyCategory.Location = new Point(3, 111);
+            btnModifyCategory.Name = "btnModifyCategory";
+            btnModifyCategory.Size = new Size(75, 23);
+            btnModifyCategory.TabIndex = 4;
+            btnModifyCategory.Text = "Modify";
+            btnModifyCategory.UseVisualStyleBackColor = true;
+            btnModifyCategory.Click += btnModifyCategory_Click;
+            // 
             // formCategories
             // 
+            AcceptButton = btnAddChild;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
@@ -134,5 +149,6 @@
         private Button btnAddChild;
         private Button btnCancel;
         private Button btnRemove;
+        private Button btnModifyCategory;
     }
 }

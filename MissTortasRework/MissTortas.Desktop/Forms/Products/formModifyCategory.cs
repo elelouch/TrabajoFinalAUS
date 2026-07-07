@@ -18,6 +18,7 @@ namespace MissTortas.Desktop.Forms.Products
         {
             InitializeComponent();
             this.productCategory = productCategory;
+            this.productService = productService;
             this.Text = $"Modifying {productCategory.Name} category";
         }
 

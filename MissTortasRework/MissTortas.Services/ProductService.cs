@@ -103,13 +103,15 @@ namespace MissTortas.Services
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
             }
 
+
             var productCategory = new ProductCategory
             {
                 Name = dto.Name,
                 ParentId = parent?.ProductCategoryId,
                 Children = [],
                 Products = [],
-                IsFinal = dto.IsFinal
+                IsFinal = dto.IsFinal,
+                Enabled = true
             };
 
             await productRepository.InsertProductCategoryAsync(productCategory);

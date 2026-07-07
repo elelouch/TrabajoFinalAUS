@@ -18,6 +18,7 @@ namespace MissTortas.Services.Repositories
         public Task<Product?> FindProductByNameAsync(string name);
         public Task<List<Product>> GetAllWithDetailAsync();
         public Task<ProductCategory?> GetProductCategoryAsync(long id);
+        public Task<ProductCategory?> GetProductCategoryByNameAsync(string name);
         public Task DeleteProductCategory(ProductCategory pc);
         public Task<List<ProductCategory>> GetAllProductCategoriesAsync();
     }

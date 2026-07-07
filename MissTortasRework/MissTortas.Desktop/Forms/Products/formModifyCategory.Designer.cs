@@ -93,7 +93,7 @@
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
-            chkEnabled.Location = new Point(363, 226);
+            chkEnabled.Location = new Point(363, 227);
             chkEnabled.Name = "chkEnabled";
             chkEnabled.Size = new Size(68, 19);
             chkEnabled.TabIndex = 6;

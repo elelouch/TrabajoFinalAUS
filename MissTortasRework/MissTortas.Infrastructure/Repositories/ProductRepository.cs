@@ -92,5 +92,10 @@ namespace MissTortas.Infrastructure.Repositories
                 .ToListAsync();
             return ret;
         }
+
+        public Task<ProductCategory?> GetProductCategoryByNameAsync(string name)
+        {
+
+        }
     }
 }
