@@ -102,8 +102,14 @@ namespace MissTortas.Services
             {
                 throw new ParentIsFinalException("Parent is final, cannot append another category");
             }
-
-
+            if(string.IsNullOrEmpty(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 256)
+            {
+                throw new InvalidOperationException("Name must have a length between 3 and 255 inclusive.");
+            }
+            if ((await productRepository.GetProductCategoryByNameAsync(dto.Name)) != null)
+            {
+                throw new AlreadyCreatedException("Name already in use.");
+            }
             var productCategory = new ProductCategory
             {
                 Name = dto.Name,

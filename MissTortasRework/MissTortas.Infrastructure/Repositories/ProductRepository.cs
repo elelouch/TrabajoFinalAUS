@@ -93,9 +93,9 @@ namespace MissTortas.Infrastructure.Repositories
             return ret;
         }
 
-        public Task<ProductCategory?> GetProductCategoryByNameAsync(string name)
+        public async Task<ProductCategory?> GetProductCategoryByNameAsync(string name)
         {
-
+            return await productCategoriesSet.Where(p => p.Name == name).SingleOrDefaultAsync();
         }
     }
 }

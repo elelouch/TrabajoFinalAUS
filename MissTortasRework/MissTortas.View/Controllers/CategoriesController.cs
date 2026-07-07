@@ -59,8 +59,16 @@ namespace MissTortas.View.Controllers
                 ParentId = dto.ParentId,
                 IsFinal = dto.IsFinal
             };
-            var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
-            return pc;
+            try
+            {
+                var pc = await productService.CreateProductCategoryAsync(productCategoryDto);
+                return pc;
+            } 
+            catch(AlreadyCreatedException err)
+            {
+                return BadRequest(err.Message);
+            }
+            
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]
