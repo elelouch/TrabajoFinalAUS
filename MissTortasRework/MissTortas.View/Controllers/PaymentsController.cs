@@ -2,7 +2,6 @@
 using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.View.DTO.Error;
 using PayOrder = MissTortas.View.DTO.Payment.PayOrder;
 using PayOrderServiceDTO = MissTortas.Services.DTO.Payment.PayOrderDTO;
 
@@ -26,15 +25,8 @@ namespace MissTortas.View.Controllers
                 OrderId = dto.OrderId,
                 PaymentMethod = dto.PaymentMethod,
             };
-            try
-            {
-                await paymentService.PayOrderAsync(serviceDto);
-                return new EmptyResult();
-            }
-            catch (PaymentFailedException)
-            {
-                return BadRequest(new ErrorDTO { Code = "PAYFAILED1", Message = "Payment failed" });
-            }
+            await paymentService.PayOrderAsync(serviceDto);
+            return new EmptyResult();
         }
     }
 }

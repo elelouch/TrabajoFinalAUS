@@ -6,9 +6,10 @@ using MissTortas.Infrastructure.DTO.Security;
 using MissTortas.Infrastructure.Entity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Services.DTO.Security;
+using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
-using MissTortas.View.DTO.Error;
 using MissTortas.View.DTO.Security;
+using MissTortas.View.ErrorHandling.Exceptions;
 
 namespace MissTortas.View.Controllers
 {
@@ -52,13 +53,10 @@ namespace MissTortas.View.Controllers
 
             return Ok();
         }
-
         [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<ActionResult> SignInUser(LoginRequest request)
         {
-            ArgumentNullException.ThrowIfNull(request);
-
             var loginDto = new LoginUserDTO
             {
                 Email = request.Email,
@@ -67,47 +65,30 @@ namespace MissTortas.View.Controllers
             var result = await securityService.SignInUserAsync(loginDto);
 
             if (result == null)
-            {
-                var errorDTO = new ErrorDTO
-                {
-                    Message = "User not found.",
-                    Code = "USRNF1",
-                };
-                return NotFound(errorDTO);
-            }
+                throw new UserNotFoundException("User not found.", "USRNF1");
+
             if (!result.SignInResult.Succeeded)
             {
-                return result.SignInResult switch
+                throw result.SignInResult switch
                 {
-                    { IsLockedOut: true } => Unauthorized(new ErrorDTO
-                    {
-                        Message = "User is locked out.",
-                        Code = "USRLO1",
-                    }),
+                    { IsLockedOut: true } =>
+                        new AuthenticationFailedException("User is locked out.", "USRLO1"),
 
-                    { IsNotAllowed: true } => Unauthorized(new ErrorDTO
-                    {
-                        Message = "User is not allowed to sign in.",
-                        Code = "USRNO1",
-                    }),
+                    { IsNotAllowed: true } =>
+                        new AuthenticationFailedException("User is not allowed to sign in.", "USRNO1"),
 
-                    { RequiresTwoFactor: true } => Unauthorized(new ErrorDTO
-                    {
-                        Message = "Two-factor authentication is required.",
-                        Code = "USR2F1",
-                        Details = new { requiresTwoFactor = true }
-                    }),
+                    { RequiresTwoFactor: true } =>
+                        new AuthenticationFailedException("Two-factor authentication is required.", "USR2F1"),
 
-                    _ => Unauthorized(new ErrorDTO
-                    {
-                        Message = "Invalid login attempt.",
-                        Code = "USRINV1",
-                    })
+                    _ => new AuthenticationFailedException("Invalid login attempt.", "USRINV1")
                 };
             }
-            Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
-            // refresh token placeholder
-            Response.Cookies.Append("X-Refresh-Token", result.RefreshToken, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+
+            Response.Cookies.Append("X-Access-Token", result.AccessToken,
+                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+            Response.Cookies.Append("X-Refresh-Token", result.RefreshToken,
+                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = true });
+
             return Ok(new { accessToken = result.AccessToken, refreshToken = result.RefreshToken });
         }
 
@@ -136,12 +117,7 @@ namespace MissTortas.View.Controllers
             if (!identityResult.Succeeded)
             {
                 var errors = string.Join(",", identityResult.Errors.Select(err => err.Description));
-                var errorDTO = new ErrorDTO
-                {
-                    Message = errors,
-                    Code = "AUTHSU1",
-                };
-                return Conflict(errorDTO);
+                throw new UserAlreadyCreatedException($"{errors}", "USRCONFLICT30");
             }
             return Ok(new { result.UserId });
         }

@@ -32,7 +32,7 @@ namespace MissTortas.Services
             {
                 throw new AlreadyCreatedException("Product with that name already created");
             }
-            var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found");
+            var productCategory = await productRepository.FindProductCategoryAsync(dto.CategoryId) ?? throw new EntityNotFoundException("Category not found", "CATNF0");
             if (!productCategory.IsFinal)
             {
                 throw new ChildAppendException("Cannot append a product on a Category that is not final");
@@ -40,10 +40,13 @@ namespace MissTortas.Services
 
             var product = new Product
             {
+                Unit = dto.Unit,
                 Name = dto.Name,
                 ProductDetail = productDetail,
                 ProductCategory = productCategory,
-                ManageQuantityAsInteger = dto.ManageQuantityAsInteger
+                ManageQuantityAsInteger = dto.ManageQuantityAsInteger,
+                Quantity = dto.Quantity,
+                Enabled = true
             };
             await productRepository.InsertAsync(product);
             await productRepository.SaveChangesAsync();
@@ -75,7 +78,8 @@ namespace MissTortas.Services
                 Name = dto.Name,
                 CategoryId = dto.CategoryId,
                 Description = dto.SaleDescription,
-                ManageQuantityAsInteger = true // sale products are offered by units.
+                ManageQuantityAsInteger = true, // sale products are offered by units.
+                Unit = dto.Unit
             };
             var stockProduct = await CreateProductEntityAsync(productCreateDTO);
             var saleProduct = new SaleProduct
@@ -169,6 +173,10 @@ namespace MissTortas.Services
                     product.ProductCategory = category;
                 }
             }
+            if(dto.Enabled is bool enabled)
+            {
+                product.Enabled = enabled;
+            }
             productRepository.Update(product);
             await productRepository.SaveChangesAsync();
             return productMapper.ProductToDTO(product);
@@ -242,13 +250,7 @@ namespace MissTortas.Services
         public async Task<IEnumerable<ProductDTO>> GetProductsFromCategoryAsync(long categoryId)
         {
             var products = await productRepository.GetProductsFromCategoryAsync(categoryId);
-            var ret = products.Select(pdto => new ProductDTO
-            {
-                CategoryId = pdto.CategoryId,
-                Id = pdto.Id,
-                Description = pdto.Description,
-                Name = pdto.Name
-            });
+            var ret = productMapper.ProductToDTO(products);
             return ret;
         }
 

@@ -1,5 +1,6 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
+using MissTortas.Desktop.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,11 +44,19 @@ namespace MissTortas.Desktop.Forms.Products
 
         private async void formModifyCategory_Load(object sender, EventArgs e)
         {
-            var categories = await productService.GetCategoriesAsync();
-            categories.Insert(0, new ProductCategory { ProductCategoryId = 0, Name = "-- Select Category --" });
-            comboMoveParent.DataSource = categories;
-            comboMoveParent.DisplayMember = "Name";
-            comboMoveParent.ValueMember = "ProductCategoryId";
+            try
+            {
+                var categories = await productService.GetCategoriesAsync();
+                categories.Insert(0, new ProductCategory { ProductCategoryId = 0, Name = "-- Select Category --" });
+                comboMoveParent.DataSource = categories;
+                comboMoveParent.DisplayMember = "Name";
+                comboMoveParent.ValueMember = "ProductCategoryId";
+            }
+            catch(ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+            }
+            
         }
     }
 

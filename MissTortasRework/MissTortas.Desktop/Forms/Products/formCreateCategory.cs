@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Events;
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
+using MissTortas.Desktop.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +23,7 @@ namespace MissTortas.Desktop.Forms.Products
             InitializeComponent();
             this.productService = productService;
             this.parentCategory = parentCategory;
-            if(parentCategory != null)
+            if (parentCategory != null)
             {
                 this.Text = $"Creating child category for ({parentCategory.ProductCategoryId}) - {parentCategory.Name}";
             }
@@ -34,28 +35,15 @@ namespace MissTortas.Desktop.Forms.Products
 
         private async void btnConfirm_Click(object sender, EventArgs e)
         {
-            var name = txtCategoryName.Text;
-            if(string.IsNullOrEmpty(name) || name.Length < 3 || name.Length > 256)
-            {
-                MessageBox.Show(
-                    $"Name must have a length greater than two and less than 255",
-                    "Category name incorrect",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-            var newCategory = new ProductCategory { Name =  name, IsFinal = chkFinalCategory.Checked };
-            if (parentCategory == null)
-            {
-                newCategory.ParentId = null;
-            }
-            else
-            {
-                newCategory.ParentId = parentCategory.ProductCategoryId;
-            }
             try
             {
+                var name = Validation.ValidateAndSanitize(txtCategoryName.Text, 3, 256);
+                var newCategory = new ProductCategory
+                {
+                    Name = name,
+                    IsFinal = chkFinalCategory.Checked,
+                    ParentId = parentCategory?.ProductCategoryId
+                };
                 var resultCategory = await productService.CreateProductCategoryAsync(newCategory) ?? throw new InvalidOperationException("Result category is null.");
                 RaiseOnCategoryCreated(resultCategory);
                 MessageBox.Show(
@@ -66,13 +54,17 @@ namespace MissTortas.Desktop.Forms.Products
                 );
                 Dispose();
             }
-            catch (HttpRequestException err)
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+            }
+            catch(FormatException exc)
             {
                 MessageBox.Show(
-                    $"Couldn't create category. Error: {err.Message}",
-                    "Error category creation",
+                    $"{exc.Message}",
+                    "Category name incorrect",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
+                    MessageBoxIcon.Warning
                 );
             }
 

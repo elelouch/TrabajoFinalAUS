@@ -1,6 +1,8 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    internal class AskQuantityException(string message) : Exception(message)
+    public class AskQuantityException : BusinessException
     {
+        public AskQuantityException(string message, string? code = null) : base(message, code) { }
     }
+
 }

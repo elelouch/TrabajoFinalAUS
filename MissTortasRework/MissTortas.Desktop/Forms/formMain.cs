@@ -46,7 +46,7 @@ namespace MissTortas.Desktop.Forms
             this.Dispose();
         }
 
-        private async void formMain_Shown(object sender, EventArgs e)
+        private void formMain_Shown(object sender, EventArgs e)
         {
             var authService = new AuthService(httpClient);
             formLogin appLogin = new(authService);

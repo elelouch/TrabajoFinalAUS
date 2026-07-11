@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
 using System.Data;
@@ -48,15 +49,22 @@ namespace MissTortas.Desktop.Forms.Users
 
         private async void formEditUser_Load(object sender, EventArgs e)
         {
-            var user = await _userService.FindUserByIdAsync(_userId);
-            if (user == null)
+            try
             {
-                MessageBox.Show("User not found. Or error during fetching.");
-                this.Dispose();
-                return;
+                var user = await _userService.FindUserByIdAsync(_userId);
+                if (user == null)
+                {
+                    MessageBox.Show("User not found. Or error during fetching.");
+                    this.Dispose();
+                    return;
+                }
+                var roles = await _userService.GetRolesAsync();
+                fillEditUserForm(user, [.. roles.Select(r => r.Name)]);
             }
-            var roles = await _userService.GetRolesAsync();
-            fillEditUserForm(user, [.. roles.Select(r => r.Name)]);
+            catch(ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+            }
         }
 
         private void btnAddRole_Click(object sender, EventArgs e)
@@ -107,9 +115,9 @@ namespace MissTortas.Desktop.Forms.Users
                 MessageBox.Show("Modification was successful.");
                 Dispose();
             }
-            catch (HttpRequestException)
+            catch (ApiException exc)
             {
-                MessageBox.Show("Error while saving modfication. Try again.");
+                ErrorDisplay.Show(this, exc);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.RoleService;
+using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
 using System.Data;
@@ -37,9 +38,17 @@ namespace MissTortas.Desktop.Forms.Roles
 
         private async void formEditRole_Load(object sender, EventArgs e)
         {
-            var role = await roleService.GetRoleAsync(roleId) ?? throw new InvalidOperationException("The roled loaded is invalid.");
-            var permissionsAvailable = await permissionService.GetAllPermissionsAsync();
-            fillEditForm(role, permissionsAvailable);
+            try
+            {
+                var role = await roleService.GetRoleAsync(roleId) ?? throw new InvalidOperationException("The roled loaded is invalid.");
+                var permissionsAvailable = await permissionService.GetAllPermissionsAsync();
+                fillEditForm(role, permissionsAvailable);
+            }
+            catch(ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+            }
+            
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

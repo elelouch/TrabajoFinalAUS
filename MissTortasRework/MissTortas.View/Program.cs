@@ -6,6 +6,7 @@ using MissTortas.Services;
 using MissTortas.View.DTO.Orders;
 using MissTortas.View.DTO.Products;
 using MissTortas.View.DTO.Security;
+using MissTortas.View.Errors.Handlers;
 using MissTortas.View.Mappers;
 using MissTortas.View.Validators.Orders;
 using MissTortas.View.Validators.Products;
@@ -17,8 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-// error handling
-builder.Services.AddProblemDetails();
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
@@ -58,6 +57,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -69,7 +72,6 @@ if (app.Environment.IsDevelopment())
         RequestPath = "/uploads"
     };
     app.UseStaticFiles(fileOptions);
-    app.UseDeveloperExceptionPage();
     app.MapOpenApi();
 }
 
@@ -85,9 +87,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-//app.UseStatusCodePages();
+app.UseStatusCodePages();
 
-//app.UseExceptionHandler();
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

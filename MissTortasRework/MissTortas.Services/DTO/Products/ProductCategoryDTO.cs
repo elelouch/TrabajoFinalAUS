@@ -6,6 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public long? ParentId { get; set; }
         public long ProductCategoryId { get; set; }
+        public bool Enabled { get; set; }
         public List<ProductCategoryDTO> Children { get; set; } = [];
     }
 }

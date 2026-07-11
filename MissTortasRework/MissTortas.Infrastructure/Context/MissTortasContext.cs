@@ -46,10 +46,14 @@ namespace MissTortas.Infrastructure.Context
                 entity.HasIndex(e => e.Token).IsUnique();
                 entity.HasIndex(e => e.UserId);
             });
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Roles)
-                .WithMany(r => r.Users);
-
+            modelBuilder.Entity<User>(p =>
+            {
+                p.HasMany(u => u.Roles).WithMany(r => r.Users);
+            });
+            modelBuilder.Entity<Role>(p =>
+            {
+                p.HasIndex(r => r.Name).IsUnique();
+            });
 
             modelBuilder.Entity<Consultancy>(c =>
             {
@@ -66,6 +70,7 @@ namespace MissTortas.Infrastructure.Context
             {
                 pc.HasMany(pc => pc.Products).WithOne(p => p.ProductCategory);
                 pc.HasOne(p => p.Parent).WithMany(p => p.Children).OnDelete(DeleteBehavior.NoAction);
+                pc.HasIndex(u => u.Name).IsUnique();
             });
 
 

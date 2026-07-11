@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    internal class InvalidClaimsException(string message) : Exception(message)
+    public class InvalidClaimsException : BusinessException
     {
+        public InvalidClaimsException(string message, string? code = null) : base(message, code) { }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class PasswordException(string message) : Exception(message)
+    public class PasswordException : BusinessException
     {
+        public PasswordException(string message, string? code = null) : base(message, code) { }
     }
 }

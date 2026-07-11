@@ -11,7 +11,6 @@ namespace MissTortas.View.Validators.Products
         public int DescriptionMaxLength = 256;
         public CreateProductValidator()
         {
-            RuleFor(cp => cp.ManageQuantityAsInteger).NotEmpty();
             RuleFor(createProduct => createProduct.Name).NotEmpty().Length(NameMinLength, NameMaxLength);
             RuleFor(createProduct => createProduct.Description).MaximumLength(DescriptionMaxLength);
             RuleFor(createProduct => createProduct.CategoryId).NotEmpty().InclusiveBetween(1, MaxProductId);

@@ -87,7 +87,11 @@ namespace MissTortas.Infrastructure.Repositories
                     Id = p.ProductId,
                     CategoryId = p.ProductCategoryId,
                     Description = p.ProductDetail.Description,
-                    Name = p.Name
+                    Name = p.Name,
+                    Unit = p.Unit,
+                    Quantity = p.Quantity,
+                    ManageQuantityAsInteger = p.ManageQuantityAsInteger,
+                    Enabled = p.Enabled
                 })
                 .ToListAsync();
             return ret;

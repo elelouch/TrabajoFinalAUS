@@ -54,7 +54,6 @@
             emailLabel.Size = new Size(97, 15);
             emailLabel.TabIndex = 1;
             emailLabel.Text = "Username/Email:";
-            emailLabel.Click += label1_Click;
             // 
             // passwordLabel
             // 

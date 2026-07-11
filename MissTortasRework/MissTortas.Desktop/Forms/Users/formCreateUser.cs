@@ -2,6 +2,7 @@
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.DTO;
+using MissTortas.Desktop.Services.Shared;
 using System.Net.Mail;
 
 namespace MissTortas.Desktop.Forms
@@ -78,20 +79,15 @@ namespace MissTortas.Desktop.Forms
                     MessageBoxIcon.Warning
                 );
             }
-            catch (HttpRequestException)
+            catch (ApiException exc)
             {
-                MessageBox.Show(
-                    "Error during user creation. Try again.",
-                    "Try again",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                ErrorDisplay.Show(this, exc);
             }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-
+            Dispose();
         }
     }
 }

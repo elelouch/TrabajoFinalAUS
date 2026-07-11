@@ -6,24 +6,13 @@ namespace Misstortas.Frontend.Services.Auth
     {
         public async Task<SigninDTO> SignInUserAsync(UserSignin userSignin)
         {
-            try
-            {
-                var body = await missTortasClient.PostAsync<SigninResponseDTO>("/auth/signin", userSignin);
+            var body = await missTortasClient.PostAsync<SigninResponseDTO>("/auth/signin", userSignin);
 
-                return new SigninDTO
-                {
-                    Success = true,
-                    AccessToken = body?.AccessToken ?? ""
-                };
-            }
-            catch (HttpRequestException ex)
+            return new SigninDTO
             {
-                return new SigninDTO
-                {
-                    Success = false,
-                    Result = ex.Message
-                };
-            }
+                AccessToken = body?.AccessToken ?? "",
+                RefreshToken = body?.RefreshToken ?? ""
+            };
         }
     }
 }

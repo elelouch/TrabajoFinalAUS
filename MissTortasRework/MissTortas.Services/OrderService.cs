@@ -238,7 +238,7 @@ namespace MissTortas.Services
             consultancy.BakeryNotes = dto.BakeryNotes;
             if (!Enum.IsDefined(typeof(ConsultancyStatus), dto.Status))
             {
-                throw new InvalidStateException($"Cannot assign {dto.Status} as a consultancy status.");
+                throw new ConsultancyNotFoundException($"Cannot assign {dto.Status} as a consultancy status.");
             }
             consultancy.Status = (ConsultancyStatus)dto.Status;
             await orderRepository.SaveChangesAsync();

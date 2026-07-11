@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class UserNotFoundException(string message) : EntityNotFoundException(message)
+    public class UserNotFoundException : BusinessException
     {
+        public UserNotFoundException(string message, string? code = null) : base(message, code) { }
     }
 }

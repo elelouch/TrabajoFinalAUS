@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class ProductCategoryNotFoundException(string message) : EntityNotFoundException(message)
+    public class ProductCategoryNotFoundException : BusinessException
     {
+        public ProductCategoryNotFoundException(string message, string? code = null) : base(message, code) { }
     }
 }

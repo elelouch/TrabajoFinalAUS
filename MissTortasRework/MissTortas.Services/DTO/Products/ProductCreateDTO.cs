@@ -2,8 +2,10 @@
 {
     public class ProductCreateDTO
     {
+        public string Unit { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public decimal Quantity { get; set; }
         public long CategoryId { get; set; }
         public bool ManageQuantityAsInteger { get; set; }
     }

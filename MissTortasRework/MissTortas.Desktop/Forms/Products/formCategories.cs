@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using MissTortas.Desktop.Services.Shared;
 
 namespace MissTortas.Desktop.Forms.Products
 {
@@ -34,9 +35,9 @@ namespace MissTortas.Desktop.Forms.Products
                 tvCategories.EndUpdate();
                 tvCategories.NodeMouseDoubleClick += TvCategories_NodeMouseDoubleClick;
             }
-            catch (HttpRequestException err)
+            catch (ApiException exc)
             {
-                MessageBox.Show($"Error: {err.Message}");
+                ErrorDisplay.Show(this, exc);
             }
 
         }
@@ -110,7 +111,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 if (currentPc.IsFinal)
                 {
-                    MessageBox.Show("The node selected is marked as final.", "Can not append category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("The node selected is marked as final. Only products can be appended.", "Can not append category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 var createCategoryForm = new formCreateCategory(currentPc, productService);

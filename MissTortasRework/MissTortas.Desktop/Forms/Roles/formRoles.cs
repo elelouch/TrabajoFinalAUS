@@ -3,6 +3,7 @@ using MissTortas.Desktop.Forms.Users;
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.RoleService;
+using MissTortas.Desktop.Services.Shared;
 using System.ComponentModel;
 
 namespace MissTortas.Desktop.Forms.Roles
@@ -28,10 +29,17 @@ namespace MissTortas.Desktop.Forms.Roles
 
         private async Task LoadDataGridView()
         {
-            var allRoles = await roleService.GetRolesAsync();
-            roles = allRoles;
-            showRoles = new(allRoles);
-            dgvRoles.DataSource = showRoles;
+            try
+            {
+                var allRoles = await roleService.GetRolesAsync();
+                roles = allRoles;
+                showRoles = new(allRoles);
+                dgvRoles.DataSource = showRoles;
+            }
+            catch(ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

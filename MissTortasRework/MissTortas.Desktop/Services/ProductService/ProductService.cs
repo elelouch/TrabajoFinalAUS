@@ -14,6 +14,12 @@ namespace MissTortas.Desktop.Services.ProductService
             this.httpClient = httpClient;
         }
 
+        public async Task<Product> CreateProductAsync(Product pc)
+        {
+            var ret = await httpClient.PostAsync<Product>("products", pc);
+            return ret!;
+        }
+
         public async Task<ProductCategory?> CreateProductCategoryAsync(ProductCategory pc)
         {
             var ret = await httpClient.PostAsync<ProductCategory>("categories", pc);
@@ -40,6 +46,12 @@ namespace MissTortas.Desktop.Services.ProductService
         {
             var products = await httpClient.GetAsync<List<Product>>($"categories/{categoryId}/products");
             return products ?? [];
+        }
+
+        public async Task<Product> ModifyProductAsync(Product product)
+        {
+            var ret = await httpClient.PutAsync<Product>($"products/{product.CategoryId}");
+            return ret!;
         }
 
         public async Task UpdateProductCategoryAsync(ProductCategory pc)

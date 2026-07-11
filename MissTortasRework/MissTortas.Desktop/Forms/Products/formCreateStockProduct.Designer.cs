@@ -1,0 +1,213 @@
+﻿namespace MissTortas.Desktop.Forms.Products
+{
+    partial class formCreateStockProduct
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            lblProductName = new Label();
+            lblCategory = new Label();
+            label4 = new Label();
+            comboBoxCategory = new ComboBox();
+            txtProductName = new TextBox();
+            chkManageQtyAsInteger = new CheckBox();
+            txtQuantity = new TextBox();
+            lblDescription = new Label();
+            txtDescription = new TextBox();
+            btnConfirm = new Button();
+            btnCancel = new Button();
+            txtUnitName = new TextBox();
+            lblUnitName = new Label();
+            chkEnabled = new CheckBox();
+            SuspendLayout();
+            // 
+            // lblProductName
+            // 
+            lblProductName.AutoSize = true;
+            lblProductName.Location = new Point(252, 42);
+            lblProductName.Name = "lblProductName";
+            lblProductName.Size = new Size(84, 15);
+            lblProductName.TabIndex = 0;
+            lblProductName.Text = "Product Name";
+            // 
+            // lblCategory
+            // 
+            lblCategory.AutoSize = true;
+            lblCategory.Location = new Point(252, 119);
+            lblCategory.Name = "lblCategory";
+            lblCategory.Size = new Size(55, 15);
+            lblCategory.TabIndex = 1;
+            lblCategory.Text = "Category";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(252, 159);
+            label4.Name = "label4";
+            label4.Size = new Size(53, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Quantity";
+            // 
+            // comboBoxCategory
+            // 
+            comboBoxCategory.FormattingEnabled = true;
+            comboBoxCategory.Location = new Point(343, 116);
+            comboBoxCategory.Name = "comboBoxCategory";
+            comboBoxCategory.Size = new Size(121, 23);
+            comboBoxCategory.TabIndex = 2;
+            // 
+            // txtProductName
+            // 
+            txtProductName.Location = new Point(343, 41);
+            txtProductName.Name = "txtProductName";
+            txtProductName.Size = new Size(119, 23);
+            txtProductName.TabIndex = 0;
+            // 
+            // chkManageQtyAsInteger
+            // 
+            chkManageQtyAsInteger.AutoSize = true;
+            chkManageQtyAsInteger.Location = new Point(334, 236);
+            chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
+            chkManageQtyAsInteger.Size = new Size(170, 19);
+            chkManageQtyAsInteger.TabIndex = 5;
+            chkManageQtyAsInteger.Text = "Manage quantity as integer";
+            chkManageQtyAsInteger.UseVisualStyleBackColor = true;
+            // 
+            // txtQuantity
+            // 
+            txtQuantity.Location = new Point(343, 156);
+            txtQuantity.Name = "txtQuantity";
+            txtQuantity.Size = new Size(121, 23);
+            txtQuantity.TabIndex = 3;
+            // 
+            // lblDescription
+            // 
+            lblDescription.AutoSize = true;
+            lblDescription.Location = new Point(252, 80);
+            lblDescription.Name = "lblDescription";
+            lblDescription.Size = new Size(67, 15);
+            lblDescription.TabIndex = 8;
+            lblDescription.Text = "Description";
+            // 
+            // txtDescription
+            // 
+            txtDescription.Location = new Point(343, 77);
+            txtDescription.Name = "txtDescription";
+            txtDescription.Size = new Size(121, 23);
+            txtDescription.TabIndex = 1;
+            // 
+            // btnConfirm
+            // 
+            btnConfirm.Location = new Point(295, 331);
+            btnConfirm.Name = "btnConfirm";
+            btnConfirm.Size = new Size(75, 23);
+            btnConfirm.TabIndex = 7;
+            btnConfirm.Text = "Confirm";
+            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Click += btnConfirm_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(429, 331);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 8;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // txtUnitName
+            // 
+            txtUnitName.Location = new Point(345, 196);
+            txtUnitName.Name = "txtUnitName";
+            txtUnitName.Size = new Size(119, 23);
+            txtUnitName.TabIndex = 4;
+            // 
+            // lblUnitName
+            // 
+            lblUnitName.AutoSize = true;
+            lblUnitName.Location = new Point(252, 199);
+            lblUnitName.Name = "lblUnitName";
+            lblUnitName.Size = new Size(64, 15);
+            lblUnitName.TabIndex = 13;
+            lblUnitName.Text = "Unit Name";
+            // 
+            // chkEnabled
+            // 
+            chkEnabled.AutoSize = true;
+            chkEnabled.Location = new Point(334, 277);
+            chkEnabled.Name = "chkEnabled";
+            chkEnabled.Size = new Size(61, 19);
+            chkEnabled.TabIndex = 6;
+            chkEnabled.Text = "Enable";
+            chkEnabled.UseVisualStyleBackColor = true;
+            // 
+            // formCreateStockProduct
+            // 
+            AcceptButton = btnConfirm;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
+            ClientSize = new Size(800, 450);
+            Controls.Add(chkEnabled);
+            Controls.Add(lblUnitName);
+            Controls.Add(txtUnitName);
+            Controls.Add(btnCancel);
+            Controls.Add(btnConfirm);
+            Controls.Add(txtDescription);
+            Controls.Add(lblDescription);
+            Controls.Add(txtQuantity);
+            Controls.Add(chkManageQtyAsInteger);
+            Controls.Add(txtProductName);
+            Controls.Add(comboBoxCategory);
+            Controls.Add(label4);
+            Controls.Add(lblCategory);
+            Controls.Add(lblProductName);
+            Name = "formCreateStockProduct";
+            Text = "Manage Product";
+            Load += formCreateStockProduct_Load;
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Label lblProductName;
+        private Label lblCategory;
+        private Label label4;
+        private ComboBox comboBoxCategory;
+        private TextBox txtProductName;
+        private CheckBox chkManageQtyAsInteger;
+        private TextBox txtQuantity;
+        private Label lblDescription;
+        private TextBox txtDescription;
+        private Button btnConfirm;
+        private Button btnCancel;
+        private TextBox txtUnitName;
+        private Label lblUnitName;
+        private CheckBox chkEnabled;
+    }
+}

@@ -6,6 +6,7 @@
         public string Description { get; set; } = "";
         public long CategoryId { get; set; }
         public bool ManageQuantityAsInteger { get; set; }
-        public double Quantity { get; set; }
+        public decimal Quantity { get; set; }
+        public string Unit { get; set; } = string.Empty;
     }
 }

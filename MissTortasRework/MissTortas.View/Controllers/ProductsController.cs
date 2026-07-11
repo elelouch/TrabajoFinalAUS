@@ -35,7 +35,8 @@ namespace MissTortas.View.Controllers
                 ProductId = productId,
                 CategoryId = dto.CategoryId,
                 Quantity = dto.Quantity,
-                Description = dto.Description
+                Description = dto.Description,
+                Enabled = dto.Enabled
             };
             var product = await productService.UpdateProductAsync(productDto);
             return product;
@@ -51,7 +52,9 @@ namespace MissTortas.View.Controllers
                 Name = dto.Name,
                 Description = dto.Description,
                 CategoryId = dto.CategoryId,
-                ManageQuantityAsInteger = dto.ManageQuantityAsInteger
+                ManageQuantityAsInteger = dto.ManageQuantityAsInteger,
+                Quantity = dto.Quantity,
+                Unit = dto.Unit
             };
             var p = await productService.CreateProductAsync(productDto);
             return p;

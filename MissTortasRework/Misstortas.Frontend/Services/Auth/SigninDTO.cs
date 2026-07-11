@@ -3,7 +3,7 @@
     public class SigninDTO
     {
         public string AccessToken { get; set; } = string.Empty;
-        public bool Success { get; set; }
+        public string RefreshToken { get; set; } = string.Empty;
         public string Result { get; set; } = string.Empty;
     }
 }

@@ -1,0 +1,39 @@
+﻿using MissTortas.Desktop.Services.DTO;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MissTortas.Desktop.Services.Shared
+{
+    public static class ErrorDisplay
+    {
+        public static void Show(IWin32Window owner, Exception ex)
+        {
+            var (caption, message, icon) = ex switch
+            {
+                ApiException apiEx => (
+                    apiEx.Problem.Title ?? "Error",
+                    BuildMessage(apiEx.Problem),
+                    MessageBoxIcon.Warning),
+
+                SessionExpiredException => (
+                    "Session Expired",
+                    ex.Message,
+                    MessageBoxIcon.Information),
+
+                _ => (
+                    "Unexpected Error",
+                    "Something went wrong. Please try again.",
+                    MessageBoxIcon.Error)
+            };
+
+            MessageBox.Show(owner, message, caption, MessageBoxButtons.OK, icon);
+        }
+
+        private static string BuildMessage(ProblemDetailsDto problem)
+        {
+            var msg = problem.Detail ?? "The request could not be completed.";
+            return problem.Code is not null ? $"{msg}\n\n(Error code: {problem.Code})" : msg;
+        }
+    }
+}

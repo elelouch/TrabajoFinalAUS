@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class ChildAppendException(string message) : Exception(message)
+    public class ChildAppendException : BusinessException
     {
+        public ChildAppendException(string message, string? code = null) : base(message, code) { }
     }
 }

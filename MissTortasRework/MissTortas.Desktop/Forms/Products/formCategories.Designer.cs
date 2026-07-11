@@ -33,7 +33,6 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             btnAddChild = new Button();
             btnCancel = new Button();
-            btnRemove = new Button();
             btnModifyCategory = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -45,7 +44,7 @@
             tvCategories.Location = new Point(3, 3);
             tvCategories.Name = "tvCategories";
             tableLayoutPanel1.SetRowSpan(tvCategories, 2);
-            tvCategories.Size = new Size(394, 444);
+            tvCategories.Size = new Size(407, 462);
             tvCategories.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -61,7 +60,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.Size = new Size(827, 468);
             tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -70,10 +69,9 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(btnAddChild, 0, 0);
-            tableLayoutPanel2.Controls.Add(btnRemove, 0, 1);
             tableLayoutPanel2.Controls.Add(btnCancel, 0, 3);
             tableLayoutPanel2.Controls.Add(btnModifyCategory, 0, 2);
-            tableLayoutPanel2.Location = new Point(403, 3);
+            tableLayoutPanel2.Location = new Point(416, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 4;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
@@ -103,15 +101,6 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
-            // btnRemove
-            // 
-            btnRemove.Location = new Point(3, 57);
-            btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(75, 23);
-            btnRemove.TabIndex = 3;
-            btnRemove.Text = "Remove";
-            btnRemove.UseVisualStyleBackColor = true;
-            // 
             // btnModifyCategory
             // 
             btnModifyCategory.Location = new Point(3, 111);
@@ -129,7 +118,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(827, 468);
             Controls.Add(tableLayoutPanel1);
             Name = "formCategories";
             StartPosition = FormStartPosition.CenterScreen;
@@ -148,7 +137,6 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button btnAddChild;
         private Button btnCancel;
-        private Button btnRemove;
         private Button btnModifyCategory;
     }
 }

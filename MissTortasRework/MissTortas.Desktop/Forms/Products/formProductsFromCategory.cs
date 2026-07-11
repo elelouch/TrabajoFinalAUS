@@ -26,8 +26,23 @@ namespace MissTortas.Desktop.Forms.Products
         private async void formProductsFromCategory_Load(object sender, EventArgs e)
         {
             var pc = await productService.GetProductsFromCategoryAsync(productCategory.ProductCategoryId);
-            products = [..pc];
+            products = [.. pc];
             dgvProducts.DataSource = products;
+        }
+
+        private void btnAddProduct_Click(object sender, EventArgs e)
+        {
+            var createProductForm = new formCreateStockProduct(productService, productCategory);
+            createProductForm.ShowDialog();
+        }
+
+        private void btnModifyProduct_Click(object sender, EventArgs e)
+        {
+            if(dgvProducts.SelectedRows[0].DataBoundItem is not Product product)
+                return;
+
+            var modifyProductForm = new formCreateStockProduct(productService, productCategory, product);
+            modifyProductForm.ShowDialog();
         }
     }
 }

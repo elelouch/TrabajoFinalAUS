@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class PaymentFailedException(string message) : Exception(message)
+    public class PaymentFailedException : BusinessException
     {
+        public PaymentFailedException(string message, string? code = null) : base(message, code) { }
     }
 }

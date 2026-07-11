@@ -1,6 +1,7 @@
 ﻿using MissTortas.Domain.Products;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Mapping.Interfaces;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Services.Mapping
 {
@@ -10,6 +11,7 @@ namespace MissTortas.Services.Mapping
         {
             return new ProductCategoryDTO
             {
+                Enabled = category.Enabled,
                 ProductCategoryId = category.ProductCategoryId,
                 ParentId = category.ParentId,
                 IsFinal = category.IsFinal,
@@ -77,7 +79,11 @@ namespace MissTortas.Services.Mapping
                 Id = product.ProductId,
                 Name = product.Name,
                 Description = product.ProductDetail?.Description ?? string.Empty,
-                CategoryId = product.ProductCategoryId
+                CategoryId = product.ProductCategoryId,
+                Unit = product.Unit,
+                Quantity = product.Quantity,
+                ManageQuantityAsInteger = product.ManageQuantityAsInteger,
+                Enabled = product.Enabled
             };
         }
 
@@ -111,6 +117,26 @@ namespace MissTortas.Services.Mapping
         public IEnumerable<SaleProductDTO> SaleProductToDTO(IEnumerable<SaleProduct> products)
         {
             return products.Select(prod => SaleProductToDTO(prod));
+        }
+
+        public ProductDTO ProductToDTO(ProductDADto product)
+        {
+            return new ProductDTO
+            {
+                CategoryId = product.CategoryId,
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Unit = product.Unit,
+                Quantity = product.Quantity,
+                ManageQuantityAsInteger = product.ManageQuantityAsInteger,
+                Enabled = product.Enabled
+            };
+        }
+
+        public IEnumerable<ProductDTO> ProductToDTO(IEnumerable<ProductDADto> products)
+        {
+            return products.Select(p => ProductToDTO(p));
         }
     }
 }

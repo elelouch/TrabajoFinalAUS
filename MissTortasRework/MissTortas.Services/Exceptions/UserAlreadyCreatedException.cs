@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    internal class UserAlreadyCreatedException(string message) : AlreadyCreatedException(message)
+    public class UserAlreadyCreatedException : BusinessException
     {
+        public UserAlreadyCreatedException(string message, string? code = null) : base(message, code) { }
     }
 }

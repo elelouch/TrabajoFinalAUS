@@ -1,5 +1,6 @@
 ﻿using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.DTO;
+using MissTortas.Desktop.Services.Shared;
 
 namespace MissTortas.Desktop.Forms
 {
@@ -19,25 +20,22 @@ namespace MissTortas.Desktop.Forms
                 Email = this.txtUsername.Text,
                 Password = this.txtPassword.Text
             };
+
             try
             {
                 await _authService.SignInAsync(dto);
                 this.DialogResult = DialogResult.OK;
             }
-            catch (HttpRequestException exc)
+            catch (ApiException ex) when (ex.Problem.Code == "USR2F1")
             {
-                MessageBox.Show(
-                    $"Username or password invalid. Try again. Error: {exc.Message}",
-                    "SignIn",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                // requires two-factor — handle distinctly from a generic error
+                // e.g. open a 2FA form here instead of showing a message box
+                ErrorDisplay.Show(this, ex);
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            catch (Exception ex)
+            {
+                ErrorDisplay.Show(this, ex);
+            }
         }
     }
 }

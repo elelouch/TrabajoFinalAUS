@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class InvalidOrderStateException(string message) : InvalidStateException(message)
+    public class InvalidOrderStateException : BusinessException
     {
+        public InvalidOrderStateException(string message, string? code = null) : base(message, code) { }
     }
 }

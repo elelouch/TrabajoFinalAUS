@@ -1,6 +1,7 @@
 ﻿namespace MissTortas.Services.Exceptions
 {
-    public class ConsultancyNotFoundException(string message) : EntityNotFoundException(message)
+    public class ConsultancyNotFoundException : BusinessException
     {
+        public ConsultancyNotFoundException(string message, string? code = null) : base(message, code) { }
     }
 }

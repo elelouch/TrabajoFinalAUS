@@ -49,14 +49,7 @@
             errorMessage = null;
 
             var responseDTO = await AuthClient.SignInUserAsync(userSignin);
-            if (responseDTO.Success)
-            {
-                Navigation.NavigateTo($"/postlogin?Token={responseDTO.AccessToken}");
-            }
-            else
-            {
-                errorMessage = responseDTO.Result;
-            }
+            Navigation.NavigateTo($"/postlogin?Token={responseDTO.AccessToken}");
         }
         catch (Exception ex)
         {

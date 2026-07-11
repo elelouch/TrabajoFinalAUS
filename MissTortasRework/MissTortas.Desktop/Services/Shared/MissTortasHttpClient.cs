@@ -3,12 +3,14 @@ using MissTortas.Desktop.Services.DTO;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace MissTortas.Desktop.Services.Shared
 {
     public sealed class MissTortasHttpClient : IMissTortasHttpClient
     {
         private readonly HttpClient httpClient = new();
+        private readonly SemaphoreSlim refreshLock = new(1, 1);
 
         public MissTortasHttpClient()
         {
@@ -24,41 +26,83 @@ namespace MissTortas.Desktop.Services.Shared
             );
             httpClient.BaseAddress = new Uri("https://localhost:7245/");
         }
+
         private void SetAuthorizationHeader()
         {
-            if (!string.IsNullOrEmpty(MissTortasToken.AccessToken))
+            httpClient.DefaultRequestHeaders.Authorization =
+                !string.IsNullOrEmpty(MissTortasToken.AccessToken)
+                    ? new AuthenticationHeaderValue("Bearer", MissTortasToken.AccessToken)
+                    : null;
+        }
+
+        public Task<T?> GetAsync<T>(string endpoint) =>
+            ExecuteWithRetry<T>(() => httpClient.GetAsync(endpoint));
+
+        public Task<T?> PostAsync<T>(string endpoint, object? data = null) =>
+            ExecuteWithRetry<T>(() => httpClient.PostAsJsonAsync(endpoint, data));
+
+        public Task<T?> PutAsync<T>(string endpoint, object? data = null) =>
+            ExecuteWithRetry<T>(() => httpClient.PutAsJsonAsync(endpoint, data));
+
+        public Task<T?> DeleteAsync<T>(string endpoint) =>
+            ExecuteWithRetry<T>(() => httpClient.DeleteAsync(endpoint));
+
+        /// <summary>
+        /// Sends the request via <paramref name="sendRequest"/>. On a 401, attempts a token
+        /// refresh (only once per call, shared across concurrent callers) and retries the
+        /// request exactly one time with the refreshed token.
+        /// </summary>
+        private async Task<T?> ExecuteWithRetry<T>(Func<Task<HttpResponseMessage>> sendRequest)
+        {
+            var response = await sendRequest();
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", MissTortasToken.AccessToken);
+                var refreshed = await TryRefreshTokenAsync();
+                if (refreshed)
+                {
+                    response.Dispose();
+                    response = await sendRequest(); // retry once, with the new Authorization header
+                }
             }
-            else
+
+            return await HandleResponse<T>(response);
+        }
+
+        /// <summary>
+        /// Refreshes the access token. Safe to call from concurrent requests — only the first
+        /// caller actually hits the network; the rest wait and reuse its result.
+        /// </summary>
+        private async Task<bool> TryRefreshTokenAsync()
+        {
+            await refreshLock.WaitAsync();
+            try
             {
-                httpClient.DefaultRequestHeaders.Authorization = null;
+                // another concurrent request may have already refreshed while we waited
+                var refreshToken = MissTortasToken.RefreshToken;
+                if (string.IsNullOrEmpty(refreshToken))
+                    return false;
+
+                var refreshRequest = new TokenRefreshRequest { RefreshToken = refreshToken };
+                var newResponse = await httpClient.PostAsJsonAsync("auth/refresh", refreshRequest);
+
+                if (!newResponse.IsSuccessStatusCode)
+                    return false;
+
+                var refreshResponse = await newResponse.Content.ReadFromJsonAsync<TokenRefreshResponse>();
+                if (refreshResponse is null)
+                    return false;
+
+                MissTortasToken.AccessToken = refreshResponse.AccessToken;
+                MissTortasToken.RefreshToken = refreshResponse.RefreshToken;
+                SetAuthorizationHeader(); // update the default header so the retry picks it up
+
+                return true;
             }
-        }
-
-        public async Task<T?> GetAsync<T>(string endpoint)
-        {
-            var response = await httpClient.GetAsync(endpoint);
-            return await HandleResponse<T>(response);
-        }
-
-        public async Task<T?> PostAsync<T>(string endpoint, object? data = null)
-        {
-            var response = await httpClient.PostAsJsonAsync(endpoint, data);
-            return await HandleResponse<T>(response);
-        }
-
-        public async Task<T?> PutAsync<T>(string endpoint, object? data = null)
-        {
-            var response = await httpClient.PutAsJsonAsync(endpoint, data);
-            return await HandleResponse<T>(response);
-        }
-
-        public async Task<T?> DeleteAsync<T>(string endpoint)
-        {
-            var response = await httpClient.DeleteAsync(endpoint);
-            return await HandleResponse<T>(response);
+            finally
+            {
+                refreshLock.Release();
+            }
         }
 
         private async Task<T?> HandleResponse<T>(HttpResponseMessage response)
@@ -71,26 +115,32 @@ namespace MissTortas.Desktop.Services.Shared
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 
-            var refreshToken = MissTortasToken.RefreshToken;
-            if (response.StatusCode == HttpStatusCode.Unauthorized && !string.IsNullOrEmpty(refreshToken))
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new SessionExpiredException("Unauthorized.");
+
+            var problem = await TryReadProblemDetailsAsync(response);
+            throw new ApiException(problem, response.StatusCode);
+        }
+
+        private static async Task<ProblemDetailsDto> TryReadProblemDetailsAsync(HttpResponseMessage response)
+        {
+            try
             {
-                var refreshRequest = new TokenRefreshRequest { RefreshToken = refreshToken };
-                var newResponse = await this.httpClient.PostAsJsonAsync("auth/refresh", refreshRequest);
-                var refreshResponse = await newResponse.Content.ReadFromJsonAsync<TokenRefreshResponse>();
-                if (refreshResponse is not null)
-                {
-                    MissTortasToken.AccessToken = refreshResponse.AccessToken;
-                    MissTortasToken.RefreshToken = refreshResponse.RefreshToken;
-                }
+                var problem = await response.Content.ReadFromJsonAsync<ProblemDetailsDto>();
+                if (problem is not null)
+                    return problem;
+            }
+            catch (JsonException)
+            {
+                // body wasn't ProblemDetails-shaped
             }
 
-            if(response.StatusCode == HttpStatusCode.NotFound)
+            return new ProblemDetailsDto
             {
-                return default;
-            }
-
-            var error = await response.Content.ReadFromJsonAsync<ErrorDTO>();
-            throw new HttpRequestException(error?.Message ?? "Request failed");
+                Title = "Request failed",
+                Status = (int)response.StatusCode,
+                Detail = response.ReasonPhrase
+            };
         }
     }
 }

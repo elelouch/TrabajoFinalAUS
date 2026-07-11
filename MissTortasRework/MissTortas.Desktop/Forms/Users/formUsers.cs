@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Forms.Users;
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
 
@@ -49,10 +50,17 @@ namespace MissTortas.Desktop.Forms.Users
 
         private async Task LoadDataGridView()
         {
-            var allUsers = await usersService.GetAllUsersAsync();
-            users = allUsers;
-            shownUsers = new(allUsers);
-            dgvUsers.DataSource = shownUsers;
+            try
+            {
+                var allUsers = await usersService.GetAllUsersAsync();
+                users = allUsers;
+                shownUsers = new(allUsers);
+                dgvUsers.DataSource = shownUsers;
+            }
+            catch (ApiException ex)
+            {
+                ErrorDisplay.Show(this, ex);
+            }
         }
 
         private void btnEditUser_Click(object sender, EventArgs e)

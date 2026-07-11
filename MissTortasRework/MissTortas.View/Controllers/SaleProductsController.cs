@@ -30,7 +30,8 @@ namespace MissTortas.View.Controllers
                 Quantity = dto.SaleQuantity,
                 CategoryId = dto.CategoryId,
                 SaleImagePath = dto.SaleImagePath,
-                IsAvailable = false
+                IsAvailable = false,
+                Unit = dto.Unit
             };
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             var retFiles = await simpleStorage.SaveProductFileAsync(files, saleProduct.Id);
