@@ -50,7 +50,7 @@ namespace MissTortas.Desktop.Services.ProductService
 
         public async Task<Product> ModifyProductAsync(Product product)
         {
-            var ret = await httpClient.PutAsync<Product>($"products/{product.CategoryId}");
+            var ret = await httpClient.PutAsync<Product>($"products/{product.Id}", product);
             return ret!;
         }
 

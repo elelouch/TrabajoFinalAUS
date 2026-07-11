@@ -38,6 +38,8 @@ namespace MissTortas.Desktop.Forms.Products
 
         private void btnModifyProduct_Click(object sender, EventArgs e)
         {
+            if (dgvProducts.SelectedRows.Count <= 0)
+                return;
             if(dgvProducts.SelectedRows[0].DataBoundItem is not Product product)
                 return;
 

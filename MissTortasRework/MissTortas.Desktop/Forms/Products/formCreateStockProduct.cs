@@ -89,8 +89,9 @@ namespace MissTortas.Desktop.Forms.Products
                 }
                 else
                 {
+                    product.Id = productToModify.Id;
                     var retrieveProduct = await productService.ModifyProductAsync(product);
-
+                    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 Dispose();
             }
