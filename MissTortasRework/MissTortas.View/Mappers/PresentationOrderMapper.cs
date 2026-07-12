@@ -7,7 +7,7 @@ using MissTortas.View.DTO.Orders;
 
 namespace MissTortas.View.Mappers
 {
-    public class ControllerOrderMapper(UserManager<ApplicationUser> userManager) : IControllerOrderMapper
+    public class PresentationOrderMapper(UserManager<ApplicationUser> userManager) : IPresentationOrderMapper
     {
         public async Task<SetupOrderDTO> FromCreateOrderToSetupOrder(CreateOrder createOrder)
         {

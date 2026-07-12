@@ -24,7 +24,7 @@ namespace MissTortas.View.Mappers
             return new SaleProductResponse
             {
                 Id = dto.Id,
-                Price = dto.Price,
+                SalePrice = dto.Price,
                 Description = dto.Description,
                 AllowDecimalAsk = dto.AllowDecimalAsk,
                 Quantity = dto.Quantity,
@@ -40,7 +40,12 @@ namespace MissTortas.View.Mappers
 
         public List<SaleProductResponse> MapDtoToResponse(IEnumerable<SaleProductDTO> dtos, Dictionary<long, List<string>> filePaths)
         {
-            return [.. dtos.Select(dto => MapDtoToResponse(dto, filePaths[dto.Id]))];
+            return [.. dtos.Select(dto =>
+            {
+                var filePath = filePaths.TryGetValue(dto.Id, out var sape);
+                var a = MapDtoToResponse(dto, sape ?? []);
+                return a;
+            })];
         }
 
         public UpdateSaleProductDTO MapUpdateRequestToDto(long saleProductId, UpdateSaleProductRequest request)

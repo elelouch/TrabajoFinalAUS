@@ -128,7 +128,6 @@ namespace MissTortas.View.Controllers
             {
                 return BadRequest("Refresh token is required.");
             }
-
             try
             {
                 var result = await securityService.RefreshTokenAsync(request.RefreshToken);

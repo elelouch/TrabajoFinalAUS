@@ -21,7 +21,7 @@ namespace MissTortas.Desktop.Forms.Products
         {
         }
 
-        private async void formProductsFromCategory_Load(object sender, EventArgs e)
+        private async void LoadGrid()
         {
             try
             {
@@ -51,16 +51,21 @@ namespace MissTortas.Desktop.Forms.Products
             }
         }
 
+        private async void formProductsFromCategory_Load(object sender, EventArgs e)
+        {
+            LoadGrid();
+        }
+
         private void btnAddProduct_Click(object sender, EventArgs e)
         {
             var createProductForm = productCategory != null ?
                 new formCreateSaleProduct(productService, productCategory)
                 : new formCreateSaleProduct(productService);
-            createProductForm.OnSaleProductCreated += CreateProductForm_OnStockProductCreated;
+            createProductForm.OnSaleProductCreated += CreateProductForm_OnSaleProductCreated;
             createProductForm.ShowDialog();
         }
 
-        private void CreateProductForm_OnStockProductCreated(object? sender, Events.SaleProductCreatedArgs e)
+        private void CreateProductForm_OnSaleProductCreated(object? sender, Events.SaleProductCreatedArgs e)
         {
             products.Add(e.SaleProduct);
         }
@@ -72,15 +77,15 @@ namespace MissTortas.Desktop.Forms.Products
                 MessageBox.Show("Please, select a product", "Select a product");
                 return;
             }
-            if (dgvProducts.SelectedRows[0].DataBoundItem is not Product product)
+            if (dgvProducts.SelectedRows[0].DataBoundItem is not SaleProduct product)
                 return;
 
             var modifyProductForm = new formCreateSaleProduct(productService, productCategory, product);
-            modifyProductForm.OnSaleProductModified += ModifyProductForm_OnStockProductModified;
+            modifyProductForm.OnSaleProductModified += ModifyProductForm_OnSaleProductModified;
             modifyProductForm.ShowDialog();
         }
 
-        private void ModifyProductForm_OnStockProductModified(object? sender, Events.SaleProductModifiedArgs e)
+        private void ModifyProductForm_OnSaleProductModified(object? sender, Events.SaleProductModifiedArgs e)
         {
             var p = products.FirstOrDefault(p => p.Id == e.SaleProduct.Id);
             if (p is null)
@@ -88,6 +93,11 @@ namespace MissTortas.Desktop.Forms.Products
                 return;
             }
             products[products.IndexOf(p)] = e.SaleProduct;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadGrid();
         }
     }
 }

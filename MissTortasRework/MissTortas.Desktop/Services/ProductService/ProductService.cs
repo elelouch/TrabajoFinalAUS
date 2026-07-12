@@ -89,9 +89,49 @@ namespace MissTortas.Desktop.Services.ProductService
             return CreateSaleProductAsync(sp, []);
         }
 
-        public async Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp, List<(Stream, string)> files)
+        public async Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp, Dictionary<string, string> files)
         {
-            var ret = await httpClient.PostAsFormAsync<SaleProduct>("saleproducts", sp, files);
+            var body = ProductMapper.ToCreateRequest(sp);
+            List<(Stream stream, string fileName)> fileStreams = [];
+
+            try
+            {
+                foreach (var file in files)
+                {
+                    string fileName = file.Key;      // File name
+                    string filePath = file.Value;    // Path to file
+                    FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                    fileStreams.Add((stream, fileName));
+                }
+                var ret = await httpClient.PostAsFormAsync<SaleProduct>("saleproducts", body, fileStreams);
+                return ret!;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to create sale product: {ex.Message}", "Error");
+                throw;
+            }
+            finally
+            {
+                // Close all streams
+                foreach (var (stream, fileName) in fileStreams)
+                {
+                    try
+                    {
+                        stream?.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error closing stream for {fileName}: {ex.Message}", "Warning");
+                    }
+                }
+            }
+        }
+
+        public Task<SaleProduct> ModifySaleProductAsync(SaleProduct sp)
+        {
+            var body = ProductMapper.ToUpdateRequest(sp);
+            var ret = httpClient.PutAsync<SaleProduct>($"saleproduct/{sp.Id}", body);
             return ret!;
         }
     }

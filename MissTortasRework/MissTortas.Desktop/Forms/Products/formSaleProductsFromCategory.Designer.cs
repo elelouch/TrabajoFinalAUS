@@ -31,20 +31,18 @@
             components = new System.ComponentModel.Container();
             tlpProductsFromCategory = new TableLayoutPanel();
             dgvProducts = new DataGridView();
+            Id = new DataGridViewTextBoxColumn();
+            SaleProductName = new DataGridViewTextBoxColumn();
+            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            quantityDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            salePriceDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            stockProductIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             saleProductBindingSource = new BindingSource(components);
             tableLayoutPanel1 = new TableLayoutPanel();
             btnAddProduct = new Button();
             btnModifyProduct = new Button();
             productBindingSource = new BindingSource(components);
-            StockProductId = new DataGridViewTextBoxColumn();
-            Id = new DataGridViewTextBoxColumn();
-            Name = new DataGridViewTextBoxColumn();
-            Description = new DataGridViewTextBoxColumn();
-            Quantity = new DataGridViewTextBoxColumn();
-            CategoryId = new DataGridViewTextBoxColumn();
-            ManageQuantityAsInteger = new DataGridViewCheckBoxColumn();
-            Unit = new DataGridViewTextBoxColumn();
-            Enabled = new DataGridViewCheckBoxColumn();
+            btnRefresh = new Button();
             tlpProductsFromCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)saleProductBindingSource).BeginInit();
@@ -75,7 +73,7 @@
             dgvProducts.AllowUserToDeleteRows = false;
             dgvProducts.AutoGenerateColumns = false;
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { StockProductId, Id, Name, Description, Quantity, CategoryId, ManageQuantityAsInteger, Unit, Enabled });
+            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { Id, SaleProductName, descriptionDataGridViewTextBoxColumn, quantityDataGridViewTextBoxColumn, salePriceDataGridViewTextBoxColumn, stockProductIdDataGridViewTextBoxColumn });
             tlpProductsFromCategory.SetColumnSpan(dgvProducts, 2);
             dgvProducts.DataSource = saleProductBindingSource;
             dgvProducts.Dock = DockStyle.Fill;
@@ -85,6 +83,48 @@
             tlpProductsFromCategory.SetRowSpan(dgvProducts, 2);
             dgvProducts.Size = new Size(682, 444);
             dgvProducts.TabIndex = 0;
+            // 
+            // Id
+            // 
+            Id.DataPropertyName = "Id";
+            Id.HeaderText = "Id";
+            Id.Name = "Id";
+            Id.ReadOnly = true;
+            // 
+            // SaleProductName
+            // 
+            SaleProductName.DataPropertyName = "Name";
+            SaleProductName.HeaderText = "Name";
+            SaleProductName.Name = "SaleProductName";
+            SaleProductName.ReadOnly = true;
+            // 
+            // descriptionDataGridViewTextBoxColumn
+            // 
+            descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            descriptionDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // quantityDataGridViewTextBoxColumn
+            // 
+            quantityDataGridViewTextBoxColumn.DataPropertyName = "Quantity";
+            quantityDataGridViewTextBoxColumn.HeaderText = "Quantity";
+            quantityDataGridViewTextBoxColumn.Name = "quantityDataGridViewTextBoxColumn";
+            quantityDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // salePriceDataGridViewTextBoxColumn
+            // 
+            salePriceDataGridViewTextBoxColumn.DataPropertyName = "SalePrice";
+            salePriceDataGridViewTextBoxColumn.HeaderText = "SalePrice";
+            salePriceDataGridViewTextBoxColumn.Name = "salePriceDataGridViewTextBoxColumn";
+            salePriceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // stockProductIdDataGridViewTextBoxColumn
+            // 
+            stockProductIdDataGridViewTextBoxColumn.DataPropertyName = "StockProductId";
+            stockProductIdDataGridViewTextBoxColumn.HeaderText = "StockProductId";
+            stockProductIdDataGridViewTextBoxColumn.Name = "stockProductIdDataGridViewTextBoxColumn";
+            stockProductIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // saleProductBindingSource
             // 
@@ -96,6 +136,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(btnAddProduct, 0, 0);
             tableLayoutPanel1.Controls.Add(btnModifyProduct, 0, 1);
+            tableLayoutPanel1.Controls.Add(btnRefresh, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(691, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -132,68 +173,16 @@
             // 
             productBindingSource.DataSource = typeof(Model.Product);
             // 
-            // StockProductId
+            // btnRefresh
             // 
-            StockProductId.DataPropertyName = "StockProductId";
-            StockProductId.HeaderText = "StockProductId";
-            StockProductId.Name = "StockProductId";
-            StockProductId.ReadOnly = true;
-            // 
-            // Id
-            // 
-            Id.DataPropertyName = "Id";
-            Id.HeaderText = "Id";
-            Id.Name = "Id";
-            Id.ReadOnly = true;
-            // 
-            // Name
-            // 
-            Name.DataPropertyName = "Name";
-            Name.HeaderText = "Name";
-            Name.Name = "Name";
-            Name.ReadOnly = true;
-            // 
-            // Description
-            // 
-            Description.DataPropertyName = "Description";
-            Description.HeaderText = "Description";
-            Description.Name = "Description";
-            Description.ReadOnly = true;
-            // 
-            // Quantity
-            // 
-            Quantity.DataPropertyName = "Quantity";
-            Quantity.HeaderText = "Quantity";
-            Quantity.Name = "Quantity";
-            Quantity.ReadOnly = true;
-            // 
-            // CategoryId
-            // 
-            CategoryId.DataPropertyName = "CategoryId";
-            CategoryId.HeaderText = "CategoryId";
-            CategoryId.Name = "CategoryId";
-            CategoryId.ReadOnly = true;
-            // 
-            // ManageQuantityAsInteger
-            // 
-            ManageQuantityAsInteger.DataPropertyName = "ManageQuantityAsInteger";
-            ManageQuantityAsInteger.HeaderText = "ManageQuantityAsInteger";
-            ManageQuantityAsInteger.Name = "ManageQuantityAsInteger";
-            ManageQuantityAsInteger.ReadOnly = true;
-            // 
-            // Unit
-            // 
-            Unit.DataPropertyName = "Unit";
-            Unit.HeaderText = "Unit";
-            Unit.Name = "Unit";
-            Unit.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            Enabled.DataPropertyName = "Enabled";
-            Enabled.HeaderText = "Enabled";
-            Enabled.Name = "Enabled";
-            Enabled.ReadOnly = true;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.Location = new Point(3, 61);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(100, 23);
+            btnRefresh.TabIndex = 2;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // formSaleProductsFromCategory
             // 
@@ -201,6 +190,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(tlpProductsFromCategory);
+            Name = "formSaleProductsFromCategory";
             Text = "Sale Products";
             Load += formProductsFromCategory_Load;
             tlpProductsFromCategory.ResumeLayout(false);
@@ -220,14 +210,12 @@
         private Button btnAddProduct;
         private Button btnModifyProduct;
         private BindingSource saleProductBindingSource;
-        private DataGridViewTextBoxColumn StockProductId;
         private DataGridViewTextBoxColumn Id;
-        private DataGridViewTextBoxColumn Name;
-        private DataGridViewTextBoxColumn Description;
-        private DataGridViewTextBoxColumn Quantity;
-        private DataGridViewTextBoxColumn CategoryId;
-        private DataGridViewCheckBoxColumn ManageQuantityAsInteger;
-        private DataGridViewTextBoxColumn Unit;
-        private DataGridViewCheckBoxColumn Enabled;
+        private DataGridViewTextBoxColumn SaleProductName;
+        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn quantityDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn salePriceDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn stockProductIdDataGridViewTextBoxColumn;
+        private Button btnRefresh;
     }
 }

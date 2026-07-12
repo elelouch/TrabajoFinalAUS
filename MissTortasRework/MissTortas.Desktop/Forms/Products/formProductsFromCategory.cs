@@ -20,8 +20,7 @@ namespace MissTortas.Desktop.Forms.Products
         public formProductsFromCategory(IProductService productService) : this(productService, null)
         {
         }
-
-        private async void formProductsFromCategory_Load(object sender, EventArgs e)
+        private async void LoadGrid()
         {
             try
             {
@@ -49,6 +48,10 @@ namespace MissTortas.Desktop.Forms.Products
                     this.Dispose();
                 }
             }
+        }
+        private async void formProductsFromCategory_Load(object sender, EventArgs e)
+        {
+            LoadGrid();
         }
 
         private void btnAddProduct_Click(object sender, EventArgs e)
@@ -88,6 +91,11 @@ namespace MissTortas.Desktop.Forms.Products
                 return;
             }
             products[products.IndexOf(p)] = e.Product;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadGrid();
         }
     }
 }

@@ -161,7 +161,7 @@ namespace MissTortas.Desktop.Services.Shared
                 foreach (var prop in properties)
                 {
                     var value = prop.GetValue(data);
-                    if (value != null)
+                    if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
                     {
                         content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
                     }
@@ -177,7 +177,28 @@ namespace MissTortas.Desktop.Services.Shared
                 }
             }
 
-            return await httpClient.PostAsync(endpoint, content);
+            // Temporarily remove the Accept header for this multipart request
+            var acceptHeader = httpClient.DefaultRequestHeaders.Accept.FirstOrDefault();
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+
+            try
+            {
+                return await httpClient.PostAsync(endpoint, content);
+            }
+            finally
+            {
+                // Restore the Accept header
+                if (acceptHeader != null)
+                {
+                    httpClient.DefaultRequestHeaders.Accept.Add(acceptHeader);
+                }
+                else
+                {
+                    httpClient.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json")
+                    );
+                }
+            }
         }
     }
 }

@@ -13,8 +13,9 @@ namespace MissTortas.Desktop.Services.ProductService
         public Task<ProductCategory?> CreateProductCategoryAsync(ProductCategory pc);
         public Task UpdateProductCategoryAsync(ProductCategory pc);
         public Task<Product> CreateProductAsync(Product pc);
+        public Task<SaleProduct> ModifySaleProductAsync(SaleProduct sp);
         public Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp);
-        public Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp, List<(Stream, string)> files);
+        public Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp, Dictionary<string, string> files);
         public Task<List<Product>> GetAllProductsAsync();
         public Task<List<SaleProduct>> GetAllSaleProductsAsync();
     }

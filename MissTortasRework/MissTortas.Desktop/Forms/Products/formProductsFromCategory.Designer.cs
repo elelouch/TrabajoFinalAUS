@@ -43,6 +43,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             btnAddProduct = new Button();
             btnModifyProduct = new Button();
+            btnRefresh = new Button();
             tlpProductsFromCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
@@ -149,6 +150,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(btnAddProduct, 0, 0);
             tableLayoutPanel1.Controls.Add(btnModifyProduct, 0, 1);
+            tableLayoutPanel1.Controls.Add(btnRefresh, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(691, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -180,6 +182,17 @@
             btnModifyProduct.Text = "Modify Product";
             btnModifyProduct.UseVisualStyleBackColor = true;
             btnModifyProduct.Click += btnModifyProduct_Click;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.Location = new Point(3, 61);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(100, 23);
+            btnRefresh.TabIndex = 2;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // formProductsFromCategory
             // 
@@ -213,5 +226,6 @@
         private Button btnAddProduct;
         private Button btnModifyProduct;
         private DataGridViewCheckBoxColumn Enabled;
+        private Button btnRefresh;
     }
 }

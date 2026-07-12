@@ -10,6 +10,6 @@
         public const string ManageOrders = "manage.orders";
         public const string PlaceOrders = "place.orders";
         public const string ManageProducts = "manage.products";
-
+        public const string ManageAssignedPreparations = "manage.products";
     }
 }

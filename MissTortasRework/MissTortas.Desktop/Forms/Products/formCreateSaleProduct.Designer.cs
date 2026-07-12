@@ -46,12 +46,14 @@
             openFilesList = new ListBox();
             btnUpload = new Button();
             btnRemove = new Button();
+            txtPrice = new TextBox();
+            lblPrice = new Label();
             SuspendLayout();
             // 
             // lblProductName
             // 
             lblProductName.AutoSize = true;
-            lblProductName.Location = new Point(252, 42);
+            lblProductName.Location = new Point(254, 29);
             lblProductName.Name = "lblProductName";
             lblProductName.Size = new Size(84, 15);
             lblProductName.TabIndex = 0;
@@ -60,7 +62,7 @@
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(252, 119);
+            lblCategory.Location = new Point(254, 106);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(55, 15);
             lblCategory.TabIndex = 1;
@@ -69,7 +71,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(252, 159);
+            label4.Location = new Point(254, 146);
             label4.Name = "label4";
             label4.Size = new Size(53, 15);
             label4.TabIndex = 3;
@@ -78,14 +80,14 @@
             // comboBoxCategory
             // 
             comboBoxCategory.FormattingEnabled = true;
-            comboBoxCategory.Location = new Point(343, 116);
+            comboBoxCategory.Location = new Point(345, 103);
             comboBoxCategory.Name = "comboBoxCategory";
             comboBoxCategory.Size = new Size(121, 23);
             comboBoxCategory.TabIndex = 2;
             // 
             // txtProductName
             // 
-            txtProductName.Location = new Point(343, 41);
+            txtProductName.Location = new Point(345, 28);
             txtProductName.Name = "txtProductName";
             txtProductName.Size = new Size(119, 23);
             txtProductName.TabIndex = 0;
@@ -93,16 +95,16 @@
             // chkManageQtyAsInteger
             // 
             chkManageQtyAsInteger.AutoSize = true;
-            chkManageQtyAsInteger.Location = new Point(334, 236);
+            chkManageQtyAsInteger.Location = new Point(334, 268);
             chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
             chkManageQtyAsInteger.Size = new Size(170, 19);
-            chkManageQtyAsInteger.TabIndex = 5;
+            chkManageQtyAsInteger.TabIndex = 6;
             chkManageQtyAsInteger.Text = "Manage quantity as integer";
             chkManageQtyAsInteger.UseVisualStyleBackColor = true;
             // 
             // txtQuantity
             // 
-            txtQuantity.Location = new Point(343, 156);
+            txtQuantity.Location = new Point(345, 143);
             txtQuantity.Name = "txtQuantity";
             txtQuantity.Size = new Size(121, 23);
             txtQuantity.TabIndex = 3;
@@ -110,7 +112,7 @@
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(252, 80);
+            lblDescription.Location = new Point(254, 67);
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(67, 15);
             lblDescription.TabIndex = 8;
@@ -118,7 +120,7 @@
             // 
             // txtDescription
             // 
-            txtDescription.Location = new Point(343, 77);
+            txtDescription.Location = new Point(345, 64);
             txtDescription.Name = "txtDescription";
             txtDescription.Size = new Size(121, 23);
             txtDescription.TabIndex = 1;
@@ -128,7 +130,7 @@
             btnConfirm.Location = new Point(295, 331);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(75, 23);
-            btnConfirm.TabIndex = 7;
+            btnConfirm.TabIndex = 8;
             btnConfirm.Text = "Confirm";
             btnConfirm.UseVisualStyleBackColor = true;
             btnConfirm.Click += btnConfirm_Click;
@@ -138,14 +140,14 @@
             btnCancel.Location = new Point(429, 331);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 8;
+            btnCancel.TabIndex = 9;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtUnitName
             // 
-            txtUnitName.Location = new Point(345, 196);
+            txtUnitName.Location = new Point(347, 183);
             txtUnitName.Name = "txtUnitName";
             txtUnitName.Size = new Size(119, 23);
             txtUnitName.TabIndex = 4;
@@ -153,7 +155,7 @@
             // lblUnitName
             // 
             lblUnitName.AutoSize = true;
-            lblUnitName.Location = new Point(252, 199);
+            lblUnitName.Location = new Point(254, 186);
             lblUnitName.Name = "lblUnitName";
             lblUnitName.Size = new Size(64, 15);
             lblUnitName.TabIndex = 13;
@@ -162,10 +164,10 @@
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
-            chkEnabled.Location = new Point(334, 277);
+            chkEnabled.Location = new Point(334, 293);
             chkEnabled.Name = "chkEnabled";
             chkEnabled.Size = new Size(61, 19);
-            chkEnabled.TabIndex = 6;
+            chkEnabled.TabIndex = 7;
             chkEnabled.Text = "Enable";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
@@ -186,7 +188,7 @@
             btnUpload.Location = new Point(606, 277);
             btnUpload.Name = "btnUpload";
             btnUpload.Size = new Size(75, 23);
-            btnUpload.TabIndex = 15;
+            btnUpload.TabIndex = 10;
             btnUpload.Text = "Upload";
             btnUpload.UseVisualStyleBackColor = true;
             btnUpload.Click += btnUpload_Click;
@@ -196,9 +198,26 @@
             btnRemove.Location = new Point(678, 277);
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(75, 23);
-            btnRemove.TabIndex = 16;
+            btnRemove.TabIndex = 11;
             btnRemove.Text = "Remove";
             btnRemove.UseVisualStyleBackColor = true;
+            btnRemove.Click += btnRemove_Click;
+            // 
+            // txtPrice
+            // 
+            txtPrice.Location = new Point(347, 229);
+            txtPrice.Name = "txtPrice";
+            txtPrice.Size = new Size(119, 23);
+            txtPrice.TabIndex = 5;
+            // 
+            // lblPrice
+            // 
+            lblPrice.AutoSize = true;
+            lblPrice.Location = new Point(254, 237);
+            lblPrice.Name = "lblPrice";
+            lblPrice.Size = new Size(33, 15);
+            lblPrice.TabIndex = 18;
+            lblPrice.Text = "Price";
             // 
             // formCreateSaleProduct
             // 
@@ -207,6 +226,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblPrice);
+            Controls.Add(txtPrice);
             Controls.Add(btnRemove);
             Controls.Add(btnUpload);
             Controls.Add(openFilesList);
@@ -252,5 +273,7 @@
         private ListBox openFilesList;
         private Button btnUpload;
         private Button btnRemove;
+        private TextBox txtPrice;
+        private Label lblPrice;
     }
 }

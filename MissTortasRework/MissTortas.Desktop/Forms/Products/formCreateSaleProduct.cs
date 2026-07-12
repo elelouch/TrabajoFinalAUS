@@ -2,6 +2,7 @@
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.Shared;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace MissTortas.Desktop.Forms.Products
@@ -10,17 +11,21 @@ namespace MissTortas.Desktop.Forms.Products
     {
         private readonly IProductService productService;
         private readonly ProductCategory? productCategory;
-        private readonly Product? productToModify;
+        private readonly SaleProduct? productToModify;
         private readonly long CategoryId;
         public event EventHandler<SaleProductCreatedArgs>? OnSaleProductCreated;
         public event EventHandler<SaleProductModifiedArgs>? OnSaleProductModified;
+        private readonly Dictionary<string, string> FilesUploaded;
+        private readonly BindingList<string> FileNames;
 
-        public formCreateSaleProduct(IProductService productService, ProductCategory? pc, Product? product)
+        public formCreateSaleProduct(IProductService productService, ProductCategory? pc, SaleProduct? product)
         {
             InitializeComponent();
             this.productService = productService;
             this.productCategory = pc;
             this.productToModify = product;
+            this.FilesUploaded = [];
+            this.FileNames = [];
         }
         public formCreateSaleProduct(IProductService productService, ProductCategory pc) : this(productService, pc, null) { }
         public formCreateSaleProduct(IProductService productService) : this(productService, null, null) { }
@@ -35,18 +40,18 @@ namespace MissTortas.Desktop.Forms.Products
         {
             try
             {
-
                 List<ProductCategory> cats = productCategory != null ? [productCategory] : await productService.GetCategoriesAsync(true, true);
                 comboBoxCategory.DataSource = cats;
                 comboBoxCategory.DisplayMember = nameof(ProductCategory.Name);
                 comboBoxCategory.ValueMember = nameof(ProductCategory.ProductCategoryId);
+                openFilesList.DataSource = FileNames;
 
                 if (productToModify != null)
                 {
                     this.Text = "Modify Product";
                     this.chkEnabled.Visible = true;
                     this.chkManageQtyAsInteger.Visible = false;
-                    ProductToForm(productToModify);
+                    SaleProductToForm(productToModify);
                 }
                 else
                 {
@@ -85,20 +90,20 @@ namespace MissTortas.Desktop.Forms.Products
         {
             try
             {
-                var product = FormToProduct();
-                //if (productToModify == null)
-                //{
-                //    var retrieveProduct = await productService.CreateSaleProductAsync(product);
-                //    RaiseOnSaleProductCreated(retrieveProduct);
-                //    MessageBox.Show("Product created successfully", "Product created", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
-                //else
-                //{
-                //    product.Id = productToModify.Id;
-                //    var retrieveProduct = await productService.ModifyProductAsync(product);
-                //    RaiseOnSaleProductModified(retrieveProduct);
-                //    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
+                var product = FormToSaleProduct();
+                if (productToModify == null)
+                {
+                    var retrieveProduct = await productService.CreateSaleProductAsync(product, FilesUploaded);
+                    RaiseOnSaleProductCreated(retrieveProduct);
+                    MessageBox.Show("Product created successfully", "Product created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    product.Id = productToModify.Id;
+                    var retrieveProduct = await productService.ModifySaleProductAsync(product);
+                    RaiseOnSaleProductModified(retrieveProduct);
+                    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 Dispose();
             }
             catch (ApiException exc)
@@ -109,21 +114,33 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 MessageBox.Show($"{exc.Message}", "Couldn't create product, check inputs.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show($"File not found: {ex.Message}", "Error");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Access denied to file {ex.Message}", "Error");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error");
+            }
         }
 
-        private Product FormToProduct()
+        private SaleProduct FormToSaleProduct()
         {
             var manageQtyAsInteger = chkManageQtyAsInteger.Checked;
             var qty = ParseQuantity(txtQuantity.Text, manageQtyAsInteger);
             var name = Validation.ValidateAndSanitize(txtProductName.Text, 3, 256);
             var description = Validation.ValidateAndSanitize(txtDescription.Text, 3, 256);
             var unit = Validation.ValidateAndSanitize(txtUnitName.Text, 3, 256);
-
+            var price = ParseQuantity(txtPrice.Text, null);
             if (comboBoxCategory.SelectedItem is not ProductCategory selected)
             {
                 throw new InvalidOperationException("Not valid item.");
             }
-            var newProduct = new Product
+            var newProduct = new SaleProduct
             {
                 Name = name,
                 Description = description,
@@ -131,12 +148,13 @@ namespace MissTortas.Desktop.Forms.Products
                 ManageQuantityAsInteger = manageQtyAsInteger,
                 CategoryId = selected.ProductCategoryId,
                 Unit = unit,
-                Enabled = chkEnabled.Checked
+                Enabled = chkEnabled.Checked,
+                SalePrice = price
             };
             return newProduct;
         }
 
-        private void ProductToForm(Product product)
+        private void SaleProductToForm(SaleProduct product)
         {
             txtProductName.Text = product.Name;
             txtDescription.Text = product.Description;
@@ -144,22 +162,50 @@ namespace MissTortas.Desktop.Forms.Products
             chkManageQtyAsInteger.Checked = product.ManageQuantityAsInteger;
             txtUnitName.Text = product.Unit;
             chkEnabled.Checked = product.Enabled;
+            txtPrice.Text = product.SalePrice.ToString();
         }
 
-        public static decimal ParseQuantity(string input, bool manageQuantityAsInteger)
+        public static decimal ParseQuantity(string input, bool? manageQuantityAsInteger)
         {
             if (!decimal.TryParse(input, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal quantity))
                 throw new FormatException($"'{input}' is not a valid quantity.");
 
-            return manageQuantityAsInteger
-                ? Math.Round(quantity, 0, MidpointRounding.AwayFromZero)
-                : quantity;
+            if (manageQuantityAsInteger is bool manageqty)
+            {
+                return manageqty
+                        ? Math.Round(quantity, 0, MidpointRounding.AwayFromZero)
+                        : quantity;
+            }
+            return Math.Round(quantity, 0, MidpointRounding.AwayFromZero);
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            var fileStream = ofdFiles.OpenFile();
-            fileStream.Dispose();
+            ofdFiles.Filter = "Image files (*.jpg;*.png;*.gif)|*.jpg;*.png;*.gif";
+            ofdFiles.CheckFileExists = true;
+            ofdFiles.Title = "Select the files to upload";
+            ofdFiles.Multiselect = true;
+
+            if (ofdFiles.ShowDialog() == DialogResult.OK)
+            {
+                var filePaths = ofdFiles.FileNames;
+                foreach (var fp in filePaths)
+                {
+                    var filename = Path.GetFileName(fp);
+                    FilesUploaded.Add(filename, fp);
+                    FileNames.Add(filename);
+                }
+            }
+
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (openFilesList.SelectedItem is string fileSelected)
+            {
+                FilesUploaded.Remove(fileSelected);
+                FileNames.Remove(fileSelected);
+            }
         }
     }
 }
