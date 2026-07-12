@@ -2,13 +2,13 @@
 
 namespace MissTortas.Desktop.Events
 {
-    public class StockProductCreatedArgs(Product pc)
+    public class SaleProductCreatedArgs(SaleProduct sp)
     {
-        public Product Product
+        public SaleProduct SaleProduct
         {
             get
             {
-                return pc;
+                return sp;
             }
         }
     }

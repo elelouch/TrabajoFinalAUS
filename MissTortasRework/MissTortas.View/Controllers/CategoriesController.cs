@@ -7,6 +7,7 @@ using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Products;
+using MissTortas.View.Mappers;
 
 namespace MissTortas.View.Controllers
 {
@@ -15,7 +16,8 @@ namespace MissTortas.View.Controllers
     public class CategoriesController(
         IProductService productService,
         IValidator<CreateProductCategoryRequest> productCategoryValidator,
-        ISimpleStorage simpleStorage
+        ISimpleStorage simpleStorage,
+        IPresentationProductMapper presentationProductMapper
     ) : ControllerBase
     {
         [AllowAnonymous]
@@ -23,13 +25,9 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<IEnumerable<SaleProductResponse>>> GetSaleProductsFromCategory(long categoryId)
         {
             var saleProducts = await productService.GetSaleProductsFromCategoryAsync(categoryId);
-            List<SaleProductResponse> ret = [];
-            foreach (var sp in saleProducts)
-            {
-                var saleProductFiles = await simpleStorage.GetProductFilesAsync(sp.Id);
-                var spDTO = new SaleProductResponse(sp) { FilePaths = [.. saleProductFiles.Select(f => f.Path)] };
-                ret.Add(spDTO);
-            }
+            var ids = saleProducts.Select(sp => sp.Id).ToArray();
+            var filePaths = await simpleStorage.GetProductFilesAsync(ids);
+            var ret = presentationProductMapper.MapDtoToResponse(saleProducts, filePaths);
             return Ok(ret);
         }
 
@@ -42,9 +40,9 @@ namespace MissTortas.View.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory([FromQuery] bool enabled)
+        public async Task<ActionResult<IEnumerable<ProductCategoryDTO>>> GetAllProductCategory([FromQuery] bool enabled, [FromQuery] bool final)
         {
-            var ps = await productService.AllProductCategoryAsync(enabled);
+            var ps = await productService.AllProductCategoryAsync(enabled, final);
             return Ok(ps);
         }
 

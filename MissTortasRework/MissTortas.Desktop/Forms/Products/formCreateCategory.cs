@@ -2,13 +2,6 @@
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Products
 {
@@ -58,7 +51,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 ErrorDisplay.Show(this, exc);
             }
-            catch(FormatException exc)
+            catch (FormatException exc)
             {
                 MessageBox.Show(
                     $"{exc.Message}",

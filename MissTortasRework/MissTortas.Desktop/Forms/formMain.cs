@@ -1,12 +1,12 @@
-﻿using MissTortas.Desktop.Services.AuthService;
+﻿using MissTortas.Desktop.Forms.Products;
+using MissTortas.Desktop.Forms.Roles;
+using MissTortas.Desktop.Forms.Users;
+using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.PermissionService;
+using MissTortas.Desktop.Services.ProductService;
+using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
-using MissTortas.Desktop.Forms.Users;
-using MissTortas.Desktop.Forms.Roles;
-using MissTortas.Desktop.Services.RoleService;
-using MissTortas.Desktop.Services.PermissionService;
-using MissTortas.Desktop.Forms.Products;
-using MissTortas.Desktop.Services.ProductService;
 
 namespace MissTortas.Desktop.Forms
 {
@@ -48,20 +48,7 @@ namespace MissTortas.Desktop.Forms
 
         private void formMain_Shown(object sender, EventArgs e)
         {
-            var authService = new AuthService(httpClient);
-            formLogin appLogin = new(authService);
-            mainMenuStrip.Visible = false;
-            var dialogRes = appLogin.ShowDialog();
-            if (dialogRes != DialogResult.OK)
-            {
-                this.Dispose();
-            }
-            mainMenuStrip.Visible = true;
-        }
-
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
+            ShowLogin();
         }
 
         private void usersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -132,6 +119,36 @@ namespace MissTortas.Desktop.Forms
         private void FormProducts_Disposed(object? sender, EventArgs e)
         {
             this.formCategories = null;
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var child in this.MdiChildren)
+            {
+                child.Close();
+            }
+            ShowLogin();
+        }
+
+        private void ShowLogin()
+        {
+            formLogin appLogin = new(authService);
+            mainMenuStrip.Visible = false;
+            var dialogRes = appLogin.ShowDialog();
+            if (dialogRes != DialogResult.OK)
+            {
+                this.Dispose();
+            }
+            mainMenuStrip.Visible = true;
+        }
+
+        private void productsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var productsForm = new formProducts(productService)
+            {
+                MdiParent = this
+            };
+            productsForm.Show();
         }
     }
 }

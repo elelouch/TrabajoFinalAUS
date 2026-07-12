@@ -1,6 +1,6 @@
 namespace MissTortas.Domain.Products
 {
-    public partial class SaleProduct
+    public class SaleProduct
     {
         public long SaleProductId { get; set; }
         public long ProductId { get; set; }

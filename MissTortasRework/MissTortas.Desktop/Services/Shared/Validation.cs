@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
-
-namespace MissTortas.Desktop.Services.Shared
+﻿namespace MissTortas.Desktop.Services.Shared
 {
     public class Validation
     {

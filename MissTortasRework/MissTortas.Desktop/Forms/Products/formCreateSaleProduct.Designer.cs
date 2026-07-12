@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Desktop.Forms.Products
 {
-    partial class formCreateStockProduct
+    partial class formCreateSaleProduct
     {
         /// <summary>
         /// Required designer variable.
@@ -42,6 +42,10 @@
             txtUnitName = new TextBox();
             lblUnitName = new Label();
             chkEnabled = new CheckBox();
+            ofdFiles = new OpenFileDialog();
+            openFilesList = new ListBox();
+            btnUpload = new Button();
+            btnRemove = new Button();
             SuspendLayout();
             // 
             // lblProductName
@@ -165,13 +169,47 @@
             chkEnabled.Text = "Enable";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
-            // formCreateStockProduct
+            // ofdFiles
+            // 
+            ofdFiles.FileName = "saleFiles";
+            // 
+            // openFilesList
+            // 
+            openFilesList.FormattingEnabled = true;
+            openFilesList.Location = new Point(606, 41);
+            openFilesList.Name = "openFilesList";
+            openFilesList.Size = new Size(147, 229);
+            openFilesList.TabIndex = 14;
+            // 
+            // btnUpload
+            // 
+            btnUpload.Location = new Point(606, 277);
+            btnUpload.Name = "btnUpload";
+            btnUpload.Size = new Size(75, 23);
+            btnUpload.TabIndex = 15;
+            btnUpload.Text = "Upload";
+            btnUpload.UseVisualStyleBackColor = true;
+            btnUpload.Click += btnUpload_Click;
+            // 
+            // btnRemove
+            // 
+            btnRemove.Location = new Point(678, 277);
+            btnRemove.Name = "btnRemove";
+            btnRemove.Size = new Size(75, 23);
+            btnRemove.TabIndex = 16;
+            btnRemove.Text = "Remove";
+            btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // formCreateSaleProduct
             // 
             AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnRemove);
+            Controls.Add(btnUpload);
+            Controls.Add(openFilesList);
             Controls.Add(chkEnabled);
             Controls.Add(lblUnitName);
             Controls.Add(txtUnitName);
@@ -186,7 +224,7 @@
             Controls.Add(label4);
             Controls.Add(lblCategory);
             Controls.Add(lblProductName);
-            Name = "formCreateStockProduct";
+            Name = "formCreateSaleProduct";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Manage Product";
             Load += formCreateStockProduct_Load;
@@ -210,5 +248,9 @@
         private TextBox txtUnitName;
         private Label lblUnitName;
         private CheckBox chkEnabled;
+        private OpenFileDialog ofdFiles;
+        private ListBox openFilesList;
+        private Button btnUpload;
+        private Button btnRemove;
     }
 }

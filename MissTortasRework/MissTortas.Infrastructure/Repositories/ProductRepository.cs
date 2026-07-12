@@ -13,7 +13,10 @@ namespace MissTortas.Infrastructure.Repositories
         private readonly DbSet<SaleProduct> saleProductSet = context.SaleProducts;
         private readonly DbSet<ProductCategory> productCategoriesSet = context.ProductCategories;
 
-        public Task<List<Product>> GetAllWithDetailAsync() => productsSet.Include(p => p.ProductDetail).ToListAsync();
+        public Task<List<ProductDADto>> GetAllWithDetailAsync()
+        {
+            return productsSet.ToProductDADto().ToListAsync();
+        }
 
         public async Task<Product> GetWithDetailAsync(long id) =>
             await productsSet.Include(p => p.ProductDetail).Where(p => p.ProductId == id).SingleAsync();
@@ -82,17 +85,7 @@ namespace MissTortas.Infrastructure.Repositories
         {
             var ret = await productsSet
                 .Where(p => p.ProductCategoryId == categoryId)
-                .Select(p => new ProductDADto
-                {
-                    Id = p.ProductId,
-                    CategoryId = p.ProductCategoryId,
-                    Description = p.ProductDetail.Description,
-                    Name = p.Name,
-                    Unit = p.Unit,
-                    Quantity = p.Quantity,
-                    ManageQuantityAsInteger = p.ManageQuantityAsInteger,
-                    Enabled = p.Enabled
-                })
+                .ToProductDADto()
                 .ToListAsync();
             return ret;
         }
@@ -100,6 +93,14 @@ namespace MissTortas.Infrastructure.Repositories
         public async Task<ProductCategory?> GetProductCategoryByNameAsync(string name)
         {
             return await productCategoriesSet.Where(p => p.Name == name).SingleOrDefaultAsync();
+        }
+
+        public async Task<List<SaleProductDADto>> GetAllSaleProductsAsync()
+        {
+            var ret = await saleProductSet
+                .ToSaleProductDADto()
+                .ToListAsync();
+            return ret;
         }
     }
 }

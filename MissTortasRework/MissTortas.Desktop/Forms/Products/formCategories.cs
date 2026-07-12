@@ -1,15 +1,5 @@
-﻿using MissTortas.Desktop.Forms.Roles;
-using MissTortas.Desktop.Services.PermissionService;
+﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
-using MissTortas.Desktop.Services.RoleService;
-using MissTortas.Desktop.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using MissTortas.Desktop.Services.Shared;
 
 namespace MissTortas.Desktop.Forms.Products
@@ -34,12 +24,24 @@ namespace MissTortas.Desktop.Forms.Products
                 LoadTreeView(categories);
                 tvCategories.EndUpdate();
                 tvCategories.NodeMouseDoubleClick += TvCategories_NodeMouseDoubleClick;
+                tvCategories.MouseMove += TvCategories_MouseMove;
             }
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
             }
 
+        }
+
+        private void TvCategories_MouseMove(object? sender, MouseEventArgs e)
+        {
+            var currentNode = tvCategories.GetNodeAt(e.Location);
+            if (currentNode?.Tag is not ProductCategory pc)
+                return;
+            if (pc.IsFinal)
+            {
+                tvCategories.Cursor = Cursors.Hand;
+            }
         }
 
         private async void TvCategories_NodeMouseDoubleClick(object? sender, TreeNodeMouseClickEventArgs e)
@@ -50,7 +52,7 @@ namespace MissTortas.Desktop.Forms.Products
             if (!category.IsFinal)
                 return;
 
-            var formProductsFromCategory = new formProductsFromCategory(category, productService);
+            var formProductsFromCategory = new formProductsFromCategory(productService, category);
             formProductsFromCategory.ShowDialog();
         }
 
@@ -123,7 +125,7 @@ namespace MissTortas.Desktop.Forms.Products
         private void CreateCategoryForm_OnCategoryCreated(object? sender, Events.CategoryCreatedArgs e)
         {
             var productCategory = e.Category;
-            if(!productCategory.Enabled)
+            if (!productCategory.Enabled)
             {
                 return;
             }
@@ -145,12 +147,12 @@ namespace MissTortas.Desktop.Forms.Products
         private void btnModifyCategory_Click(object sender, EventArgs e)
         {
             var selectedNode = tvCategories.SelectedNode;
-            if(selectedNode == null)
+            if (selectedNode == null)
             {
                 MessageBox.Show("Must select a node to modify.", "Modify node warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if(selectedNode.Tag is ProductCategory productCategory)
+            if (selectedNode.Tag is ProductCategory productCategory)
             {
                 var formModify = new formModifyCategory(productCategory, productService);
                 formModify.ShowDialog();

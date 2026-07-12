@@ -35,9 +35,9 @@ builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidat
 builder.Services.AddScoped<IValidator<MissTortasRegisterRequest>, MissTortasRegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateRoleRequest>, CreateRoleRequestValidator>();
 
-
 builder.Services.AddScoped<IControllerOrderMapper, ControllerOrderMapper>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
+builder.Services.AddScoped<IPresentationProductMapper, PresentationProductMapper>();
 
 builder.Services.AddMissTortasInfrastructure(builder.Configuration);
 builder.Services.AddMissTortasServices();

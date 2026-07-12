@@ -6,24 +6,24 @@ using System.Globalization;
 
 namespace MissTortas.Desktop.Forms.Products
 {
-    public partial class formCreateStockProduct : Form
+    public partial class formCreateSaleProduct : Form
     {
         private readonly IProductService productService;
         private readonly ProductCategory? productCategory;
         private readonly Product? productToModify;
         private readonly long CategoryId;
-        public event EventHandler<StockProductCreatedArgs>? OnStockProductCreated;
-        public event EventHandler<StockProductModifiedArgs>? OnStockProductModified;
+        public event EventHandler<SaleProductCreatedArgs>? OnSaleProductCreated;
+        public event EventHandler<SaleProductModifiedArgs>? OnSaleProductModified;
 
-        public formCreateStockProduct(IProductService productService, ProductCategory? pc, Product? product)
+        public formCreateSaleProduct(IProductService productService, ProductCategory? pc, Product? product)
         {
             InitializeComponent();
             this.productService = productService;
             this.productCategory = pc;
             this.productToModify = product;
         }
-        public formCreateStockProduct(IProductService productService, ProductCategory pc) : this(productService, pc, null) { }
-        public formCreateStockProduct(IProductService productService) : this(productService, null, null) { }
+        public formCreateSaleProduct(IProductService productService, ProductCategory pc) : this(productService, pc, null) { }
+        public formCreateSaleProduct(IProductService productService) : this(productService, null, null) { }
 
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -35,6 +35,7 @@ namespace MissTortas.Desktop.Forms.Products
         {
             try
             {
+
                 List<ProductCategory> cats = productCategory != null ? [productCategory] : await productService.GetCategoriesAsync(true, true);
                 comboBoxCategory.DataSource = cats;
                 comboBoxCategory.DisplayMember = nameof(ProductCategory.Name);
@@ -60,24 +61,24 @@ namespace MissTortas.Desktop.Forms.Products
             }
         }
 
-        private void RaiseOnStockProductCreated(Product pc)
+        private void RaiseOnSaleProductCreated(SaleProduct pc)
         {
-            var handler = OnStockProductCreated;
+            var handler = OnSaleProductCreated;
             if (handler == null)
             {
                 return;
             }
-            handler(this, new StockProductCreatedArgs(pc));
+            handler(this, new SaleProductCreatedArgs(pc));
         }
 
-        private void RaiseOnStockProductModified(Product pc)
+        private void RaiseOnSaleProductModified(SaleProduct pc)
         {
-            var handler = OnStockProductModified;
+            var handler = OnSaleProductModified;
             if (handler == null)
             {
                 return;
             }
-            handler(this, new StockProductModifiedArgs(pc));
+            handler(this, new SaleProductModifiedArgs(pc));
         }
 
         private async void btnConfirm_Click(object sender, EventArgs e)
@@ -85,19 +86,19 @@ namespace MissTortas.Desktop.Forms.Products
             try
             {
                 var product = FormToProduct();
-                if (productToModify == null)
-                {
-                    var retrieveProduct = await productService.CreateProductAsync(product);
-                    RaiseOnStockProductCreated(retrieveProduct);
-                    MessageBox.Show("Product created successfully", "Product created", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    product.Id = productToModify.Id;
-                    var retrieveProduct = await productService.ModifyProductAsync(product);
-                    RaiseOnStockProductModified(retrieveProduct);
-                    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                //if (productToModify == null)
+                //{
+                //    var retrieveProduct = await productService.CreateSaleProductAsync(product);
+                //    RaiseOnSaleProductCreated(retrieveProduct);
+                //    MessageBox.Show("Product created successfully", "Product created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+                //else
+                //{
+                //    product.Id = productToModify.Id;
+                //    var retrieveProduct = await productService.ModifyProductAsync(product);
+                //    RaiseOnSaleProductModified(retrieveProduct);
+                //    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
                 Dispose();
             }
             catch (ApiException exc)
@@ -153,6 +154,12 @@ namespace MissTortas.Desktop.Forms.Products
             return manageQuantityAsInteger
                 ? Math.Round(quantity, 0, MidpointRounding.AwayFromZero)
                 : quantity;
+        }
+
+        private void btnUpload_Click(object sender, EventArgs e)
+        {
+            var fileStream = ofdFiles.OpenFile();
+            fileStream.Dispose();
         }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Desktop.Services.PermissionService
 {
@@ -15,7 +12,7 @@ namespace MissTortas.Desktop.Services.PermissionService
         public async Task<List<string>> GetAllPermissionsAsync()
         {
             var permissions = await httpClient.GetAsync<string[]>("permissions");
-            return permissions is null? [] : [..permissions];
+            return permissions is null ? [] : [.. permissions];
         }
     }
 }

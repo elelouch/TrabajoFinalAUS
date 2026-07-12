@@ -142,5 +142,42 @@ namespace MissTortas.Desktop.Services.Shared
                 Detail = response.ReasonPhrase
             };
         }
+
+        public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
+    ExecuteWithRetry<T>(() => SendFormDataAsync(endpoint, data, files));
+
+        private async Task<HttpResponseMessage> SendFormDataAsync(
+                string endpoint,
+                object data,
+                List<(Stream stream, string fileName)> files
+            )
+        {
+            using var content = new MultipartFormDataContent();
+
+            // Add form fields
+            if (data != null)
+            {
+                var properties = data.GetType().GetProperties();
+                foreach (var prop in properties)
+                {
+                    var value = prop.GetValue(data);
+                    if (value != null)
+                    {
+                        content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
+                    }
+                }
+            }
+
+            if (files != null)
+            {
+                foreach (var (stream, fileName) in files)
+                {
+                    var streamContent = new StreamContent(stream);
+                    content.Add(streamContent, "files", fileName);
+                }
+            }
+
+            return await httpClient.PostAsync(endpoint, content);
+        }
     }
 }

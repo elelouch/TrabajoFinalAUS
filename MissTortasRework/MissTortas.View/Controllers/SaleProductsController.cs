@@ -6,6 +6,7 @@ using MissTortas.Infrastructure.Security;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Products;
+using MissTortas.View.Mappers;
 
 namespace MissTortas.View.Controllers
 {
@@ -14,28 +15,30 @@ namespace MissTortas.View.Controllers
     public class SaleProductsController(
         IValidator<CreateSaleProductRequest> createSaleProductValidator,
         IProductService productService,
-        ISimpleStorage simpleStorage
+        ISimpleStorage simpleStorage,
+        IPresentationProductMapper presentationProductMapper
     ) : ControllerBase
     {
+        [Authorize(Policy = PolicyName.ManageProducts)]
+        [HttpGet]
+        public async Task<ActionResult<List<SaleProductResponse>>> GetAllSaleProducts()
+        {
+            var saleProducts = await productService.GetAllSaleProductsAsync();
+            var ids = saleProducts.Select(sp => sp.Id).ToArray();
+            var filePaths = await simpleStorage.GetProductFilesAsync(ids);
+            var ret = presentationProductMapper.MapDtoToResponse(saleProducts, filePaths);
+            return ret;
+        }
+
         [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPost]
         public async Task<ActionResult<SaleProductResponse>> PostSaleProduct([FromForm] CreateSaleProductRequest dto, [FromForm] List<IFormFile> files)
         {
             await createSaleProductValidator.ValidateAndThrowAsync(dto);
-            var saleProductDto = new SaleProductCreateDTO
-            {
-                Name = dto.SaleProductName,
-                SalePrice = dto.SalePrice,
-                SaleDescription = dto.SaleDescription,
-                Quantity = dto.SaleQuantity,
-                CategoryId = dto.CategoryId,
-                SaleImagePath = dto.SaleImagePath,
-                IsAvailable = false,
-                Unit = dto.Unit
-            };
+            var saleProductDto = presentationProductMapper.MapCreateSaleProductRequestToDTO(dto);
             var saleProduct = await productService.CreateSaleProductAsync(saleProductDto);
             var retFiles = await simpleStorage.SaveProductFileAsync(files, saleProduct.Id);
-            var ret = new SaleProductResponse(saleProduct) { FilePaths = [.. retFiles.Select(f => f.Path)] };
+            var ret = presentationProductMapper.MapDtoToResponse(saleProduct, [.. retFiles.Select(f => f.Path)]);
             return ret;
         }
 
@@ -43,16 +46,9 @@ namespace MissTortas.View.Controllers
         [HttpPut("{saleProductId}")]
         public async Task<ActionResult<SaleProductResponse>> PutSaleProduct(long saleProductId, UpdateSaleProductRequest updateSaleProductDTO)
         {
-            var saleProductDto = new UpdateSaleProductDTO
-            {
-                SaleProductId = saleProductId,
-                Name = updateSaleProductDTO.Name,
-                Price = updateSaleProductDTO.Price,
-                Description = updateSaleProductDTO.Description,
-                Quantity = updateSaleProductDTO.QuantityAvailable,
-            };
+            var saleProductDto = presentationProductMapper.MapUpdateRequestToDto(saleProductId, updateSaleProductDTO);
             var saleProduct = await productService.UpdateSaleProductAsync(saleProductDto);
-            var ret = new SaleProductResponse(saleProduct);
+            var ret = presentationProductMapper.MapDtoToResponse(saleProduct, (List<string>)[]);
             return ret;
         }
     }

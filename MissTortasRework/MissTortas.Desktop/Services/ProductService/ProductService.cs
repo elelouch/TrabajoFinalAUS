@@ -1,8 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Desktop.Services.ProductService
 {
@@ -26,16 +23,16 @@ namespace MissTortas.Desktop.Services.ProductService
             return ret;
         }
 
-        public async Task<List<ProductCategory>> GetCategoriesAsync()
+        public async Task<List<ProductCategory>> GetCategoriesAsync(bool enabled, bool final)
         {
-            var categories = await httpClient.GetAsync<List<ProductCategory>>("categories?enabled=true");
+            var categories = await httpClient.GetAsync<List<ProductCategory>>($"categories?enabled={enabled}&final={final}");
             return categories ?? [];
         }
 
         public async Task<Dictionary<long, ProductCategory>> GetProductCategoryDictionaryAsync(ProductCategory pc)
         {
             var categories = await httpClient.GetAsync<List<ProductCategory>>("categories");
-            if(categories == null)
+            if (categories == null)
             {
                 throw new InvalidOperationException("Categories can not be null");
             }
@@ -57,6 +54,45 @@ namespace MissTortas.Desktop.Services.ProductService
         public async Task UpdateProductCategoryAsync(ProductCategory pc)
         {
             await httpClient.PutAsync<object>($"categories/{pc.ProductCategoryId}", pc);
+        }
+
+        public async Task<List<Product>> GetAllProductsAsync()
+        {
+            var products = await httpClient.GetAsync<List<Product>>("products");
+            return products!;
+        }
+
+        public Task<List<ProductCategory>> GetCategoriesAsync()
+        {
+            return GetCategoriesAsync(true, false);
+        }
+
+        public Task<List<ProductCategory>> GetCategoriesAsync(bool enabled)
+        {
+            return GetCategoriesAsync(enabled, false);
+        }
+
+        public async Task<List<SaleProduct>> GetSaleProductsFromCategoryAsync(long id)
+        {
+            var saleProducts = await httpClient.GetAsync<List<SaleProduct>>($"categories/{id}/saleproducts");
+            return saleProducts!;
+        }
+
+        public async Task<List<SaleProduct>> GetAllSaleProductsAsync()
+        {
+            var ret = await httpClient.GetAsync<List<SaleProduct>>($"saleproducts");
+            return ret!;
+        }
+
+        public Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp)
+        {
+            return CreateSaleProductAsync(sp, []);
+        }
+
+        public async Task<SaleProduct> CreateSaleProductAsync(SaleProduct sp, List<(Stream, string)> files)
+        {
+            var ret = await httpClient.PostAsFormAsync<SaleProduct>("saleproducts", sp, files);
+            return ret!;
         }
     }
 }

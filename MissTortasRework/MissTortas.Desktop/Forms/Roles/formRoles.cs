@@ -1,5 +1,4 @@
 ﻿using MissTortas.Desktop.Events;
-using MissTortas.Desktop.Forms.Users;
 using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.RoleService;
@@ -36,7 +35,7 @@ namespace MissTortas.Desktop.Forms.Roles
                 showRoles = new(allRoles);
                 dgvRoles.DataSource = showRoles;
             }
-            catch(ApiException exc)
+            catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
             }
@@ -71,7 +70,7 @@ namespace MissTortas.Desktop.Forms.Roles
 
         private void btnEditRole_Click(object sender, EventArgs e)
         {
-            if(dgvRoles.SelectedRows.Count <= 0)
+            if (dgvRoles.SelectedRows.Count <= 0)
             {
                 return;
             }

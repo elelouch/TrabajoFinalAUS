@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Desktop.Forms.Products
 {
-    partial class formProductsFromCategory
+    partial class formSaleProductsFromCategory
     {
         /// <summary>
         /// Required designer variable.
@@ -31,22 +31,25 @@
             components = new System.ComponentModel.Container();
             tlpProductsFromCategory = new TableLayoutPanel();
             dgvProducts = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            quantityDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            categoryIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            unitDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            Enabled = new DataGridViewCheckBoxColumn();
-            productBindingSource = new BindingSource(components);
+            saleProductBindingSource = new BindingSource(components);
             tableLayoutPanel1 = new TableLayoutPanel();
             btnAddProduct = new Button();
             btnModifyProduct = new Button();
+            productBindingSource = new BindingSource(components);
+            StockProductId = new DataGridViewTextBoxColumn();
+            Id = new DataGridViewTextBoxColumn();
+            Name = new DataGridViewTextBoxColumn();
+            Description = new DataGridViewTextBoxColumn();
+            Quantity = new DataGridViewTextBoxColumn();
+            CategoryId = new DataGridViewTextBoxColumn();
+            ManageQuantityAsInteger = new DataGridViewCheckBoxColumn();
+            Unit = new DataGridViewTextBoxColumn();
+            Enabled = new DataGridViewCheckBoxColumn();
             tlpProductsFromCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)saleProductBindingSource).BeginInit();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
             SuspendLayout();
             // 
             // tlpProductsFromCategory
@@ -72,9 +75,9 @@
             dgvProducts.AllowUserToDeleteRows = false;
             dgvProducts.AutoGenerateColumns = false;
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, quantityDataGridViewTextBoxColumn, categoryIdDataGridViewTextBoxColumn, manageQuantityAsIntegerDataGridViewCheckBoxColumn, unitDataGridViewTextBoxColumn, Enabled });
+            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { StockProductId, Id, Name, Description, Quantity, CategoryId, ManageQuantityAsInteger, Unit, Enabled });
             tlpProductsFromCategory.SetColumnSpan(dgvProducts, 2);
-            dgvProducts.DataSource = productBindingSource;
+            dgvProducts.DataSource = saleProductBindingSource;
             dgvProducts.Dock = DockStyle.Fill;
             dgvProducts.Location = new Point(3, 3);
             dgvProducts.Name = "dgvProducts";
@@ -83,65 +86,9 @@
             dgvProducts.Size = new Size(682, 444);
             dgvProducts.TabIndex = 0;
             // 
-            // idDataGridViewTextBoxColumn
+            // saleProductBindingSource
             // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            nameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            descriptionDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // quantityDataGridViewTextBoxColumn
-            // 
-            quantityDataGridViewTextBoxColumn.DataPropertyName = "Quantity";
-            quantityDataGridViewTextBoxColumn.HeaderText = "Quantity";
-            quantityDataGridViewTextBoxColumn.Name = "quantityDataGridViewTextBoxColumn";
-            quantityDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // categoryIdDataGridViewTextBoxColumn
-            // 
-            categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-            categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
-            categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
-            categoryIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // manageQuantityAsIntegerDataGridViewCheckBoxColumn
-            // 
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn.DataPropertyName = "ManageQuantityAsInteger";
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn.HeaderText = "ManageQuantityAsInteger";
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn.Name = "manageQuantityAsIntegerDataGridViewCheckBoxColumn";
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // unitDataGridViewTextBoxColumn
-            // 
-            unitDataGridViewTextBoxColumn.DataPropertyName = "Unit";
-            unitDataGridViewTextBoxColumn.HeaderText = "Unit";
-            unitDataGridViewTextBoxColumn.Name = "unitDataGridViewTextBoxColumn";
-            unitDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            Enabled.DataPropertyName = "Enabled";
-            Enabled.HeaderText = "Enabled";
-            Enabled.Name = "Enabled";
-            Enabled.ReadOnly = true;
-            // 
-            // productBindingSource
-            // 
-            productBindingSource.DataSource = typeof(Model.Product);
+            saleProductBindingSource.DataSource = typeof(Model.SaleProduct);
             // 
             // tableLayoutPanel1
             // 
@@ -181,19 +128,86 @@
             btnModifyProduct.UseVisualStyleBackColor = true;
             btnModifyProduct.Click += btnModifyProduct_Click;
             // 
-            // formProductsFromCategory
+            // productBindingSource
+            // 
+            productBindingSource.DataSource = typeof(Model.Product);
+            // 
+            // StockProductId
+            // 
+            StockProductId.DataPropertyName = "StockProductId";
+            StockProductId.HeaderText = "StockProductId";
+            StockProductId.Name = "StockProductId";
+            StockProductId.ReadOnly = true;
+            // 
+            // Id
+            // 
+            Id.DataPropertyName = "Id";
+            Id.HeaderText = "Id";
+            Id.Name = "Id";
+            Id.ReadOnly = true;
+            // 
+            // Name
+            // 
+            Name.DataPropertyName = "Name";
+            Name.HeaderText = "Name";
+            Name.Name = "Name";
+            Name.ReadOnly = true;
+            // 
+            // Description
+            // 
+            Description.DataPropertyName = "Description";
+            Description.HeaderText = "Description";
+            Description.Name = "Description";
+            Description.ReadOnly = true;
+            // 
+            // Quantity
+            // 
+            Quantity.DataPropertyName = "Quantity";
+            Quantity.HeaderText = "Quantity";
+            Quantity.Name = "Quantity";
+            Quantity.ReadOnly = true;
+            // 
+            // CategoryId
+            // 
+            CategoryId.DataPropertyName = "CategoryId";
+            CategoryId.HeaderText = "CategoryId";
+            CategoryId.Name = "CategoryId";
+            CategoryId.ReadOnly = true;
+            // 
+            // ManageQuantityAsInteger
+            // 
+            ManageQuantityAsInteger.DataPropertyName = "ManageQuantityAsInteger";
+            ManageQuantityAsInteger.HeaderText = "ManageQuantityAsInteger";
+            ManageQuantityAsInteger.Name = "ManageQuantityAsInteger";
+            ManageQuantityAsInteger.ReadOnly = true;
+            // 
+            // Unit
+            // 
+            Unit.DataPropertyName = "Unit";
+            Unit.HeaderText = "Unit";
+            Unit.Name = "Unit";
+            Unit.ReadOnly = true;
+            // 
+            // Enabled
+            // 
+            Enabled.DataPropertyName = "Enabled";
+            Enabled.HeaderText = "Enabled";
+            Enabled.Name = "Enabled";
+            Enabled.ReadOnly = true;
+            // 
+            // formSaleProductsFromCategory
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(tlpProductsFromCategory);
-            Name = "formProductsFromCategory";
-            Text = "Products from Category";
+            Text = "Sale Products";
             Load += formProductsFromCategory_Load;
             tlpProductsFromCategory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
-            ((System.ComponentModel.ISupportInitialize)productBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)saleProductBindingSource).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)productBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -202,16 +216,18 @@
         private TableLayoutPanel tlpProductsFromCategory;
         private DataGridView dgvProducts;
         private BindingSource productBindingSource;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn quantityDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
-        private DataGridViewCheckBoxColumn manageQuantityAsIntegerDataGridViewCheckBoxColumn;
-        private DataGridViewTextBoxColumn unitDataGridViewTextBoxColumn;
         private TableLayoutPanel tableLayoutPanel1;
         private Button btnAddProduct;
         private Button btnModifyProduct;
+        private BindingSource saleProductBindingSource;
+        private DataGridViewTextBoxColumn StockProductId;
+        private DataGridViewTextBoxColumn Id;
+        private DataGridViewTextBoxColumn Name;
+        private DataGridViewTextBoxColumn Description;
+        private DataGridViewTextBoxColumn Quantity;
+        private DataGridViewTextBoxColumn CategoryId;
+        private DataGridViewCheckBoxColumn ManageQuantityAsInteger;
+        private DataGridViewTextBoxColumn Unit;
         private DataGridViewCheckBoxColumn Enabled;
     }
 }

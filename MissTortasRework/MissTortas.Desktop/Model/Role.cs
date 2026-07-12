@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-namespace MissTortas.Desktop.Model
+﻿namespace MissTortas.Desktop.Model
 {
     public class Role
     {

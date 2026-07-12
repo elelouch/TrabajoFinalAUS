@@ -10,6 +10,7 @@ namespace MissTortas.Infrastructure.Interfaces
         public Task SaveConsultancyFileAsync(IFormFile file, long consultancyId);
         public Task SaveConsultancyFileAsync(IEnumerable<IFormFile> files, long consultancyId);
         public Task<List<ProductFile>> GetProductFilesAsync(long productId);
+        public Task<Dictionary<long,List<string>>> GetProductFilesAsync(long[] productsId);
 
     }
 }

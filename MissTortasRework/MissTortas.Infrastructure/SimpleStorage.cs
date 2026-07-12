@@ -104,5 +104,12 @@ namespace MissTortas.Infrastructure
         {
             return simpleStorageRepository.GetProductFilesAsync(productId);
         }
+
+        public async Task<Dictionary<long, List<string>>> GetProductFilesAsync(long[] productsId)
+        {
+            var sape = await simpleStorageRepository.GetProductFilesAsync(productsId);
+            var stringResult = sape.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(pf => pf.Path).ToList());
+            return stringResult;
+        }
     }
 }

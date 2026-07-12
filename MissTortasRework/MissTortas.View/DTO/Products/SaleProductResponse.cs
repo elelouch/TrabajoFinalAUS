@@ -2,19 +2,15 @@
 
 namespace MissTortas.View.DTO.Products
 {
-    public class SaleProductResponse : SaleProductDTO
+    public class SaleProductResponse
     {
-        public SaleProductResponse() { }
-        public SaleProductResponse(SaleProductDTO dto)
-        {
-            this.Id = dto.Id;
-            this.Price = dto.Price;
-            this.Description = dto.Description;
-            this.AllowDecimalAsk = dto.AllowDecimalAsk;
-            this.Quantity = dto.Quantity;
-            this.Name = dto.Name;
-            this.StockProductId = dto.StockProductId;
-        }
+        public long Id { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Price { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public bool AllowDecimalAsk { get; set; }
+        public long StockProductId { get; set; }
         public List<string> FilePaths { get; set; } = [];
     }
 }

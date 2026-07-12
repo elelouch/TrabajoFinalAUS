@@ -113,6 +113,7 @@
             Controls.Add(btnConfirm);
             Controls.Add(lblCategoryName);
             Name = "formModifyCategory";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += formModifyCategory_Load;
             ResumeLayout(false);

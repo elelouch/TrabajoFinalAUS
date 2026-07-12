@@ -5,6 +5,7 @@ namespace MissTortas.Services.Repositories
 {
     public interface IProductRepository : IRepositoryCrud<Product>
     {
+        public Task<List<SaleProductDADto>> GetAllSaleProductsAsync();
         public Task<List<SaleProduct>> GetSaleProductsFromCategoryAsync(long categoryId);
         public Task<List<ProductDADto>> GetProductsFromCategoryAsync(long categoryId);
         public Task InsertProductCategoryAsync(ProductCategory productCategory);
@@ -16,7 +17,7 @@ namespace MissTortas.Services.Repositories
         public Task<SaleProductEntityDTO?> FindSaleProductDTOAsync(long id);
         public Task<SaleProduct?> FindSaleProductAsync(long id);
         public Task<Product?> FindProductByNameAsync(string name);
-        public Task<List<Product>> GetAllWithDetailAsync();
+        public Task<List<ProductDADto>> GetAllWithDetailAsync();
         public Task<ProductCategory?> GetProductCategoryAsync(long id);
         public Task<ProductCategory?> GetProductCategoryByNameAsync(string name);
         public Task DeleteProductCategory(ProductCategory pc);

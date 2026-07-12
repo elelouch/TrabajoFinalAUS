@@ -1,8 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Desktop.Services.RoleService
 {
@@ -29,12 +26,12 @@ namespace MissTortas.Desktop.Services.RoleService
 
         public async Task ModifyRoleAsync(Role role)
         {
-            if(string.IsNullOrEmpty(role.Id))
+            if (string.IsNullOrEmpty(role.Id))
             {
                 throw new InvalidOperationException("Role Id must not be empty.");
             }
             await httpClient.PutAsync<object>($"roles/{role.Id}", role);
-            
+
         }
     }
 }

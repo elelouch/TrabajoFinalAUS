@@ -9,5 +9,6 @@ namespace MissTortas.Infrastructure.Interfaces
         public Task InsertConsultancyFileAsync(ConsultancyFile cf);
         public Task InsertProductFileAsync(ProductFile pf);
         public Task<List<ProductFile>> GetProductFilesAsync(long productId);
+        public Task<Dictionary<long,List<ProductFile>>> GetProductFilesAsync(long[] productsId);
     }
 }

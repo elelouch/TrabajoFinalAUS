@@ -16,6 +16,14 @@ namespace MissTortas.Infrastructure.Repositories
             return productFiles.Where(p => p.ProductId == productId).ToListAsync();
         }
 
+        public Task<Dictionary<long, List<ProductFile>>> GetProductFilesAsync(long[] productsId)
+        {
+            return productFiles
+                .Where(pf => productsId.Contains(pf.ProductId))
+                .GroupBy(pf => pf.ProductId)
+                .ToDictionaryAsync(pfg => pfg.Key, pfg => pfg.ToList());
+        }
+
         public async Task InsertConsultancyFileAsync(ConsultancyFile cf)
         {
             await consultancyFiles.AddAsync(cf);

@@ -61,7 +61,7 @@ namespace MissTortas.Desktop.Forms.Users
                 var roles = await _userService.GetRolesAsync();
                 fillEditUserForm(user, [.. roles.Select(r => r.Name)]);
             }
-            catch(ApiException exc)
+            catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
             }

@@ -59,13 +59,13 @@ namespace MissTortas.Services
             return productMapper.ProductToDTO(product);
         }
 
-        public async Task<IEnumerable<ProductDTO>> AllAsync()
+        public async Task<List<ProductDTO>> AllAsync()
         {
             var products = await productRepository.GetAllAsync();
             return productMapper.ProductToDTO(products);
         }
 
-        public async Task<IEnumerable<ProductDTO>> AllWithDetailAsync()
+        public async Task<List<ProductDTO>> AllWithDetailAsync()
         {
             var products = await productRepository.GetAllWithDetailAsync();
             return productMapper.ProductToDTO(products);
@@ -125,7 +125,6 @@ namespace MissTortas.Services
             };
 
             await productRepository.InsertProductCategoryAsync(productCategory);
-            await productRepository.SaveChangesAsync();
             await productRepository.SaveChangesAsync();
             return productMapper.CategoryToDTO(productCategory);
         }
@@ -197,16 +196,10 @@ namespace MissTortas.Services
             return new QuantityHolder { DecimalQuantity = qty };
         }
 
-        public async Task<IEnumerable<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
+        public async Task<List<SaleProductDTO>> GetSaleProductsFromCategoryAsync(long categoryId)
         {
             var saleProducts = await productRepository.GetSaleProductsFromCategoryAsync(categoryId);
             return productMapper.SaleProductToDTO(saleProducts);
-        }
-
-        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync()
-        {
-            var cats = await productRepository.GetAllProductCategoriesAsync();
-            return productMapper.CategoryToDTO(cats);
         }
 
         public async Task<SaleProductDTO> UpdateSaleProductAsync(UpdateSaleProductDTO dto)
@@ -247,8 +240,13 @@ namespace MissTortas.Services
             };
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetProductsFromCategoryAsync(long categoryId)
+        public async Task<List<ProductDTO>> GetProductsFromCategoryAsync(long categoryId)
         {
+            var pc = await productRepository.FindProductCategoryAsync(categoryId) ?? throw new ProductCategoryNotFoundException("Category not found.");
+            if(!pc.IsFinal)
+            {
+                throw new ChildAppendException("Category is final, can not have child products");
+            }
             var products = await productRepository.GetProductsFromCategoryAsync(categoryId);
             var ret = productMapper.ProductToDTO(products);
             return ret;
@@ -295,10 +293,27 @@ namespace MissTortas.Services
             return false;
         }
 
-        public async Task<IEnumerable<ProductCategoryDTO>> AllProductCategoryAsync(bool enabled)
+
+        public Task<List<ProductCategoryDTO>> AllProductCategoryAsync()
+        {
+            return AllProductCategoryAsync(false);
+        }
+
+        public Task<List<ProductCategoryDTO>> AllProductCategoryAsync(bool enabled)
+        {
+            return AllProductCategoryAsync(enabled, false);
+        }
+
+        public async Task<List<ProductCategoryDTO>> AllProductCategoryAsync(bool enabled, bool final)
         {
             var categories = await productRepository.GetAllProductCategoriesAsync();
-            return productMapper.CategoryToDTO(categories, enabled);
+            return productMapper.CategoryToDTO(categories, enabled, final);
+        }
+
+        public async Task<List<SaleProductDTO>> GetAllSaleProductsAsync()
+        {
+            var products = await productRepository.GetAllSaleProductsAsync();
+            return productMapper.SaleProductToDTO(products);
         }
     }
 }

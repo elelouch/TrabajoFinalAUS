@@ -2,9 +2,7 @@
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
-using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
-using System.Data;
 
 namespace MissTortas.Desktop.Forms.Roles
 {
@@ -44,11 +42,11 @@ namespace MissTortas.Desktop.Forms.Roles
                 var permissionsAvailable = await permissionService.GetAllPermissionsAsync();
                 fillEditForm(role, permissionsAvailable);
             }
-            catch(ApiException exc)
+            catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
             }
-            
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -88,7 +86,7 @@ namespace MissTortas.Desktop.Forms.Roles
                 MessageBox.Show("Role modificated successfully.", "Role modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }
-            catch(HttpRequestException err)
+            catch (HttpRequestException err)
             {
                 MessageBox.Show($"Error during role modification. Error:{err.Message}", "Role modification failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

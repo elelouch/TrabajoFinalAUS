@@ -1,10 +1,7 @@
 ﻿using MissTortas.Desktop.Events;
 using MissTortas.Desktop.Model;
-using MissTortas.Desktop.Services.AuthService;
-using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
-using System.Net.Mail;
 
 namespace MissTortas.Desktop.Forms.Roles
 {
@@ -42,7 +39,7 @@ namespace MissTortas.Desktop.Forms.Roles
                 RaiseRoleCreated(newRole);
                 Dispose();
             }
-            catch(ApiException exc)
+            catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
             }

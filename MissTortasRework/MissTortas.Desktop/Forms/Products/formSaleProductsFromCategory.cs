@@ -6,18 +6,18 @@ using System.Net;
 
 namespace MissTortas.Desktop.Forms.Products
 {
-    public partial class formProductsFromCategory : Form
+    public partial class formSaleProductsFromCategory : Form
     {
         private readonly ProductCategory? productCategory;
         private readonly IProductService productService;
-        private BindingList<Product> products = [];
-        public formProductsFromCategory(IProductService productService, ProductCategory? category)
+        private BindingList<SaleProduct> products = [];
+        public formSaleProductsFromCategory(IProductService productService, ProductCategory? category)
         {
             InitializeComponent();
             this.productCategory = category;
             this.productService = productService;
         }
-        public formProductsFromCategory(IProductService productService) : this(productService, null)
+        public formSaleProductsFromCategory(IProductService productService) : this(productService, null)
         {
         }
 
@@ -28,14 +28,14 @@ namespace MissTortas.Desktop.Forms.Products
                 if (productCategory != null)
                 {
                     this.Text = $"Products from ({productCategory.ProductCategoryId}) - {productCategory.Name}";
-                    var products = await productService.GetProductsFromCategoryAsync(productCategory.ProductCategoryId);
+                    var products = await productService.GetSaleProductsFromCategoryAsync(productCategory.ProductCategoryId);
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
                 }
                 else
                 {
                     this.Text = $"Products";
-                    var products = await productService.GetAllProductsAsync();
+                    var products = await productService.GetAllSaleProductsAsync();
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
                 }
@@ -54,15 +54,15 @@ namespace MissTortas.Desktop.Forms.Products
         private void btnAddProduct_Click(object sender, EventArgs e)
         {
             var createProductForm = productCategory != null ?
-                new formCreateStockProduct(productService, productCategory)
-                : new formCreateStockProduct(productService);
-            createProductForm.OnStockProductCreated += CreateProductForm_OnStockProductCreated;
+                new formCreateSaleProduct(productService, productCategory)
+                : new formCreateSaleProduct(productService);
+            createProductForm.OnSaleProductCreated += CreateProductForm_OnStockProductCreated;
             createProductForm.ShowDialog();
         }
 
-        private void CreateProductForm_OnStockProductCreated(object? sender, Events.StockProductCreatedArgs e)
+        private void CreateProductForm_OnStockProductCreated(object? sender, Events.SaleProductCreatedArgs e)
         {
-            products.Add(e.Product);
+            products.Add(e.SaleProduct);
         }
 
         private void btnModifyProduct_Click(object sender, EventArgs e)
@@ -75,19 +75,19 @@ namespace MissTortas.Desktop.Forms.Products
             if (dgvProducts.SelectedRows[0].DataBoundItem is not Product product)
                 return;
 
-            var modifyProductForm = new formCreateStockProduct(productService, productCategory, product);
-            modifyProductForm.OnStockProductModified += ModifyProductForm_OnStockProductModified;
+            var modifyProductForm = new formCreateSaleProduct(productService, productCategory, product);
+            modifyProductForm.OnSaleProductModified += ModifyProductForm_OnStockProductModified;
             modifyProductForm.ShowDialog();
         }
 
-        private void ModifyProductForm_OnStockProductModified(object? sender, Events.StockProductModifiedArgs e)
+        private void ModifyProductForm_OnStockProductModified(object? sender, Events.SaleProductModifiedArgs e)
         {
-            var p = products.FirstOrDefault(p => p.Id == e.Product.Id);
+            var p = products.FirstOrDefault(p => p.Id == e.SaleProduct.Id);
             if (p is null)
             {
                 return;
             }
-            products[products.IndexOf(p)] = e.Product;
+            products[products.IndexOf(p)] = e.SaleProduct;
         }
     }
 }

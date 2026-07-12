@@ -20,18 +20,21 @@ namespace MissTortas.Services.Mapping
             };
         }
 
-        public IEnumerable<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories)
+        public List<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories)
         {
-            return CategoryToDTO(categories, false);
+            return CategoryToDTO(categories, false, false);
         }
-
-        public IEnumerable<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories, bool onlyEnabled)
+        public List<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories, bool onlyEnabled)
+        {
+            return CategoryToDTO(categories, onlyEnabled, false);
+        }
+        public List<ProductCategoryDTO> CategoryToDTO(IEnumerable<ProductCategory> categories, bool onlyEnabled, bool onlyFinal)
         {
             var dtoLookup = new Dictionary<long, ProductCategoryDTO>(categories.Count());
 
             foreach (var cat in categories)
             {
-                if(onlyEnabled && !cat.Enabled)
+                if(onlyFinal && !cat.IsFinal && onlyEnabled && !cat.Enabled)
                 {
                     continue;
                 }
@@ -42,7 +45,7 @@ namespace MissTortas.Services.Mapping
 
             foreach (var c in categories)
             {
-                if (onlyEnabled && !c.Enabled)
+                if (onlyFinal && !c.IsFinal && onlyEnabled && !c.Enabled)
                 {
                     continue;
                 }
@@ -67,9 +70,9 @@ namespace MissTortas.Services.Mapping
             return roots;
         }
 
-        public IEnumerable<ProductDTO> ProductToDTO(IEnumerable<Product> products)
+        public List<ProductDTO> ProductToDTO(IEnumerable<Product> products)
         {
-            return products.Select(p => ProductToDTO(p));
+            return [.. products.Select(p => ProductToDTO(p))];
         }
 
         public ProductDTO ProductToDTO(Product product)
@@ -109,14 +112,14 @@ namespace MissTortas.Services.Mapping
             };
         }
 
-        public IEnumerable<ChildrenProductCategoryDTO> ChildrenProductCategoryToDTO(IEnumerable<ProductCategory> pc)
+        public List<ChildrenProductCategoryDTO> ChildrenProductCategoryToDTO(IEnumerable<ProductCategory> pc)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SaleProductDTO> SaleProductToDTO(IEnumerable<SaleProduct> products)
+        public List<SaleProductDTO> SaleProductToDTO(IEnumerable<SaleProduct> products)
         {
-            return products.Select(prod => SaleProductToDTO(prod));
+            return [.. products.Select(prod => SaleProductToDTO(prod))];
         }
 
         public ProductDTO ProductToDTO(ProductDADto product)
@@ -134,9 +137,27 @@ namespace MissTortas.Services.Mapping
             };
         }
 
-        public IEnumerable<ProductDTO> ProductToDTO(IEnumerable<ProductDADto> products)
+        public List<ProductDTO> ProductToDTO(IEnumerable<ProductDADto> products)
         {
-            return products.Select(p => ProductToDTO(p));
+            return [.. products.Select(p => ProductToDTO(p))];
+        }
+
+        public SaleProductDTO SaleProductToDTO(SaleProductDADto dto)
+        {
+            return new SaleProductDTO
+            {
+                Id = dto.Id,
+                Quantity = dto.SaleQuantity,
+                Price = dto.SalePrice,
+                Name = dto.Name,
+                Description = dto.Description,
+                AllowDecimalAsk = !dto.ManageQuantityAsInteger,
+                StockProductId = dto.StockProductId
+            };
+        }
+        public List<SaleProductDTO> SaleProductToDTO(IEnumerable<SaleProductDADto> dtos)
+        {
+            return [.. dtos.Select(dto => SaleProductToDTO(dto))];
         }
     }
 }

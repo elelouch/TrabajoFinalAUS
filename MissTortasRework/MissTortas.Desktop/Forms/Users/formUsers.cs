@@ -1,5 +1,4 @@
-﻿using MissTortas.Desktop.Forms.Users;
-using MissTortas.Desktop.Model;
+﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
@@ -37,7 +36,7 @@ namespace MissTortas.Desktop.Forms.Users
         private void CreateUser_SignUpCompleted(object? sender, Events.SignupCompletedArgs e)
         {
             users.Add(e.User);
-            if(!filtered)
+            if (!filtered)
             {
                 shownUsers.Add(e.User);
             }
@@ -84,7 +83,7 @@ namespace MissTortas.Desktop.Forms.Users
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            if(filtered)
+            if (filtered)
             {
                 shownUsers = new(users);
                 dgvUsers.DataSource = shownUsers;

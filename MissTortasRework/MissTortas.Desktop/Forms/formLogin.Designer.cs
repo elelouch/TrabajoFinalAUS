@@ -42,9 +42,9 @@
             welcomingLabel.AutoSize = true;
             welcomingLabel.Location = new Point(285, 23);
             welcomingLabel.Name = "welcomingLabel";
-            welcomingLabel.Size = new Size(189, 30);
+            welcomingLabel.Size = new Size(151, 30);
             welcomingLabel.TabIndex = 0;
-            welcomingLabel.Text = "Welcome to MissTortas!\r\nPlease, log in with your credentials";
+            welcomingLabel.Text = "Welcome to MissTortas!\r\nPlease, use your credentials";
             // 
             // emailLabel
             // 

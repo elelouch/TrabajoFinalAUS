@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MissTortas.Desktop.Services.Shared
+﻿namespace MissTortas.Desktop.Services.Shared
 {
     public class SessionExpiredException : Exception
     {

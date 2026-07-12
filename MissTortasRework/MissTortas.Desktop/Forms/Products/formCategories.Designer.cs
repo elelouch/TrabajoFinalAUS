@@ -32,8 +32,8 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             btnAddChild = new Button();
-            btnCancel = new Button();
             btnModifyCategory = new Button();
+            btnCancel = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -69,8 +69,9 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(btnAddChild, 0, 0);
-            tableLayoutPanel2.Controls.Add(btnCancel, 0, 3);
-            tableLayoutPanel2.Controls.Add(btnModifyCategory, 0, 2);
+            tableLayoutPanel2.Controls.Add(btnModifyCategory, 0, 1);
+            tableLayoutPanel2.Controls.Add(btnCancel, 0, 2);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(416, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 4;
@@ -78,7 +79,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.Size = new Size(394, 219);
+            tableLayoutPanel2.Size = new Size(408, 228);
             tableLayoutPanel2.TabIndex = 1;
             // 
             // btnAddChild
@@ -91,25 +92,25 @@
             btnAddChild.UseVisualStyleBackColor = true;
             btnAddChild.Click += btnAddChild_Click;
             // 
-            // btnCancel
-            // 
-            btnCancel.Location = new Point(3, 165);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 2;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
-            // 
             // btnModifyCategory
             // 
-            btnModifyCategory.Location = new Point(3, 111);
+            btnModifyCategory.Location = new Point(3, 60);
             btnModifyCategory.Name = "btnModifyCategory";
             btnModifyCategory.Size = new Size(75, 23);
             btnModifyCategory.TabIndex = 4;
             btnModifyCategory.Text = "Modify";
             btnModifyCategory.UseVisualStyleBackColor = true;
             btnModifyCategory.Click += btnModifyCategory_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(3, 117);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
             // formCategories
             // 
