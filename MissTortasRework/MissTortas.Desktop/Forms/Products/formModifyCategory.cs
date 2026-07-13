@@ -48,6 +48,10 @@ namespace MissTortas.Desktop.Forms.Products
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
 
         }

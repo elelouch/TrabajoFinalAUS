@@ -36,11 +36,33 @@ namespace MissTortas.View.Mappers
             var ret = new OrderResponse
             {
                 Id = dto.Id,
-                Preparations = dto.Preparations,
+                Preparations = FromOrderPreparationDTOToResponse(dto.Preparations),
                 StatusId = dto.StatusId,
                 Status = dto.Status
             };
             return ret;
+        } 
+        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos)
+        {
+            var ret = dtos.Select(dto => FromOrderDTOToResponse(dto)).ToList();
+            return ret;
+        }
+
+        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto)
+        {
+            return new OrderPreparationResponse
+            {
+                Id = dto.Id,
+                Detail = dto.Detail,
+                Done = dto.Done,
+                AssigneeId = dto.AssigneeId,
+                OrderId = dto.OrderId
+            };
+        }
+
+        public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
+        {
+            return [.. dtos.Select(dto => FromOrderPreparationDTOToResponse(dto))];
         }
     }
 }

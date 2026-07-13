@@ -64,6 +64,10 @@ namespace MissTortas.Desktop.Forms.Users
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
         }
 
@@ -118,6 +122,10 @@ namespace MissTortas.Desktop.Forms.Users
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
         }
 

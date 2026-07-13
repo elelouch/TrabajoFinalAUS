@@ -6,6 +6,10 @@ namespace MissTortas.View.Mappers
     public interface IPresentationOrderMapper
     {
         public OrderResponse FromOrderDTOToResponse(OrderDTO dto);
+        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto);
+        public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos);
+        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos);
         public Task<SetupOrderDTO> FromCreateOrderToSetupOrder(CreateOrder createOrder);
+
     }
 }

@@ -29,6 +29,10 @@ namespace MissTortas.Desktop.Forms.Products
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
+                if(exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
 
         }
@@ -52,8 +56,8 @@ namespace MissTortas.Desktop.Forms.Products
             if (!category.IsFinal)
                 return;
 
-            var formProductsFromCategory = new formProductsFromCategory(productService, category);
-            formProductsFromCategory.ShowDialog();
+            var formProducts = new formProducts(productService, category);
+            formProducts.ShowDialog();
         }
 
         private void LoadTreeView(List<ProductCategory> categories)

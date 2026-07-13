@@ -19,16 +19,25 @@ namespace MissTortas.Services.Mapping
             return ret;
         }
 
+        public OrderPreparationDTO OrderPreparationToDTO(OrderPreparation op)
+        {
+            return new OrderPreparationDTO
+            {
+                Id = op.OrderPreparationId,
+                Detail = op.Detail,
+                Done = op.Done,
+                AssigneeId = op.AssigneeId ?? 0,
+                OrderId = op.OrderId
+            };
+        }
+
+        public List<OrderPreparationDTO> OrderPreparationToDTO(IEnumerable<OrderPreparation> ops)
+        {
+            return [.. ops.Select(op => OrderPreparationToDTO(op))];
+        }
+
         public OrderDTO OrderToDTO(Order order)
         {
-            var preparations = order.Preparations.Select(
-                prep => new OrderPreparationDTO
-                {
-                    Id = prep.OrderPreparationId,
-                    Detail = prep.Detail,
-                    Done = prep.Done
-                }).ToList();
-
             return new OrderDTO
             {
                 Status = order.OrderStatus.ToString(),
@@ -36,8 +45,14 @@ namespace MissTortas.Services.Mapping
                 Id = order.OrderId,
                 ClientId = order.Consultancy?.Client?.UserId ?? 0,
                 OrderMangerId = order.Consultancy?.Assignee?.UserId ?? 0,
-                Preparations = preparations
+                Preparations = OrderPreparationToDTO(order.Preparations)
             };
+        }
+
+        public List<OrderDTO> OrderToDTO(IEnumerable<Order> orders)
+        {
+            var ret = orders.Select(o => OrderToDTO(o)).ToList();
+            return ret;
         }
 
         public OrderTypeDTO OrderTypeToDTO(OrderType ot)

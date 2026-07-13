@@ -22,15 +22,11 @@ namespace MissTortas.View.Controllers
         ) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageOrders)]
-        [HttpGet("")]
-        public async Task<ActionResult<OrderResponse>> GetOrder()
+        [HttpGet]
+        public async Task<ActionResult<OrderResponse>> GetAllOrders()
         {
-            var orderDTO = await orderService.GetOrderAsync);
-            if (orderDTO is null)
-            {
-                return NotFound();
-            }
-            return Ok(orderMapper.FromOrderDTOToResponse(orderDTO));
+            var orders = await orderService.GetAllOrdersAsync();
+            return Ok(orderMapper.FromOrderDTOToResponse(orders));
         }
 
         [Authorize(Policy = PolicyName.PlaceOrders)]

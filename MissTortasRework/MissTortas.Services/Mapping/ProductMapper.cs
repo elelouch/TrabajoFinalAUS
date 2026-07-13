@@ -34,7 +34,7 @@ namespace MissTortas.Services.Mapping
 
             foreach (var cat in categories)
             {
-                if(onlyFinal && !cat.IsFinal && onlyEnabled && !cat.Enabled)
+                if (onlyFinal && !cat.IsFinal || onlyEnabled && !cat.Enabled)
                 {
                     continue;
                 }
@@ -45,7 +45,7 @@ namespace MissTortas.Services.Mapping
 
             foreach (var c in categories)
             {
-                if (onlyFinal && !c.IsFinal && onlyEnabled && !c.Enabled)
+                if (onlyFinal && !c.IsFinal || onlyEnabled && !c.Enabled)
                 {
                     continue;
                 }

@@ -7,6 +7,6 @@ namespace MissTortas.View.DTO.Orders
         public long Id { get; set; }
         public string Status { get; set; } = string.Empty;
         public long StatusId { get; set; }
-        public required IEnumerable<OrderPreparationDTO> Preparations;
+        public required IEnumerable<OrderPreparationResponse> Preparations;
     }
 }

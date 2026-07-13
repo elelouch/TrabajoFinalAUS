@@ -44,7 +44,7 @@ namespace MissTortas.Desktop.Forms.Products
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
-                if (exc.StatusCode == HttpStatusCode.Forbidden)
+                if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     this.Dispose();
                 }

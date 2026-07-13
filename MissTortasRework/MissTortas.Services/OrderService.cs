@@ -260,5 +260,22 @@ namespace MissTortas.Services
             var consultancies = await orderRepository.GetConsultanciesByClientIdAsync(userId);
             return [.. consultancies.Select(c => orderMapper.ConsultancyToDTO(c))];
         }
+
+        public async Task<List<OrderDTO>> GetAllOrdersAsync()
+        {
+            var orders = await orderRepository.GetAllAsync();
+            return orderMapper.OrderToDTO(orders);
+        }
+
+        public Task<OrderPreparationDTO?> GetOrderPreparationAsync(long orderPreparationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<OrderPreparationDTO>> GetUserOrderPreparationsAsync(long userId)
+        {
+            var ret = await orderRepository.GetUserOrderPreparationsAsync(userId);
+            return orderMapper.OrderPreparationToDTO(ret);
+        }
     }
 }

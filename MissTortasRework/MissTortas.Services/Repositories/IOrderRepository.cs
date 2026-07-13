@@ -16,5 +16,6 @@ namespace MissTortas.Services.Repositories
         public Task BulkInsertOrderSaleProductAsync(ICollection<OrderSaleProduct> osps);
         public Task<Order?> GetOrderWithAllProductsRelatedAsync(long id);
         public Task<OrderType?> FindOrderTypeByNameAsync(string name);
+        public Task<List<OrderPreparation>> GetUserOrderPreparationsAsync(long userId);
     }
 }

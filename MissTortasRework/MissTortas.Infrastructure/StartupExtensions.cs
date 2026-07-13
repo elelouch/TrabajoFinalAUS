@@ -17,6 +17,7 @@ using MissTortas.Infrastructure.Security.Handlers;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
+using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.Repositories;
 using System.Text;
 
@@ -45,6 +46,8 @@ namespace MissTortas.Infrastructure
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+            services.AddScoped<IAuthorizationHandler, ManagePreparationHandler>();
+            services.AddScoped<IAuthorizationHandler, ManageAssignedPreparationHandler>();
             services.AddScoped<IRoleMapper, RoleMapper>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserMapper, UserMapper>();
@@ -115,6 +118,7 @@ namespace MissTortas.Infrastructure
                 .AddPolicy(PolicyName.ManageOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageOrders.Code))
                 .AddPolicy(PolicyName.ManageProducts, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageProducts.Code))
                 .AddPolicy(PolicyName.PlaceOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.PlaceOrders.Code))
+                .AddPolicy(PolicyName.ManageAssignedPreparations, policy => policy.AddRequirements(new ManageAssignedPreparationRequirement()))
              ;
             return services;
         }

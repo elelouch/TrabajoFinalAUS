@@ -18,6 +18,7 @@ namespace MissTortas.Desktop.Forms.Users
             InitializeComponent();
             this.authService = authService;
             this.usersService = usersService;
+            shownUsers = [];
             dgvUsers.DataSource = shownUsers;
         }
 
@@ -53,12 +54,19 @@ namespace MissTortas.Desktop.Forms.Users
             {
                 var allUsers = await usersService.GetAllUsersAsync();
                 users = allUsers;
-                shownUsers = new(allUsers);
-                dgvUsers.DataSource = shownUsers;
+                shownUsers.Clear();
+                foreach (var user in allUsers)
+                {
+                    shownUsers.Add(user);
+                }
             }
             catch (ApiException ex)
             {
                 ErrorDisplay.Show(this, ex);
+                if (ex.StatusCode == System.Net.HttpStatusCode.Forbidden || ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
         }
 
