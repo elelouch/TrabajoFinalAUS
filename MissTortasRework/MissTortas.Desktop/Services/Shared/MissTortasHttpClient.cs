@@ -11,9 +11,11 @@ namespace MissTortas.Desktop.Services.Shared
     {
         private readonly HttpClient httpClient = new();
         private readonly SemaphoreSlim refreshLock = new(1, 1);
+        private readonly string ApiBaseUrl;
 
-        public MissTortasHttpClient()
+        public MissTortasHttpClient(string apiBaseUrl)
         {
+            this.ApiBaseUrl = apiBaseUrl;
             ConfigureClient();
             SetAuthorizationHeader();
         }
@@ -24,7 +26,7 @@ namespace MissTortas.Desktop.Services.Shared
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json")
             );
-            httpClient.BaseAddress = new Uri("https://localhost:7245/");
+            httpClient.BaseAddress = new Uri(ApiBaseUrl);
         }
 
         private void SetAuthorizationHeader()

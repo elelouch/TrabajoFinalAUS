@@ -5,6 +5,7 @@ using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
+using Microsoft.Extensions.Configuration;
 
 namespace MissTortas.Desktop
 {
@@ -19,7 +20,12 @@ namespace MissTortas.Desktop
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            var httpClient = new MissTortasHttpClient();
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var apiBaseUrl = config["ApiBaseUrl"];
+            var httpClient = new MissTortasHttpClient(apiBaseUrl ?? "");
             var authService = new AuthService(httpClient);
             var usersService = new UserService(httpClient);
             var rolesService = new RoleService(httpClient);
