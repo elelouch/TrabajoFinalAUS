@@ -38,11 +38,11 @@ namespace MissTortas.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
 
             // non portable syntax
-            modelBuilder.Entity<SaleProduct>()
-                .ToTable(t => t.HasCheckConstraint("CK_SaleProduct_NonNegativeQuantity", "\"SaleQuantity\" >= 0"));
+            modelBuilder.Entity<SaleProduct>(sp =>
+            {
+                sp.ToTable(t => t.HasCheckConstraint("CK_SaleProduct_NonNegativeQuantity", "\"SaleQuantity\" >= 0"));
+            });
 
-            modelBuilder.Entity<Product>()
-                .ToTable(t => t.HasCheckConstraint("CK_Product_NonNegativeQuantity", "\"Quantity\" >= 0"));
 
             modelBuilder.Entity<RefreshTokenEntity>(entity =>
             {
@@ -72,6 +72,11 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<Product>(p =>
             {
                 p.HasIndex(p => p.Name).IsUnique();
+                p.ToTable(t => t.HasCheckConstraint("CK_Product_NonNegativeQuantity", "\"Quantity\" >= 0"));
+                p.HasOne(p => p.SaleProduct)
+                    .WithOne(sp => sp.Product)
+                    .HasForeignKey<SaleProduct>(sp => sp.ProductId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<ProductCategory>(pc =>
@@ -92,7 +97,7 @@ namespace MissTortas.Infrastructure.Context
             modelBuilder.Entity<OrderSaleProduct>(osp =>
             {
                 osp.HasIndex(osp => new { osp.OrderId, osp.SaleProductId });
-                osp.HasOne(o => o.SaleProduct).WithMany().OnDelete(DeleteBehavior.Restrict);
+                osp.HasOne(orderSaleProduct => orderSaleProduct.SaleProduct).WithMany(sp => sp.OrderSaleProducts).OnDelete(DeleteBehavior.Restrict);
                 osp.HasOne(orderSaleProduct => orderSaleProduct.Order).WithMany(o => o.ProductsAsked).OnDelete(DeleteBehavior.Restrict);
             });
 
