@@ -9,7 +9,7 @@ namespace MissTortas.Services.Repositories
         public Task InsertConsultancyAsync(Consultancy consultancy);
         public Task<bool> OrderBelongsToUserAsync(long orderId, long userId);
         public Task<OrderType?> FindOrderTypeAsync(long id);
-        public Task<OrderPreparation> GetOrderPreparationAsync(long id);
+        public Task<OrderPreparation?> GetOrderPreparationAsync(long id);
         public Task InsertOrderTypeAsync(OrderType ot);
         public Task<List<OrderType>> GetAllOrderTypeAsync();
         public Task<Consultancy?> FindConsultancyAsync(long id);
@@ -20,5 +20,6 @@ namespace MissTortas.Services.Repositories
         public Task<List<OrderPreparation>> GetUserOrderPreparationsAsync(long userId);
         public Task<List<OrderDADto>> GetAllOrdersAsync();
         public Task<OrderDADto?> GetDetailedOrderAsync(long id);
+        public Task EndAllOrderPreparationsAsync(long orderId);
     }
 }

@@ -42,5 +42,16 @@ namespace MissTortas.View.Controllers
             await orderService.EndOrderPreparationAsync(preparationId);
             return new EmptyResult();
         }
+
+        [HttpPut("{preparationId}")]
+        public async Task<ActionResult> UpdateOrderPreparation(long preparationId)
+        {
+            var requirement = new ManageAssignedPreparationRequirement();
+            var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
+            if (!authRes.Succeeded)
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

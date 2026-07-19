@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
+using MissTortas.Domain.Products;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Services.Repositories;
 using MissTortas.Services.Repositories.DTO;
@@ -13,6 +14,7 @@ namespace MissTortas.Infrastructure.Repositories
         private readonly DbSet<OrderSaleProduct> askedProductsSet = context.AskedProducts;
         private readonly DbSet<Order> orderSet = context.Orders;
         private readonly DbSet<OrderPreparation> orderPreparationsSet = context.OrderPreparations;
+        private readonly DbSet<Product> productsSet = context.Products;
 
         public async Task<Order?> GetOrderWithAllProductsRelatedAsync(long id)
         {
@@ -64,12 +66,15 @@ namespace MissTortas.Infrastructure.Repositories
             await orderTypeSet.AddAsync(ot);
         }
 
-        public async Task<OrderPreparation> GetOrderPreparationAsync(long id)
+
+
+        public async Task<OrderPreparation?> GetOrderPreparationAsync(long id)
         {
             var op = await orderPreparationsSet
                 .Include(op => op.Order)
                 .ThenInclude(order => order.Preparations)
-                .SingleAsync();
+                .Where(op => op.OrderPreparationId == id)
+                .SingleOrDefaultAsync();
             return op;
         }
 
@@ -104,6 +109,20 @@ namespace MissTortas.Infrastructure.Repositories
         public async Task<OrderDADto?> GetDetailedOrderAsync(long id)
         {
             return orderSet.Where(o => o.OrderId == id).ToDetailedOrderDADto().SingleOrDefault();
+        }
+
+        public async Task EndAllOrderPreparationsAsync(long orderId)
+        {
+            await orderPreparationsSet
+                .Where(op => op.OrderId == orderId)
+                .ExecuteUpdateAsync(setter => setter.SetProperty(op => op.Done, true));
+        }
+
+        public async Task RemoveAskedProductsFromStockAsync(long orderId)
+        {
+            await productsSet
+                .Where(p => p.SaleProduct != null && p.SaleProduct.OrderSaleProducts.Any(osp => osp.OrderId == orderId))
+                .Execute;
         }
     }
 }

@@ -168,7 +168,7 @@ namespace MissTortas.Services
             {
                 throw new InvalidOperationException("Order preparation must be valid");
             }
-            var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId);
+            var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId) ?? throw new EntityNotFoundException($"Order preparation with id {orderPreparationId} not found.");
             var order = orderPreparation.Order;
             var orderStatus = order.OrderStatus;
             if (orderStatus != OrderStatus.Pending || orderStatus != OrderStatus.InProgress)
@@ -186,7 +186,11 @@ namespace MissTortas.Services
 
             var areOrderPreparationsLeft = order.Preparations.Any(op => op.OrderPreparationId != orderPreparation.OrderPreparationId && !op.Done);
 
-            order.OrderStatus = areOrderPreparationsLeft ? OrderStatus.InProgress : OrderStatus.Finished;
+            order.OrderStatus = OrderStatus.InProgress;
+            if(!areOrderPreparationsLeft)
+            {
+                await EndOrderAsync(order.OrderId);
+            }
 
             orderRepository.Update(order);
             await orderRepository.SaveChangesAsync();
@@ -276,6 +280,54 @@ namespace MissTortas.Services
         {
             var ret = await orderRepository.GetUserOrderPreparationsAsync(userId);
             return orderMapper.OrderPreparationToDTO(ret);
+        }
+
+        public async Task<OrderPreparationDTO> UpdateOrderPreparationAsync(UpdateOrderPreparationDTO dto)
+        {
+            var orderPreparation = await orderRepository.GetOrderPreparationAsync(dto.OrderPreparationId) ?? throw new EntityNotFoundException($"Order preparation with id {dto.OrderPreparationId} not found.");
+            var newAssignee = await userRepository.FindByIdAsync(dto.AssigneeId) ?? throw new UserNotFoundException("User not found");
+            orderPreparation.Assignee = newAssignee;
+            orderPreparation.Detail = dto.Detail;
+            await orderRepository.SaveChangesAsync();
+            return orderMapper.OrderPreparationToDTO(orderPreparation);
+        }
+
+        public async Task<OrderPreparationDTO> CreateOrderPreparationAsync(CreateOrderPreparationDTO dto)
+        {
+            var order = await orderRepository.FindAsync(dto.OrderId) ?? throw new OrderNotFoundException($"Order {dto.OrderId} not found.");
+            var assignee = await userRepository.FindAsync(dto.OrderId) ?? throw new OrderNotFoundException($"Order {dto.OrderId} not found.");
+            if (dto.Detail.Length > 1024)
+            {
+                throw new InvalidOperationException("The detail can't have more than 1024 characters");
+            }
+            OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress];
+            if (validOrderStatus.Contains(order.OrderStatus))
+            {
+                throw new InvalidStateException("The order must be Pending or In Progress to add preparations");
+            }
+            var newOrderPreparation = new OrderPreparation
+            {
+                Assignee = assignee,
+                Order = order,
+                Detail = dto.Detail
+            };
+            await orderRepository.SaveChangesAsync();
+            return orderMapper.OrderPreparationToDTO(newOrderPreparation);
+        }
+
+        public async Task<OrderDTO> EndOrderAsync(long orderId)
+        {
+            var order = await orderRepository.FindAsync(orderId) ?? throw new OrderNotFoundException($"Order {orderId} not found.");
+            OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress, OrderStatus.Created];
+            if (validOrderStatus.Contains(order.OrderStatus))
+            {
+                throw new InvalidStateException("The order must be just Created, Pending or In Progress to add end it");
+            }
+            order.OrderStatus = OrderStatus.Finished;
+            foreach(var prep in order.Preparations)
+            {
+                prep.Done = true;
+            }
         }
     }
 }

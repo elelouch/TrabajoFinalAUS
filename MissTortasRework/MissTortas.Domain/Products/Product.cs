@@ -12,5 +12,7 @@ namespace MissTortas.Domain.Products
         public bool ManageQuantityAsInteger { get; set; }
         public string Unit { get; set; } = string.Empty;
         public bool Enabled { get; set; }
+        public SaleProduct? SaleProduct { get; set; }
+        public long? SaleProductId { get; set; }
     }
 }

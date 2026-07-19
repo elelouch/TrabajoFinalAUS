@@ -32,7 +32,7 @@ namespace MissTortas.Services.Mapping
                 OrderId = op.OrderId
             };
         }
-
+        
         public List<OrderPreparationDTO> OrderPreparationToDTO(IEnumerable<OrderPreparation> ops)
         {
             return [.. ops.Select(OrderPreparationToDTO)];

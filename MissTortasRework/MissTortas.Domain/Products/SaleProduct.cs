@@ -1,3 +1,5 @@
+using MissTortas.Domain.Orders;
+
 namespace MissTortas.Domain.Products
 {
     public class SaleProduct
@@ -8,5 +10,6 @@ namespace MissTortas.Domain.Products
         public decimal SaleQuantity { get; set; }
         public decimal SalePrice { get; set; }
         public bool IsAvailable { get; set; }
+        public ICollection<OrderSaleProduct> OrderSaleProducts { get; set; } = [];
     }
 }
