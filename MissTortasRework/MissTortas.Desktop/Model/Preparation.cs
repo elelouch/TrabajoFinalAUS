@@ -1,6 +1,6 @@
-﻿namespace MissTortas.View.DTO.Orders
+﻿namespace MissTortas.Desktop.Model
 {
-    public class OrderPreparationResponse
+    public class Preparation
     {
         public long Id { get; set; }
         public string Detail { get; set; } = string.Empty;

@@ -19,6 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 // DI
@@ -73,6 +76,8 @@ if (app.Environment.IsDevelopment())
     };
     app.UseStaticFiles(fileOptions);
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 using (var scope = app.Services.CreateScope())
@@ -80,8 +85,6 @@ using (var scope = app.Services.CreateScope())
     await ApplicationDbInitializer.SeedDatabaseAsync(scope.ServiceProvider);
 }
 
-
-app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 

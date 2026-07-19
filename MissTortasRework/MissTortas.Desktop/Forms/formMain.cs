@@ -1,7 +1,9 @@
-﻿using MissTortas.Desktop.Forms.Products;
+﻿using MissTortas.Desktop.Forms.Orders;
+using MissTortas.Desktop.Forms.Products;
 using MissTortas.Desktop.Forms.Roles;
 using MissTortas.Desktop.Forms.Users;
 using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.RoleService;
@@ -18,10 +20,12 @@ namespace MissTortas.Desktop.Forms
         private readonly IAuthService authService;
         private readonly IPermissionService permissionService;
         private readonly IProductService productService;
+        private readonly IOrderService orderService;
 
         private formUsers? formUsers;
         private formRoles? formRoles;
         private formCategories? formCategories;
+        private formOrders? formOrders;
 
         public formMain(
             IMissTortasHttpClient httpClient,
@@ -29,7 +33,8 @@ namespace MissTortas.Desktop.Forms
             IAuthService authService,
             IRoleService roleService,
             IPermissionService permissionService,
-            IProductService productService
+            IProductService productService,
+            IOrderService orderService
         )
         {
             InitializeComponent();
@@ -39,6 +44,7 @@ namespace MissTortas.Desktop.Forms
             this.roleService = roleService;
             this.permissionService = permissionService;
             this.productService = productService;
+            this.orderService = orderService;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -149,6 +155,30 @@ namespace MissTortas.Desktop.Forms
                 MdiParent = this
             };
             productsForm.Show();
+        }
+
+        private void orderManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(this.formOrders == null)
+            {
+                this.formOrders = new formOrders(orderService)
+                {
+                    MdiParent = this
+                };
+                this.formOrders.Show();
+                this.formOrders.Disposed += FormOrders_Disposed;
+            }
+            else
+            {
+                this.formOrders.WindowState = FormWindowState.Normal;
+                this.formOrders.BringToFront();
+            }
+            
+        }
+
+        private void FormOrders_Disposed(object? sender, EventArgs e)
+        {
+            formOrders = null;
         }
     }
 }

@@ -6,6 +6,7 @@ using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using Microsoft.Extensions.Configuration;
+using MissTortas.Desktop.Services.OrdersService;
 
 namespace MissTortas.Desktop
 {
@@ -31,8 +32,17 @@ namespace MissTortas.Desktop
             var rolesService = new RoleService(httpClient);
             var permissionService = new PermissionService(httpClient);
             var productService = new ProductService(httpClient);
-            Application.Run(new formMain(httpClient, usersService, authService, rolesService, permissionService, productService));
-            //Application.Run(new formUsers(usersService, authService));
+            var orderService = new OrderService(httpClient);
+            Application.Run(new formMain(
+                httpClient,
+                usersService,
+                authService,
+                rolesService,
+                permissionService,
+                productService,
+                orderService
+                )
+            );
         }
     }
 }

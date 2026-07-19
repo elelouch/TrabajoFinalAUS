@@ -14,6 +14,6 @@ namespace MissTortas.Domain.Orders
         public long ClientId { get; set; }
         public virtual required User Client { get; set; }
         public virtual ConsultancyStatus Status { get; set; }
-        public virtual ICollection<Order> Orders { get; set; } = [];
+        public virtual List<Order> Orders { get; set; } = [];
     }
 }

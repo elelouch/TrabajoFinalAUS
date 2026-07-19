@@ -1,4 +1,5 @@
 using MissTortas.Domain.Orders;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Services.Repositories
 {
@@ -17,5 +18,7 @@ namespace MissTortas.Services.Repositories
         public Task<Order?> GetOrderWithAllProductsRelatedAsync(long id);
         public Task<OrderType?> FindOrderTypeByNameAsync(string name);
         public Task<List<OrderPreparation>> GetUserOrderPreparationsAsync(long userId);
+        public Task<List<OrderDADto>> GetAllOrdersAsync();
+        public Task<OrderDADto?> GetDetailedOrderAsync(long id);
     }
 }

@@ -7,10 +7,7 @@ using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
 using System.Security.Claims;
-using CreateConsultancyRequest = MissTortas.View.DTO.Orders.CreateConsultancyRequest;
-using CreateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.CreateConsultancyDTO;
-using UpdateConsultancyRequest = MissTortas.View.DTO.Orders.UpdateConsultancyRequest;
-using UpdateConsultancyServiceDTO = MissTortas.Services.DTO.Orders.UpdateConsultancyDTO;
+using MissTortas.View.DTO.Orders;
 
 namespace MissTortas.View.Controllers
 {
@@ -27,7 +24,7 @@ namespace MissTortas.View.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ConsultancyDTO>> PutConsultancy(long id, UpdateConsultancyRequest dto)
         {
-            var consultancyDTO = new UpdateConsultancyServiceDTO
+            var consultancyDTO = new UpdateConsultancyDTO
             {
                 BakeryNotes = dto.BakeryNotes,
                 ConsultancyId = id,
@@ -63,7 +60,7 @@ namespace MissTortas.View.Controllers
         [HttpPost]
         public async Task<ActionResult<ConsultancyDTO>> PostConsultancy([FromForm] CreateConsultancyRequest dto, [FromForm] List<IFormFile> files)
         {
-            var consultancyDTO = new CreateConsultancyServiceDTO
+            var consultancyDTO = new CreateConsultancyDTO
             {
                 ClientId = dto.ClientId,
                 AssigneeId = dto.AssigneeId,

@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Security;
+using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
@@ -18,15 +21,19 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         IValidator<CreateOrder> createOrderValidator,
         IOrderService orderService,
-        IPresentationOrderMapper orderMapper
+        IPresentationOrderMapper orderMapper,
+        ISecurityService securityService
         ) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpGet]
-        public async Task<ActionResult<OrderResponse>> GetAllOrders()
+        public async Task<ActionResult<List<OrderResponse>>> GetAllOrders()
         {
             var orders = await orderService.GetAllOrdersAsync();
-            return Ok(orderMapper.FromOrderDTOToResponse(orders));
+            var userids = orders.Select(order => order.ClientId);
+            var dictionaryId = await securityService.UserDomainIdToAppIdAsync(userids);
+            var ret = orderMapper.FromOrderDTOToResponse(orders, dictionaryId);
+            return Ok(ret);
         }
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
@@ -44,7 +51,9 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound();
             }
-            return Ok(orderMapper.FromOrderDTOToResponse(orderDTO));
+            var dictionaryId = await securityService.UserDomainIdToAppIdAsync([orderDTO.ClientId]);
+            var ret = orderMapper.FromOrderDTOToResponse([orderDTO], dictionaryId).First();
+            return Ok(ret);
         }
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
@@ -65,7 +74,7 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<OrderResponse>> PostSetupOrder(CreateOrder dto)
         {
             await createOrderValidator.ValidateAndThrowAsync(dto);
-            var setupOrderDTO = await orderMapper.FromCreateOrderToSetupOrder(dto);
+            var setupOrderDTO = await orderMapper.FromCreateOrderToSetupOrderAsync(dto);
             var newOrder = await orderService.SetupOrderAsync(setupOrderDTO);
             return orderMapper.FromOrderDTOToResponse(newOrder);
         }

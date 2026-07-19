@@ -1,4 +1,6 @@
-﻿namespace MissTortas.Services.DTO.Orders
+﻿using MissTortas.Services.DTO.Products;
+
+namespace MissTortas.Services.DTO.Orders
 {
     public class OrderDTO
     {
@@ -7,6 +9,9 @@
         public long StatusId { get; set; }
         public long OrderMangerId { get; set; }
         public long ClientId { get; set; }
-        public required IEnumerable<OrderPreparationDTO> Preparations;
+        public string PaymentStatus { get; set; } = string.Empty;
+        public DateTime Creation { get; set; } 
+        public ICollection<OrderPreparationDTO> Preparations { get; set; } = [];
+        public ICollection<SaleProductAskedDTO> SaleProducts { get; set; } = [];
     }
 }

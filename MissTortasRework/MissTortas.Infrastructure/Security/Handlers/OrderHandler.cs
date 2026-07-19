@@ -16,7 +16,7 @@ namespace MissTortas.Infrastructure.Security.Handlers
             OrderRequirement requirement,
             long orderId)
         {
-            var currentUserId = context.User.FindFirstValue(JwtRegisteredClaimNames.Sub) ?? "";
+            var currentUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
             var user = await userManager.FindByIdAsync(currentUserId);
             if (user is null)
                 return;

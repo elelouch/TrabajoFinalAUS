@@ -19,6 +19,7 @@ using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.Repositories;
+using System.Security.Claims;
 using System.Text;
 
 namespace MissTortas.Infrastructure
@@ -48,6 +49,7 @@ namespace MissTortas.Infrastructure
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddScoped<IAuthorizationHandler, ManagePreparationHandler>();
             services.AddScoped<IAuthorizationHandler, ManageAssignedPreparationHandler>();
+            services.AddScoped<IAuthorizationHandler, OrderHandler>();
             services.AddScoped<IRoleMapper, RoleMapper>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserMapper, UserMapper>();
@@ -65,10 +67,7 @@ namespace MissTortas.Infrastructure
                 .RequireAuthenticatedUser()
                  .Build();
 
-            services.AddAuthorizationBuilder().SetFallbackPolicy(requireAuthPolicy);
-
             var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt options not found in appsettings");
-            services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -83,7 +82,7 @@ namespace MissTortas.Infrastructure
                                 var authHeader = context.Request.Headers.Authorization.ToString();
                                 if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    token = authHeader["Bearer ".Length..]; // Cleaner substring
+                                    token = authHeader["Bearer ".Length..];
                                 }
                             }
 
@@ -93,7 +92,7 @@ namespace MissTortas.Infrastructure
                             }
 
                             return Task.CompletedTask;
-                        }
+                        },
                     };
 
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -110,6 +109,7 @@ namespace MissTortas.Infrastructure
 
 
             services.AddAuthorizationBuilder()
+                .SetFallbackPolicy(requireAuthPolicy)
                 .AddPolicy(PolicyName.ReadUsers, policy => policy.AddRequirements(PermissionConstants.ReadUsers))
                 .AddPolicy(PolicyName.UpdateUsers, policy => policy.AddRequirements(PermissionConstants.UpdateUsers))
                 .AddPolicy(PolicyName.ReadPermissions, policy => policy.RequireClaim(Permission.ClaimName, Permission.ReadPermissions.Code))

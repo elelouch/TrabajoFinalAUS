@@ -43,7 +43,7 @@ namespace MissTortas.Services
         {
             if (orderId == 0)
                 throw new InvalidOperationException("Order id must not be 0");
-            var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId);
+            var order = await orderRepository.GetDetailedOrderAsync(orderId);
             if (order is null)
             {
                 return null;
@@ -263,7 +263,7 @@ namespace MissTortas.Services
 
         public async Task<List<OrderDTO>> GetAllOrdersAsync()
         {
-            var orders = await orderRepository.GetAllAsync();
+            var orders = await orderRepository.GetAllOrdersAsync();
             return orderMapper.OrderToDTO(orders);
         }
 

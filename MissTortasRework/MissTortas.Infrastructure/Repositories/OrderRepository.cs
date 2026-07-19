@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MissTortas.Domain.Orders;
 using MissTortas.Infrastructure.Context;
 using MissTortas.Services.Repositories;
+using MissTortas.Services.Repositories.DTO;
 
 namespace MissTortas.Infrastructure.Repositories
 {
@@ -93,6 +94,16 @@ namespace MissTortas.Infrastructure.Repositories
         public Task<List<OrderPreparation>> GetUserOrderPreparationsAsync(long userId)
         {
             return orderPreparationsSet.Where(op => op.AssigneeId == userId).ToListAsync();
+        }
+
+        public Task<List<OrderDADto>> GetAllOrdersAsync()
+        {
+            return orderSet.ToOrderDADto().ToListAsync();
+        }
+
+        public async Task<OrderDADto?> GetDetailedOrderAsync(long id)
+        {
+            return orderSet.Where(o => o.OrderId == id).ToDetailedOrderDADto().SingleOrDefault();
         }
     }
 }
