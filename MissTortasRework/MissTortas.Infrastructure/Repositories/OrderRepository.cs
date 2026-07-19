@@ -19,12 +19,14 @@ namespace MissTortas.Infrastructure.Repositories
         public async Task<Order?> GetOrderWithAllProductsRelatedAsync(long id)
         {
             var order = await orderSet
+                .AsSplitQuery()
                 .Include(order => order.ProductsAsked)
-                .ThenInclude(asked => asked.SaleProduct)
+                    .ThenInclude(asked => asked.SaleProduct)
+                        .ThenInclude(sp => sp.Product)
                 .Include(order => order.Consultancy)
-                .ThenInclude(c => c.Assignee)
+                    .ThenInclude(c => c.Assignee)
                 .Include(order => order.Consultancy)
-                .ThenInclude(c => c.Client)
+                    .ThenInclude(c => c.Client)
                 .Include(order => order.Preparations)
                 .Where(order => order.OrderId == id)
                 .SingleOrDefaultAsync();
@@ -65,8 +67,6 @@ namespace MissTortas.Infrastructure.Repositories
         {
             await orderTypeSet.AddAsync(ot);
         }
-
-
 
         public async Task<OrderPreparation?> GetOrderPreparationAsync(long id)
         {
@@ -118,11 +118,6 @@ namespace MissTortas.Infrastructure.Repositories
                 .ExecuteUpdateAsync(setter => setter.SetProperty(op => op.Done, true));
         }
 
-        public async Task RemoveAskedProductsFromStockAsync(long orderId)
-        {
-            await productsSet
-                .Where(p => p.SaleProduct != null && p.SaleProduct.OrderSaleProducts.Any(osp => osp.OrderId == orderId))
-                .Execute;
-        }
+
     }
 }

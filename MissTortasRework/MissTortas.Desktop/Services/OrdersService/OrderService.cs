@@ -25,5 +25,15 @@ namespace MissTortas.Desktop.Services.OrdersService
             var orders = await httpClient.GetAsync<List<Order>>("orders");
             return orders!;
         }
+
+        public async Task CancelOrderAsync(long orderId)
+        {
+            await httpClient.PatchAsync<object>("orders", new { Status = "cancel" });
+        }
+
+        public async Task EndOrderAsync(long orderId)
+        {
+            await httpClient.PatchAsync<object>("orders", new { Status = "end" });
+        }
     }
 }

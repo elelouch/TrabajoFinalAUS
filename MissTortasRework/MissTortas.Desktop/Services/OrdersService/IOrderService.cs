@@ -9,5 +9,7 @@ namespace MissTortas.Desktop.Services.OrdersService
     {
         public Task<List<Order>> GetOrdersAsync();
         public Task<Order> GetOrderByIdAsync(long id);
+        public Task CancelOrderAsync(long orderId);
+        public Task EndOrderAsync(long orderId);
     }
 }

@@ -317,17 +317,26 @@ namespace MissTortas.Services
 
         public async Task<OrderDTO> EndOrderAsync(long orderId)
         {
-            var order = await orderRepository.FindAsync(orderId) ?? throw new OrderNotFoundException($"Order {orderId} not found.");
+            var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId) ?? throw new OrderNotFoundException($"Order {orderId} not found.");
             OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress, OrderStatus.Created];
             if (validOrderStatus.Contains(order.OrderStatus))
             {
-                throw new InvalidStateException("The order must be just Created, Pending or In Progress to add end it");
+                throw new InvalidStateException("The order must be just Created, Pending or In Progress to end it");
             }
             order.OrderStatus = OrderStatus.Finished;
-            foreach(var prep in order.Preparations)
+            foreach (var orderSaleProduct in order.ProductsAsked)
             {
-                prep.Done = true;
+                var saleProduct = orderSaleProduct.SaleProduct;
+                var product = saleProduct.Product;
+
+                // Discount from SaleProduct
+                saleProduct.SaleQuantity -= orderSaleProduct.QuantityAsked;
+
+                // Discount from Product
+                product.Quantity -= orderSaleProduct.QuantityAsked;
             }
+            await orderRepository.SaveChangesAsync();
+            return orderMapper.OrderToDTO(order);
         }
     }
 }

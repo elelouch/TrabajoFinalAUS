@@ -57,20 +57,7 @@ namespace MissTortas.View.Controllers
         }
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> CancelOrder(long id)
-        {
-            var authRes = await authorizationService.AuthorizeAsync(User, id, new OrderRequirement());
-            if (!authRes.Succeeded)
-            {
-                return NotFound();
-            }
-            await orderService.CancelOrderAsync(id);
-            return Ok();
-        }
-
-        [Authorize(Policy = PolicyName.PlaceOrders)]
-        [HttpPost("setup")]
+        [HttpPost]
         public async Task<ActionResult<OrderResponse>> PostSetupOrder(CreateOrder dto)
         {
             await createOrderValidator.ValidateAndThrowAsync(dto);
@@ -78,6 +65,25 @@ namespace MissTortas.View.Controllers
             var newOrder = await orderService.SetupOrderAsync(setupOrderDTO);
             return orderMapper.FromOrderDTOToResponse(newOrder);
         }
-
+        
+        [Authorize(Policy = PolicyName.PlaceOrders)]
+        [HttpPatch("{orderId}")]
+        public async Task<ActionResult> PatchOrder(long orderId, UpdateOrderRequest request)
+        {
+            var authRes = await authorizationService.AuthorizeAsync(User, orderId, new OrderRequirement());
+            if (!authRes.Succeeded)
+            {
+                return NotFound();
+            }
+            if (request.Status == "end")
+            {
+                await orderService.EndOrderAsync(orderId);
+            }
+            else if(request.Status == "cancel")
+            {
+                await orderService.CancelOrderAsync(orderId);
+            }
+            return Ok();
+        }
     }
 }

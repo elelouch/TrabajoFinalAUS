@@ -49,6 +49,9 @@ namespace MissTortas.Desktop.Services.Shared
         public Task<T?> DeleteAsync<T>(string endpoint) =>
             ExecuteWithRetry<T>(() => httpClient.DeleteAsync(endpoint));
 
+        public Task<T?> PatchAsync<T>(string endpoint, object? data = null) =>
+            ExecuteWithRetry<T>(() => httpClient.PatchAsJsonAsync(endpoint, data));
+
         /// <summary>
         /// Sends the request via <paramref name="sendRequest"/>. On a 401, attempts a token
         /// refresh (only once per call, shared across concurrent callers) and retries the

@@ -6,6 +6,7 @@ using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
+using MissTortas.View.DTO.Orders;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace MissTortas.View.Controllers
@@ -30,8 +31,8 @@ namespace MissTortas.View.Controllers
             return Ok(ret);
         }
 
-        [HttpDelete("{preparationId}")]
-        public async Task<ActionResult> EndOrderPreparation(long preparationId)
+        [HttpPatch("{preparationId}")]
+        public async Task<ActionResult> PatcthOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
         {
             var requirement = new ManageAssignedPreparationRequirement();
             var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
@@ -39,19 +40,21 @@ namespace MissTortas.View.Controllers
             {
                 return Unauthorized();
             }
-            await orderService.EndOrderPreparationAsync(preparationId);
+            if(request.Status == "end")
+            {
+                await orderService.EndOrderPreparationAsync(preparationId);
+            }
+            else if (request.Status == "update")
+            {
+                var updateOrderPreparation = new UpdateOrderPreparationDTO
+                {
+                    AssigneeId = request.AssigneeId,
+                    Detail = request.Detail,
+                    OrderPreparationId = preparationId
+                };
+                await orderService.UpdateOrderPreparationAsync(updateOrderPreparation);
+            }
             return new EmptyResult();
-        }
-
-        [HttpPut("{preparationId}")]
-        public async Task<ActionResult> UpdateOrderPreparation(long preparationId)
-        {
-            var requirement = new ManageAssignedPreparationRequirement();
-            var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
-            if (!authRes.Succeeded)
-            {
-                return Unauthorized();
-            }
         }
     }
 }

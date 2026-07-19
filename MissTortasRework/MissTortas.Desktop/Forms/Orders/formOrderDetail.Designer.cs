@@ -34,12 +34,6 @@
             tabPage1 = new TabPage();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            clientUsernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            orderIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             preparationBindingSource = new BindingSource(components);
             button3 = new Button();
             button2 = new Button();
@@ -60,10 +54,17 @@
             lblClientUsername = new Label();
             lblOrderId = new Label();
             panel2 = new Panel();
+            btnCancel = new Button();
+            btnFinishOrder = new Button();
+            btnCancelOrder = new Button();
             txtPaymentStatus = new TextBox();
             label5 = new Label();
             lblOrderStatus = new Label();
             txtOrderStatus = new TextBox();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -143,49 +144,13 @@
             // 
             dgvPreparations.AutoGenerateColumns = false;
             dgvPreparations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, detailDataGridViewTextBoxColumn, clientUsernameDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn, assigneeIdDataGridViewTextBoxColumn, orderIdDataGridViewTextBoxColumn });
+            dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, detailDataGridViewTextBoxColumn, assigneeIdDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn });
             dgvPreparations.DataSource = preparationBindingSource;
             dgvPreparations.Dock = DockStyle.Fill;
             dgvPreparations.Location = new Point(0, 0);
             dgvPreparations.Name = "dgvPreparations";
             dgvPreparations.Size = new Size(659, 275);
             dgvPreparations.TabIndex = 0;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            // 
-            // detailDataGridViewTextBoxColumn
-            // 
-            detailDataGridViewTextBoxColumn.DataPropertyName = "Detail";
-            detailDataGridViewTextBoxColumn.HeaderText = "Detail";
-            detailDataGridViewTextBoxColumn.Name = "detailDataGridViewTextBoxColumn";
-            // 
-            // clientUsernameDataGridViewTextBoxColumn
-            // 
-            clientUsernameDataGridViewTextBoxColumn.DataPropertyName = "ClientUsername";
-            clientUsernameDataGridViewTextBoxColumn.HeaderText = "ClientUsername";
-            clientUsernameDataGridViewTextBoxColumn.Name = "clientUsernameDataGridViewTextBoxColumn";
-            // 
-            // doneDataGridViewCheckBoxColumn
-            // 
-            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
-            doneDataGridViewCheckBoxColumn.HeaderText = "Done";
-            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
-            // 
-            // assigneeIdDataGridViewTextBoxColumn
-            // 
-            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
-            assigneeIdDataGridViewTextBoxColumn.HeaderText = "AssigneeId";
-            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
-            // 
-            // orderIdDataGridViewTextBoxColumn
-            // 
-            orderIdDataGridViewTextBoxColumn.DataPropertyName = "OrderId";
-            orderIdDataGridViewTextBoxColumn.HeaderText = "OrderId";
-            orderIdDataGridViewTextBoxColumn.Name = "orderIdDataGridViewTextBoxColumn";
             // 
             // preparationBindingSource
             // 
@@ -342,6 +307,9 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(btnCancel);
+            panel2.Controls.Add(btnFinishOrder);
+            panel2.Controls.Add(btnCancelOrder);
             panel2.Controls.Add(txtPaymentStatus);
             panel2.Controls.Add(label5);
             panel2.Controls.Add(lblOrderStatus);
@@ -351,6 +319,36 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(394, 129);
             panel2.TabIndex = 2;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(268, 12);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(107, 23);
+            btnCancel.TabIndex = 12;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnFinishOrder
+            // 
+            btnFinishOrder.Location = new Point(268, 49);
+            btnFinishOrder.Name = "btnFinishOrder";
+            btnFinishOrder.Size = new Size(107, 23);
+            btnFinishOrder.TabIndex = 11;
+            btnFinishOrder.Text = "Finish Order";
+            btnFinishOrder.UseVisualStyleBackColor = true;
+            btnFinishOrder.Click += btnFinishOrder_Click;
+            // 
+            // btnCancelOrder
+            // 
+            btnCancelOrder.Location = new Point(268, 87);
+            btnCancelOrder.Name = "btnCancelOrder";
+            btnCancelOrder.Size = new Size(107, 23);
+            btnCancelOrder.TabIndex = 10;
+            btnCancelOrder.Text = "Cancel Order";
+            btnCancelOrder.UseVisualStyleBackColor = true;
+            btnCancelOrder.Click += btnCancelOrder_Click;
             // 
             // txtPaymentStatus
             // 
@@ -386,10 +384,35 @@
             txtOrderStatus.Size = new Size(127, 23);
             txtOrderStatus.TabIndex = 6;
             // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            // 
+            // detailDataGridViewTextBoxColumn
+            // 
+            detailDataGridViewTextBoxColumn.DataPropertyName = "Detail";
+            detailDataGridViewTextBoxColumn.HeaderText = "Detail";
+            detailDataGridViewTextBoxColumn.Name = "detailDataGridViewTextBoxColumn";
+            // 
+            // assigneeIdDataGridViewTextBoxColumn
+            // 
+            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
+            assigneeIdDataGridViewTextBoxColumn.HeaderText = "AssigneeId";
+            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
+            // 
+            // doneDataGridViewCheckBoxColumn
+            // 
+            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
+            doneDataGridViewCheckBoxColumn.HeaderText = "Done";
+            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
+            // 
             // formOrderDetail
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formOrderDetail";
@@ -438,12 +461,6 @@
         private Button button2;
         private Button button1;
         private DataGridView dgvAskedSaleProducts;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn detailDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn clientUsernameDataGridViewTextBoxColumn;
-        private DataGridViewCheckBoxColumn doneDataGridViewCheckBoxColumn;
-        private DataGridViewTextBoxColumn assigneeIdDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn orderIdDataGridViewTextBoxColumn;
         private BindingSource preparationBindingSource;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
@@ -451,5 +468,12 @@
         private DataGridViewTextBoxColumn quantityAskedDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private BindingSource saleProductAskedBindingSource;
+        private Button btnFinishOrder;
+        private Button btnCancelOrder;
+        private Button btnCancel;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn detailDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn assigneeIdDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn doneDataGridViewCheckBoxColumn;
     }
 }

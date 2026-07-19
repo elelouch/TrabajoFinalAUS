@@ -20,5 +20,6 @@ namespace MissTortas.Services.Interfaces
         public Task<List<OrderPreparationDTO>> GetUserOrderPreparationsAsync(long userId);
         public Task<OrderPreparationDTO> UpdateOrderPreparationAsync(UpdateOrderPreparationDTO dto);
         public Task<OrderPreparationDTO> CreateOrderPreparationAsync(CreateOrderPreparationDTO dto);
+        public Task<OrderDTO> EndOrderAsync(long orderId);
     }
 }

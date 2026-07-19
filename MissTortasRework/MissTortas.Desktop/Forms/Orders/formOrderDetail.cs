@@ -33,7 +33,6 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             try
             {
-
                 var order = await orderService.GetOrderByIdAsync(orderId);
                 preparations.Clear();
                 saleProductsAsked.Clear();
@@ -69,6 +68,43 @@ namespace MissTortas.Desktop.Forms.Orders
         private void formOrderDetail_Load(object sender, EventArgs e)
         {
             LoadForm();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Dispose();
+        }
+
+        private async void btnFinishOrder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await orderService.EndOrderAsync(orderId);
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
+            }
+        }
+
+        private async void btnCancelOrder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await orderService.CancelOrderAsync(orderId);
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
+            }
         }
     }
 }

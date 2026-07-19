@@ -36,6 +36,14 @@ namespace MissTortas.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // non portable syntax
+            modelBuilder.Entity<SaleProduct>()
+                .ToTable(t => t.HasCheckConstraint("CK_SaleProduct_NonNegativeQuantity", "\"SaleQuantity\" >= 0"));
+
+            modelBuilder.Entity<Product>()
+                .ToTable(t => t.HasCheckConstraint("CK_Product_NonNegativeQuantity", "\"Quantity\" >= 0"));
+
             modelBuilder.Entity<RefreshTokenEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
