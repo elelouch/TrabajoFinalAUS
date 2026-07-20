@@ -301,7 +301,7 @@ namespace MissTortas.Services
                 throw new InvalidOperationException("The detail can't have more than 1024 characters");
             }
             OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress];
-            if (validOrderStatus.Contains(order.OrderStatus))
+            if (!validOrderStatus.Contains(order.OrderStatus))
             {
                 throw new InvalidStateException("The order must be Pending or In Progress to add preparations");
             }
@@ -319,7 +319,7 @@ namespace MissTortas.Services
         {
             var order = await orderRepository.GetOrderWithAllProductsRelatedAsync(orderId) ?? throw new OrderNotFoundException($"Order {orderId} not found.");
             OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress, OrderStatus.Created];
-            if (validOrderStatus.Contains(order.OrderStatus))
+            if (!validOrderStatus.Contains(order.OrderStatus))
             {
                 throw new InvalidStateException("The order must be just Created, Pending or In Progress to end it");
             }

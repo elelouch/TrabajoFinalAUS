@@ -28,12 +28,12 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public async Task CancelOrderAsync(long orderId)
         {
-            await httpClient.PatchAsync<object>("orders", new { Status = "cancel" });
+            await httpClient.PatchAsync<object>($"orders/{orderId}", new { Status = "cancel" });
         }
 
         public async Task EndOrderAsync(long orderId)
         {
-            await httpClient.PatchAsync<object>("orders", new { Status = "end" });
+            await httpClient.PatchAsync<object>($"orders/{orderId}", new { Status = "end" });
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MissTortas.View.Mappers
         public List<SaleProductAskedResponse> FromSaleProductAskedDTOToResponse(IEnumerable<SaleProductAskedDTO> dtos);
         public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos);
         public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAppId);
-        public Task<SetupOrderDTO> FromCreateOrderToSetupOrderAsync(CreateOrder createOrder);
+        public Task<SetupOrderDTO> FromCreateOrderToSetupOrderAsync(CreateOrderRequest createOrder);
 
     }
 }

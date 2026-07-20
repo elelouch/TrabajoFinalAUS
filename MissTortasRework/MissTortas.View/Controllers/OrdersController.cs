@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Domain.Orders;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
+using MissTortas.Services.Repositories.DTO;
 using MissTortas.View.DTO.Orders;
 using MissTortas.View.Mappers;
 
@@ -19,7 +21,7 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class OrdersController(
         IAuthorizationService authorizationService,
-        IValidator<CreateOrder> createOrderValidator,
+        IValidator<CreateOrderRequest> createOrderValidator,
         IOrderService orderService,
         IPresentationOrderMapper orderMapper,
         ISecurityService securityService
@@ -58,30 +60,48 @@ namespace MissTortas.View.Controllers
 
         [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpPost]
-        public async Task<ActionResult<OrderResponse>> PostSetupOrder(CreateOrder dto)
+        public async Task<ActionResult<OrderResponse>> PostOrder(CreateOrderRequest dto)
         {
             await createOrderValidator.ValidateAndThrowAsync(dto);
             var setupOrderDTO = await orderMapper.FromCreateOrderToSetupOrderAsync(dto);
             var newOrder = await orderService.SetupOrderAsync(setupOrderDTO);
-            return orderMapper.FromOrderDTOToResponse(newOrder);
+            if (dto.AlreadyPaid)
+            {
+                var manageOrder = await authorizationService.AuthorizeAsync(User, PolicyName.ManageOrders);
+                if(!manageOrder.Succeeded)
+                {
+                    return Forbid();
+                }
+                var placeOrderDTO = new PlaceOrderDTO { OrderId = newOrder.Id };
+                await orderService.PlaceOrderAsync(placeOrderDTO);
+            }
+            var dictionaryId = await securityService.UserDomainIdToAppIdAsync([newOrder.ClientId]);
+            var ret = orderMapper.FromOrderDTOToResponse([newOrder], dictionaryId).First();
+            return Ok(ret);
         }
-        
-        [Authorize(Policy = PolicyName.PlaceOrders)]
+
         [HttpPatch("{orderId}")]
         public async Task<ActionResult> PatchOrder(long orderId, UpdateOrderRequest request)
         {
-            var authRes = await authorizationService.AuthorizeAsync(User, orderId, new OrderRequirement());
-            if (!authRes.Succeeded)
+            var manageSelfOrder = await authorizationService.AuthorizeAsync(User, orderId, new OrderRequirement());
+            if (manageSelfOrder.Succeeded && request.Status == "cancel")
             {
-                return NotFound();
+                await orderService.CancelOrderAsync(orderId);
+                return Ok();
+            }
+            var manageOrder = await authorizationService.AuthorizeAsync(User, PolicyName.ManageOrders);
+            if(!manageOrder.Succeeded)
+            {
+                return Forbid();
             }
             if (request.Status == "end")
             {
                 await orderService.EndOrderAsync(orderId);
             }
-            else if(request.Status == "cancel")
+            else if (request.Status == "place")
             {
-                await orderService.CancelOrderAsync(orderId);
+                var placeOrderDTO = new PlaceOrderDTO { OrderId = orderId };
+                await orderService.PlaceOrderAsync(placeOrderDTO);
             }
             return Ok();
         }

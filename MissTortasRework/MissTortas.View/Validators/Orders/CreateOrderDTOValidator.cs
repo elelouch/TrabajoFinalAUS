@@ -3,7 +3,7 @@ using MissTortas.View.DTO.Orders;
 
 namespace MissTortas.View.Validators.Orders
 {
-    public class CreateOrderDTOValidator : AbstractValidator<CreateOrder>
+    public class CreateOrderDTOValidator : AbstractValidator<CreateOrderRequest>
     {
         public long OrderManagerIdMax = long.MaxValue - 1024;
         public long ClientIdMax = long.MaxValue - 1024;

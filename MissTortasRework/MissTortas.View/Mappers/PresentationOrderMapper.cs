@@ -9,7 +9,7 @@ namespace MissTortas.View.Mappers
 {
     public class PresentationOrderMapper(UserManager<ApplicationUser> userManager) : IPresentationOrderMapper
     {
-        public async Task<SetupOrderDTO> FromCreateOrderToSetupOrderAsync(CreateOrder createOrder)
+        public async Task<SetupOrderDTO> FromCreateOrderToSetupOrderAsync(CreateOrderRequest createOrder)
         {
             var idMap = await userManager.Users
                 .Where(u => u.Id == createOrder.ClientGuid || u.Id == createOrder.OrderManagerGuid)

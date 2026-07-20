@@ -31,7 +31,7 @@ builder.Services.AddScoped<IValidator<UpdateProductRequest>, UpdateProductValida
 builder.Services.AddScoped<IValidator<CreateProductCategoryRequest>, CreateProductCategoryValidator>();
 builder.Services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidator>();
 builder.Services.AddScoped<IValidator<CreateSaleProductRequest>, CreateSaleProductValidator>();
-builder.Services.AddScoped<IValidator<CreateOrder>, CreateOrderDTOValidator>();
+builder.Services.AddScoped<IValidator<CreateOrderRequest>, CreateOrderDTOValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderTypeRequest>, CreateOrderTypeDTOValidator>();
 builder.Services.AddScoped<IValidator<PlaceOrderRequest>, PlaceOrderDTOValidator>();
 builder.Services.AddScoped<IValidator<UserModification>, UserModificationValidator>();
