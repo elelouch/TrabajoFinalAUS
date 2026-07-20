@@ -79,7 +79,8 @@ namespace MissTortas.Services
                 CategoryId = dto.CategoryId,
                 Description = dto.SaleDescription,
                 ManageQuantityAsInteger = true, // sale products are offered by units.
-                Unit = dto.Unit
+                Unit = dto.Unit,
+                Quantity = dto.Quantity
             };
             var stockProduct = await CreateProductEntityAsync(productCreateDTO);
             var saleProduct = new SaleProduct
