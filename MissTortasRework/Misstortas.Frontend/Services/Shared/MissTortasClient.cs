@@ -1,4 +1,4 @@
-﻿using Misstortas.Frontend.Services.DTO;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Misstortas.Frontend.Services.Shared
 {
@@ -28,6 +28,13 @@ namespace Misstortas.Frontend.Services.Shared
             return await HandleResponse<T>(response);
         }
 
+
+        public async Task<T?> PatchAsync<T>(string endpoint, object? data = null)
+        {
+            var response = await httpClient.PatchAsJsonAsync(endpoint, data);
+            return await HandleResponse<T>(response);
+        }
+
         protected async Task<T?> HandleResponse<T>(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
@@ -38,8 +45,28 @@ namespace Misstortas.Frontend.Services.Shared
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 
-            var error = await response.Content.ReadFromJsonAsync<ErrorDTO>();
-            throw new HttpRequestException(error?.Message ?? "Request failed");
+            ProblemDetails? problem = null;
+
+            try
+            {
+                problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+            }
+            catch
+            {
+                // Ignore deserialization errors and fall back below.
+            }
+
+            var message =
+                problem?.Detail ??
+                problem?.Title ??
+                response.ReasonPhrase ??
+                "An unexpected error occurred.";
+
+            throw new HttpRequestException(
+                message,
+                null,
+                response.StatusCode);
         }
+
     }
 }

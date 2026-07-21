@@ -18,7 +18,7 @@
             <a href="/signin" class="btn btn-primary">Sign In to End Payment</a>
         </NotAuthorized>
         <Authorized >
-            <EditForm OnSubmit="HandlePayment">
+            <EditForm Model="payOrder" OnSubmit="HandlePayment">
                 <div class="mb-3">
                     <label class="form-label">Payment Method</label>
                     <select class="form-control" @bind="selectedPaymentMethod">
@@ -81,10 +81,10 @@
     private bool isProcessing = false;
     private string errorMessage = "";
     private bool showSuccessModal = false;
+    private PayOrderDTO payOrder = new();
 
     private async Task HandlePayment()
     {
-        Console.WriteLine("START");
         isProcessing = true;
         errorMessage = "";
 
@@ -98,21 +98,16 @@
         try
         {
             var successfullCast = int.TryParse(selectedPaymentMethod, out int newval);
-            var payOrder = new PayOrderDTO
-            {
-                OrderId = OrderId,
-                PaymentMethod = successfullCast ? newval : 0
-            };
+            payOrder.OrderId = OrderId;
+            payOrder.PaymentMethod = successfullCast ? newval : 0;
 
             await PaymentService.PayOrderAsync(payOrder);
             await CartService.Clear();
             // await OnPaymentSuccess.InvokeAsync();
 
             showSuccessModal = true;
-            Console.WriteLine("MODAL SET");
             StateHasChanged();
             await Task.Delay(2500);  // Let the user read the message
-            Console.WriteLine("END");
             // NavigationManager.NavigateTo("/products");
         }
         catch (HttpRequestException ex)

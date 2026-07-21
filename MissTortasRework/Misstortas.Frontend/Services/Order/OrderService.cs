@@ -30,7 +30,7 @@ namespace Misstortas.Frontend.Services.Order
                 OrderTypeId = DefaultOrderTypeId
             };
 
-            var ret = await missTortasClient.PostAsync<OrderResponseDTO>("/orders/setup", req);
+            var ret = await missTortasClient.PostAsync<OrderResponseDTO>("/orders", req);
             return ret!.Id;
         }
     }

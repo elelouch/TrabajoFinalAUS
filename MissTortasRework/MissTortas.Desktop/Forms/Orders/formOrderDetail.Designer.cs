@@ -34,6 +34,10 @@
             tabPage1 = new TabPage();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             preparationBindingSource = new BindingSource(components);
             button3 = new Button();
             button2 = new Button();
@@ -61,10 +65,6 @@
             label5 = new Label();
             lblOrderStatus = new Label();
             txtOrderStatus = new TextBox();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -142,6 +142,8 @@
             // 
             // dgvPreparations
             // 
+            dgvPreparations.AllowUserToAddRows = false;
+            dgvPreparations.AllowUserToDeleteRows = false;
             dgvPreparations.AutoGenerateColumns = false;
             dgvPreparations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, detailDataGridViewTextBoxColumn, assigneeIdDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn });
@@ -149,8 +151,37 @@
             dgvPreparations.Dock = DockStyle.Fill;
             dgvPreparations.Location = new Point(0, 0);
             dgvPreparations.Name = "dgvPreparations";
+            dgvPreparations.ReadOnly = true;
             dgvPreparations.Size = new Size(659, 275);
             dgvPreparations.TabIndex = 0;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // detailDataGridViewTextBoxColumn
+            // 
+            detailDataGridViewTextBoxColumn.DataPropertyName = "Detail";
+            detailDataGridViewTextBoxColumn.HeaderText = "Detail";
+            detailDataGridViewTextBoxColumn.Name = "detailDataGridViewTextBoxColumn";
+            detailDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // assigneeIdDataGridViewTextBoxColumn
+            // 
+            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
+            assigneeIdDataGridViewTextBoxColumn.HeaderText = "AssigneeId";
+            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
+            assigneeIdDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // doneDataGridViewCheckBoxColumn
+            // 
+            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
+            doneDataGridViewCheckBoxColumn.HeaderText = "Done";
+            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
+            doneDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // preparationBindingSource
             // 
@@ -383,30 +414,6 @@
             txtOrderStatus.ReadOnly = true;
             txtOrderStatus.Size = new Size(127, 23);
             txtOrderStatus.TabIndex = 6;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            // 
-            // detailDataGridViewTextBoxColumn
-            // 
-            detailDataGridViewTextBoxColumn.DataPropertyName = "Detail";
-            detailDataGridViewTextBoxColumn.HeaderText = "Detail";
-            detailDataGridViewTextBoxColumn.Name = "detailDataGridViewTextBoxColumn";
-            // 
-            // assigneeIdDataGridViewTextBoxColumn
-            // 
-            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
-            assigneeIdDataGridViewTextBoxColumn.HeaderText = "AssigneeId";
-            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
-            // 
-            // doneDataGridViewCheckBoxColumn
-            // 
-            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
-            doneDataGridViewCheckBoxColumn.HeaderText = "Done";
-            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
             // 
             // formOrderDetail
             // 

@@ -39,8 +39,8 @@ else
                 <tr>
                     <td>@item.Product.Name</td>
                     <td>@item.QuantityAsked</td>
-                    <td>$@item.Product.Price</td>
-                    <td>$@(item.QuantityAsked * (decimal)item.Product.Price)</td>
+                    <td>$@item.Product.SalePrice</td>
+                    <td>$@(item.QuantityAsked * (decimal)item.Product.SalePrice)</td>
                     <td>
                         <button class="btn btn-danger btn-sm"
                                 @onclick="() => Remove(item.Product.Id)">
@@ -58,6 +58,13 @@ else
     {
         <AuthorizeView>
             <Authorized>
+                @if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @errorMessage
+                        <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
+                    </div>
+                }
                 <button class="btn btn-primary mt-3" @onclick="ShowCheckout">
                     Pay Order
                 </button>
@@ -79,6 +86,7 @@ else
 {
     private bool showCheckout = false;
     private long createdOrderId = 0;
+    private string? errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,6 +118,9 @@ else
 
     private async Task ShowCheckout()
     {
+        errorMessage = null;
+        showCheckout = false;
+
         try
         {
             createdOrderId = await OrderService.PostCartAsync();
@@ -117,7 +128,12 @@ else
         }
         catch (HttpRequestException ex)
         {
-            // Handle error - show error message to user
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            // Log ex if you have a logger.
+            errorMessage = "Something went wrong while creating your order. Please try again.";
         }
     }
 

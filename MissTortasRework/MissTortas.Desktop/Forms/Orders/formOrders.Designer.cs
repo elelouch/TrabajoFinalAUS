@@ -37,6 +37,7 @@
             clientUserIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             orderBindingSource = new BindingSource(components);
             panel1 = new Panel();
+            btnCancel = new Button();
             btnDetails = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
@@ -61,6 +62,8 @@
             // 
             // dgvOrders
             // 
+            dgvOrders.AllowUserToAddRows = false;
+            dgvOrders.AllowUserToDeleteRows = false;
             dgvOrders.AutoGenerateColumns = false;
             dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvOrders.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, statusDataGridViewTextBoxColumn, statusIdDataGridViewTextBoxColumn, clientUserIdDataGridViewTextBoxColumn });
@@ -68,6 +71,7 @@
             dgvOrders.Dock = DockStyle.Fill;
             dgvOrders.Location = new Point(3, 3);
             dgvOrders.Name = "dgvOrders";
+            dgvOrders.ReadOnly = true;
             dgvOrders.Size = new Size(634, 444);
             dgvOrders.TabIndex = 0;
             // 
@@ -76,24 +80,28 @@
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
             idDataGridViewTextBoxColumn.HeaderText = "Id";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // statusDataGridViewTextBoxColumn
             // 
             statusDataGridViewTextBoxColumn.DataPropertyName = "Status";
             statusDataGridViewTextBoxColumn.HeaderText = "Status";
             statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
+            statusDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // statusIdDataGridViewTextBoxColumn
             // 
             statusIdDataGridViewTextBoxColumn.DataPropertyName = "StatusId";
             statusIdDataGridViewTextBoxColumn.HeaderText = "StatusId";
             statusIdDataGridViewTextBoxColumn.Name = "statusIdDataGridViewTextBoxColumn";
+            statusIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // clientUserIdDataGridViewTextBoxColumn
             // 
             clientUserIdDataGridViewTextBoxColumn.DataPropertyName = "ClientUserId";
             clientUserIdDataGridViewTextBoxColumn.HeaderText = "ClientUserId";
             clientUserIdDataGridViewTextBoxColumn.Name = "clientUserIdDataGridViewTextBoxColumn";
+            clientUserIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // orderBindingSource
             // 
@@ -101,6 +109,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnDetails);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(643, 3);
@@ -108,9 +117,19 @@
             panel1.Size = new Size(154, 444);
             panel1.TabIndex = 1;
             // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(18, 9);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(92, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(13, 9);
+            btnDetails.Location = new Point(18, 50);
             btnDetails.Name = "btnDetails";
             btnDetails.Size = new Size(92, 23);
             btnDetails.TabIndex = 0;
@@ -122,6 +141,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formOrders";
@@ -145,5 +165,6 @@
         private BindingSource orderBindingSource;
         private Panel panel1;
         private Button btnDetails;
+        private Button btnCancel;
     }
 }

@@ -79,7 +79,20 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             try
             {
+                var res = MessageBox.Show(
+                    "You're gonna be finishig an Order, this implies that the status will be 'Finished' and the products will be discounted from the correspondent inventory. Press 'OK' to continue or 'Cancel' otherwise.",
+                    "Finishing Order",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning
+                    );
+                if (res != DialogResult.OK)
+                {
+                    return;
+                }
+
                 await orderService.EndOrderAsync(orderId);
+                MessageBox.Show("Order finished correctly", "Order finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Dispose();
             }
             catch (ApiException exc)
             {
@@ -95,7 +108,19 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             try
             {
+                var res = MessageBox.Show(
+                    "You're gonna be canceling an Order, this implies that the status will be 'Canceled' and the products will be removed from reservation and NOT be discounted from the correspondent inventory. Press 'OK' to continue or 'Cancel' otherwise.",
+                    "Finishing Order",
+                     MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning
+                );
+                if (res != DialogResult.OK)
+                {
+                    return;
+                }
                 await orderService.CancelOrderAsync(orderId);
+                MessageBox.Show("Order canceled correctly", "Order canceled", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Dispose();
             }
             catch (ApiException exc)
             {

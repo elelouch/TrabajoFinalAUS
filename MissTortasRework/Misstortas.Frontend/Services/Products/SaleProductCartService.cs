@@ -20,7 +20,7 @@ namespace Misstortas.Frontend.Services.Products
 
         public decimal TotalPrice
             => _items.Values.Sum(x =>
-                (decimal)x.Product.Price * x.QuantityAsked);
+                (decimal)x.Product.SalePrice * x.QuantityAsked);
 
         public event Action? StateChanged;
 

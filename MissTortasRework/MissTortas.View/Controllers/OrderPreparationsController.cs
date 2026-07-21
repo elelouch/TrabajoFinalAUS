@@ -8,6 +8,7 @@ using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
 using MissTortas.View.DTO.Orders;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace MissTortas.View.Controllers
 {
@@ -22,7 +23,7 @@ namespace MissTortas.View.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrderPreparationDTO>>> GetOrderPreparations()
         {
-            var appUser = await userManager.FindByIdAsync(User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? "");
+            var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
             if(appUser == null)
             {
                 return Unauthorized();
@@ -32,7 +33,7 @@ namespace MissTortas.View.Controllers
         }
 
         [HttpPatch("{preparationId}")]
-        public async Task<ActionResult> PatcthOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
+        public async Task<ActionResult> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
         {
             var requirement = new ManageAssignedPreparationRequirement();
             var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);

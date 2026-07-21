@@ -53,17 +53,23 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private void btnDetails_Click(object sender, EventArgs e)
         {
-            if(dgvOrders.SelectedRows.Count <= 0)
+            if (dgvOrders.SelectedRows.Count <= 0)
             {
+                MessageBox.Show("Please, select a row");
                 return;
             }
             if (dgvOrders.SelectedRows[0].DataBoundItem is not Order order)
             {
                 return;
             }
-            
+
             var formOrderDetail = new formOrderDetail(orderService, order.Id);
             formOrderDetail.ShowDialog();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 }
