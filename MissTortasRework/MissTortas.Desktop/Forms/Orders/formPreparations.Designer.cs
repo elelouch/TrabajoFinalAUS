@@ -1,6 +1,6 @@
 ﻿namespace MissTortas.Desktop.Forms.Orders
 {
-    partial class Form1
+    partial class formPreparations
     {
         /// <summary>
         /// Required designer variable.
@@ -31,14 +31,14 @@
             components = new System.ComponentModel.Container();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
-            preparationBindingSource = new BindingSource(components);
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             clientUsernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             OrderId = new DataGridViewTextBoxColumn();
+            preparationBindingSource = new BindingSource(components);
+            btnCancel = new Button();
             btnEndPreparation = new Button();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -59,12 +59,11 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(button1);
+            splitContainer1.Panel2.Controls.Add(btnCancel);
             splitContainer1.Panel2.Controls.Add(btnEndPreparation);
             splitContainer1.Size = new Size(800, 450);
             splitContainer1.SplitterDistance = 650;
             splitContainer1.TabIndex = 0;
-            splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
             // 
             // dgvPreparations
             // 
@@ -80,10 +79,6 @@
             dgvPreparations.ReadOnly = true;
             dgvPreparations.Size = new Size(650, 450);
             dgvPreparations.TabIndex = 0;
-            // 
-            // preparationBindingSource
-            // 
-            preparationBindingSource.DataSource = typeof(Model.Preparation);
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -120,6 +115,20 @@
             OrderId.Name = "OrderId";
             OrderId.ReadOnly = true;
             // 
+            // preparationBindingSource
+            // 
+            preparationBindingSource.DataSource = typeof(Model.Preparation);
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(12, 75);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(122, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
             // btnEndPreparation
             // 
             btnEndPreparation.Location = new Point(12, 30);
@@ -128,15 +137,7 @@
             btnEndPreparation.TabIndex = 0;
             btnEndPreparation.Text = "End Preparation";
             btnEndPreparation.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(12, 75);
-            button1.Name = "button1";
-            button1.Size = new Size(122, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Cancel";
-            button1.UseVisualStyleBackColor = true;
+            btnEndPreparation.Click += btnEndPreparation_Click;
             // 
             // Form1
             // 
@@ -145,7 +146,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(splitContainer1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Preparations";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -166,6 +167,6 @@
         private DataGridViewTextBoxColumn OrderId;
         private BindingSource preparationBindingSource;
         private Button btnEndPreparation;
-        private Button button1;
+        private Button btnCancel;
     }
 }

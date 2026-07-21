@@ -11,5 +11,6 @@ namespace MissTortas.Desktop.Services.OrdersService
         public Task<Order> GetOrderByIdAsync(long id);
         public Task CancelOrderAsync(long orderId);
         public Task EndOrderAsync(long orderId);
+        public Task EndOrderPreparationAsync(long orderPreparationId);
     }
 }

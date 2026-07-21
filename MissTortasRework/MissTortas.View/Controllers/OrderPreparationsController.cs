@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.Interfaces;
@@ -24,7 +25,7 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<List<OrderPreparationDTO>>> GetOrderPreparations()
         {
             var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
-            if(appUser == null)
+            if (appUser == null)
             {
                 return Unauthorized();
             }
@@ -33,29 +34,33 @@ namespace MissTortas.View.Controllers
         }
 
         [HttpPatch("{preparationId}")]
-        public async Task<ActionResult> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
+        public async Task<ActionResult<OrderPreparationDTO>> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
         {
             var requirement = new ManageAssignedPreparationRequirement();
             var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
+            OrderPreparationDTO? preparation;
             if (!authRes.Succeeded)
             {
                 return Unauthorized();
             }
-            if(request.Status == "end")
+            if (request.Status == "end")
             {
-                await orderService.EndOrderPreparationAsync(preparationId);
+                preparation = await orderService.EndOrderPreparationAsync(preparationId);
             }
-            else if (request.Status == "update")
+            else
             {
+                var newAssigneeId = await userManager.FindByIdAsync(request.AssigneeId);
+                if (newAssigneeId == null)
+                    return NotFound($"User {request.AssigneeId} not found");
                 var updateOrderPreparation = new UpdateOrderPreparationDTO
                 {
-                    AssigneeId = request.AssigneeId,
+                    AssigneeId = newAssigneeId.UserId,
                     Detail = request.Detail,
                     OrderPreparationId = preparationId
                 };
-                await orderService.UpdateOrderPreparationAsync(updateOrderPreparation);
+                preparation = await orderService.UpdateOrderPreparationAsync(updateOrderPreparation);
             }
-            return new EmptyResult();
+            return Ok(preparation);
         }
     }
 }

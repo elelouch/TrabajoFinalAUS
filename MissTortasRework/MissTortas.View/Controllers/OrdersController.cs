@@ -33,7 +33,7 @@ namespace MissTortas.View.Controllers
         {
             var orders = await orderService.GetAllOrdersAsync();
             var userids = orders.Select(order => order.ClientId);
-            var dictionaryId = await securityService.UserDomainIdToAppIdAsync(userids);
+            var dictionaryId = await securityService.UserDomainIdToUsernameAsync(userids);
             var ret = orderMapper.FromOrderDTOToResponse(orders, dictionaryId);
             return Ok(ret);
         }
@@ -53,7 +53,7 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound();
             }
-            var dictionaryId = await securityService.UserDomainIdToAppIdAsync([orderDTO.ClientId]);
+            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([orderDTO.ClientId]);
             var ret = orderMapper.FromOrderDTOToResponse([orderDTO], dictionaryId).First();
             return Ok(ret);
         }
@@ -75,7 +75,7 @@ namespace MissTortas.View.Controllers
                 var placeOrderDTO = new PlaceOrderDTO { OrderId = newOrder.Id };
                 await orderService.PlaceOrderAsync(placeOrderDTO);
             }
-            var dictionaryId = await securityService.UserDomainIdToAppIdAsync([newOrder.ClientId]);
+            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([newOrder.ClientId]);
             var ret = orderMapper.FromOrderDTOToResponse([newOrder], dictionaryId).First();
             return Ok(ret);
         }

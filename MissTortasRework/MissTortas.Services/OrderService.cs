@@ -163,7 +163,7 @@ namespace MissTortas.Services
             await orderRepository.SaveChangesAsync();
         }
 
-        public async Task EndOrderPreparationAsync(long orderPreparationId)
+        public async Task<OrderPreparationDTO> EndOrderPreparationAsync(long orderPreparationId)
         {
             if (orderPreparationId == 0)
             {
@@ -195,6 +195,7 @@ namespace MissTortas.Services
 
             orderRepository.Update(order);
             await orderRepository.SaveChangesAsync();
+            return orderMapper.OrderPreparationToDTO(orderPreparation);
         }
 
         public async Task CancelOrderAsync(long orderId)

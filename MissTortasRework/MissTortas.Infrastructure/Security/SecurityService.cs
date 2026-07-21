@@ -325,7 +325,7 @@ namespace MissTortas.Infrastructure.Security
             return roleMapper.RoleWithPermissionsToDTO(role, permissions);
         }
 
-        public async Task<Dictionary<long, string>> UserDomainIdToAppIdAsync(IEnumerable<long> userIds)
+        public async Task<Dictionary<long, string>> UserDomainIdToUsernameAsync(IEnumerable<long> userIds)
         {
             return await userManager.Users.Where(u => userIds.Contains(u.UserId)).ToDictionaryAsync(u => u.UserId, u => u.UserName!);
         }

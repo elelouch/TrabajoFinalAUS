@@ -22,6 +22,6 @@ namespace MissTortas.Infrastructure.Security.Interface
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto);
         public Task ModifyUserAsync(ApplicationUserModificationDTO dto);
         Task<RefreshTokenResultDTO?> RefreshTokenAsync(string refreshToken);
-        Task<Dictionary<long, string>> UserDomainIdToAppIdAsync(IEnumerable<long> userIds);
+        Task<Dictionary<long, string>> UserDomainIdToUsernameAsync(IEnumerable<long> userIds);
     }
 }

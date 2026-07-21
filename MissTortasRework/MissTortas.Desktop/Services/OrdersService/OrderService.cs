@@ -9,6 +9,7 @@ namespace MissTortas.Desktop.Services.OrdersService
     public class OrderService : IOrderService
     {
         private readonly IMissTortasHttpClient httpClient;
+
         public OrderService(IMissTortasHttpClient httpClient)
         {
             this.httpClient = httpClient;            
@@ -34,6 +35,16 @@ namespace MissTortas.Desktop.Services.OrdersService
         public async Task EndOrderAsync(long orderId)
         {
             await httpClient.PatchAsync<object>($"orders/{orderId}", new { Status = "end" });
+        }
+
+        public async Task EndOrderPreparationAsync(long orderPreparationId)
+        {
+            await httpClient.PatchAsync<object>($"orderpreparations/{orderPreparationId}", new {Status = "end"});
+        }
+
+        public async Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId)
+        {
+            await httpClient.PatchAsync<Preparation>($"orderpreparations/{orderPreparationId}", new { Status = "end" });
         }
     }
 }

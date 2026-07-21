@@ -8,14 +8,20 @@ using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Orders
 {
-    public partial class Form1 : Form
+    public partial class formPreparations : Form
     {
-        public Form1()
+        public formPreparations()
         {
             InitializeComponent();
         }
 
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Dispose();
+        }
+
+        private void btnEndPreparation_Click(object sender, EventArgs e)
         {
 
         }
