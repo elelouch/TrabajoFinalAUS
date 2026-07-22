@@ -39,7 +39,7 @@ namespace MissTortas.Infrastructure.Security.Handlers
                 return;
             }
 
-            var userHasPreparations = await orderRepository.UserHasPreparationOnOrderAsync(user.UserId, orderId);
+            var userHasPreparations = await orderRepository.IsOrderAssigneeAsync(user.UserId, orderId);
             if (userHasPreparations && orderOp == OrderOperation.Read)
             {
                 context.Succeed(requirement);

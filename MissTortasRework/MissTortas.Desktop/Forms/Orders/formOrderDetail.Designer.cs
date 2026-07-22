@@ -39,9 +39,8 @@
             assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             preparationBindingSource = new BindingSource(components);
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
+            btnModifyPreparation = new Button();
+            btnAddPreparation = new Button();
             tabPage2 = new TabPage();
             dgvAskedSaleProducts = new DataGridView();
             idDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -133,9 +132,8 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(button3);
-            splitContainer1.Panel2.Controls.Add(button2);
-            splitContainer1.Panel2.Controls.Add(button1);
+            splitContainer1.Panel2.Controls.Add(btnModifyPreparation);
+            splitContainer1.Panel2.Controls.Add(btnAddPreparation);
             splitContainer1.Size = new Size(780, 275);
             splitContainer1.SplitterDistance = 659;
             splitContainer1.TabIndex = 0;
@@ -144,6 +142,7 @@
             // 
             dgvPreparations.AllowUserToAddRows = false;
             dgvPreparations.AllowUserToDeleteRows = false;
+            dgvPreparations.AllowUserToOrderColumns = true;
             dgvPreparations.AutoGenerateColumns = false;
             dgvPreparations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, detailDataGridViewTextBoxColumn, assigneeIdDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn });
@@ -187,32 +186,23 @@
             // 
             preparationBindingSource.DataSource = typeof(Model.Preparation);
             // 
-            // button3
+            // btnModifyPreparation
             // 
-            button3.Location = new Point(14, 104);
-            button3.Name = "button3";
-            button3.Size = new Size(86, 23);
-            button3.TabIndex = 2;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            btnModifyPreparation.Location = new Point(7, 35);
+            btnModifyPreparation.Name = "btnModifyPreparation";
+            btnModifyPreparation.Size = new Size(107, 23);
+            btnModifyPreparation.TabIndex = 1;
+            btnModifyPreparation.Text = "button2";
+            btnModifyPreparation.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnAddPreparation
             // 
-            button2.Location = new Point(14, 61);
-            button2.Name = "button2";
-            button2.Size = new Size(86, 23);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(14, 15);
-            button1.Name = "button1";
-            button1.Size = new Size(86, 27);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnAddPreparation.Location = new Point(7, 3);
+            btnAddPreparation.Name = "btnAddPreparation";
+            btnAddPreparation.Size = new Size(107, 26);
+            btnAddPreparation.TabIndex = 0;
+            btnAddPreparation.Text = "Add Preparation";
+            btnAddPreparation.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -227,6 +217,9 @@
             // 
             // dgvAskedSaleProducts
             // 
+            dgvAskedSaleProducts.AllowUserToAddRows = false;
+            dgvAskedSaleProducts.AllowUserToDeleteRows = false;
+            dgvAskedSaleProducts.AllowUserToOrderColumns = true;
             dgvAskedSaleProducts.AutoGenerateColumns = false;
             dgvAskedSaleProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAskedSaleProducts.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn1, nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, quantityAskedDataGridViewTextBoxColumn, priceDataGridViewTextBoxColumn });
@@ -234,6 +227,7 @@
             dgvAskedSaleProducts.Dock = DockStyle.Fill;
             dgvAskedSaleProducts.Location = new Point(3, 3);
             dgvAskedSaleProducts.Name = "dgvAskedSaleProducts";
+            dgvAskedSaleProducts.ReadOnly = true;
             dgvAskedSaleProducts.Size = new Size(780, 275);
             dgvAskedSaleProducts.TabIndex = 0;
             // 
@@ -242,30 +236,35 @@
             idDataGridViewTextBoxColumn1.DataPropertyName = "Id";
             idDataGridViewTextBoxColumn1.HeaderText = "Id";
             idDataGridViewTextBoxColumn1.Name = "idDataGridViewTextBoxColumn1";
+            idDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             nameDataGridViewTextBoxColumn.HeaderText = "Name";
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // descriptionDataGridViewTextBoxColumn
             // 
             descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
             descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
             descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // quantityAskedDataGridViewTextBoxColumn
             // 
             quantityAskedDataGridViewTextBoxColumn.DataPropertyName = "QuantityAsked";
             quantityAskedDataGridViewTextBoxColumn.HeaderText = "QuantityAsked";
             quantityAskedDataGridViewTextBoxColumn.Name = "quantityAskedDataGridViewTextBoxColumn";
+            quantityAskedDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // priceDataGridViewTextBoxColumn
             // 
             priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
             priceDataGridViewTextBoxColumn.HeaderText = "Price";
             priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // saleProductAskedBindingSource
             // 
@@ -464,9 +463,8 @@
         private Label label5;
         private SplitContainer splitContainer1;
         private DataGridView dgvPreparations;
-        private Button button3;
-        private Button button2;
-        private Button button1;
+        private Button btnModifyPreparation;
+        private Button btnAddPreparation;
         private DataGridView dgvAskedSaleProducts;
         private BindingSource preparationBindingSource;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn1;

@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.Shared;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public async Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId)
         {
-            var preparation = await httpClient.PatchAsync<Preparation>($"orderpreparations/{orderPreparationId}", new { Status = "end" });
+            var preparation = await httpClient.PatchAsync<Preparation>($"orderpreparations/{orderPreparationId}", new { Status = "update" });
             return preparation!;
         }
 
@@ -52,6 +53,12 @@ namespace MissTortas.Desktop.Services.OrdersService
         {
             var preparations = await httpClient.GetAsync<List<Preparation>>("orderpreparations");
             return preparations!;
+        }
+
+        public async Task<Preparation> CreateOrderPreparationAsync(CreatePreparationRequest req)
+        {
+            var preparation = await httpClient.PostAsync<Preparation>("orderpreparations");
+            return preparation!;
         }
     }
 }

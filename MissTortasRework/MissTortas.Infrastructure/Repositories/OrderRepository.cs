@@ -118,7 +118,7 @@ namespace MissTortas.Infrastructure.Repositories
                 .ExecuteUpdateAsync(setter => setter.SetProperty(op => op.Done, true));
         }
 
-        public async Task<bool> AssigneeHasPreparationOnOrderAsync(long assigneeId, long orderId)
+        public async Task<bool> IsOrderAssigneeAsync(long assigneeId, long orderId)
         {
             return await orderSet.AnyAsync(o => o.OrderId == orderId && o.Preparations.Any(p => p.AssigneeId == assigneeId));
         }

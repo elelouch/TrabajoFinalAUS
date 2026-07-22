@@ -48,7 +48,7 @@ namespace MissTortas.Desktop.Forms.Orders
                     return;
                 }
 
-                var userMessage = MessageBox.Show("Must select a node before adding a child. If you wanted to create a root node, press 'OK' to continue. Else, press 'Cancel'", "Add tree warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                var userMessage = MessageBox.Show("Are you sure you wanna end this preparation. press 'OK' to continue. Else, press 'Cancel'", $"End Preparation #{prep.Id}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (userMessage == DialogResult.OK)
                 {
                     await orderService.EndOrderPreparationAsync(prep.OrderId);

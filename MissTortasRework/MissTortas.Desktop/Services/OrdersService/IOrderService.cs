@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +15,7 @@ namespace MissTortas.Desktop.Services.OrdersService
         public Task EndOrderPreparationAsync(long orderPreparationId);
         public Task<List<Preparation>> GetUserPreparationsAsync();
         public Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId);
+        public Task<Preparation> CreateOrderPreparationAsync(CreatePreparationRequest req);
+        public Task<Preparation> GetPreparationAsync(long preparationId);
     }
 }

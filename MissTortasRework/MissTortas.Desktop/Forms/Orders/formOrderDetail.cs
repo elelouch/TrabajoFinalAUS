@@ -16,8 +16,8 @@ namespace MissTortas.Desktop.Forms.Orders
     {
         private readonly IOrderService orderService;
         private readonly long orderId;
-        private BindingList<SaleProductAsked> saleProductsAsked;
-        private BindingList<Preparation> preparations;
+        private readonly BindingList<SaleProductAsked> saleProductsAsked;
+        private readonly BindingList<Preparation> preparations;
         public formOrderDetail(IOrderService orderService, long orderId, bool disableControls)
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace MissTortas.Desktop.Forms.Orders
             }
         }
 
-        private void DisableAllButtons(Control parent)
+        private static void DisableAllButtons(Control parent)
         {
             foreach (Control control in parent.Controls)
             {
@@ -42,7 +42,6 @@ namespace MissTortas.Desktop.Forms.Orders
                 {
                     button.Enabled = false;
                 }
-                // Recursively check nested controls
                 if (control.HasChildren)
                 {
                     DisableAllButtons(control);

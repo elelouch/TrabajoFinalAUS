@@ -7,6 +7,7 @@ using MissTortas.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace MissTortas.Infrastructure.Security.Handlers
@@ -19,7 +20,7 @@ namespace MissTortas.Infrastructure.Security.Handlers
             long orderPreparationId
             )
         {
-            var claim = context.User.FindFirst(JwtRegisteredClaimNames.Sub) ?? throw new InvalidOperationException("Token must have sub claim");
+            var claim = context.User.FindFirst(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("Token must have sub claim");
             var userId = claim.Value;
             var userHasPreparation = await userManager.Users
                 .AnyAsync(u => u.Id == userId && u.User.Preparations.Any(p => p.OrderPreparationId == orderPreparationId));
