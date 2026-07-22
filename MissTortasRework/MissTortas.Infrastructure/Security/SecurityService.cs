@@ -91,8 +91,11 @@ namespace MissTortas.Infrastructure.Security
             {
                 string resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
                 var passwordChangeResult = await userManager.ResetPasswordAsync(user, resetToken, dto.NewPassword);
-                var errors = string.Join(",", passwordChangeResult.Errors);
-                throw new InvalidOperationException($"Couldn't change password {errors}");
+                if(!passwordChangeResult.Succeeded)
+                {
+                    var errors = string.Join(",", passwordChangeResult.Errors);
+                    throw new InvalidOperationException($"Couldn't change password {errors}");
+                }
             }
 
             var updateResult = await userManager.UpdateAsync(user);

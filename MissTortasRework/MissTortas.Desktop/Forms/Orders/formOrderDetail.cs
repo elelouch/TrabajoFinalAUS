@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
+using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,12 @@ namespace MissTortas.Desktop.Forms.Orders
         private readonly long orderId;
         private readonly BindingList<SaleProductAsked> saleProductsAsked;
         private readonly BindingList<Preparation> preparations;
-        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls)
+        private readonly IUserService? userService;
+
+        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls): this(orderService, orderId, disableControls, null)
+        { 
+        }
+        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls, IUserService? userService)
         {
             InitializeComponent();
             this.orderService = orderService;
@@ -28,10 +34,11 @@ namespace MissTortas.Desktop.Forms.Orders
             this.preparations = [];
             this.dgvPreparations.DataSource = preparations;
             this.dgvAskedSaleProducts.DataSource = saleProductsAsked;
-            if(disableControls)
+            if (disableControls)
             {
                 DisableAllButtons(this);
             }
+            this.userService = userService;
         }
 
         private static void DisableAllButtons(Control parent)
@@ -150,6 +157,18 @@ namespace MissTortas.Desktop.Forms.Orders
                     Dispose();
                 }
             }
+        }
+
+        private void btnAddPreparation_Click(object sender, EventArgs e)
+        {
+            if(userService == null)
+            {
+                MessageBox.Show("User service not available.");
+                return;
+            }
+
+            var formPreparationDetail = new formPreparationDetail(userService,orderService, orderId, 0);
+            formPreparationDetail.ShowDialog();
         }
     }
 }

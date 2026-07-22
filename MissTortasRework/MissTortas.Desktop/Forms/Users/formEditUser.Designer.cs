@@ -42,13 +42,13 @@
             txtEmail = new TextBox();
             txtLastName = new TextBox();
             txtPassword = new TextBox();
-            textBox6 = new TextBox();
+            txtRepeatPassword = new TextBox();
             lblUsername = new Label();
             lblEmail = new Label();
             lblFirstName = new Label();
             lblLastName = new Label();
             lblPassword = new Label();
-            txtRepeatPassword = new Label();
+            lblRepeatPassword = new Label();
             chkEnabled = new CheckBox();
             txtUserId = new TextBox();
             label1 = new Label();
@@ -174,13 +174,13 @@
             tableLayoutPanel3.Controls.Add(txtEmail, 3, 0);
             tableLayoutPanel3.Controls.Add(txtLastName, 3, 1);
             tableLayoutPanel3.Controls.Add(txtPassword, 1, 2);
-            tableLayoutPanel3.Controls.Add(textBox6, 3, 2);
+            tableLayoutPanel3.Controls.Add(txtRepeatPassword, 3, 2);
             tableLayoutPanel3.Controls.Add(lblUsername, 0, 0);
             tableLayoutPanel3.Controls.Add(lblEmail, 2, 0);
             tableLayoutPanel3.Controls.Add(lblFirstName, 0, 1);
             tableLayoutPanel3.Controls.Add(lblLastName, 2, 1);
             tableLayoutPanel3.Controls.Add(lblPassword, 0, 2);
-            tableLayoutPanel3.Controls.Add(txtRepeatPassword, 2, 2);
+            tableLayoutPanel3.Controls.Add(lblRepeatPassword, 2, 2);
             tableLayoutPanel3.Controls.Add(chkEnabled, 3, 3);
             tableLayoutPanel3.Controls.Add(txtUserId, 1, 3);
             tableLayoutPanel3.Controls.Add(label1, 0, 3);
@@ -230,13 +230,13 @@
             txtPassword.Size = new Size(92, 23);
             txtPassword.TabIndex = 2;
             // 
-            // textBox6
+            // txtRepeatPassword
             // 
-            textBox6.Location = new Point(277, 107);
-            textBox6.Name = "textBox6";
-            textBox6.PasswordChar = '*';
-            textBox6.Size = new Size(94, 23);
-            textBox6.TabIndex = 5;
+            txtRepeatPassword.Location = new Point(277, 107);
+            txtRepeatPassword.Name = "txtRepeatPassword";
+            txtRepeatPassword.PasswordChar = '*';
+            txtRepeatPassword.Size = new Size(94, 23);
+            txtRepeatPassword.TabIndex = 5;
             // 
             // lblUsername
             // 
@@ -283,14 +283,14 @@
             lblPassword.TabIndex = 11;
             lblPassword.Text = "Password:";
             // 
-            // txtRepeatPassword
+            // lblRepeatPassword
             // 
-            txtRepeatPassword.AutoSize = true;
-            txtRepeatPassword.Location = new Point(199, 104);
-            txtRepeatPassword.Name = "txtRepeatPassword";
-            txtRepeatPassword.Size = new Size(60, 30);
-            txtRepeatPassword.TabIndex = 12;
-            txtRepeatPassword.Text = "Repeat Password:";
+            lblRepeatPassword.AutoSize = true;
+            lblRepeatPassword.Location = new Point(199, 104);
+            lblRepeatPassword.Name = "lblRepeatPassword";
+            lblRepeatPassword.Size = new Size(60, 30);
+            lblRepeatPassword.TabIndex = 12;
+            lblRepeatPassword.Text = "Repeat Password:";
             // 
             // chkEnabled
             // 
@@ -384,13 +384,13 @@
         private TextBox txtLastName;
         private CheckBox chkEnabled;
         private TextBox txtPassword;
-        private TextBox textBox6;
+        private TextBox txtRepeatPassword;
         private Label lblUsername;
         private Label lblEmail;
         private Label lblFirstName;
         private Label lblLastName;
         private Label lblPassword;
-        private Label txtRepeatPassword;
+        private Label lblRepeatPassword;
         private Button btnSave;
         private TextBox txtUserId;
         private Label label1;

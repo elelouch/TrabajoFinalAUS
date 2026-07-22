@@ -60,5 +60,11 @@ namespace MissTortas.Desktop.Services.OrdersService
             var preparation = await httpClient.PostAsync<Preparation>("orderpreparations");
             return preparation!;
         }
+
+        public async Task<Preparation> GetPreparationAsync(long preparationId)
+        {
+            var preparation = await httpClient.GetAsync<Preparation>($"orderpreparations/{preparationId}");
+            return preparation!;
+        }
     }
 }

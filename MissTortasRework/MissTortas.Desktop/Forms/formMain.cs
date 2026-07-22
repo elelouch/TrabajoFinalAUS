@@ -162,7 +162,7 @@ namespace MissTortas.Desktop.Forms
         {
             if (this.formOrders == null)
             {
-                this.formOrders = new formOrders(orderService)
+                this.formOrders = new formOrders(orderService, usersService)
                 {
                     MdiParent = this
                 };

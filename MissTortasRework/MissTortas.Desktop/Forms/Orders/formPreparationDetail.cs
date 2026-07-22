@@ -49,7 +49,8 @@ namespace MissTortas.Desktop.Forms.Orders
             {
                 if(preparationId != 0)
                 {
-                    var preparation = orderService.GetPreparationAsync(preparationId);
+                    var preparation = await orderService.GetPreparationAsync(preparationId);
+                    FromPreparationToForm(preparation);
                 }
 
                 var users = await this.userService.GetAllUsersAsync();
@@ -62,13 +63,19 @@ namespace MissTortas.Desktop.Forms.Orders
             catch (ApiException ex)
             {
                 ErrorDisplay.Show(this, ex);
+                if (ex.StatusCode == System.Net.HttpStatusCode.Forbidden || ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
             }
         }
 
         private void FromPreparationToForm(Preparation preparation)
         {
             this.txtDetails.Text = preparation.Detail;
-            this.txtOrderId.Text = preparation.OrderId;
+            this.txtOrderId.Text = preparation.OrderId.ToString();
+            this.comboAssignee.DataSource = preparation.AssigneeId;
+            this.txtPrepararationId.Text = preparation.Id.ToString();
         }
     }
 }

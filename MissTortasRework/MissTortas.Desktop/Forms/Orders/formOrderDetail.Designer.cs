@@ -203,6 +203,7 @@
             btnAddPreparation.TabIndex = 0;
             btnAddPreparation.Text = "Add Preparation";
             btnAddPreparation.UseVisualStyleBackColor = true;
+            btnAddPreparation.Click += btnAddPreparation_Click;
             // 
             // tabPage2
             // 

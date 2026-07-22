@@ -35,7 +35,24 @@ namespace MissTortas.View.Controllers
             var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparations);
             return Ok(ret);
         }
-        
+
+        [HttpGet("{preparationId}")]
+        public async Task<ActionResult<OrderPreparationResponse>> GetOrderPreparations(long preparationId)
+        {
+            var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+            if (appUser == null)
+            {
+                return Unauthorized();
+            }
+            var userPreparation = await orderService.GetOrderPreparationAsync(preparationId);
+            if (userPreparation == null)
+            {
+                return NotFound("Preparation not found");
+            }
+            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparation);
+            return Ok(ret);
+        }
+
         [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpPost]
         public async Task<ActionResult<OrderPreparationResponse>> PostOrderPreparation(CreateOrderPreparationRequest request)

@@ -10,6 +10,7 @@ namespace MissTortas.Services
     {
         public async Task<long> CreateRoleIfNotExistsAsync(string name)
         {
+            //var name = notNormalizedName.ToUpper();
             if (string.IsNullOrEmpty(name))
             {
                 throw new InvalidOperationException($"Name is not valid: {name}");
@@ -62,7 +63,7 @@ namespace MissTortas.Services
             var user = await userRepository.FindByIdAsync(updateUserDTO.UserId) ?? throw new InvalidDataException($"UserId must be a valid. UserId: {updateUserDTO.UserId}");
             user.FirstName = updateUserDTO.FirstName;
             user.LastName = updateUserDTO.LastName;
-            var rolesFetched = await userRepository.GetRolesByNameAsync([.. updateUserDTO.Roles.Select(r => r.ToUpper())]);
+            var rolesFetched = await userRepository.GetRolesByNameAsync(updateUserDTO.Roles);
             var rolesNotFound = rolesFetched.Select(r => r.Name).Except(updateUserDTO.Roles).ToList();
             if (rolesNotFound.Count > 0)
             {

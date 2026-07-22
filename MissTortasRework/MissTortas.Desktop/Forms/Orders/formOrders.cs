@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
+using MissTortas.Desktop.Services.UserService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,14 +15,19 @@ namespace MissTortas.Desktop.Forms.Orders
     public partial class formOrders : Form
     {
         private readonly IOrderService orderService;
-        //private formOrderDetail? formOrderDetail;
         private readonly BindingList<Order> orders;
-        public formOrders(IOrderService orderService)
+        private readonly IUserService? userService;
+        public formOrders(IOrderService orderService) : this(orderService, null)
+        {
+
+        }
+        public formOrders(IOrderService orderService, IUserService? userService)
         {
             InitializeComponent();
             this.orderService = orderService;
             this.orders = [];
             this.dgvOrders.DataSource = orders;
+            this.userService = userService;
         }
 
         private async void LoadDataGrid()
@@ -43,7 +49,6 @@ namespace MissTortas.Desktop.Forms.Orders
                     Dispose();
                 }
             }
-
         }
 
         private void formOrders_Load(object sender, EventArgs e)
@@ -63,7 +68,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 return;
             }
 
-            var formOrderDetail = new formOrderDetail(orderService, order.Id, false);
+            var formOrderDetail = new formOrderDetail(orderService, order.Id, false, userService);
             formOrderDetail.ShowDialog();
         }
 
