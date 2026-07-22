@@ -26,6 +26,7 @@ namespace MissTortas.Desktop.Forms
         private formRoles? formRoles;
         private formCategories? formCategories;
         private formOrders? formOrders;
+        private formPreparations? formPreparations;
 
         public formMain(
             IMissTortasHttpClient httpClient,
@@ -159,7 +160,7 @@ namespace MissTortas.Desktop.Forms
 
         private void orderManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(this.formOrders == null)
+            if (this.formOrders == null)
             {
                 this.formOrders = new formOrders(orderService)
                 {
@@ -173,12 +174,35 @@ namespace MissTortas.Desktop.Forms
                 this.formOrders.WindowState = FormWindowState.Normal;
                 this.formOrders.BringToFront();
             }
-            
+
         }
 
         private void FormOrders_Disposed(object? sender, EventArgs e)
         {
             formOrders = null;
+        }
+
+        private void preparationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.formPreparations == null)
+            {
+                this.formPreparations = new formPreparations(orderService)
+                {
+                    MdiParent = this
+                };
+                this.formPreparations.Show();
+                this.formPreparations.Disposed += FormPreparations_Disposed; ;
+            }
+            else
+            {
+                this.formPreparations.WindowState = FormWindowState.Normal;
+                this.formPreparations.BringToFront();
+            }
+        }
+
+        private void FormPreparations_Disposed(object? sender, EventArgs e)
+        {
+            formPreparations = null;
         }
     }
 }

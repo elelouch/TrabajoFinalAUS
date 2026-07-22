@@ -44,7 +44,14 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public async Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId)
         {
-            await httpClient.PatchAsync<Preparation>($"orderpreparations/{orderPreparationId}", new { Status = "end" });
+            var preparation = await httpClient.PatchAsync<Preparation>($"orderpreparations/{orderPreparationId}", new { Status = "end" });
+            return preparation!;
+        }
+
+        public async Task<List<Preparation>> GetUserPreparationsAsync()
+        {
+            var preparations = await httpClient.GetAsync<List<Preparation>>("orderpreparations");
+            return preparations!;
         }
     }
 }

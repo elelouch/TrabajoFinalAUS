@@ -31,14 +31,14 @@
             components = new System.ComponentModel.Container();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            detailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            clientUsernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            OrderId = new DataGridViewTextBoxColumn();
             preparationBindingSource = new BindingSource(components);
             btnCancel = new Button();
             btnEndPreparation = new Button();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            clientUsernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
+            OrderId = new DataGridViewTextBoxColumn();
+            btnOrderDetail = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +59,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(btnOrderDetail);
             splitContainer1.Panel2.Controls.Add(btnCancel);
             splitContainer1.Panel2.Controls.Add(btnEndPreparation);
             splitContainer1.Size = new Size(800, 450);
@@ -71,7 +72,7 @@
             dgvPreparations.AllowUserToDeleteRows = false;
             dgvPreparations.AutoGenerateColumns = false;
             dgvPreparations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, detailDataGridViewTextBoxColumn, clientUsernameDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn, OrderId });
+            dgvPreparations.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, clientUsernameDataGridViewTextBoxColumn, doneDataGridViewCheckBoxColumn, OrderId });
             dgvPreparations.DataSource = preparationBindingSource;
             dgvPreparations.Dock = DockStyle.Fill;
             dgvPreparations.Location = new Point(0, 0);
@@ -80,19 +81,36 @@
             dgvPreparations.Size = new Size(650, 450);
             dgvPreparations.TabIndex = 0;
             // 
+            // preparationBindingSource
+            // 
+            preparationBindingSource.DataSource = typeof(Model.Preparation);
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(12, 89);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(112, 25);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnEndPreparation
+            // 
+            btnEndPreparation.Location = new Point(12, 54);
+            btnEndPreparation.Name = "btnEndPreparation";
+            btnEndPreparation.Size = new Size(112, 29);
+            btnEndPreparation.TabIndex = 0;
+            btnEndPreparation.Text = "End Preparation";
+            btnEndPreparation.UseVisualStyleBackColor = true;
+            btnEndPreparation.Click += btnEndPreparation_Click;
+            // 
             // idDataGridViewTextBoxColumn
             // 
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
             idDataGridViewTextBoxColumn.HeaderText = "Id";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // detailDataGridViewTextBoxColumn
-            // 
-            detailDataGridViewTextBoxColumn.DataPropertyName = "Detail";
-            detailDataGridViewTextBoxColumn.HeaderText = "Detail";
-            detailDataGridViewTextBoxColumn.Name = "detailDataGridViewTextBoxColumn";
-            detailDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // clientUsernameDataGridViewTextBoxColumn
             // 
@@ -115,38 +133,26 @@
             OrderId.Name = "OrderId";
             OrderId.ReadOnly = true;
             // 
-            // preparationBindingSource
+            // btnOrderDetail
             // 
-            preparationBindingSource.DataSource = typeof(Model.Preparation);
+            btnOrderDetail.Location = new Point(12, 25);
+            btnOrderDetail.Name = "btnOrderDetail";
+            btnOrderDetail.Size = new Size(112, 23);
+            btnOrderDetail.TabIndex = 2;
+            btnOrderDetail.Text = "Order Detail";
+            btnOrderDetail.UseVisualStyleBackColor = true;
+            btnOrderDetail.Click += btnOrderDetail_Click;
             // 
-            // btnCancel
-            // 
-            btnCancel.Location = new Point(12, 75);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(122, 23);
-            btnCancel.TabIndex = 1;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
-            btnCancel.Click += btnCancel_Click;
-            // 
-            // btnEndPreparation
-            // 
-            btnEndPreparation.Location = new Point(12, 30);
-            btnEndPreparation.Name = "btnEndPreparation";
-            btnEndPreparation.Size = new Size(122, 23);
-            btnEndPreparation.TabIndex = 0;
-            btnEndPreparation.Text = "End Preparation";
-            btnEndPreparation.UseVisualStyleBackColor = true;
-            btnEndPreparation.Click += btnEndPreparation_Click;
-            // 
-            // Form1
+            // formPreparations
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(splitContainer1);
-            Name = "Form1";
+            Name = "formPreparations";
             Text = "Preparations";
+            Load += formPreparations_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -160,13 +166,13 @@
 
         private SplitContainer splitContainer1;
         private DataGridView dgvPreparations;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn detailDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn clientUsernameDataGridViewTextBoxColumn;
-        private DataGridViewCheckBoxColumn doneDataGridViewCheckBoxColumn;
-        private DataGridViewTextBoxColumn OrderId;
         private BindingSource preparationBindingSource;
         private Button btnEndPreparation;
         private Button btnCancel;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn clientUsernameDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn doneDataGridViewCheckBoxColumn;
+        private DataGridViewTextBoxColumn OrderId;
+        private Button btnOrderDetail;
     }
 }

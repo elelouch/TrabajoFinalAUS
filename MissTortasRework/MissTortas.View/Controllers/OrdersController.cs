@@ -42,7 +42,7 @@ namespace MissTortas.View.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderResponse>> GetOrder(long id)
         {
-            var authRes = await authorizationService.AuthorizeAsync(User, id, new OrderRequirement());
+            var authRes = await authorizationService.AuthorizeAsync(User, id, new OrderRequirement(OrderOperation.Read));
             if (!authRes.Succeeded)
             {
                 return NotFound();
@@ -83,7 +83,7 @@ namespace MissTortas.View.Controllers
         [HttpPatch("{orderId}")]
         public async Task<ActionResult> PatchOrder(long orderId, UpdateOrderRequest request)
         {
-            var manageSelfOrder = await authorizationService.AuthorizeAsync(User, orderId, new OrderRequirement());
+            var manageSelfOrder = await authorizationService.AuthorizeAsync(User, orderId, new OrderRequirement(OrderOperation.Write));
             if (manageSelfOrder.Succeeded && request.Status == "cancel")
             {
                 await orderService.CancelOrderAsync(orderId);

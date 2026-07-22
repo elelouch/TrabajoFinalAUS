@@ -18,7 +18,7 @@ namespace MissTortas.Desktop.Forms.Orders
         private readonly long orderId;
         private BindingList<SaleProductAsked> saleProductsAsked;
         private BindingList<Preparation> preparations;
-        public formOrderDetail(IOrderService orderService, long orderId)
+        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls)
         {
             InitializeComponent();
             this.orderService = orderService;
@@ -28,7 +28,28 @@ namespace MissTortas.Desktop.Forms.Orders
             this.preparations = [];
             this.dgvPreparations.DataSource = preparations;
             this.dgvAskedSaleProducts.DataSource = saleProductsAsked;
+            if(disableControls)
+            {
+                DisableAllButtons(this);
+            }
         }
+
+        private void DisableAllButtons(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.Enabled = false;
+                }
+                // Recursively check nested controls
+                if (control.HasChildren)
+                {
+                    DisableAllButtons(control);
+                }
+            }
+        }
+
         private async void LoadForm()
         {
             try

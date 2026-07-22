@@ -21,12 +21,29 @@ namespace MissTortas.Infrastructure.Security.Handlers
             if (user is null)
                 return;
 
-            var orderBelongsToUser = await orderRepository.OrderBelongsToUserAsync(orderId, user.UserId);
+            
             var userCanManageAllOrder = context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code);
-            var userCanPlaceOrder = context.User.HasClaim(Permission.ClaimName, Permission.PlaceOrders.Code);
-            if (userCanManageAllOrder || orderBelongsToUser && userCanPlaceOrder)
+            if (userCanManageAllOrder)
             {
                 context.Succeed(requirement);
+                return;
+            }
+
+            var orderOp = requirement.Operation;
+
+            var orderBelongsToUser = await orderRepository.OrderBelongsToUserAsync(orderId, user.UserId);
+            var userCanPlaceOrder = context.User.HasClaim(Permission.ClaimName, Permission.PlaceOrders.Code);
+            if (orderBelongsToUser && userCanPlaceOrder)
+            {
+                context.Succeed(requirement);
+                return;
+            }
+
+            var userHasPreparations = await orderRepository.UserHasPreparationOnOrderAsync(user.UserId, orderId);
+            if (userHasPreparations && orderOp == OrderOperation.Read)
+            {
+                context.Succeed(requirement);
+                return;
             }
         }
     }

@@ -63,7 +63,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 return;
             }
 
-            var formOrderDetail = new formOrderDetail(orderService, order.Id);
+            var formOrderDetail = new formOrderDetail(orderService, order.Id, false);
             formOrderDetail.ShowDialog();
         }
 

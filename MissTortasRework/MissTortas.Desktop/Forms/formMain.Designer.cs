@@ -135,6 +135,7 @@
             preparationsToolStripMenuItem.Name = "preparationsToolStripMenuItem";
             preparationsToolStripMenuItem.Size = new Size(180, 22);
             preparationsToolStripMenuItem.Text = "Preparations";
+            preparationsToolStripMenuItem.Click += preparationsToolStripMenuItem_Click;
             // 
             // formMain
             // 
