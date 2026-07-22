@@ -171,15 +171,16 @@ namespace MissTortas.Services
             }
             var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId) ?? throw new EntityNotFoundException($"Order preparation with id {orderPreparationId} not found.");
             var order = orderPreparation.Order;
+            List<OrderStatus> orderStatuses = [OrderStatus.Pending, OrderStatus.InProgress];
             var orderStatus = order.OrderStatus;
-            if (orderStatus != OrderStatus.Pending || orderStatus != OrderStatus.InProgress)
+            if (!orderStatuses.Contains(orderStatus))
             {
                 throw new InvalidOrderStateException("Order should be Pending or In Progress.");
             }
 
             if (orderPreparation.Done)
             {
-                throw new InvalidOrderPreparationStateException("Order preparation mustn't be done");
+                throw new InvalidOrderPreparationStateException("Order preparation is already finished.");
             }
 
             orderPreparation.FinalizationTime = DateTime.Now;
@@ -298,7 +299,7 @@ namespace MissTortas.Services
         public async Task<OrderPreparationDTO> CreateOrderPreparationAsync(CreateOrderPreparationDTO dto)
         {
             var order = await orderRepository.FindAsync(dto.OrderId) ?? throw new OrderNotFoundException($"Order {dto.OrderId} not found.");
-            var assignee = await userRepository.FindAsync(dto.OrderId) ?? throw new OrderNotFoundException($"Order {dto.OrderId} not found.");
+            var assignee = await userRepository.FindAsync(dto.AssigneeId) ?? throw new UserNotFoundException($"User {dto.AssigneeId} not found.");
             if (dto.Detail.Length > 1024)
             {
                 throw new InvalidOperationException("The detail can't have more than 1024 characters");
@@ -314,6 +315,7 @@ namespace MissTortas.Services
                 Order = order,
                 Detail = dto.Detail
             };
+            await orderRepository.InsertOrderPreparationAsync(newOrderPreparation);
             await orderRepository.SaveChangesAsync();
             return orderMapper.OrderPreparationToDTO(newOrderPreparation);
         }

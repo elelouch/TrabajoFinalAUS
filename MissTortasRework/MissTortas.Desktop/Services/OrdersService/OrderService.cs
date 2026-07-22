@@ -57,7 +57,7 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public async Task<Preparation> CreateOrderPreparationAsync(CreatePreparationRequest req)
         {
-            var preparation = await httpClient.PostAsync<Preparation>("orderpreparations");
+            var preparation = await httpClient.PostAsync<Preparation>("orderpreparations", req);
             return preparation!;
         }
 

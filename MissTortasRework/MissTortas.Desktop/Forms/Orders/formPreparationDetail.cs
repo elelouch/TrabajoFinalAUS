@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
@@ -33,9 +34,26 @@ namespace MissTortas.Desktop.Forms.Orders
             Dispose();
         }
 
-        private void btnConfirm_Click(object sender, EventArgs e)
+        private async void btnConfirm_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                if (preparationId == 0)
+                {
+                    var newPrep = FromFormToCreateRequest();
+                    var preparation = await orderService.CreateOrderPreparationAsync(newPrep);
+                    MessageBox.Show("New preparation created successfully.");
+                    Dispose();
+                }
+            }
+            catch (ApiException ex)
+            {
+                ErrorDisplay.Show(this, ex);
+                if (ex.StatusCode == System.Net.HttpStatusCode.Forbidden || ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
+            }
         }
 
         private void formPreparationDetail_Load(object sender, EventArgs e)
@@ -76,6 +94,18 @@ namespace MissTortas.Desktop.Forms.Orders
             this.txtOrderId.Text = preparation.OrderId.ToString();
             this.comboAssignee.DataSource = preparation.AssigneeId;
             this.txtPrepararationId.Text = preparation.Id.ToString();
+        }
+
+        private CreatePreparationRequest FromFormToCreateRequest()
+        {
+            var preparation = new CreatePreparationRequest
+            {
+                Detail = this.txtDetails.Text,
+                OrderId = int.Parse(this.txtOrderId.Text),
+                AssigneeId = ((Guid)(this.comboAssignee.SelectedValue ?? "")).ToString(),
+            };
+
+            return preparation;
         }
     }
 }

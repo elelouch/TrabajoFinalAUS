@@ -51,7 +51,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 var userMessage = MessageBox.Show("Are you sure you wanna end this preparation. press 'OK' to continue. Else, press 'Cancel'", $"End Preparation #{prep.Id}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (userMessage == DialogResult.OK)
                 {
-                    await orderService.EndOrderPreparationAsync(prep.OrderId);
+                    await orderService.EndOrderPreparationAsync(prep.Id);
                 }
             }
             catch (ApiException exc)

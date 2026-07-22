@@ -122,5 +122,10 @@ namespace MissTortas.Infrastructure.Repositories
         {
             return await orderSet.AnyAsync(o => o.OrderId == orderId && o.Preparations.Any(p => p.AssigneeId == assigneeId));
         }
+
+        public async Task InsertOrderPreparationAsync(OrderPreparation orderPreparation)
+        {
+            await orderPreparationsSet.AddAsync(orderPreparation);
+        }
     }
 }
