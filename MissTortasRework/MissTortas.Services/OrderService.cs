@@ -275,9 +275,11 @@ namespace MissTortas.Services
             return orderMapper.OrderToDTO(orders);
         }
 
-        public Task<OrderPreparationDTO?> GetOrderPreparationAsync(long orderPreparationId)
+        public async Task<OrderPreparationDTO?> GetOrderPreparationAsync(long orderPreparationId)
         {
-            throw new NotImplementedException();
+            var orderPreparation = await orderRepository.GetOrderPreparationAsync(orderPreparationId) ?? throw new EntityNotFoundException($"Order preparation {orderPreparationId} not found.");
+            var ret = orderMapper.OrderPreparationToDTO(orderPreparation);
+            return ret;
         }
 
         public async Task<List<OrderPreparationDTO>> GetUserOrderPreparationsAsync(long userId)

@@ -192,8 +192,9 @@
             btnModifyPreparation.Name = "btnModifyPreparation";
             btnModifyPreparation.Size = new Size(107, 23);
             btnModifyPreparation.TabIndex = 1;
-            btnModifyPreparation.Text = "button2";
+            btnModifyPreparation.Text = "Modify Preparation";
             btnModifyPreparation.UseVisualStyleBackColor = true;
+            btnModifyPreparation.Click += btnModifyPreparation_Click;
             // 
             // btnAddPreparation
             // 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
+using MissTortas.Services.Repositories.DTO;
 using MissTortas.View.DTO.Orders;
 
 namespace MissTortas.View.Mappers
@@ -71,14 +72,22 @@ namespace MissTortas.View.Mappers
 
         public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto)
         {
-            return new OrderPreparationResponse
+            return FromOrderPreparationDTOToResponse(dto, null);
+        }
+        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto, Dictionary<long, string>? domainIdToAppId)
+        {
+            var ret = new OrderPreparationResponse
             {
                 Id = dto.Id,
                 Detail = dto.Detail,
                 Done = dto.Done,
-                AssigneeId = dto.AssigneeId,
                 OrderId = dto.OrderId
             };
+            if (domainIdToAppId != null && domainIdToAppId.TryGetValue(dto.AssigneeId, out var val))
+            {
+                ret.AssigneeId = val;
+            }
+            return ret;
         }
 
         public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
@@ -103,16 +112,5 @@ namespace MissTortas.View.Mappers
             };
         }
 
-        public OrderPreparationResponse FromSaleProductAskedToDTO(OrderPreparationDTO dto)
-        {
-            return new OrderPreparationResponse
-            {
-                Id = dto.Id,
-                Detail = dto.Detail,
-                Done = dto.Done,
-                AssigneeId = dto.AssigneeId,
-                OrderId = dto.OrderId
-            };
-        }
     }
 }

@@ -21,8 +21,8 @@ namespace MissTortas.Desktop.Forms.Orders
         private readonly BindingList<Preparation> preparations;
         private readonly IUserService? userService;
 
-        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls): this(orderService, orderId, disableControls, null)
-        { 
+        public formOrderDetail(IOrderService orderService, long orderId, bool disableControls) : this(orderService, orderId, disableControls, null)
+        {
         }
         public formOrderDetail(IOrderService orderService, long orderId, bool disableControls, IUserService? userService)
         {
@@ -161,13 +161,35 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private void btnAddPreparation_Click(object sender, EventArgs e)
         {
+            if (userService == null)
+            {
+                MessageBox.Show("User service not available.");
+                return;
+            }
+
+            var formPreparationDetail = new formPreparationDetail(userService, orderService, orderId, 0);
+            formPreparationDetail.ShowDialog();
+        }
+
+        private void btnModifyPreparation_Click(object sender, EventArgs e)
+        {
+            if (dgvPreparations.SelectedRows.Count <= 0)
+            {
+                return;
+            }
+
             if(userService == null)
             {
                 MessageBox.Show("User service not available.");
                 return;
             }
 
-            var formPreparationDetail = new formPreparationDetail(userService,orderService, orderId, 0);
+            if (dgvPreparations.SelectedRows[0].DataBoundItem is not Preparation prep)
+            {
+                return;
+            }
+
+            var formPreparationDetail = new formPreparationDetail(userService, orderService, orderId, prep.Id);
             formPreparationDetail.ShowDialog();
         }
     }

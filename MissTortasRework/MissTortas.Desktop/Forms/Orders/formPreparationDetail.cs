@@ -43,8 +43,15 @@ namespace MissTortas.Desktop.Forms.Orders
                     var newPrep = FromFormToCreateRequest();
                     var preparation = await orderService.CreateOrderPreparationAsync(newPrep);
                     MessageBox.Show("New preparation created successfully.");
-                    Dispose();
                 }
+                else
+                {
+                    var newPrep = FromFormToUpdateRequest();
+                    await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
+                    MessageBox.Show("Preparation updated successfully.");
+                }
+                Dispose();
+
             }
             catch (ApiException ex)
             {
@@ -90,22 +97,38 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private void FromPreparationToForm(Preparation preparation)
         {
+            //var newUser = new User
+            //{
+            //    UserId = preparation.Ass
+
+            //}
+
             this.txtDetails.Text = preparation.Detail;
             this.txtOrderId.Text = preparation.OrderId.ToString();
             this.comboAssignee.DataSource = preparation.AssigneeId;
             this.txtPrepararationId.Text = preparation.Id.ToString();
         }
 
+        public UpdateOrderPreparationRequest FromFormToUpdateRequest()
+        {
+            var dto = new UpdateOrderPreparationRequest
+            {
+                Detail = this.txtDetails.Text,
+                AssigneeId = ((Guid)(this.comboAssignee.SelectedValue ?? "")).ToString(),
+            };
+            return dto;
+        }
+
         private CreatePreparationRequest FromFormToCreateRequest()
         {
-            var preparation = new CreatePreparationRequest
+            var dto = new CreatePreparationRequest
             {
                 Detail = this.txtDetails.Text,
                 OrderId = int.Parse(this.txtOrderId.Text),
                 AssigneeId = ((Guid)(this.comboAssignee.SelectedValue ?? "")).ToString(),
             };
 
-            return preparation;
+            return dto;
         }
     }
 }

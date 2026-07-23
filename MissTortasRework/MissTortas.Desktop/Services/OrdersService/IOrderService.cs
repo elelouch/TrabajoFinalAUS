@@ -14,8 +14,8 @@ namespace MissTortas.Desktop.Services.OrdersService
         public Task EndOrderAsync(long orderId);
         public Task EndOrderPreparationAsync(long orderPreparationId);
         public Task<List<Preparation>> GetUserPreparationsAsync();
-        public Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId);
         public Task<Preparation> CreateOrderPreparationAsync(CreatePreparationRequest req);
+        public Task<Preparation> UpdateOrderPreparationAsync(long orderPreparationId, UpdateOrderPreparationRequest req);
         public Task<Preparation> GetPreparationAsync(long preparationId);
     }
 }

@@ -20,7 +20,8 @@ namespace MissTortas.View.Controllers
         IOrderService orderService,
         IAuthorizationService authorizationService,
         UserManager<ApplicationUser> userManager,
-        IPresentationOrderMapper presentationOrderMapper
+        IPresentationOrderMapper presentationOrderMapper,
+        ISecurityService securityService
     ) : ControllerBase
     {
         [HttpGet]
@@ -49,7 +50,8 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound("Preparation not found");
             }
-            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparation);
+            var dict = await securityService.UserDomainIdToUsernameAsync([userPreparation.AssigneeId]);
+            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparation, dict);
             return Ok(ret);
         }
 

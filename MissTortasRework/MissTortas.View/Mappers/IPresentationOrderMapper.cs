@@ -7,6 +7,7 @@ namespace MissTortas.View.Mappers
     {
         public OrderResponse FromOrderDTOToResponse(OrderDTO dto);
         public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto);
+        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto, Dictionary<long, string>? domainIdToAppId);
         public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos);
         public SaleProductAskedResponse FromSaleProductAskedDTOToResponse(SaleProductAskedDTO dto);
         public List<SaleProductAskedResponse> FromSaleProductAskedDTOToResponse(IEnumerable<SaleProductAskedDTO> dtos);
