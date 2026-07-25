@@ -41,11 +41,11 @@ namespace MissTortas.Desktop.Forms.Orders
             this.userService = userService;
         }
 
-        private static void DisableAllButtons(Control parent)
+        private void DisableAllButtons(Control parent)
         {
             foreach (Control control in parent.Controls)
             {
-                if (control is Button button)
+                if (control is Button button && button != this.btnCancel)
                 {
                     button.Enabled = false;
                 }
@@ -168,7 +168,24 @@ namespace MissTortas.Desktop.Forms.Orders
             }
 
             var formPreparationDetail = new formPreparationDetail(userService, orderService, orderId, 0);
+            formPreparationDetail.OnPreparationUpdate += FormPreparationDetail_OnPreparationUpdate;
             formPreparationDetail.ShowDialog();
+        }
+
+        private void FormPreparationDetail_OnPreparationUpdate(object? sender, Events.PreparationUpdatedArgs e)
+        {
+            var newPrep = e.Preparation;
+            var aux = preparations.FirstOrDefault(p => p.Id == newPrep.Id);
+            if(aux == null)
+            {
+                preparations.Add(newPrep);
+            }
+            else
+            {
+                var ix = preparations.IndexOf(aux);
+                preparations[ix] = newPrep;
+            }
+
         }
 
         private void btnModifyPreparation_Click(object sender, EventArgs e)
@@ -190,6 +207,7 @@ namespace MissTortas.Desktop.Forms.Orders
             }
 
             var formPreparationDetail = new formPreparationDetail(userService, orderService, orderId, prep.Id);
+            formPreparationDetail.OnPreparationUpdate += FormPreparationDetail_OnPreparationUpdate;
             formPreparationDetail.ShowDialog();
         }
     }

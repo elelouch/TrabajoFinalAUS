@@ -53,7 +53,8 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound();
             }
-            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([orderDTO.ClientId]);
+            var preparationsAssignees = orderDTO.Preparations.Select(p => p.AssigneeId);
+            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([orderDTO.ClientId, ..preparationsAssignees]);
             var ret = orderMapper.FromOrderDTOToResponse([orderDTO], dictionaryId).First();
             return Ok(ret);
         }

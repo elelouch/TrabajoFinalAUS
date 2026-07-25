@@ -36,12 +36,12 @@
             UserId = new DataGridViewTextBoxColumn();
             Enabled = new DataGridViewCheckBoxColumn();
             userBindingSource = new BindingSource(components);
+            flowLayoutPanel1 = new FlowLayoutPanel();
             btnAddUser = new Button();
             btnEditUser = new Button();
-            flowLayoutPanel1 = new FlowLayoutPanel();
             btnRefresh = new Button();
-            btnCancel = new Button();
             btnFilter = new Button();
+            btnCancel = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -50,15 +50,12 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 4;
+            tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Controls.Add(dgvUsers, 0, 0);
-            tableLayoutPanel1.Controls.Add(btnAddUser, 0, 1);
-            tableLayoutPanel1.Controls.Add(btnEditUser, 1, 1);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 3, 0);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -76,13 +73,12 @@
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUsers.Columns.AddRange(new DataGridViewColumn[] { emailDataGridViewTextBoxColumn, Username, UserId, Enabled });
-            tableLayoutPanel1.SetColumnSpan(dgvUsers, 3);
             dgvUsers.DataSource = userBindingSource;
             dgvUsers.Dock = DockStyle.Fill;
             dgvUsers.Location = new Point(3, 3);
             dgvUsers.Name = "dgvUsers";
             dgvUsers.ReadOnly = true;
-            dgvUsers.Size = new Size(666, 415);
+            dgvUsers.Size = new Size(688, 444);
             dgvUsers.TabIndex = 0;
             // 
             // emailDataGridViewTextBoxColumn
@@ -117,9 +113,23 @@
             // 
             userBindingSource.DataSource = typeof(Model.User);
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(btnAddUser);
+            flowLayoutPanel1.Controls.Add(btnEditUser);
+            flowLayoutPanel1.Controls.Add(btnRefresh);
+            flowLayoutPanel1.Controls.Add(btnFilter);
+            flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(697, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(100, 444);
+            flowLayoutPanel1.TabIndex = 7;
+            // 
             // btnAddUser
             // 
-            btnAddUser.Location = new Point(3, 424);
+            btnAddUser.Dock = DockStyle.Top;
+            btnAddUser.Location = new Point(3, 3);
             btnAddUser.Name = "btnAddUser";
             btnAddUser.Size = new Size(75, 23);
             btnAddUser.TabIndex = 1;
@@ -129,7 +139,8 @@
             // 
             // btnEditUser
             // 
-            btnEditUser.Location = new Point(84, 424);
+            btnEditUser.Dock = DockStyle.Top;
+            btnEditUser.Location = new Point(3, 32);
             btnEditUser.Name = "btnEditUser";
             btnEditUser.Size = new Size(75, 23);
             btnEditUser.TabIndex = 6;
@@ -137,20 +148,10 @@
             btnEditUser.UseVisualStyleBackColor = true;
             btnEditUser.Click += btnEditUser_Click;
             // 
-            // flowLayoutPanel1
-            // 
-            flowLayoutPanel1.Controls.Add(btnRefresh);
-            flowLayoutPanel1.Controls.Add(btnCancel);
-            flowLayoutPanel1.Controls.Add(btnFilter);
-            flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(675, 3);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(122, 415);
-            flowLayoutPanel1.TabIndex = 7;
-            // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(3, 3);
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.Location = new Point(3, 61);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 23);
             btnRefresh.TabIndex = 0;
@@ -158,25 +159,28 @@
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefreshUsers_Click;
             // 
+            // btnFilter
+            // 
+            btnFilter.Dock = DockStyle.Top;
+            btnFilter.Location = new Point(3, 90);
+            btnFilter.Name = "btnFilter";
+            btnFilter.RightToLeft = RightToLeft.No;
+            btnFilter.Size = new Size(97, 26);
+            btnFilter.TabIndex = 2;
+            btnFilter.Text = "Filter Enabled";
+            btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += btnFilter_Click;
+            // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(3, 32);
+            btnCancel.Dock = DockStyle.Top;
+            btnCancel.Location = new Point(3, 122);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
-            // 
-            // btnFilter
-            // 
-            btnFilter.Location = new Point(3, 61);
-            btnFilter.Name = "btnFilter";
-            btnFilter.Size = new Size(75, 23);
-            btnFilter.TabIndex = 2;
-            btnFilter.Text = "Filter";
-            btnFilter.UseVisualStyleBackColor = true;
-            btnFilter.Click += btnFilter_Click;
             // 
             // formUsers
             // 
@@ -204,12 +208,12 @@
         private DataGridViewCheckBoxColumn isEnabledDataGridViewCheckBoxColumn;
         private BindingSource userBindingSource;
         private Button btnEditUser;
-        private DataGridView dgvUsers;
         private Button btnAddUser;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btnRefresh;
         private Button btnCancel;
         private Button btnFilter;
+        private DataGridView dgvUsers;
         private DataGridViewTextBoxColumn emailDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn Username;
         private DataGridViewTextBoxColumn UserId;

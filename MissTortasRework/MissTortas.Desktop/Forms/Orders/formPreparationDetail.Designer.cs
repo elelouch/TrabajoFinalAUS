@@ -130,8 +130,10 @@
             // 
             // formPreparationDetail
             // 
+            AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(lblPreparationId);
             Controls.Add(txtPrepararationId);
@@ -144,6 +146,7 @@
             Controls.Add(txtDetails);
             Controls.Add(txtOrderId);
             Name = "formPreparationDetail";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "formPreparationDetail";
             Load += formPreparationDetail_Load;
             ResumeLayout(false);

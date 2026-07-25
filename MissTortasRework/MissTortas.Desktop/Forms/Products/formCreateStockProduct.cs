@@ -42,14 +42,14 @@ namespace MissTortas.Desktop.Forms.Products
 
                 if (productToModify != null)
                 {
-                    this.Text = "Modify Product";
+                    this.Text = $"Modify stock product: {productToModify.Id}";
                     this.chkEnabled.Visible = true;
                     this.chkManageQtyAsInteger.Visible = false;
                     ProductToForm(productToModify);
                 }
                 else
                 {
-                    this.Text = "Create Product";
+                    this.Text = "Create new stock product";
                     this.chkEnabled.Visible = false;
                     this.chkManageQtyAsInteger.Visible = true;
                 }

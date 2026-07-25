@@ -78,7 +78,7 @@ namespace MissTortas.View.Controllers
         }
 
         [HttpPatch("{preparationId}")]
-        public async Task<ActionResult<OrderPreparationDTO>> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
+        public async Task<ActionResult<OrderPreparationResponse>> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
         {
             var requirement = new ManageAssignedPreparationRequirement();
             var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
@@ -104,7 +104,8 @@ namespace MissTortas.View.Controllers
                 };
                 preparation = await orderService.UpdateOrderPreparationAsync(updateOrderPreparation);
             }
-            return Ok(preparation);
+            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(preparation);
+            return Ok(ret);
         }
     }
 }

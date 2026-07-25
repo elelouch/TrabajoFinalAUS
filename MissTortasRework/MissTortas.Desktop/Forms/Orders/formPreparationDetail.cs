@@ -1,4 +1,5 @@
-﻿using MissTortas.Desktop.Model;
+﻿using MissTortas.Desktop.Events;
+using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
@@ -15,6 +16,7 @@ namespace MissTortas.Desktop.Forms.Orders
 {
     public partial class formPreparationDetail : Form
     {
+        public event EventHandler<PreparationUpdatedArgs> OnPreparationUpdate;
         private readonly IUserService userService;
         private readonly IOrderService orderService;
         private readonly long orderId;
@@ -34,21 +36,43 @@ namespace MissTortas.Desktop.Forms.Orders
             Dispose();
         }
 
+        private async void CreatePreparation()
+        {
+            var newPrep = FromFormToCreateRequest();
+            var prep = await orderService.CreateOrderPreparationAsync(newPrep);
+            MessageBox.Show("New preparation created successfully.");
+            RaisePreparationUpdate(prep);
+        }
+
+        private async void UpdatePreparation()
+        {
+            var newPrep = FromFormToUpdateRequest();
+            var prep = await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
+            MessageBox.Show("Preparation updated successfully.");
+            RaisePreparationUpdate(prep);
+        }
+
+        private void RaisePreparationUpdate(Preparation prep)
+        {
+            var handler = OnPreparationUpdate;
+            if (handler == null)
+            {
+                return;
+            }
+            handler(this, new PreparationUpdatedArgs(prep));
+        }
+
         private async void btnConfirm_Click(object sender, EventArgs e)
         {
             try
             {
                 if (preparationId == 0)
                 {
-                    var newPrep = FromFormToCreateRequest();
-                    var preparation = await orderService.CreateOrderPreparationAsync(newPrep);
-                    MessageBox.Show("New preparation created successfully.");
+                    CreatePreparation();
                 }
                 else
                 {
-                    var newPrep = FromFormToUpdateRequest();
-                    await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
-                    MessageBox.Show("Preparation updated successfully.");
+                    UpdatePreparation();
                 }
                 Dispose();
 
@@ -72,18 +96,24 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             try
             {
-                if(preparationId != 0)
-                {
-                    var preparation = await orderService.GetPreparationAsync(preparationId);
-                    FromPreparationToForm(preparation);
-                }
-
                 var users = await this.userService.GetAllUsersAsync();
-                this.comboAssignee.DataSource = users;
+                var newUsers = users.Prepend(new User {Username = "-- Select a user --" }).ToList();
+                this.comboAssignee.DataSource = newUsers;
                 comboAssignee.DisplayMember = nameof(User.Username);
                 comboAssignee.ValueMember = nameof(User.UserId);
-                this.txtOrderId.Text = orderId.ToString();
-                this.txtPrepararationId.Text = preparationId.ToString();
+                
+                if (preparationId == 0)
+                {
+                    this.txtOrderId.Text = orderId.ToString();
+                    this.txtPrepararationId.Text = preparationId.ToString();
+                }
+                else
+                {
+                    var preparation = await orderService.GetPreparationAsync(preparationId);
+                    var userFound = newUsers.Find(u => u.Username == preparation.AssigneeId);
+                    comboAssignee.SelectedIndex = userFound == null ? 0 : newUsers.IndexOf(userFound);
+                    FromPreparationToForm(preparation);
+                }
             }
             catch (ApiException ex)
             {
@@ -97,24 +127,19 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private void FromPreparationToForm(Preparation preparation)
         {
-            //var newUser = new User
-            //{
-            //    UserId = preparation.Ass
-
-            //}
-
             this.txtDetails.Text = preparation.Detail;
             this.txtOrderId.Text = preparation.OrderId.ToString();
-            this.comboAssignee.DataSource = preparation.AssigneeId;
             this.txtPrepararationId.Text = preparation.Id.ToString();
         }
 
         public UpdateOrderPreparationRequest FromFormToUpdateRequest()
         {
+            var user = (User?)this.comboAssignee.SelectedItem;
+            var userId = user?.UserId ?? Guid.Empty;
             var dto = new UpdateOrderPreparationRequest
             {
                 Detail = this.txtDetails.Text,
-                AssigneeId = ((Guid)(this.comboAssignee.SelectedValue ?? "")).ToString(),
+                AssigneeId = userId.ToString()
             };
             return dto;
         }

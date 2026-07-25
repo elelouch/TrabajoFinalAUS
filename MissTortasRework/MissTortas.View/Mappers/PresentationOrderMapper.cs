@@ -34,10 +34,16 @@ namespace MissTortas.View.Mappers
 
         public OrderResponse FromOrderDTOToResponse(OrderDTO dto)
         {
+            return FromOrderDTOToResponse(dto, null);
+        }
+
+
+        public OrderResponse FromOrderDTOToResponse(OrderDTO dto, Dictionary<long, string>? usernamesDictionary)
+        {
             var ret = new OrderResponse
             {
                 Id = dto.Id,
-                Preparations = FromOrderPreparationDTOToResponse(dto.Preparations),
+                Preparations = FromOrderPreparationDTOToResponse(dto.Preparations, usernamesDictionary),
                 StatusId = dto.StatusId,
                 Status = dto.Status,
                 SaleProducts = FromSaleProductAskedDTOToResponse(dto.SaleProducts),
@@ -52,15 +58,15 @@ namespace MissTortas.View.Mappers
             return ret;
         }
 
-        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAppId)
+        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAlias)
         {
             List<OrderResponse> ret = [];
-            if(domainIdToAppId != null)
+            if(domainIdToAlias != null)
             {
                 foreach (var dto in dtos)
                 {
-                    var orderDto = FromOrderDTOToResponse(dto);
-                    if (domainIdToAppId.TryGetValue(dto.ClientId, out var val))
+                    var orderDto = FromOrderDTOToResponse(dto, domainIdToAlias);
+                    if (domainIdToAlias.TryGetValue(dto.ClientId, out var val))
                     {
                         orderDto.ClientUserId = val;
                         ret.Add(orderDto);
@@ -74,7 +80,7 @@ namespace MissTortas.View.Mappers
         {
             return FromOrderPreparationDTOToResponse(dto, null);
         }
-        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto, Dictionary<long, string>? domainIdToAppId)
+        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto, Dictionary<long, string>? domainIdToAlias)
         {
             var ret = new OrderPreparationResponse
             {
@@ -83,7 +89,7 @@ namespace MissTortas.View.Mappers
                 Done = dto.Done,
                 OrderId = dto.OrderId
             };
-            if (domainIdToAppId != null && domainIdToAppId.TryGetValue(dto.AssigneeId, out var val))
+            if (domainIdToAlias != null && domainIdToAlias.TryGetValue(dto.AssigneeId, out var val))
             {
                 ret.AssigneeId = val;
             }
@@ -92,7 +98,12 @@ namespace MissTortas.View.Mappers
 
         public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
         {
-            return [.. dtos.Select(FromOrderPreparationDTOToResponse)];
+            return FromOrderPreparationDTOToResponse(dtos, null);
+        }
+
+        public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos, Dictionary<long, string>? domainIdToAlias)
+        {
+            return [.. dtos.Select(op => FromOrderPreparationDTOToResponse(op, domainIdToAlias))];
         }
 
         public List<SaleProductAskedResponse> FromSaleProductAskedDTOToResponse(IEnumerable<SaleProductAskedDTO> dtos)

@@ -45,6 +45,7 @@ namespace MissTortas.Infrastructure
             services.AddScoped<ISimpleStorage, SimpleStorage>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IAuthorizationHandler, UpdateUserHandler>();
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddScoped<IAuthorizationHandler, ManagePreparationHandler>();

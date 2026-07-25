@@ -44,7 +44,8 @@ namespace MissTortas.Services.Mapping
             {
                 Id = op.Id,
                 Detail = op.Detail,
-                Done = op.Done
+                Done = op.Done,
+                AssigneeId = op.AssigneeId
             };
         }
 

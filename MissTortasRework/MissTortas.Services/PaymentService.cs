@@ -4,11 +4,13 @@ using MissTortas.Services.DTO.Payment;
 using MissTortas.Services.Exceptions;
 using MissTortas.Services.Interfaces;
 using MissTortas.Services.Mapping.Interfaces;
+using MissTortas.Services.Repositories;
 
 namespace MissTortas.Services
 {
     public class PaymentService(
         IPaymentMapper paymentMapper,
+        IPaymentRepository paymentRepository,
         IOrderService orderService
         ) : IPaymentService
     {
@@ -31,6 +33,7 @@ namespace MissTortas.Services
                 PaymentRequest = paymentRequest
             };
             await ExecutePaymentAsync(payment);
+            await paymentRepository.InsertAsync(payment);
 
             if (payment.PaymentStatus != PaymentStatus.Completed)
             {

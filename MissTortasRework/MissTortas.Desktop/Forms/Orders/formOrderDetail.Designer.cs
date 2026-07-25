@@ -424,6 +424,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
             Name = "formOrderDetail";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "formOrderDetail";
             Load += formOrderDetail_Load;
             tableLayoutPanel1.ResumeLayout(false);

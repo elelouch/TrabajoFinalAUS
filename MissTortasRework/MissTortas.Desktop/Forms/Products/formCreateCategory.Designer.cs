@@ -94,6 +94,7 @@
             Controls.Add(txtCategoryName);
             Controls.Add(lblCategoryName);
             Name = "formCreateCategory";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Create Category";
             ResumeLayout(false);
             PerformLayout();

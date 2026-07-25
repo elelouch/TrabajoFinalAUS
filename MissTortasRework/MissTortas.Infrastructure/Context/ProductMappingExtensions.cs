@@ -48,7 +48,8 @@ namespace MissTortas.Infrastructure.Context
             {
                 Id = op.OrderPreparationId,
                 Detail = op.Detail,
-                Done = op.Done
+                Done = op.Done,
+                AssigneeId = op.AssigneeId ?? 0
             });
         }
 
@@ -67,7 +68,8 @@ namespace MissTortas.Infrastructure.Context
                 {
                     Id = op.OrderPreparationId,
                     Detail = op.Detail,
-                    Done = op.Done
+                    Done = op.Done,
+                    AssigneeId = op.AssigneeId ?? 0
                 }).ToList(),
                 SaleProductAskedDADtos = o.ProductsAsked.Select(osp => new SaleProductAskedDADto
                 {
