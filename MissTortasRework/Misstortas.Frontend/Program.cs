@@ -56,7 +56,8 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
             ValidateAudience = true,
-            ValidateIssuer = true
+            ValidateIssuer = true,
+            ClockSkew = TimeSpan.Zero
         };
 
         options.Events = new JwtBearerEvents

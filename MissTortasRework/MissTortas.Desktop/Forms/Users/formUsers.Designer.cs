@@ -51,9 +51,8 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.Controls.Add(dgvUsers, 0, 0);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
@@ -78,7 +77,7 @@
             dgvUsers.Location = new Point(3, 3);
             dgvUsers.Name = "dgvUsers";
             dgvUsers.ReadOnly = true;
-            dgvUsers.Size = new Size(688, 444);
+            dgvUsers.Size = new Size(634, 444);
             dgvUsers.TabIndex = 0;
             // 
             // emailDataGridViewTextBoxColumn
@@ -121,9 +120,9 @@
             flowLayoutPanel1.Controls.Add(btnFilter);
             flowLayoutPanel1.Controls.Add(btnCancel);
             flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(697, 3);
+            flowLayoutPanel1.Location = new Point(643, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(100, 444);
+            flowLayoutPanel1.Size = new Size(154, 444);
             flowLayoutPanel1.TabIndex = 7;
             // 
             // btnAddUser

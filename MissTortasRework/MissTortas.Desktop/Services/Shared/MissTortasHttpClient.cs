@@ -120,9 +120,6 @@ namespace MissTortas.Desktop.Services.Shared
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-                throw new SessionExpiredException("Unauthorized.");
-
             var problem = await TryReadProblemDetailsAsync(response);
             throw new ApiException(problem, response.StatusCode);
         }

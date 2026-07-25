@@ -13,11 +13,6 @@ namespace MissTortas.Desktop.Services.Shared
                     BuildMessage(apiEx.Problem),
                     MessageBoxIcon.Warning),
 
-                SessionExpiredException => (
-                    "Session Expired",
-                    ex.Message,
-                    MessageBoxIcon.Information),
-
                 _ => (
                     "Unexpected Error",
                     "Something went wrong. Please try again.",
@@ -30,7 +25,7 @@ namespace MissTortas.Desktop.Services.Shared
         private static string BuildMessage(ProblemDetailsDto problem)
         {
             var msg = problem.Detail ?? "The request could not be completed.";
-            return problem.Code is not null ? $"{msg}\n\n(Error code: {problem.Code})" : msg;
+            return problem.Status is not null ? $"{msg}\n\n(Error code: {problem.Status})" : msg;
         }
     }
 }

@@ -69,7 +69,12 @@ namespace MissTortas.Infrastructure
                  .Build();
 
             var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>() ?? throw new InvalidOperationException("Jwt options not found in appsettings");
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(options =>
                 {
                     options.Events = new JwtBearerEvents
@@ -95,7 +100,8 @@ namespace MissTortas.Infrastructure
                             return Task.CompletedTask;
                         },
                     };
-
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Key)),
@@ -104,7 +110,8 @@ namespace MissTortas.Infrastructure
                         ValidateIssuerSigningKey = true,
                         ValidateLifetime = true,
                         ValidateAudience = true,
-                        ValidateIssuer = true
+                        ValidateIssuer = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
