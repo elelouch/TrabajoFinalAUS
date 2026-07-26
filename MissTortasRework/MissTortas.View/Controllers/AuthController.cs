@@ -121,6 +121,8 @@ namespace MissTortas.View.Controllers
             }
             return Ok(new { result.UserId });
         }
+
+        [AllowAnonymous]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
@@ -128,20 +130,12 @@ namespace MissTortas.View.Controllers
             {
                 return BadRequest("Refresh token is required.");
             }
-            try
+            var result = await securityService.RefreshTokenAsync(request.RefreshToken);
+            if (result == null)
             {
-                var result = await securityService.RefreshTokenAsync(request.RefreshToken);
-                if (result == null)
-                {
-                    return Unauthorized("Invalid or expired refresh token.");
-                }
-
-                return Ok(result);
+                return Unauthorized("Invalid or expired refresh token.");
             }
-            catch (Exception)
-            {
-                return Unauthorized("Invalid refresh token.");
-            }
+            return Ok(result);
         }
         public class RefreshTokenRequest
         {

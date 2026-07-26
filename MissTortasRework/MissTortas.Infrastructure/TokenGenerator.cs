@@ -53,7 +53,7 @@ namespace MissTortas.Infrastructure
             return tokenHandler.WriteToken(token);
         }
 
-        public string GenerateRefreshToken(string userId)
+        public async Task<string> GenerateRefreshToken(string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -82,9 +82,11 @@ namespace MissTortas.Infrastructure
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var tokenStr =  tokenHandler.WriteToken(token);
+            await SaveRefreshTokenAsync(userId, tokenStr);
+            return tokenStr;
         }
-        public async Task<string> ValidateRefreshTokenAsync(string refreshToken)
+        public async Task<string?> ValidateRefreshTokenAsync(string refreshToken)
         {
             try
             {
@@ -109,7 +111,7 @@ namespace MissTortas.Infrastructure
                 {
                     return null;
                 }
-
+                await RevokeRefreshTokenAsync(storedToken.Token!);
                 // Extract userId from token
                 var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
                 return userId;

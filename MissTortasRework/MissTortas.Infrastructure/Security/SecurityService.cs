@@ -39,7 +39,7 @@ namespace MissTortas.Infrastructure.Security
             var dtoRet = new LoginUserResultDTO
             {
                 AccessToken = tokenGenerator.GenerateAccessToken(userPrincipal),
-                RefreshToken = tokenGenerator.GenerateRefreshToken(user.Id),
+                RefreshToken = await tokenGenerator.GenerateRefreshToken(user.Id),
                 SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
             return dtoRet;
@@ -91,7 +91,7 @@ namespace MissTortas.Infrastructure.Security
             {
                 string resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
                 var passwordChangeResult = await userManager.ResetPasswordAsync(user, resetToken, dto.NewPassword);
-                if(!passwordChangeResult.Succeeded)
+                if (!passwordChangeResult.Succeeded)
                 {
                     var errors = string.Join(",", passwordChangeResult.Errors);
                     throw new InvalidOperationException($"Couldn't change password {errors}");
@@ -166,7 +166,11 @@ namespace MissTortas.Infrastructure.Security
 
         public async Task<UserFullDTO?> GetUserByIdAsync(string appUserId)
         {
-            return await userManager
+            var user = await userManager.FindByIdAsync(appUserId);
+            if (user == null)
+                return null;
+
+            var ret = await userManager
                 .Users
                 .Select(u => new UserFullDTO
                 {
@@ -176,10 +180,14 @@ namespace MissTortas.Infrastructure.Security
                     LastName = u.User.LastName,
                     Username = u.UserName ?? "",
                     Enabled = !(u.LockoutEnabled && u.LockoutEnd >= DateTime.UtcNow),
-                    Roles = u.User.Roles.Select(r => r.Name).ToList()
                 })
                 .Where(u => u.UserId == appUserId)
                 .SingleOrDefaultAsync();
+
+            var userClaims = await userManager.GetClaimsAsync(user);
+            var permissions = userClaims.Where(p => p.Type == Permission.ClaimName).Select(c => c.Value).ToList();
+            ret!.Permissions = (ICollection<string>) permissions;
+            return ret;
         }
 
         public async Task ModifyRoleAsync(ModifyRoleDTO dto)
@@ -189,15 +197,31 @@ namespace MissTortas.Infrastructure.Security
             {
                 return;
             }
-            if(!string.IsNullOrEmpty(dto.Name))
+            if (!string.IsNullOrEmpty(dto.Name))
             {
                 await roleManager.SetRoleNameAsync(role, dto.Name);
             }
-            var updateRole = new UpdateRoleDTO { Id = role.RoleId, Name = dto.Name};
+            var updateRole = new UpdateRoleDTO { Id = role.RoleId, Name = dto.Name };
             await userService.UpdateRoleAsync(updateRole);
             var permissionsAsked = dto.Permissions;
             PermissionsExist(permissionsAsked);
             await UpdatePermissionsAsync(role, permissionsAsked);
+        }
+
+        private async Task UpdatePermissionsAsync(ApplicationUser user, IEnumerable<string> permissions)
+        {
+            var currentClaims = await userManager.GetClaimsAsync(user);
+            var currentRolePermissions = currentClaims.Where(c => c.Type == Permission.ClaimName).Select(c => c.Value);
+            var permissionsToAdd = permissions.Except(currentRolePermissions);
+            var permissionsToRemove = currentRolePermissions.Except(permissions);
+            foreach (var item in permissionsToAdd)
+            {
+                await userManager.AddClaimAsync(user, new Claim(Permission.ClaimName, item));
+            }
+            foreach (var item in permissionsToRemove)
+            {
+                await userManager.RemoveClaimAsync(user, new Claim(Permission.ClaimName, item));
+            }
         }
 
         private async Task UpdatePermissionsAsync(ApplicationRole role, IEnumerable<string> permissions)
@@ -249,16 +273,17 @@ namespace MissTortas.Infrastructure.Security
             return Permission.All;
         }
 
-        public Task AssignPermissionsToUserAsync(ModifyRoleDTO dto)
+        public async Task AssignPermissionsAsync(AssignPermissionToUserDTO dto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByIdAsync(dto.UserId) ?? throw new UserNotFoundException($"User with id {dto.UserId} not found.");
+            PermissionsExist(dto.Permissions);
+            await UpdatePermissionsAsync(user, dto.Permissions);
         }
 
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto)
         {
             throw new NotImplementedException();
         }
-
 
         public async Task<RefreshTokenResultDTO?> RefreshTokenAsync(string refreshToken)
         {
@@ -268,15 +293,14 @@ namespace MissTortas.Infrastructure.Security
             {
                 return null;
             }
-            var user = await userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException("Not founden");
+            var user = await userManager.FindByIdAsync(userId) ?? throw new UserNotFoundException("Not found");
             var userPrincipal = await signInManager.CreateUserPrincipalAsync(user);
 
             // Generate new access token
             var accessToken = tokenGenerator.GenerateAccessToken(userPrincipal);
 
             // Generate new refresh token
-            var newRefreshToken = tokenGenerator.GenerateRefreshToken(userId);
-            await tokenGenerator.SaveRefreshTokenAsync(userId, newRefreshToken);
+            var newRefreshToken = await tokenGenerator.GenerateRefreshToken(userId);
 
             return new RefreshTokenResultDTO
             {
@@ -295,7 +319,7 @@ namespace MissTortas.Infrastructure.Security
                 Name = name,
             };
             var identityResult = await roleManager.CreateAsync(applicationRole);
-            if(!identityResult.Succeeded)
+            if (!identityResult.Succeeded)
             {
                 throw new InvalidOperationException($"Couldn't create role: {name}");
             }
@@ -305,7 +329,7 @@ namespace MissTortas.Infrastructure.Security
         public async Task<List<SimpleRoleDTO>> CreateRolesAsync(List<string> names)
         {
             List<SimpleRoleDTO> roles = [];
-            foreach(var name in names)
+            foreach (var name in names)
             {
                 var role = await CreateRoleAsync(name);
                 roles.Add(role);
@@ -316,7 +340,7 @@ namespace MissTortas.Infrastructure.Security
         public async Task<RoleDTO?> FindRoleByIdAsync(string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
-            if(role is null)
+            if (role is null)
             {
                 return null;
             }

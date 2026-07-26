@@ -18,7 +18,7 @@ namespace MissTortas.Infrastructure.Security.Interface
         public Task<SignUpUserResultDTO> SignUpUserAsync(SignUpUserDTO dto);
         public Task<IEnumerable<SimpleRoleDTO>> GetAllRolesAsync();
         public Task ModifyRoleAsync(ModifyRoleDTO dto);
-        public Task AssignPermissionsToUserAsync(ModifyRoleDTO dto);
+        public Task AssignPermissionsAsync(AssignPermissionToUserDTO dto);
         public Task AssignPermissionsAsync(AssignPermissionsDTO dto);
         public Task ModifyUserAsync(ApplicationUserModificationDTO dto);
         Task<RefreshTokenResultDTO?> RefreshTokenAsync(string refreshToken);

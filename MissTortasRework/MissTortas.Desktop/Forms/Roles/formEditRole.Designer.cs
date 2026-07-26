@@ -96,6 +96,7 @@
             // 
             // btnRemovePermission
             // 
+            btnRemovePermission.Dock = DockStyle.Top;
             btnRemovePermission.Location = new Point(160, 120);
             btnRemovePermission.Name = "btnRemovePermission";
             btnRemovePermission.Size = new Size(72, 23);
@@ -133,7 +134,7 @@
             txtAddedPermissions.ReadOnly = true;
             txtAddedPermissions.Size = new Size(153, 23);
             txtAddedPermissions.TabIndex = 5;
-            txtAddedPermissions.Text = "Added Roles";
+            txtAddedPermissions.Text = "Added Permissions";
             // 
             // listBoxAvailablePermissions
             // 

@@ -2,7 +2,7 @@
 {
     public class AssignPermissionToUserDTO
     {
-        public long UserId { get; set; }
-        public List<long> Permissions { get; set; } = [];
+        public string UserId { get; set; } = string.Empty;
+        public List<string> Permissions { get; set; } = [];
     }
 }

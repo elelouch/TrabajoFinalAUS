@@ -1,4 +1,5 @@
 ﻿using MissTortas.Desktop.Model;
+using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
@@ -8,16 +9,20 @@ namespace MissTortas.Desktop.Forms.Users
 {
     public partial class formEditUser : Form
     {
-        private readonly string _userId = string.Empty;
-        private readonly IUserService _userService;
+        private readonly string userId = string.Empty;
+        private readonly IUserService userService;
         private BindingList<string> AvailableRoles { get; set; }
         private BindingList<string> AddedRoles { get; set; }
+        private readonly IPermissionService? permissionService;
+        private User? userFetched;
 
-        public formEditUser(string userId, IUserService userService)
+        public formEditUser(string userId, IUserService userService) : this(userId, userService, null) { }
+        public formEditUser(string userId, IUserService userService, IPermissionService? permissionService)
         {
             InitializeComponent();
-            _userId = userId;
-            _userService = userService;
+            this.userId = userId;
+            this.userService = userService;
+            this.permissionService = permissionService;
             AvailableRoles = [];
             AddedRoles = [];
         }
@@ -51,14 +56,15 @@ namespace MissTortas.Desktop.Forms.Users
         {
             try
             {
-                var user = await _userService.FindUserByIdAsync(_userId);
+                var user = await userService.FindUserByIdAsync(userId);
                 if (user == null)
                 {
                     MessageBox.Show("User not found. Or error during fetching.");
                     this.Dispose();
                     return;
                 }
-                var roles = await _userService.GetRolesAsync();
+                userFetched = user;
+                var roles = await userService.GetRolesAsync();
                 fillEditUserForm(user, [.. roles.Select(r => r.Name)]);
             }
             catch (ApiException exc)
@@ -115,7 +121,7 @@ namespace MissTortas.Desktop.Forms.Users
             var userId = txtUserId.Text;
             try
             {
-                await _userService.ModifyUserAsync(userId, user);
+                await userService.ModifyUserAsync(userId, user);
                 MessageBox.Show("Modification was successful.");
                 Dispose();
             }
@@ -132,6 +138,22 @@ namespace MissTortas.Desktop.Forms.Users
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private void btnUserPermissions_Click(object sender, EventArgs e)
+        {
+            if(userFetched == null)
+            {
+                MessageBox.Show("User not not fetched yet to read its permissions.");
+                return;
+            }
+            if(permissionService == null)
+            {
+                MessageBox.Show("Permissions service not available.");
+                return;
+            }
+            var formPermissions = new formUserPermission(userService, permissionService, [.. userFetched.Permissions]);
+            formPermissions.ShowDialog();
         }
     }
 }

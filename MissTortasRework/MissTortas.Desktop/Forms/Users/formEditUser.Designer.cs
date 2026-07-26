@@ -55,6 +55,7 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             btnSave = new Button();
             btnCancel = new Button();
+            btnUserPermissions = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -103,6 +104,7 @@
             // 
             // btnRemoveRole
             // 
+            btnRemoveRole.Dock = DockStyle.Top;
             btnRemoveRole.Location = new Point(160, 120);
             btnRemoveRole.Name = "btnRemoveRole";
             btnRemoveRole.Size = new Size(72, 23);
@@ -323,6 +325,7 @@
             // 
             flowLayoutPanel1.Controls.Add(btnSave);
             flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Controls.Add(btnUserPermissions);
             flowLayoutPanel1.Location = new Point(603, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(84, 223);
@@ -347,6 +350,18 @@
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
+            // 
+            // btnUserPermissions
+            // 
+            btnUserPermissions.Dock = DockStyle.Top;
+            btnUserPermissions.Location = new Point(3, 61);
+            btnUserPermissions.Name = "btnUserPermissions";
+            btnUserPermissions.RightToLeft = RightToLeft.No;
+            btnUserPermissions.Size = new Size(81, 45);
+            btnUserPermissions.TabIndex = 9;
+            btnUserPermissions.Text = "User Permissions";
+            btnUserPermissions.UseVisualStyleBackColor = true;
+            btnUserPermissions.Click += btnUserPermissions_Click;
             // 
             // formEditUser
             // 
@@ -398,5 +413,6 @@
         private ListBox listBoxAddedRoles;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btnCancel;
+        private Button btnUserPermissions;
     }
 }

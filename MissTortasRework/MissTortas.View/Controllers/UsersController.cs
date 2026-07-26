@@ -93,5 +93,18 @@ namespace MissTortas.View.Controllers
             var ret = await orderService.GetUserConsultanciesAsync(userId);
             return ret.ToList();
         }
+
+        [Authorize(Policy = PolicyName.ManageOrders)]
+        [HttpPost("{userId}/permissions")]
+        public async Task<ActionResult> PostUserPermissions(string userId, List<string> permissions)
+        {
+            var dto = new AssignPermissionToUserDTO
+            {
+                UserId = userId,
+                Permissions = permissions
+            };
+            await securityService.AssignPermissionsAsync(dto);
+            return Ok();
+        }
     }
 }

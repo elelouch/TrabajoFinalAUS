@@ -62,7 +62,7 @@ namespace MissTortas.Desktop.Forms
         {
             if (formUsers == null)
             {
-                this.formUsers = new formUsers(usersService, authService)
+                this.formUsers = new formUsers(usersService, authService, permissionService)
                 {
                     MdiParent = this
                 };

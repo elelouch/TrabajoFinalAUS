@@ -1,5 +1,6 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.AuthService;
+using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
 using System.ComponentModel;
@@ -10,14 +11,16 @@ namespace MissTortas.Desktop.Forms.Users
     {
         private readonly IUserService usersService;
         private readonly IAuthService authService;
+        private readonly IPermissionService permissionService;
         private List<User> users = [];
         private BindingList<User> shownUsers = [];
         private bool filtered;
-        public formUsers(IUserService usersService, IAuthService authService)
+        public formUsers(IUserService usersService, IAuthService authService, IPermissionService permissionService)
         {
             InitializeComponent();
             this.authService = authService;
             this.usersService = usersService;
+            this.permissionService = permissionService;
             shownUsers = [];
             dgvUsers.DataSource = shownUsers;
         }
@@ -80,7 +83,7 @@ namespace MissTortas.Desktop.Forms.Users
             {
                 return;
             }
-            var editUserForm = new formEditUser(user.UserId.ToString(), usersService);
+            var editUserForm = new formEditUser(user.UserId.ToString(), usersService, permissionService);
             editUserForm.ShowDialog();
         }
 
