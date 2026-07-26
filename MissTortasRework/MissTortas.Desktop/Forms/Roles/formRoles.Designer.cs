@@ -30,54 +30,38 @@
         {
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
-            btnAdd = new Button();
             dgvRoles = new DataGridView();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             roleBindingSource = new BindingSource(components);
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            panel1 = new Panel();
             btnRefresh = new Button();
             btnCancel = new Button();
-            btnEditRole = new Button();
             btnRemove = new Button();
+            btnAdd = new Button();
+            btnEditRole = new Button();
             userBindingSource = new BindingSource(components);
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRoles).BeginInit();
             ((System.ComponentModel.ISupportInitialize)roleBindingSource).BeginInit();
-            flowLayoutPanel1.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 4;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel1.Controls.Add(btnAdd, 1, 1);
             tableLayoutPanel1.Controls.Add(dgvRoles, 0, 0);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 3, 0);
-            tableLayoutPanel1.Controls.Add(btnEditRole, 0, 1);
-            tableLayoutPanel1.Controls.Add(btnRemove, 2, 1);
+            tableLayoutPanel1.Controls.Add(panel1, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.Size = new Size(800, 450);
             tableLayoutPanel1.TabIndex = 0;
-            // 
-            // btnAdd
-            // 
-            btnAdd.Location = new Point(84, 424);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 23);
-            btnAdd.TabIndex = 1;
-            btnAdd.Text = "Add";
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
             // 
             // dgvRoles
             // 
@@ -87,13 +71,12 @@
             dgvRoles.AutoGenerateColumns = false;
             dgvRoles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvRoles.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn });
-            tableLayoutPanel1.SetColumnSpan(dgvRoles, 3);
             dgvRoles.DataSource = roleBindingSource;
             dgvRoles.Dock = DockStyle.Fill;
             dgvRoles.Location = new Point(3, 3);
             dgvRoles.Name = "dgvRoles";
             dgvRoles.ReadOnly = true;
-            dgvRoles.Size = new Size(666, 415);
+            dgvRoles.Size = new Size(634, 444);
             dgvRoles.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
@@ -114,54 +97,67 @@
             // 
             roleBindingSource.DataSource = typeof(Model.Role);
             // 
-            // flowLayoutPanel1
+            // panel1
             // 
-            flowLayoutPanel1.Controls.Add(btnRefresh);
-            flowLayoutPanel1.Controls.Add(btnCancel);
-            flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(675, 3);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(122, 415);
-            flowLayoutPanel1.TabIndex = 7;
+            panel1.Controls.Add(btnRefresh);
+            panel1.Controls.Add(btnCancel);
+            panel1.Controls.Add(btnRemove);
+            panel1.Controls.Add(btnAdd);
+            panel1.Controls.Add(btnEditRole);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(643, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(154, 444);
+            panel1.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(3, 3);
+            btnRefresh.Location = new Point(13, 9);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 23);
-            btnRefresh.TabIndex = 0;
+            btnRefresh.TabIndex = 14;
             btnRefresh.Text = "Refresh";
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefreshUsers_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(3, 32);
+            btnCancel.Location = new Point(13, 38);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 1;
+            btnCancel.TabIndex = 15;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // btnRemove
+            // 
+            btnRemove.Location = new Point(13, 67);
+            btnRemove.Name = "btnRemove";
+            btnRemove.Size = new Size(75, 23);
+            btnRemove.TabIndex = 18;
+            btnRemove.Text = "Remove";
+            btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(13, 96);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 23);
+            btnAdd.TabIndex = 16;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
             // btnEditRole
             // 
-            btnEditRole.Location = new Point(3, 424);
+            btnEditRole.Location = new Point(13, 125);
             btnEditRole.Name = "btnEditRole";
             btnEditRole.Size = new Size(75, 23);
-            btnEditRole.TabIndex = 6;
+            btnEditRole.TabIndex = 17;
             btnEditRole.Text = "Edit";
             btnEditRole.UseVisualStyleBackColor = true;
             btnEditRole.Click += btnEditRole_Click;
-            // 
-            // btnRemove
-            // 
-            btnRemove.Location = new Point(165, 424);
-            btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(75, 23);
-            btnRemove.TabIndex = 8;
-            btnRemove.Text = "Remove";
-            btnRemove.UseVisualStyleBackColor = true;
             // 
             // userBindingSource
             // 
@@ -182,7 +178,7 @@
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRoles).EndInit();
             ((System.ComponentModel.ISupportInitialize)roleBindingSource).EndInit();
-            flowLayoutPanel1.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)userBindingSource).EndInit();
             ResumeLayout(false);
         }
@@ -193,15 +189,15 @@
         private DataGridViewTextBoxColumn guidDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn isEnabledDataGridViewCheckBoxColumn;
         private BindingSource userBindingSource;
-        private Button btnEditRole;
-        private DataGridView dgvRoles;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Button btnRefresh;
-        private Button btnCancel;
         private BindingSource roleBindingSource;
+        private DataGridView dgvRoles;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private Button btnAdd;
+        private Panel panel1;
+        private Button btnRefresh;
+        private Button btnCancel;
         private Button btnRemove;
+        private Button btnAdd;
+        private Button btnEditRole;
     }
 }

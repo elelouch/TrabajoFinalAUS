@@ -55,11 +55,6 @@ namespace MissTortas.Desktop.Forms.Roles
             await LoadDataGridView();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             var createRoleForm = new formCreateRole(roleService);
