@@ -39,5 +39,10 @@ namespace MissTortas.Desktop.Services.UserService
         {
             return httpClient.PutAsync<object>($"users/{userId}", dto);
         }
+
+        public Task PostPermissionsAsync(string userId, List<string> permissions)
+        {
+            return httpClient.PostAsync<object>($"users/{userId}/permissions", permissions);
+        }
     }
 }

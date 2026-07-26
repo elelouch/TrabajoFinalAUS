@@ -8,5 +8,6 @@ namespace MissTortas.Desktop.Services.UserService
         public Task<User?> FindUserByIdAsync(string userId);
         public Task<List<Role>> GetRolesAsync();
         public Task ModifyUserAsync(string userId, UserModificationDTO dto);
+        public Task PostPermissionsAsync(string userId, List<string> permissions);
     }
 }

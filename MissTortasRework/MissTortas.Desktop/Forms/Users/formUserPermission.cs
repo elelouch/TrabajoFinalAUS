@@ -19,12 +19,14 @@ namespace MissTortas.Desktop.Forms.Users
         private readonly List<string> permissionsAssigned;
         private BindingList<string> AvailablePermissions { get; set; }
         private BindingList<string> AddedPermissions { get; set; }
-        public formUserPermission(IUserService userService, IPermissionService permissionService, List<string> permissionsAssigned)
+        private readonly User user;
+        public formUserPermission(IUserService userService, IPermissionService permissionService, User user)
         {
             InitializeComponent();
+            this.user = user;
             this.userService = userService;
             this.permissionService = permissionService;
-            this.permissionsAssigned = permissionsAssigned;
+            this.permissionsAssigned = [.. user.Permissions];
             AvailablePermissions = [];
             AddedPermissions = [];
             this.listBoxAddedPermissions.DataSource = AddedPermissions;
@@ -85,5 +87,24 @@ namespace MissTortas.Desktop.Forms.Users
         {
             Dispose();
         }
+
+        private async void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await userService.PostPermissionsAsync(user.UserId.ToString(), [.. AddedPermissions]);
+                MessageBox.Show("Permissions modified successfully");
+                Dispose();
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
+            }
+        }
+
     }
 }

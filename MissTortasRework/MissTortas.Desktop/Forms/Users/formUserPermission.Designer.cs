@@ -75,6 +75,7 @@
             btnRemovePermission.TabIndex = 9;
             btnRemovePermission.Text = "<<<";
             btnRemovePermission.UseVisualStyleBackColor = true;
+            btnRemovePermission.Click += btnRemovePermissions_Click;
             // 
             // btnAddPermission
             // 
@@ -85,6 +86,7 @@
             btnAddPermission.TabIndex = 8;
             btnAddPermission.Text = ">>>";
             btnAddPermission.UseVisualStyleBackColor = true;
+            btnAddPermission.Click += btnAddPermission_Click;
             // 
             // txtAvailablePermissions
             // 
@@ -154,6 +156,7 @@
             btnSave.TabIndex = 0;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // formUserPermission
             // 

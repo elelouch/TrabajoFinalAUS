@@ -152,7 +152,7 @@ namespace MissTortas.Desktop.Forms.Users
                 MessageBox.Show("Permissions service not available.");
                 return;
             }
-            var formPermissions = new formUserPermission(userService, permissionService, [.. userFetched.Permissions]);
+            var formPermissions = new formUserPermission(userService, permissionService, userFetched);
             formPermissions.ShowDialog();
         }
     }
