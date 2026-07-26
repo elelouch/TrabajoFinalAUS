@@ -27,8 +27,8 @@ namespace MissTortas.Desktop.Forms.Users
             this.permissionsAssigned = permissionsAssigned;
             AvailablePermissions = [];
             AddedPermissions = [];
-            this.listBoxAddedPermissions.DataSource = AvailablePermissions;
-            this.listBoxAvailablePermissions.DataSource = AddedPermissions;
+            this.listBoxAddedPermissions.DataSource = AddedPermissions;
+            this.listBoxAvailablePermissions.DataSource = AvailablePermissions;
         }
 
         private async void formUserPermission_Load(object sender, EventArgs e)
@@ -44,6 +44,7 @@ namespace MissTortas.Desktop.Forms.Users
                         AvailablePermissions.Add(p);
                     }
                 }
+                AddedPermissions.Clear();
                 foreach (var p in permissionsAssigned)
                 {
                     AddedPermissions.Add(p);
