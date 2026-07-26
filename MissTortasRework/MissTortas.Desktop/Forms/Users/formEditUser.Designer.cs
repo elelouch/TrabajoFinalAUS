@@ -357,7 +357,7 @@
             btnUserPermissions.Location = new Point(3, 61);
             btnUserPermissions.Name = "btnUserPermissions";
             btnUserPermissions.RightToLeft = RightToLeft.No;
-            btnUserPermissions.Size = new Size(81, 45);
+            btnUserPermissions.Size = new Size(81, 42);
             btnUserPermissions.TabIndex = 9;
             btnUserPermissions.Text = "User Permissions";
             btnUserPermissions.UseVisualStyleBackColor = true;

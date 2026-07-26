@@ -35,21 +35,27 @@
             txtAddedPermissions = new TextBox();
             listBoxAvailablePermissions = new ListBox();
             listBoxAddedPermissions = new ListBox();
+            panel1 = new Panel();
+            btnCancel = new Button();
+            btnSave = new Button();
             tableLayoutPanel2.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.ColumnCount = 3;
+            tableLayoutPanel2.ColumnCount = 4;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel2.Controls.Add(btnRemovePermission, 1, 2);
             tableLayoutPanel2.Controls.Add(btnAddPermission, 1, 1);
             tableLayoutPanel2.Controls.Add(txtAvailablePermissions, 0, 0);
             tableLayoutPanel2.Controls.Add(txtAddedPermissions, 2, 0);
             tableLayoutPanel2.Controls.Add(listBoxAvailablePermissions, 0, 1);
             tableLayoutPanel2.Controls.Add(listBoxAddedPermissions, 2, 1);
+            tableLayoutPanel2.Controls.Add(panel1, 3, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(0, 0);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -65,7 +71,7 @@
             btnRemovePermission.Dock = DockStyle.Top;
             btnRemovePermission.Location = new Point(323, 238);
             btnRemovePermission.Name = "btnRemovePermission";
-            btnRemovePermission.Size = new Size(154, 23);
+            btnRemovePermission.Size = new Size(74, 23);
             btnRemovePermission.TabIndex = 9;
             btnRemovePermission.Text = "<<<";
             btnRemovePermission.UseVisualStyleBackColor = true;
@@ -75,7 +81,7 @@
             btnAddPermission.Dock = DockStyle.Bottom;
             btnAddPermission.Location = new Point(323, 209);
             btnAddPermission.Name = "btnAddPermission";
-            btnAddPermission.Size = new Size(154, 23);
+            btnAddPermission.Size = new Size(74, 23);
             btnAddPermission.TabIndex = 8;
             btnAddPermission.Text = ">>>";
             btnAddPermission.UseVisualStyleBackColor = true;
@@ -93,7 +99,7 @@
             // txtAddedPermissions
             // 
             txtAddedPermissions.Dock = DockStyle.Fill;
-            txtAddedPermissions.Location = new Point(483, 3);
+            txtAddedPermissions.Location = new Point(403, 3);
             txtAddedPermissions.Name = "txtAddedPermissions";
             txtAddedPermissions.ReadOnly = true;
             txtAddedPermissions.Size = new Size(314, 23);
@@ -114,16 +120,47 @@
             // 
             listBoxAddedPermissions.Dock = DockStyle.Fill;
             listBoxAddedPermissions.FormattingEnabled = true;
-            listBoxAddedPermissions.Location = new Point(483, 23);
+            listBoxAddedPermissions.Location = new Point(403, 23);
             listBoxAddedPermissions.Name = "listBoxAddedPermissions";
             tableLayoutPanel2.SetRowSpan(listBoxAddedPermissions, 2);
             listBoxAddedPermissions.Size = new Size(314, 424);
             listBoxAddedPermissions.TabIndex = 11;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnCancel);
+            panel1.Controls.Add(btnSave);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(723, 23);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(74, 209);
+            panel1.TabIndex = 12;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(3, 53);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(3, 14);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(75, 23);
+            btnSave.TabIndex = 0;
+            btnSave.Text = "Save";
+            btnSave.UseVisualStyleBackColor = true;
+            // 
             // formUserPermission
             // 
+            AcceptButton = btnSave;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel2);
             Name = "formUserPermission";
@@ -131,6 +168,7 @@
             Load += formUserPermission_Load;
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -143,5 +181,8 @@
         private TextBox txtAddedPermissions;
         private ListBox listBoxAvailablePermissions;
         private ListBox listBoxAddedPermissions;
+        private Panel panel1;
+        private Button btnCancel;
+        private Button btnSave;
     }
 }

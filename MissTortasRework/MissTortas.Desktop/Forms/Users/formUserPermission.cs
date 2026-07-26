@@ -24,7 +24,11 @@ namespace MissTortas.Desktop.Forms.Users
             InitializeComponent();
             this.userService = userService;
             this.permissionService = permissionService;
-
+            this.permissionsAssigned = permissionsAssigned;
+            AvailablePermissions = [];
+            AddedPermissions = [];
+            this.listBoxAddedPermissions.DataSource = AvailablePermissions;
+            this.listBoxAvailablePermissions.DataSource = AddedPermissions;
         }
 
         private async void formUserPermission_Load(object sender, EventArgs e)
@@ -32,8 +36,19 @@ namespace MissTortas.Desktop.Forms.Users
             try
             {
                 var permissions = await permissionService.GetAllPermissionsAsync();
-                AvailablePermissions = [.. permissionsAssigned.Except(permissions)];
-                AddedPermissions = [.. permissionsAssigned];
+                AvailablePermissions.Clear();
+                foreach (var p in permissions)
+                {
+                    if (!permissionsAssigned.Contains(p))
+                    {
+                        AvailablePermissions.Add(p);
+                    }
+                }
+                foreach (var p in permissionsAssigned)
+                {
+                    AddedPermissions.Add(p);
+                }
+
             }
             catch (ApiException exc)
             {
@@ -63,6 +78,11 @@ namespace MissTortas.Desktop.Forms.Users
                 AddedPermissions.Remove(selectedRole);
                 AvailablePermissions.Add(selectedRole);
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 }
