@@ -84,10 +84,10 @@ namespace MissTortas.View.Controllers
                 };
             }
 
-            Response.Cookies.Append("X-Access-Token", result.AccessToken,
-                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
-            Response.Cookies.Append("X-Refresh-Token", result.RefreshToken,
-                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
+            //Response.Cookies.Append("X-Access-Token", result.AccessToken,
+            //    new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
+            //Response.Cookies.Append("X-Refresh-Token", result.RefreshToken,
+            //    new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
 
             return Ok(new { accessToken = result.AccessToken, refreshToken = result.RefreshToken });
         }
@@ -135,6 +135,10 @@ namespace MissTortas.View.Controllers
             {
                 return Unauthorized("Invalid or expired refresh token.");
             }
+            //Response.Cookies.Append("X-Access-Token", result.AccessToken,
+            //    new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
+            //Response.Cookies.Append("X-Refresh-Token", result.RefreshToken,
+            //    new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict, Secure = false });
             return Ok(result);
         }
         public class RefreshTokenRequest

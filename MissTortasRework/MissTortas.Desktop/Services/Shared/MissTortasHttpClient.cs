@@ -17,7 +17,6 @@ namespace MissTortas.Desktop.Services.Shared
         {
             this.ApiBaseUrl = apiBaseUrl;
             ConfigureClient();
-            SetAuthorizationHeader();
         }
 
         private void ConfigureClient()
@@ -38,28 +37,75 @@ namespace MissTortas.Desktop.Services.Shared
         }
 
         public Task<T?> GetAsync<T>(string endpoint) =>
-            ExecuteWithRetry<T>(() => httpClient.GetAsync(endpoint));
+        ExecuteWithRetry<T>(() => new HttpRequestMessage(HttpMethod.Get, endpoint));
 
         public Task<T?> PostAsync<T>(string endpoint, object? data = null) =>
-            ExecuteWithRetry<T>(() => httpClient.PostAsJsonAsync(endpoint, data));
+            ExecuteWithRetry<T>(() => new HttpRequestMessage(HttpMethod.Post, endpoint) { Content = JsonContent.Create(data) });
 
         public Task<T?> PutAsync<T>(string endpoint, object? data = null) =>
-            ExecuteWithRetry<T>(() => httpClient.PutAsJsonAsync(endpoint, data));
+            ExecuteWithRetry<T>(() => new HttpRequestMessage(HttpMethod.Put, endpoint) { Content = JsonContent.Create(data) });
 
         public Task<T?> DeleteAsync<T>(string endpoint) =>
-            ExecuteWithRetry<T>(() => httpClient.DeleteAsync(endpoint));
+            ExecuteWithRetry<T>(() => new HttpRequestMessage(HttpMethod.Delete, endpoint));
 
         public Task<T?> PatchAsync<T>(string endpoint, object? data = null) =>
-            ExecuteWithRetry<T>(() => httpClient.PatchAsJsonAsync(endpoint, data));
+            ExecuteWithRetry<T>(() => new HttpRequestMessage(HttpMethod.Patch, endpoint) { Content = JsonContent.Create(data) });
+
+        //public Task<T?> GetAsync<T>(string endpoint) =>
+        //    ExecuteWithRetry<T>(() => httpClient.GetAsync(endpoint));
+
+        //public Task<T?> PostAsync<T>(string endpoint, object? data = null) =>
+        //    ExecuteWithRetry<T>(() => httpClient.PostAsJsonAsync(endpoint, data));
+
+        //public Task<T?> PutAsync<T>(string endpoint, object? data = null) =>
+        //    ExecuteWithRetry<T>(() => httpClient.PutAsJsonAsync(endpoint, data));
+
+        //public Task<T?> DeleteAsync<T>(string endpoint) =>
+        //    ExecuteWithRetry<T>(() => httpClient.DeleteAsync(endpoint));
+
+        //public Task<T?> PatchAsync<T>(string endpoint, object? data = null) =>
+        //    ExecuteWithRetry<T>(() => httpClient.PatchAsJsonAsync(endpoint, data));
 
         /// <summary>
         /// Sends the request via <paramref name="sendRequest"/>. On a 401, attempts a token
         /// refresh (only once per call, shared across concurrent callers) and retries the
         /// request exactly one time with the refreshed token.
         /// </summary>
-        private async Task<T?> ExecuteWithRetry<T>(Func<Task<HttpResponseMessage>> sendRequest)
+        //private async Task<T?> ExecuteWithRetry<T>(Func<Task<HttpResponseMessage>> sendRequest)
+        //{
+        //    async Task<HttpResponseMessage> Send()
+        //    {
+        //        using var request = await sendRequest();
+        //        if (!string.IsNullOrEmpty(MissTortasToken.AccessToken))
+        //            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", MissTortasToken.AccessToken);
+        //        return await httpClient.SendAsync(request);
+        //    }
+
+        //    var response = await sendRequest();
+
+        //    if (response.StatusCode == HttpStatusCode.Unauthorized)
+        //    {
+        //        var refreshed = await TryRefreshTokenAsync();
+        //        if (refreshed)
+        //        {
+        //            response.Dispose();
+        //            response = await sendRequest(); // retry once, with the new Authorization header
+        //        }
+        //    }
+
+        //    return await HandleResponse<T>(response);
+        //}
+        private async Task<T?> ExecuteWithRetry<T>(Func<HttpRequestMessage> buildRequest)
         {
-            var response = await sendRequest();
+            async Task<HttpResponseMessage> Send()
+            {
+                using var request = buildRequest();
+                if (!string.IsNullOrEmpty(MissTortasToken.AccessToken))
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", MissTortasToken.AccessToken);
+                return await httpClient.SendAsync(request);
+            }
+
+            var response = await Send();
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -67,7 +113,7 @@ namespace MissTortas.Desktop.Services.Shared
                 if (refreshed)
                 {
                     response.Dispose();
-                    response = await sendRequest(); // retry once, with the new Authorization header
+                    response = await Send(); // retry once, reads MissTortasToken.AccessToken fresh
                 }
             }
 
@@ -83,7 +129,6 @@ namespace MissTortas.Desktop.Services.Shared
             await refreshLock.WaitAsync();
             try
             {
-                // another concurrent request may have already refreshed while we waited
                 var refreshToken = MissTortasToken.RefreshToken;
                 if (string.IsNullOrEmpty(refreshToken))
                     return false;
@@ -100,7 +145,7 @@ namespace MissTortas.Desktop.Services.Shared
 
                 MissTortasToken.AccessToken = refreshResponse.AccessToken;
                 MissTortasToken.RefreshToken = refreshResponse.RefreshToken;
-                SetAuthorizationHeader(); // update the default header so the retry picks it up
+                // no SetAuthorizationHeader() call needed anymore — Send() reads MissTortasToken directly
 
                 return true;
             }
@@ -146,27 +191,19 @@ namespace MissTortas.Desktop.Services.Shared
         }
 
         public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
-    ExecuteWithRetry<T>(() => SendFormDataAsync(endpoint, data, files));
+    ExecuteWithRetry<T>(() => BuildFormDataRequest(endpoint, data, files));
 
-        private async Task<HttpResponseMessage> SendFormDataAsync(
-                string endpoint,
-                object data,
-                List<(Stream stream, string fileName)> files
-            )
+        private HttpRequestMessage BuildFormDataRequest(string endpoint, object data, List<(Stream stream, string fileName)> files)
         {
-            using var content = new MultipartFormDataContent();
+            var content = new MultipartFormDataContent();
 
-            // Add form fields
             if (data != null)
             {
-                var properties = data.GetType().GetProperties();
-                foreach (var prop in properties)
+                foreach (var prop in data.GetType().GetProperties())
                 {
                     var value = prop.GetValue(data);
                     if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
-                    {
                         content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
-                    }
                 }
             }
 
@@ -174,33 +211,72 @@ namespace MissTortas.Desktop.Services.Shared
             {
                 foreach (var (stream, fileName) in files)
                 {
-                    var streamContent = new StreamContent(stream);
-                    content.Add(streamContent, "files", fileName);
+                    if (stream.CanSeek)
+                        stream.Position = 0; // buildRequest() runs twice on retry — rewind so the retry doesn't send an empty stream
+                    content.Add(new StreamContent(stream), "files", fileName);
                 }
             }
 
-            // Temporarily remove the Accept header for this multipart request
-            var acceptHeader = httpClient.DefaultRequestHeaders.Accept.FirstOrDefault();
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-
-            try
-            {
-                return await httpClient.PostAsync(endpoint, content);
-            }
-            finally
-            {
-                // Restore the Accept header
-                if (acceptHeader != null)
-                {
-                    httpClient.DefaultRequestHeaders.Accept.Add(acceptHeader);
-                }
-                else
-                {
-                    httpClient.DefaultRequestHeaders.Accept.Add(
-                        new MediaTypeWithQualityHeaderValue("application/json")
-                    );
-                }
-            }
+            var request = new HttpRequestMessage(HttpMethod.Post, endpoint) { Content = content };
+            return request;
         }
+
+    //    public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
+    //ExecuteWithRetry<T>(() => SendFormDataAsync(endpoint, data, files));
+
+    //    private async Task<HttpResponseMessage> SendFormDataAsync(
+    //            string endpoint,
+    //            object data,
+    //            List<(Stream stream, string fileName)> files
+    //        )
+    //    {
+    //        using var content = new MultipartFormDataContent();
+
+    //        // Add form fields
+    //        if (data != null)
+    //        {
+    //            var properties = data.GetType().GetProperties();
+    //            foreach (var prop in properties)
+    //            {
+    //                var value = prop.GetValue(data);
+    //                if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
+    //                {
+    //                    content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
+    //                }
+    //            }
+    //        }
+
+    //        if (files != null)
+    //        {
+    //            foreach (var (stream, fileName) in files)
+    //            {
+    //                var streamContent = new StreamContent(stream);
+    //                content.Add(streamContent, "files", fileName);
+    //            }
+    //        }
+
+    //        // Temporarily remove the Accept header for this multipart request
+    //        var acceptHeader = httpClient.DefaultRequestHeaders.Accept.FirstOrDefault();
+    //        httpClient.DefaultRequestHeaders.Accept.Clear();
+
+    //        try
+    //        {
+    //            return await httpClient.PostAsync(endpoint, content);
+    //        }
+    //        finally
+    //        {
+    //            // Restore the Accept header
+    //            if (acceptHeader != null)
+    //            {
+    //                httpClient.DefaultRequestHeaders.Accept.Add(acceptHeader);
+    //            }
+    //            else
+    //            {
+    //                httpClient.DefaultRequestHeaders.Accept.Add(
+    //                    new MediaTypeWithQualityHeaderValue("application/json")
+    //                );
+    //            }
+    //        }
+    //    }
     }
 }

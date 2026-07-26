@@ -53,7 +53,7 @@ namespace MissTortas.Infrastructure
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<string> GenerateRefreshToken(string userId)
+        public async Task<string> GenerateRefreshTokenAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {

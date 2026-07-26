@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi;
 using MissTortas.Infrastructure;
 using MissTortas.Infrastructure.Configuration;
 using MissTortas.Services;
@@ -20,7 +21,25 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "MissTortas API", Version = "v1" });
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT access token (no need to type 'Bearer ' prefix)."
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 

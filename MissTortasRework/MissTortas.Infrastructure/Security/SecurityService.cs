@@ -39,7 +39,7 @@ namespace MissTortas.Infrastructure.Security
             var dtoRet = new LoginUserResultDTO
             {
                 AccessToken = tokenGenerator.GenerateAccessToken(userPrincipal),
-                RefreshToken = await tokenGenerator.GenerateRefreshToken(user.Id),
+                RefreshToken = await tokenGenerator.GenerateRefreshTokenAsync(user.Id),
                 SignInResult = await signInManager.PasswordSignInAsync(user, request.Password, true, true)
             };
             return dtoRet;
@@ -300,13 +300,13 @@ namespace MissTortas.Infrastructure.Security
             var accessToken = tokenGenerator.GenerateAccessToken(userPrincipal);
 
             // Generate new refresh token
-            var newRefreshToken = await tokenGenerator.GenerateRefreshToken(userId);
+            var newRefreshToken = await tokenGenerator.GenerateRefreshTokenAsync(userId);
 
             return new RefreshTokenResultDTO
             {
                 AccessToken = accessToken,
                 RefreshToken = newRefreshToken,
-                ExpiresIn = "15 minutes"
+                ExpiresIn = "5 minutes"
             };
         }
 

@@ -91,7 +91,6 @@ namespace MissTortas.Infrastructure
                                     token = authHeader["Bearer ".Length..];
                                 }
                             }
-
                             if (!string.IsNullOrEmpty(token))
                             {
                                 context.Token = token;
