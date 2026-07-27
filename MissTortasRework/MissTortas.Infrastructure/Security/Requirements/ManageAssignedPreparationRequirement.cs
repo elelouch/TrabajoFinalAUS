@@ -5,8 +5,13 @@ using System.Text;
 
 namespace MissTortas.Infrastructure.Security.Requirements
 {
-    public class ManageAssignedPreparationRequirement : IAuthorizationRequirement
+    public class ManageAssignedPreparationRequirement(PreparationOperationEnum op) : IAuthorizationRequirement
     {
-        
+        public PreparationOperationEnum Operation { get; set; } = op;
+    }
+    public enum PreparationOperationEnum
+    {
+        Read,
+        Write
     }
 }

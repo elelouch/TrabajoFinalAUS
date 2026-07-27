@@ -27,6 +27,12 @@ namespace MissTortas.View.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrderPreparationResponse>>> GetOrderPreparations()
         {
+            var requirement = new ManageAssignedPreparationRequirement(PreparationOperationEnum.Read);
+            var authRes = await authorizationService.AuthorizeAsync(User, null, requirement);
+            if (!authRes.Succeeded)
+            {
+                return Forbid();
+            }
             var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
             if (appUser == null)
             {
@@ -40,10 +46,11 @@ namespace MissTortas.View.Controllers
         [HttpGet("{preparationId}")]
         public async Task<ActionResult<OrderPreparationResponse>> GetOrderPreparations(long preparationId)
         {
-            var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
-            if (appUser == null)
+            var requirement = new ManageAssignedPreparationRequirement(PreparationOperationEnum.Read);
+            var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
+            if (!authRes.Succeeded)
             {
-                return Unauthorized();
+                return Forbid();
             }
             var userPreparation = await orderService.GetOrderPreparationAsync(preparationId);
             if (userPreparation == null)
@@ -80,13 +87,14 @@ namespace MissTortas.View.Controllers
         [HttpPatch("{preparationId}")]
         public async Task<ActionResult<OrderPreparationResponse>> PatchOrderPreparation(long preparationId, PatchOrderPreparationRequest request)
         {
-            var requirement = new ManageAssignedPreparationRequirement();
+            var requirement = new ManageAssignedPreparationRequirement(PreparationOperationEnum.Write);
             var authRes = await authorizationService.AuthorizeAsync(User, preparationId, requirement);
-            OrderPreparationDTO? preparation;
             if (!authRes.Succeeded)
             {
-                return Unauthorized();
+                return Forbid();
             }
+
+            OrderPreparationDTO? preparation;
             if (request.Status == "end")
             {
                 preparation = await orderService.EndOrderPreparationAsync(preparationId);

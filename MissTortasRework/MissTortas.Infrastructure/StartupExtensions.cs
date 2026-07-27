@@ -125,7 +125,6 @@ namespace MissTortas.Infrastructure
                 .AddPolicy(PolicyName.ManageOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageOrders.Code))
                 .AddPolicy(PolicyName.ManageProducts, policy => policy.RequireClaim(Permission.ClaimName, Permission.ManageProducts.Code))
                 .AddPolicy(PolicyName.PlaceOrders, policy => policy.RequireClaim(Permission.ClaimName, Permission.PlaceOrders.Code))
-                .AddPolicy(PolicyName.ManageAssignedPreparations, policy => policy.AddRequirements(new ManageAssignedPreparationRequirement()))
              ;
             return services;
         }

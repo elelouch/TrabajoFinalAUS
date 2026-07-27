@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Permissions;
 using MissTortas.Infrastructure.Security.Requirements;
 using MissTortas.Services.Interfaces;
 using System;
@@ -24,7 +25,9 @@ namespace MissTortas.Infrastructure.Security.Handlers
             var userId = claim.Value;
             var userHasPreparation = await userManager.Users
                 .AnyAsync(u => u.Id == userId && u.User.Preparations.Any(p => p.OrderPreparationId == orderPreparationId));
-            if(userHasPreparation)
+            var userCanReadPreparations = context.User.HasClaim(Permission.ClaimName, Permission.ReadPreparations.Code);
+
+            if (userHasPreparation && requirement.Operation == PreparationOperationEnum.Write)
             {
                 context.Succeed(requirement);
             }

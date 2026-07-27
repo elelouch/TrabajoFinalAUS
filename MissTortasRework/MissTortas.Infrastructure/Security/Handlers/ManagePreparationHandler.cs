@@ -11,9 +11,16 @@ namespace MissTortas.Infrastructure.Security.Handlers
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageAssignedPreparationRequirement requirement)
         {
-            if(context.User.FindFirst(c => c.Type == Permission.ClaimName && c.Value == Permission.ManageOrders.Code) != null)
+            if(context.User.HasClaim(Permission.ClaimName, Permission.ManageOrders.Code))
             {
                 context.Succeed(requirement);
+                return Task.CompletedTask;
+            }
+
+            if (context.User.HasClaim(Permission.ClaimName, Permission.ReadPreparations.Code) && requirement.Operation == PreparationOperationEnum.Read)
+            {
+                context.Succeed(requirement);
+                return Task.CompletedTask;
             }
             return Task.CompletedTask;
         }

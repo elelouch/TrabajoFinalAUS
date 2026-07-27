@@ -38,7 +38,6 @@ namespace MissTortas.View.Controllers
             return Ok(ret);
         }
 
-        [Authorize(Policy = PolicyName.PlaceOrders)]
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderResponse>> GetOrder(long id)
         {
