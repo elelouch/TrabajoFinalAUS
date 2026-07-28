@@ -50,6 +50,9 @@ namespace MissTortas.Infrastructure
 
         public static async Task SeedDatabaseAsync(IServiceProvider services)
         {
+            var dbContext = services.GetRequiredService<MissTortasContext>();
+            await dbContext.Database.EnsureCreatedAsync();
+            dbContext.Database.Migrate();
             await SeedRolesAsync(services);
             await SeedUsersAsync(services);
             await SeedPermissionsAsync(services);

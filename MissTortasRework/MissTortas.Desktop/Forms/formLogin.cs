@@ -37,5 +37,6 @@ namespace MissTortas.Desktop.Forms
                 ErrorDisplay.Show(this, ex);
             }
         }
+
     }
 }
