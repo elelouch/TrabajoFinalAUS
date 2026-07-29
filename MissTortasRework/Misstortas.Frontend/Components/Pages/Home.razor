@@ -1,7 +1,81 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="carousel-viewport">
+    <div class="carousel-track"
+         style="width: @(slides.Count * 100)%; transform: translateX(-@(currentIndex * (100.0 / slides.Count))%)">
+        @for (int i = 0; i < slides.Count; i++)
+        {
+            var slide = slides[i];
 
-Welcome to your new app.
+            <div class="carousel-slide" style="background-color: @slide.Color; width: @(100.0 / slides.Count)%">
+                @if (slide.ImageOnRight)
+                {
+                    <div class="slide-text">
+                        <h2>@slide.Title</h2>
+                        <p>@slide.Text</p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="@slide.ImageUrl" alt="@slide.Title" />
+                    </div>
+                }
+                else
+                {
+                    <div class="slide-image">
+                        <img src="@slide.ImageUrl" alt="@slide.Title" />
+                    </div>
+                    <div class="slide-text">
+                        <h2>@slide.Title</h2>
+                        <p>@slide.Text</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <button class="carousel-arrow carousel-arrow-left" @onclick="Previous" aria-label="Previous slide">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+    <button class="carousel-arrow carousel-arrow-right" @onclick="Next" aria-label="Next slide">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+</div>
+
+@code {
+    private record Slide(string Title, string Text, string ImageUrl, string Color, bool ImageOnRight);
+
+    private int currentIndex = 0;
+
+    private List<Slide> slides =
+    [
+        new Slide(
+            Title: "Lorem Ipsum Dolor",
+            Text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
+            ImageUrl: "https://www.smart-tbk.com/wp-content/uploads/2026/02/Article-Cover.png", // TODO: replace with your image link
+            Color: "#FAE7DA",
+            ImageOnRight: true
+        ),
+        new Slide(
+            Title: "Consectetur Adipiscing",
+            Text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+            ImageUrl: "https://www.fooodlove.com/images/jcogs_img/cache/012-close-up-view-of-freshly-baked-bakery_-_28de80_-_8782e36ca3e8764a9e4719edc333d3a48e3f4ae7.webp", // TODO: replace with your image link
+            Color: "#FADAED",
+            ImageOnRight: false
+        ),
+        new Slide(
+            Title: "Sed Do Eiusmod",
+            Text: "Deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa.",
+            ImageUrl: "https://www.bartramhousebakery.com/uploads/6/4/4/7/64473555/p2a1176_orig.jpg", // TODO: replace with your image link
+            Color: "#FADADD",
+            ImageOnRight: true
+        ),
+    ];
+
+    private void Next() => currentIndex = (currentIndex + 1) % slides.Count;
+
+    private void Previous() => currentIndex = (currentIndex - 1 + slides.Count) % slides.Count;
+
+    private void GoTo(int index) => currentIndex = index;
+}

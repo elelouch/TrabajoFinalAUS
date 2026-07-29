@@ -1,0 +1,122 @@
+/* CSS for Home component */
+.carousel-wrapper {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.carousel-viewport {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 2px solid black;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+}
+
+.carousel-slide {
+    flex-shrink: 0;
+    display: flex;
+    min-height: 360px;
+}
+
+.slide-text {
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5rem;
+    color: black;
+}
+
+    .slide-text h2 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .slide-text p {
+        line-height: 1.6;
+        margin: 0;
+    }
+
+.slide-image {
+    flex: 0 0 50%;
+    overflow: hidden;
+}
+
+    .slide-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .carousel-arrow:hover {
+        background-color: #FADAED;
+    }
+
+.carousel-arrow-left {
+    left: 1rem;
+}
+
+.carousel-arrow-right {
+    right: 1rem;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+.carousel-dot {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: white;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+}
+
+    .carousel-dot.active {
+        background-color: black;
+    }
+
+@media (max-width: 640px) {
+    .carousel-slide {
+        flex-direction: column;
+    }
+
+    .slide-text,
+    .slide-image {
+        flex: 1 1 100%;
+    }
+
+    .slide-image {
+        min-height: 200px;
+    }
+}

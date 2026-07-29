@@ -6,7 +6,7 @@
     <div class="search-wrapper mb-2">
         <input type="text"
                class="form-control"
-               placeholder="Search products..."
+               placeholder="Buscar categoria de productos..."
                value="@searchTerm"
                @oninput="OnSearchInput"
                @onfocus="OnSearchFocus" />
@@ -61,11 +61,11 @@
         <ul class="list-group">
             @if (breadcrumbs.Count > 1)
             {
-                <li class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+                <li class="list-group-item list-group-item-action back-item d-flex align-items-center gap-2"
                     role="button"
                     @onclick="NavigateBack">
-                    <span>⬅</span>
-                    <span>Back</span>
+                    <i class="bi bi-chevron-left"></i>
+                    <span>Atrás</span>
                 </li>
             }
 
@@ -86,7 +86,7 @@
 
             @if (!CurrentNodes.Any())
             {
-                <li class="list-group-item text-muted">No categories here.</li>
+                <li class="list-group-item text-muted">No existen categorias aqui...</li>
             }
         </ul>
     </div>
@@ -198,7 +198,7 @@
             return; // shouldn't happen since it came from allFinalCategories, but guard anyway
         }
 
-        var newBreadcrumbs = new List<Level> { new("Categories", Categories) };
+        var newBreadcrumbs = new List<Level> { new("Categorias", Categories) };
 
         foreach (var ancestor in ancestors)
         {
