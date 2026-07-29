@@ -11,8 +11,6 @@
 @rendermode InteractiveServer
 @page "/products"
 
-<h3 class="mb-3">Categories</h3>
-
 @if (categories is null)
 {
     <div class="spinner-border" role="status">
@@ -25,26 +23,19 @@ else
         <div class="col-4">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        @foreach (var cat in categories)
-                        {
-                            <CategoryNode Category="cat"
-                                          OnFinalCategorySelected="LoadProducts" />
-                        }
-                    </ul>
+                    <CategoryExplorer Categories="categories"
+                                      OnFinalCategorySelected="LoadProducts" />
                 </div>
             </div>
         </div>
         <div class="col-8">
             <div class="card shadow-sm">
                 <div class="card-body">
-
                     <h5>Products</h5>
                     <ProductsGrid Products="saleProducts"></ProductsGrid>
                 </div>
             </div>
         </div>
-
     </div>
 }
 

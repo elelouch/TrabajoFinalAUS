@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <div class="auth-buttons">
+            <span class="user-greeting">Hello, @context.User.Identity?.Name</span>
+            <button class="btn btn-sm btn-outline-light" @onclick="SignOut">
+                <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Sign Out
+            </button>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="auth-buttons">
+            <NavLink class="btn btn-sm btn-outline-light" href="/signin">
+                <span class="bi bi-box-arrow-in-right" aria-hidden="true"></span> Sign In
+            </NavLink>
+            <NavLink class="btn btn-sm btn-light" href="/signup">
+                <span class="bi bi-person-plus" aria-hidden="true"></span> Sign Up
+            </NavLink>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private async Task SignOut()
+    {
+        // Adjust this endpoint to match your actual sign-out route
+        await new HttpClient().GetAsync("/api/auth/signout");
+        NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+}

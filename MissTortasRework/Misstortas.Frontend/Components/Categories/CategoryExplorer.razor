@@ -1,0 +1,273 @@
+﻿@using Misstortas.Frontend.Models
+@rendermode InteractiveServer
+
+<div class="category-explorer">
+
+    <div class="search-wrapper mb-2">
+        <input type="text"
+               class="form-control"
+               placeholder="Search products..."
+               value="@searchTerm"
+               @oninput="OnSearchInput"
+               @onfocus="OnSearchFocus" />
+
+        @if (ShowDropdown && searchResults.Any())
+        {
+            <ul class="search-dropdown list-group">
+                @foreach (var result in searchResults)
+                {
+                    <li class="list-group-item list-group-item-action @(result.Enabled ? "" : "disabled text-muted")"
+                        role="button"
+                        @onclick="() => SelectSearchResult(result)">
+                        @result.Name
+                    </li>
+                }
+            </ul>
+        }
+        else if (ShowDropdown && !string.IsNullOrWhiteSpace(searchTerm))
+        {
+            <ul class="search-dropdown list-group">
+                <li class="list-group-item text-muted">No matches found.</li>
+            </ul>
+        }
+    </div>
+
+    <nav aria-label="breadcrumb" class="mb-2">
+        <ol class="breadcrumb mb-0">
+            @for (int i = 0; i < breadcrumbs.Count; i++)
+            {
+                var index = i;
+                var isLast = i == breadcrumbs.Count - 1;
+
+                <li class="breadcrumb-item @(isLast ? "active" : "")">
+                    @if (isLast)
+                    {
+                        @breadcrumbs[i].Name
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0)" @onclick="() => NavigateToLevel(index)">
+                            @breadcrumbs[i].Name
+                        </a>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+
+    @* @key forces Blazor to recreate this element on every navigation,
+       which restarts the CSS entrance animation defined below *@
+    <div @key="navToken" class="level-container @(direction == NavDirection.Forward ? "slide-forward" : "slide-back")">
+        <ul class="list-group">
+            @if (breadcrumbs.Count > 1)
+            {
+                <li class="list-group-item list-group-item-action d-flex align-items-center gap-2"
+                    role="button"
+                    @onclick="NavigateBack">
+                    <span>⬅</span>
+                    <span>Back</span>
+                </li>
+            }
+
+            @foreach (var category in CurrentNodes)
+            {
+                <li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between @(category.Enabled ? "" : "disabled text-muted") @(category.IsFinal ? "final-category" : "") @(category.ProductCategoryId == highlightedCategoryId ? "highlighted" : "")"
+                    role="button"
+                    @onclick="() => Select(category)">
+
+                    <span>@category.Name</span>
+
+                    @if (!category.IsFinal)
+                    {
+                        <i class="bi bi-chevron-right small"></i>
+                    }
+                </li>
+            }
+
+            @if (!CurrentNodes.Any())
+            {
+                <li class="list-group-item text-muted">No categories here.</li>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Category> Categories { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<long> OnFinalCategorySelected { get; set; }
+
+    private record Level(string Name, List<Category> Nodes);
+
+    private enum NavDirection { Forward, Back }
+
+    private List<Level> breadcrumbs = [];
+    private NavDirection direction = NavDirection.Forward;
+    private int navToken = 0;
+
+    private string searchTerm = string.Empty;
+    private bool searchClosed = false;
+    private List<Category> allFinalCategories = [];
+    private List<Category>? lastCategoriesReference;
+    private long? highlightedCategoryId;
+
+    private bool ShowDropdown => !searchClosed && !string.IsNullOrWhiteSpace(searchTerm);
+
+    private IEnumerable<Category> searchResults =>
+        string.IsNullOrWhiteSpace(searchTerm)
+            ? []
+            : allFinalCategories.Where(c => c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    private List<Category> CurrentNodes => breadcrumbs[^1].Nodes;
+
+    protected override void OnInitialized()
+    {
+        ResetToRoot();
+        allFinalCategories = FlattenFinalCategories(Categories);
+        lastCategoriesReference = Categories;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!ReferenceEquals(lastCategoriesReference, Categories))
+        {
+            ResetToRoot();
+            allFinalCategories = FlattenFinalCategories(Categories);
+            lastCategoriesReference = Categories;
+        }
+    }
+
+    private void ResetToRoot()
+    {
+        breadcrumbs = [new Level("Categories", Categories)];
+        navToken++;
+    }
+
+    private static List<Category> FlattenFinalCategories(IEnumerable<Category> nodes)
+    {
+        var result = new List<Category>();
+
+        foreach (var node in nodes)
+        {
+            if (node.IsFinal)
+            {
+                result.Add(node);
+            }
+            else if (node.Children.Count() > 0)
+            {
+                result.AddRange(FlattenFinalCategories(node.Children));
+            }
+        }
+
+        return result;
+    }
+
+    // Walks the tree looking for `target` (matched by id) and returns the chain of
+    // non-final ancestor containers you'd need to step into to reach it, in order
+    // from root to immediate parent. Returns null if not found.
+    private static List<Category>? FindAncestorChain(IEnumerable<Category> nodes, long targetId, List<Category> trail)
+    {
+        foreach (var node in nodes)
+        {
+            if (node.ProductCategoryId == targetId)
+            {
+                return trail;
+            }
+
+            if (node.Children.Count() > 0)
+            {
+                var nextTrail = new List<Category>(trail) { node };
+                var result = FindAncestorChain(node.Children, targetId, nextTrail);
+                if (result is not null)
+                {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void RevealPathTo(Category category)
+    {
+        var ancestors = FindAncestorChain(Categories, category.ProductCategoryId, []);
+        if (ancestors is null)
+        {
+            return; // shouldn't happen since it came from allFinalCategories, but guard anyway
+        }
+
+        var newBreadcrumbs = new List<Level> { new("Categories", Categories) };
+
+        foreach (var ancestor in ancestors)
+        {
+            newBreadcrumbs.Add(new Level(ancestor.Name, [.. ancestor.Children]));
+        }
+
+        breadcrumbs = newBreadcrumbs;
+        direction = NavDirection.Forward;
+        navToken++;
+        highlightedCategoryId = category.ProductCategoryId;
+    }
+
+    private async Task Select(Category category)
+    {
+        if (!category.Enabled) return;
+
+        highlightedCategoryId = null;
+
+        if (category.IsFinal)
+        {
+            await OnFinalCategorySelected.InvokeAsync(category.ProductCategoryId);
+            return;
+        }
+
+        breadcrumbs.Add(new Level(category.Name, [.. category.Children]));
+        direction = NavDirection.Forward;
+        navToken++;
+    }
+
+    private async Task SelectSearchResult(Category category)
+    {
+        if (!category.Enabled) return;
+
+        searchTerm = string.Empty;
+        searchClosed = true;
+
+        RevealPathTo(category);
+
+        await OnFinalCategorySelected.InvokeAsync(category.ProductCategoryId);
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        searchTerm = e.Value?.ToString() ?? string.Empty;
+        searchClosed = string.IsNullOrWhiteSpace(searchTerm);
+    }
+
+    private void OnSearchFocus()
+    {
+        searchClosed = string.IsNullOrWhiteSpace(searchTerm);
+    }
+
+    private void NavigateBack()
+    {
+        if (breadcrumbs.Count <= 1) return;
+
+        breadcrumbs.RemoveAt(breadcrumbs.Count - 1);
+        direction = NavDirection.Back;
+        navToken++;
+        highlightedCategoryId = null;
+    }
+
+    private void NavigateToLevel(int index)
+    {
+        if (index < 0 || index >= breadcrumbs.Count) return;
+
+        breadcrumbs.RemoveRange(index + 1, breadcrumbs.Count - index - 1);
+        direction = NavDirection.Back;
+        navToken++;
+        highlightedCategoryId = null;
+    }
+}

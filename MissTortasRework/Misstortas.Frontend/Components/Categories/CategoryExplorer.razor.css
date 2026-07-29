@@ -1,0 +1,117 @@
+﻿.category-explorer {
+    position: relative;
+    overflow: hidden; /* clips the slide animation so it doesn't spill outside the card */
+}
+
+.level-container {
+    animation-duration: 0.28s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+}
+
+.slide-forward {
+    animation-name: slideInFromRight;
+}
+
+.slide-back {
+    animation-name: slideInFromLeft;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.list-group-item {
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+    .list-group-item.list-group-item-action:not(.disabled):active {
+        transform: scale(0.99);
+    }
+
+.breadcrumb-item.active {
+    transition: color 0.2s ease;
+}
+
+.back-item {
+    background-color: #fadadd;
+    color: white;
+}
+
+.back-item i,
+.back-item span {
+    color: white;
+}
+
+.back-item:hover {
+    background-color: #f5caca; /* Slightly darker on hover */
+    color: white;
+}
+
+.back-item:focus,
+.back-item:active {
+    background-color: #f2c2c2;
+    color: white;
+}
+.final-category {
+    background-color: #FADAED !important;
+    color: white;
+    font-weight: 500;
+}
+
+    .final-category:hover {
+        background-color: #f5c5e1 !important;
+        color: white;
+    }
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 240px;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+}
+
+.highlighted {
+    background-color: #F5C5D8 !important;
+    font-weight: 600;
+    animation: pulse-highlight 1.5s ease-out;
+}
+
+@keyframes pulse-highlight {
+    0% {
+        box-shadow: 0 0 0 0 rgba(250, 218, 221, 0.7);
+    }
+
+    100% {
+        box-shadow: 0 0 0 8px rgba(250, 218, 221, 0);
+    }
+}
