@@ -14,5 +14,9 @@ namespace Misstortas.Frontend.Services.Auth
                 RefreshToken = body?.RefreshToken ?? ""
             };
         }
+        public async Task SignOut()
+        {
+            await missTortasClient.PostAsync<object>("/auth/signout");
+        }
     }
 }

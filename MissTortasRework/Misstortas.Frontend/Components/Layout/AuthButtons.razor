@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Misstortas.Frontend.Services.Auth
+
+@inject IAuthService AuthService
 
 <AuthorizeView>
     <Authorized>
@@ -27,8 +30,7 @@
 
     private async Task SignOut()
     {
-        // Adjust this endpoint to match your actual sign-out route
-        await new HttpClient().GetAsync("/api/auth/signout");
+        await AuthService.SignOut();
         NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }

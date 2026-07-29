@@ -3,5 +3,6 @@
     public interface IAuthService
     {
         public Task<SigninDTO> SignInUserAsync(UserSignin userSignin);
+        public Task SignOut();
     }
 }
