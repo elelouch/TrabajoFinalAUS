@@ -1,0 +1,60 @@
+/* CSS for Signin component */
+.signin-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 1rem;
+}
+
+.signin-card {
+    background-color: #FAE7DA;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.signin-title {
+    color: black;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.signin-card label {
+    color: black;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.signin-card .form-control {
+    border: 1px solid black;
+}
+
+    .signin-card .form-control:focus {
+        border-color: black;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+    }
+
+.btn-signin {
+    background-color: #FADAED;
+    color: white;
+    border: 1px solid black;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+    .btn-signin:hover:not(:disabled) {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+    }
+
+    .btn-signin:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }

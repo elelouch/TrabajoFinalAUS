@@ -4,35 +4,41 @@
 @inject IAuthService AuthClient
 @rendermode InteractiveServer
 
-<EditForm Model="userSignin" OnValidSubmit="HandleSubmit" FormName="signInForm">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="signin-wrapper">
+    <div class="signin-card">
+        <h3 class="signin-title">Bienvenido a MissTortas!</h3>
 
-    <div class="mb-3">
-        <label>Email</label>
-        <InputText class="form-control"
-                   @bind-Value="userSignin.Email" />
+        <EditForm Model="userSignin" OnValidSubmit="HandleSubmit" FormName="signInForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label>Usuario o Correo</label>
+                <InputText class="form-control"
+                           @bind-Value="userSignin.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <InputText type="password"
+                           class="form-control"
+                           @bind-Value="userSignin.Password" />
+            </div>
+
+            <button type="submit"
+                    class="btn btn-signin w-100"
+                    disabled="@isLoading">
+                @(isLoading ? "Signing in..." : "Sign In")
+            </button>
+
+            @if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <p class="text-danger mt-2">@errorMessage</p>
+            }
+
+        </EditForm>
     </div>
-
-    <div class="mb-3">
-        <label>Password</label>
-        <InputText type="password"
-                   class="form-control"
-                   @bind-Value="userSignin.Password" />
-    </div>
-
-    <button type="submit"
-            class="btn btn-primary"
-            disabled="@isLoading">
-        @(isLoading ? "Signing in..." : "Sign In")
-    </button>
-
-    @if (!string.IsNullOrWhiteSpace(errorMessage))
-    {
-        <p class="text-danger mt-2">@errorMessage</p>
-    }
-
-</EditForm>
+</div>
 
 @code {
     private UserSignin userSignin = new();
