@@ -52,11 +52,11 @@
             welcomingLabel.AutoSize = true;
             welcomingLabel.Font = new Font("Verdana", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             welcomingLabel.ForeColor = Color.Transparent;
-            welcomingLabel.Location = new Point(20, 88);
+            welcomingLabel.Location = new Point(12, 67);
             welcomingLabel.Name = "welcomingLabel";
-            welcomingLabel.Size = new Size(241, 60);
+            welcomingLabel.Size = new Size(233, 78);
             welcomingLabel.TabIndex = 0;
-            welcomingLabel.Text = "Welcome to MissTortas\r\n\r\nOrder Management System";
+            welcomingLabel.Text = "Bienvenido a MissTortas!\r\n\r\nSistema de \r\nGestion de Ordenes";
             welcomingLabel.TextAlign = ContentAlignment.MiddleCenter;
             welcomingLabel.UseCompatibleTextRendering = true;
             // 
@@ -66,9 +66,9 @@
             emailLabel.Font = new Font("Verdana", 9.75F);
             emailLabel.Location = new Point(23, 5);
             emailLabel.Name = "emailLabel";
-            emailLabel.Size = new Size(110, 16);
+            emailLabel.Size = new Size(104, 16);
             emailLabel.TabIndex = 1;
-            emailLabel.Text = "Username/Email";
+            emailLabel.Text = "Usuario/Correo";
             // 
             // passwordLabel
             // 
@@ -76,9 +76,9 @@
             passwordLabel.Font = new Font("Verdana", 9.75F);
             passwordLabel.Location = new Point(23, 9);
             passwordLabel.Name = "passwordLabel";
-            passwordLabel.Size = new Size(69, 16);
+            passwordLabel.Size = new Size(82, 16);
             passwordLabel.TabIndex = 2;
-            passwordLabel.Text = "Password";
+            passwordLabel.Text = "Contraseña";
             // 
             // txtUsername
             // 
@@ -110,7 +110,7 @@
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(91, 26);
             loginButton.TabIndex = 5;
-            loginButton.Text = "LOGIN";
+            loginButton.Text = "INGRESO";
             loginButton.UseVisualStyleBackColor = false;
             loginButton.Click += loginButton_Click;
             // 

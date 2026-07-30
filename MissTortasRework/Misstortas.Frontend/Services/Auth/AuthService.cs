@@ -4,19 +4,20 @@ namespace Misstortas.Frontend.Services.Auth
 {
     public class AuthService(IMissTortasClient missTortasClient) : IAuthService
     {
-        public async Task<SigninDTO> SignInUserAsync(UserSignin userSignin)
+        public async Task<SigninResponseDTO> SignInUserAsync(UserSignin userSignin)
         {
             var body = await missTortasClient.PostAsync<SigninResponseDTO>("/auth/signin", userSignin);
-
-            return new SigninDTO
-            {
-                AccessToken = body?.AccessToken ?? "",
-                RefreshToken = body?.RefreshToken ?? ""
-            };
+            return body!;
         }
         public async Task SignOut()
         {
             await missTortasClient.PostAsync<object>("/auth/signout");
+        }
+
+        public async Task<SignupResponseDTO> SignUpUserAsync(UserSignup userSignup)
+        {
+            var body = await missTortasClient.PostAsync<SignupResponseDTO>("/auth/signin", userSignup);
+            return body!;
         }
     }
 }

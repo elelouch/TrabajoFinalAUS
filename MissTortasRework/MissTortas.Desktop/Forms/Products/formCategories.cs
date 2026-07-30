@@ -1,6 +1,7 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.Shared;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MissTortas.Desktop.Forms.Products
 {
@@ -13,6 +14,26 @@ namespace MissTortas.Desktop.Forms.Products
             InitializeComponent();
             this.productService = productService;
             this.treeMap = [];
+
+            tvCategories.FullRowSelect = true;             
+            tvCategories.ShowLines = false;                 
+            tvCategories.ShowPlusMinus = false;             
+            tvCategories.HideSelection = false;
+            // Opcional: ajustar altura y espaciado
+            tvCategories.ItemHeight = 25;
+            tvCategories.Indent = 15;
+        }
+
+        private void tvCategories_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // Seleccionar el nodo
+            tvCategories.SelectedNode = e.Node;
+
+            // Expandir o contraer al hacer clic
+            if (e.Node.IsExpanded)
+                e.Node.Collapse();
+            else
+                e.Node.Expand();
         }
 
         private async void formCategories_Load(object sender, EventArgs e)
@@ -29,7 +50,7 @@ namespace MissTortas.Desktop.Forms.Products
             catch (ApiException exc)
             {
                 ErrorDisplay.Show(this, exc);
-                if(exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     Dispose();
                 }
@@ -104,7 +125,7 @@ namespace MissTortas.Desktop.Forms.Products
             var selectedNode = tvCategories.SelectedNode;
             if (selectedNode == null)
             {
-                var userMessage = MessageBox.Show("Must select a node before adding a child. If you wanted to create a root node, press 'OK' to continue. Else, press 'Cancel'", "Add tree warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                var userMessage = MessageBox.Show("Debe seleccionar una categoria antes de agregar una categoria hija. Si desea crear una categoria raíz, presione 'Aceptar' para continuar. De lo contrario, presione 'Cancelar'", "Advertencia de árbol", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (userMessage == DialogResult.OK)
                 {
                     var createCategoryForm = new formCreateCategory(null, productService);
@@ -117,7 +138,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 if (currentPc.IsFinal)
                 {
-                    MessageBox.Show("The node selected is marked as final. Only products can be appended.", "Can not append category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La categoría seleccionada está marcada como final. Solo se pueden agregar productos.", "No se puede agregar categoría", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 var createCategoryForm = new formCreateCategory(currentPc, productService);
@@ -153,13 +174,21 @@ namespace MissTortas.Desktop.Forms.Products
             var selectedNode = tvCategories.SelectedNode;
             if (selectedNode == null)
             {
-                MessageBox.Show("Must select a node to modify.", "Modify node warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe seleccionar una categoría para modificar.", "Advertencia de modificación de categoría", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             if (selectedNode.Tag is ProductCategory productCategory)
             {
                 var formModify = new formModifyCategory(productCategory, productService);
                 formModify.ShowDialog();
+            }
+        }
+
+        private void btnDeseleccionar_Click(object sender, EventArgs e)
+        {
+            if (tvCategories.SelectedNode != null)
+            {
+                tvCategories.SelectedNode = null;
             }
         }
     }

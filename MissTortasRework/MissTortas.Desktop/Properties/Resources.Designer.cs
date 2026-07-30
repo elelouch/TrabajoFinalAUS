@@ -59,5 +59,15 @@ namespace MissTortas.Desktop.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hanis_Bakery_interior {
+            get {
+                object obj = ResourceManager.GetObject("Hanis-Bakery-interior", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
