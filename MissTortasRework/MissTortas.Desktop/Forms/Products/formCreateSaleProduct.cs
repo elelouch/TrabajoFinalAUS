@@ -26,6 +26,18 @@ namespace MissTortas.Desktop.Forms.Products
             this.productToModify = product;
             this.FilesUploaded = [];
             this.FileNames = [];
+            if (product != null)
+            {
+                this.lblHeader.Text = $"Modificando producto de venta '{product.Name}' ({product.Id}).";
+            }
+            else
+            {
+                this.lblHeader.Text = $"Crear producto de venta.";
+            }
+            if (pc != null)
+            {
+                this.lblHeader.Text += $"Categoria {pc.ProductCategoryId}.";
+            }
         }
         public formCreateSaleProduct(IProductService productService, ProductCategory pc) : this(productService, pc, null) { }
         public formCreateSaleProduct(IProductService productService) : this(productService, null, null) { }

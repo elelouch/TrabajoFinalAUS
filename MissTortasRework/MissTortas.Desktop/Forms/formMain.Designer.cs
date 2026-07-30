@@ -147,7 +147,7 @@
             BackColor = Color.LightSalmon;
             ClientSize = new Size(800, 450);
             Controls.Add(mainMenuStrip);
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             IsMdiContainer = true;
             MainMenuStrip = mainMenuStrip;
             Name = "formMain";

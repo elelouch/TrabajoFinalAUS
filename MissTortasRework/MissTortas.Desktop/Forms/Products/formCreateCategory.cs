@@ -18,11 +18,11 @@ namespace MissTortas.Desktop.Forms.Products
             this.parentCategory = parentCategory;
             if (parentCategory != null)
             {
-                this.Text = $"Creating child category for ({parentCategory.ProductCategoryId}) - {parentCategory.Name}";
+                this.Text = $"Creando categoría hija para la categoria ({parentCategory.ProductCategoryId}) - {parentCategory.Name}";
             }
             else
             {
-                this.Text = $"Creating root node.";
+                this.Text = $"Creando categoría raíz.";
             }
         }
 
@@ -40,11 +40,11 @@ namespace MissTortas.Desktop.Forms.Products
                 var resultCategory = await productService.CreateProductCategoryAsync(newCategory) ?? throw new InvalidOperationException("Result category is null.");
                 RaiseOnCategoryCreated(resultCategory);
                 MessageBox.Show(
-                    $"Category '{newCategory.Name}' created",
-                    "Category created successfully",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                     $"La categoría '{newCategory.Name}' ha sido creada",
+                     "Categoría creada exitosamente",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Information
+                 );
                 Dispose();
             }
             catch (ApiException exc)
@@ -59,7 +59,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 MessageBox.Show(
                     $"{exc.Message}",
-                    "Category name incorrect",
+                    "Nombre de categoría incorrecto",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );

@@ -48,127 +48,170 @@
             btnRemove = new Button();
             txtPrice = new TextBox();
             lblPrice = new Label();
+            panel6 = new Panel();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel3 = new Panel();
+            panel4 = new Panel();
+            panel5 = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel7 = new Panel();
+            panel9 = new Panel();
+            panel8 = new Panel();
+            label1 = new Label();
+            panel10 = new Panel();
+            panel11 = new Panel();
+            lblHeader = new Label();
+            panel6.SuspendLayout();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            panel7.SuspendLayout();
+            panel9.SuspendLayout();
+            panel8.SuspendLayout();
+            panel10.SuspendLayout();
             SuspendLayout();
             // 
             // lblProductName
             // 
             lblProductName.AutoSize = true;
-            lblProductName.Location = new Point(254, 29);
+            lblProductName.Dock = DockStyle.Top;
+            lblProductName.Location = new Point(0, 0);
             lblProductName.Name = "lblProductName";
-            lblProductName.Size = new Size(84, 15);
+            lblProductName.Size = new Size(124, 14);
             lblProductName.TabIndex = 0;
-            lblProductName.Text = "Product Name";
+            lblProductName.Text = "Nombre del Producto";
             // 
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(254, 106);
+            lblCategory.Dock = DockStyle.Top;
+            lblCategory.Location = new Point(0, 0);
             lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(55, 15);
+            lblCategory.Size = new Size(58, 14);
             lblCategory.TabIndex = 1;
-            lblCategory.Text = "Category";
+            lblCategory.Text = "Categoria";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(254, 146);
+            label4.Dock = DockStyle.Top;
+            label4.Location = new Point(0, 0);
             label4.Name = "label4";
-            label4.Size = new Size(53, 15);
+            label4.Size = new Size(54, 14);
             label4.TabIndex = 3;
-            label4.Text = "Quantity";
+            label4.Text = "Cantidad";
             // 
             // comboBoxCategory
             // 
+            comboBoxCategory.Dock = DockStyle.Bottom;
             comboBoxCategory.FormattingEnabled = true;
-            comboBoxCategory.Location = new Point(345, 103);
+            comboBoxCategory.Location = new Point(0, 22);
             comboBoxCategory.Name = "comboBoxCategory";
-            comboBoxCategory.Size = new Size(121, 23);
+            comboBoxCategory.Size = new Size(274, 22);
             comboBoxCategory.TabIndex = 2;
             // 
             // txtProductName
             // 
-            txtProductName.Location = new Point(345, 28);
+            txtProductName.Dock = DockStyle.Bottom;
+            txtProductName.Location = new Point(0, 15);
             txtProductName.Name = "txtProductName";
-            txtProductName.Size = new Size(119, 23);
+            txtProductName.Size = new Size(274, 22);
             txtProductName.TabIndex = 0;
             // 
             // chkManageQtyAsInteger
             // 
             chkManageQtyAsInteger.AutoSize = true;
-            chkManageQtyAsInteger.Location = new Point(334, 268);
+            chkManageQtyAsInteger.Dock = DockStyle.Bottom;
+            chkManageQtyAsInteger.Location = new Point(0, 312);
             chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
-            chkManageQtyAsInteger.Size = new Size(170, 19);
+            chkManageQtyAsInteger.Size = new Size(274, 18);
             chkManageQtyAsInteger.TabIndex = 6;
-            chkManageQtyAsInteger.Text = "Manage quantity as integer";
+            chkManageQtyAsInteger.Text = "Gestionar cantidad como entero";
             chkManageQtyAsInteger.UseVisualStyleBackColor = true;
             // 
             // txtQuantity
             // 
-            txtQuantity.Location = new Point(345, 143);
+            txtQuantity.Dock = DockStyle.Bottom;
+            txtQuantity.Location = new Point(0, 27);
             txtQuantity.Name = "txtQuantity";
-            txtQuantity.Size = new Size(121, 23);
+            txtQuantity.Size = new Size(274, 22);
             txtQuantity.TabIndex = 3;
             // 
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(254, 67);
+            lblDescription.Dock = DockStyle.Top;
+            lblDescription.Location = new Point(0, 0);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(67, 15);
+            lblDescription.Size = new Size(68, 14);
             lblDescription.TabIndex = 8;
-            lblDescription.Text = "Description";
+            lblDescription.Text = "Descripcion";
             // 
             // txtDescription
             // 
-            txtDescription.Location = new Point(345, 64);
+            txtDescription.Dock = DockStyle.Bottom;
+            txtDescription.Location = new Point(0, 19);
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(121, 23);
+            txtDescription.Size = new Size(274, 22);
             txtDescription.TabIndex = 1;
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(295, 331);
+            btnConfirm.BackColor = SystemColors.ControlLightLight;
+            btnConfirm.FlatStyle = FlatStyle.Flat;
+            btnConfirm.Location = new Point(193, 2);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(75, 23);
+            btnConfirm.Size = new Size(81, 25);
             btnConfirm.TabIndex = 8;
-            btnConfirm.Text = "Confirm";
-            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Text = "Confirmar";
+            btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(429, 331);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(360, 2);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(81, 25);
             btnCancel.TabIndex = 9;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtUnitName
             // 
-            txtUnitName.Location = new Point(347, 183);
+            txtUnitName.Dock = DockStyle.Bottom;
+            txtUnitName.Location = new Point(0, 26);
             txtUnitName.Name = "txtUnitName";
-            txtUnitName.Size = new Size(119, 23);
+            txtUnitName.Size = new Size(274, 22);
             txtUnitName.TabIndex = 4;
             // 
             // lblUnitName
             // 
             lblUnitName.AutoSize = true;
-            lblUnitName.Location = new Point(254, 186);
+            lblUnitName.Dock = DockStyle.Top;
+            lblUnitName.Location = new Point(0, 0);
             lblUnitName.Name = "lblUnitName";
-            lblUnitName.Size = new Size(64, 15);
+            lblUnitName.Size = new Size(118, 14);
             lblUnitName.TabIndex = 13;
-            lblUnitName.Text = "Unit Name";
+            lblUnitName.Text = "Unidad del producto";
             // 
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
-            chkEnabled.Location = new Point(334, 293);
+            chkEnabled.Dock = DockStyle.Bottom;
+            chkEnabled.Location = new Point(0, 294);
             chkEnabled.Name = "chkEnabled";
-            chkEnabled.Size = new Size(61, 19);
+            chkEnabled.Size = new Size(274, 18);
             chkEnabled.TabIndex = 7;
-            chkEnabled.Text = "Enable";
+            chkEnabled.Text = "Habilitar";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
             // ofdFiles
@@ -178,79 +221,252 @@
             // openFilesList
             // 
             openFilesList.FormattingEnabled = true;
-            openFilesList.Location = new Point(606, 41);
+            openFilesList.Location = new Point(42, 34);
             openFilesList.Name = "openFilesList";
-            openFilesList.Size = new Size(147, 229);
+            openFilesList.Size = new Size(189, 242);
             openFilesList.TabIndex = 14;
             // 
             // btnUpload
             // 
-            btnUpload.Location = new Point(606, 277);
+            btnUpload.BackColor = SystemColors.ControlLightLight;
+            btnUpload.FlatStyle = FlatStyle.Flat;
+            btnUpload.Location = new Point(43, 281);
             btnUpload.Name = "btnUpload";
-            btnUpload.Size = new Size(75, 23);
+            btnUpload.Size = new Size(89, 32);
             btnUpload.TabIndex = 10;
-            btnUpload.Text = "Upload";
-            btnUpload.UseVisualStyleBackColor = true;
+            btnUpload.Text = "Cargar";
+            btnUpload.UseVisualStyleBackColor = false;
             btnUpload.Click += btnUpload_Click;
             // 
             // btnRemove
             // 
-            btnRemove.Location = new Point(678, 277);
+            btnRemove.BackColor = SystemColors.ControlLightLight;
+            btnRemove.FlatStyle = FlatStyle.Flat;
+            btnRemove.Location = new Point(138, 281);
             btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(75, 23);
+            btnRemove.Size = new Size(93, 32);
             btnRemove.TabIndex = 11;
-            btnRemove.Text = "Remove";
-            btnRemove.UseVisualStyleBackColor = true;
+            btnRemove.Text = "Quitar";
+            btnRemove.UseVisualStyleBackColor = false;
             btnRemove.Click += btnRemove_Click;
             // 
             // txtPrice
             // 
-            txtPrice.Location = new Point(347, 229);
+            txtPrice.Dock = DockStyle.Bottom;
+            txtPrice.Location = new Point(0, 23);
             txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(119, 23);
+            txtPrice.Size = new Size(274, 22);
             txtPrice.TabIndex = 5;
             // 
             // lblPrice
             // 
             lblPrice.AutoSize = true;
-            lblPrice.Location = new Point(254, 237);
+            lblPrice.Dock = DockStyle.Top;
+            lblPrice.Location = new Point(0, 0);
             lblPrice.Name = "lblPrice";
-            lblPrice.Size = new Size(33, 15);
+            lblPrice.Size = new Size(40, 14);
             lblPrice.TabIndex = 18;
-            lblPrice.Text = "Price";
+            lblPrice.Text = "Precio";
+            // 
+            // panel6
+            // 
+            panel6.Controls.Add(txtPrice);
+            panel6.Controls.Add(lblPrice);
+            panel6.Dock = DockStyle.Top;
+            panel6.Location = new Point(0, 219);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(274, 45);
+            panel6.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(txtProductName);
+            panel1.Controls.Add(lblProductName);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 182);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(274, 37);
+            panel1.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(txtDescription);
+            panel2.Controls.Add(lblDescription);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 141);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(274, 41);
+            panel2.TabIndex = 1;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(comboBoxCategory);
+            panel3.Controls.Add(lblCategory);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 97);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(274, 44);
+            panel3.TabIndex = 2;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(txtQuantity);
+            panel4.Controls.Add(label4);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(0, 0);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(274, 49);
+            panel4.TabIndex = 3;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(txtUnitName);
+            panel5.Controls.Add(lblUnitName);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 49);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(274, 48);
+            panel5.TabIndex = 4;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = SystemColors.ControlLight;
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.Controls.Add(panel7, 1, 2);
+            tableLayoutPanel1.Controls.Add(panel9, 1, 1);
+            tableLayoutPanel1.Controls.Add(panel8, 3, 1);
+            tableLayoutPanel1.Controls.Add(panel10, 1, 0);
+            tableLayoutPanel1.Controls.Add(panel11, 2, 1);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 3;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.Size = new Size(800, 420);
+            tableLayoutPanel1.TabIndex = 20;
+            // 
+            // panel7
+            // 
+            panel7.BackColor = Color.WhiteSmoke;
+            tableLayoutPanel1.SetColumnSpan(panel7, 3);
+            panel7.Controls.Add(btnConfirm);
+            panel7.Controls.Add(btnCancel);
+            panel7.Dock = DockStyle.Fill;
+            panel7.Location = new Point(83, 381);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(634, 36);
+            panel7.TabIndex = 21;
+            // 
+            // panel9
+            // 
+            panel9.BackColor = Color.WhiteSmoke;
+            panel9.Controls.Add(panel6);
+            panel9.Controls.Add(panel1);
+            panel9.Controls.Add(chkEnabled);
+            panel9.Controls.Add(panel2);
+            panel9.Controls.Add(chkManageQtyAsInteger);
+            panel9.Controls.Add(panel3);
+            panel9.Controls.Add(panel5);
+            panel9.Controls.Add(panel4);
+            panel9.Dock = DockStyle.Fill;
+            panel9.Location = new Point(83, 45);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(274, 330);
+            panel9.TabIndex = 22;
+            // 
+            // panel8
+            // 
+            panel8.BackColor = Color.WhiteSmoke;
+            panel8.Controls.Add(label1);
+            panel8.Controls.Add(openFilesList);
+            panel8.Controls.Add(btnUpload);
+            panel8.Controls.Add(btnRemove);
+            panel8.Location = new Point(443, 45);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(274, 330);
+            panel8.TabIndex = 21;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(42, 17);
+            label1.Name = "label1";
+            label1.Size = new Size(129, 14);
+            label1.TabIndex = 15;
+            label1.Text = "Archivos de productos";
+            // 
+            // panel10
+            // 
+            panel10.BackColor = Color.WhiteSmoke;
+            tableLayoutPanel1.SetColumnSpan(panel10, 3);
+            panel10.Controls.Add(lblHeader);
+            panel10.Dock = DockStyle.Fill;
+            panel10.Location = new Point(83, 3);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(634, 36);
+            panel10.TabIndex = 23;
+            // 
+            // panel11
+            // 
+            panel11.BackColor = Color.WhiteSmoke;
+            panel11.Dock = DockStyle.Fill;
+            panel11.Location = new Point(363, 45);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(74, 330);
+            panel11.TabIndex = 24;
+            // 
+            // lblHeader
+            // 
+            lblHeader.AutoSize = true;
+            lblHeader.Dock = DockStyle.Top;
+            lblHeader.Location = new Point(0, 0);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(38, 14);
+            lblHeader.TabIndex = 0;
+            lblHeader.Text = "label2";
             // 
             // formCreateSaleProduct
             // 
             AcceptButton = btnConfirm;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
-            Controls.Add(lblPrice);
-            Controls.Add(txtPrice);
-            Controls.Add(btnRemove);
-            Controls.Add(btnUpload);
-            Controls.Add(openFilesList);
-            Controls.Add(chkEnabled);
-            Controls.Add(lblUnitName);
-            Controls.Add(txtUnitName);
-            Controls.Add(btnCancel);
-            Controls.Add(btnConfirm);
-            Controls.Add(txtDescription);
-            Controls.Add(lblDescription);
-            Controls.Add(txtQuantity);
-            Controls.Add(chkManageQtyAsInteger);
-            Controls.Add(txtProductName);
-            Controls.Add(comboBoxCategory);
-            Controls.Add(label4);
-            Controls.Add(lblCategory);
-            Controls.Add(lblProductName);
+            ClientSize = new Size(800, 420);
+            Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "formCreateSaleProduct";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Manage Product";
+            Text = "Gestionar Producto";
             Load += formCreateStockProduct_Load;
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            panel7.ResumeLayout(false);
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -275,5 +491,19 @@
         private Button btnRemove;
         private TextBox txtPrice;
         private Label lblPrice;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+        private Panel panel4;
+        private Panel panel5;
+        private Panel panel6;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel7;
+        private Panel panel8;
+        private Panel panel9;
+        private Label label1;
+        private Panel panel10;
+        private Panel panel11;
+        private Label lblHeader;
     }
 }

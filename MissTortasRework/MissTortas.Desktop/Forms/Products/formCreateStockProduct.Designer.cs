@@ -42,156 +42,312 @@
             txtUnitName = new TextBox();
             lblUnitName = new Label();
             chkEnabled = new CheckBox();
+            panel1 = new Panel();
+            panel8 = new Panel();
+            lblHeader = new Label();
+            panel7 = new Panel();
+            panel2 = new Panel();
+            panel6 = new Panel();
+            panel3 = new Panel();
+            panel4 = new Panel();
+            panel5 = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel1.SuspendLayout();
+            panel8.SuspendLayout();
+            panel7.SuspendLayout();
+            panel2.SuspendLayout();
+            panel6.SuspendLayout();
+            panel3.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblProductName
             // 
             lblProductName.AutoSize = true;
-            lblProductName.Location = new Point(252, 42);
+            lblProductName.Dock = DockStyle.Top;
+            lblProductName.Location = new Point(0, 0);
             lblProductName.Name = "lblProductName";
-            lblProductName.Size = new Size(84, 15);
+            lblProductName.Size = new Size(50, 14);
             lblProductName.TabIndex = 0;
-            lblProductName.Text = "Product Name";
+            lblProductName.Text = "Nombre";
             // 
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(252, 119);
+            lblCategory.Dock = DockStyle.Top;
+            lblCategory.Location = new Point(0, 0);
             lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(55, 15);
+            lblCategory.Size = new Size(58, 14);
             lblCategory.TabIndex = 1;
-            lblCategory.Text = "Category";
+            lblCategory.Text = "Categoria";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(252, 159);
+            label4.Dock = DockStyle.Top;
+            label4.Location = new Point(0, 0);
             label4.Name = "label4";
-            label4.Size = new Size(53, 15);
+            label4.Size = new Size(54, 14);
             label4.TabIndex = 3;
-            label4.Text = "Quantity";
+            label4.Text = "Cantidad";
             // 
             // comboBoxCategory
             // 
+            comboBoxCategory.Dock = DockStyle.Bottom;
             comboBoxCategory.FormattingEnabled = true;
-            comboBoxCategory.Location = new Point(343, 116);
+            comboBoxCategory.Location = new Point(0, 13);
             comboBoxCategory.Name = "comboBoxCategory";
-            comboBoxCategory.Size = new Size(121, 23);
+            comboBoxCategory.Size = new Size(240, 22);
             comboBoxCategory.TabIndex = 2;
             // 
             // txtProductName
             // 
-            txtProductName.Location = new Point(343, 41);
+            txtProductName.Dock = DockStyle.Bottom;
+            txtProductName.Location = new Point(0, 13);
             txtProductName.Name = "txtProductName";
-            txtProductName.Size = new Size(119, 23);
+            txtProductName.Size = new Size(240, 22);
             txtProductName.TabIndex = 0;
             // 
             // chkManageQtyAsInteger
             // 
             chkManageQtyAsInteger.AutoSize = true;
-            chkManageQtyAsInteger.Location = new Point(334, 236);
+            chkManageQtyAsInteger.Location = new Point(1, 203);
             chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
-            chkManageQtyAsInteger.Size = new Size(170, 19);
+            chkManageQtyAsInteger.Size = new Size(175, 18);
             chkManageQtyAsInteger.TabIndex = 5;
             chkManageQtyAsInteger.Text = "Manage quantity as integer";
             chkManageQtyAsInteger.UseVisualStyleBackColor = true;
             // 
             // txtQuantity
             // 
-            txtQuantity.Location = new Point(343, 156);
+            txtQuantity.Dock = DockStyle.Bottom;
+            txtQuantity.Location = new Point(0, 15);
             txtQuantity.Name = "txtQuantity";
-            txtQuantity.Size = new Size(121, 23);
+            txtQuantity.Size = new Size(240, 22);
             txtQuantity.TabIndex = 3;
             // 
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(252, 80);
+            lblDescription.Dock = DockStyle.Top;
+            lblDescription.Location = new Point(0, 0);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(67, 15);
+            lblDescription.Size = new Size(68, 14);
             lblDescription.TabIndex = 8;
-            lblDescription.Text = "Description";
+            lblDescription.Text = "Descripcion";
             // 
             // txtDescription
             // 
-            txtDescription.Location = new Point(343, 77);
+            txtDescription.Dock = DockStyle.Bottom;
+            txtDescription.Location = new Point(0, 15);
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(121, 23);
+            txtDescription.Size = new Size(240, 22);
             txtDescription.TabIndex = 1;
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(295, 331);
+            btnConfirm.BackColor = SystemColors.ControlLightLight;
+            btnConfirm.FlatStyle = FlatStyle.Flat;
+            btnConfirm.Location = new Point(161, 346);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(75, 23);
+            btnConfirm.Size = new Size(86, 26);
             btnConfirm.TabIndex = 7;
-            btnConfirm.Text = "Confirm";
-            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Text = "Confirmar";
+            btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(429, 331);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(253, 346);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(83, 26);
             btnCancel.TabIndex = 8;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtUnitName
             // 
-            txtUnitName.Location = new Point(345, 196);
+            txtUnitName.Dock = DockStyle.Bottom;
+            txtUnitName.Location = new Point(0, 12);
             txtUnitName.Name = "txtUnitName";
-            txtUnitName.Size = new Size(119, 23);
+            txtUnitName.Size = new Size(240, 22);
             txtUnitName.TabIndex = 4;
             // 
             // lblUnitName
             // 
             lblUnitName.AutoSize = true;
-            lblUnitName.Location = new Point(252, 199);
+            lblUnitName.Dock = DockStyle.Top;
+            lblUnitName.Location = new Point(0, 0);
             lblUnitName.Name = "lblUnitName";
-            lblUnitName.Size = new Size(64, 15);
+            lblUnitName.Size = new Size(44, 14);
             lblUnitName.TabIndex = 13;
-            lblUnitName.Text = "Unit Name";
+            lblUnitName.Text = "Unidad";
             // 
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
-            chkEnabled.Location = new Point(334, 277);
+            chkEnabled.Location = new Point(0, 226);
             chkEnabled.Name = "chkEnabled";
-            chkEnabled.Size = new Size(61, 19);
+            chkEnabled.Size = new Size(62, 18);
             chkEnabled.TabIndex = 6;
             chkEnabled.Text = "Enable";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(panel8);
+            panel1.Controls.Add(panel7);
+            panel1.Controls.Add(btnConfirm);
+            panel1.Controls.Add(btnCancel);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(163, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(474, 414);
+            panel1.TabIndex = 14;
+            // 
+            // panel8
+            // 
+            panel8.Controls.Add(lblHeader);
+            panel8.Location = new Point(125, 10);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(241, 40);
+            panel8.TabIndex = 19;
+            // 
+            // lblHeader
+            // 
+            lblHeader.AutoSize = true;
+            lblHeader.Dock = DockStyle.Top;
+            lblHeader.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblHeader.Location = new Point(0, 0);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(43, 14);
+            lblHeader.TabIndex = 18;
+            lblHeader.Text = "label1";
+            // 
+            // panel7
+            // 
+            panel7.Controls.Add(panel2);
+            panel7.Controls.Add(panel6);
+            panel7.Controls.Add(chkManageQtyAsInteger);
+            panel7.Controls.Add(chkEnabled);
+            panel7.Controls.Add(panel3);
+            panel7.Controls.Add(panel4);
+            panel7.Controls.Add(panel5);
+            panel7.Location = new Point(124, 56);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(242, 284);
+            panel7.TabIndex = 17;
+            // 
+            // panel2
+            // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(txtProductName);
+            panel2.Controls.Add(lblProductName);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 151);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(242, 37);
+            panel2.TabIndex = 0;
+            // 
+            // panel6
+            // 
+            panel6.BorderStyle = BorderStyle.FixedSingle;
+            panel6.Controls.Add(txtUnitName);
+            panel6.Controls.Add(lblUnitName);
+            panel6.Dock = DockStyle.Top;
+            panel6.Location = new Point(0, 115);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(242, 36);
+            panel6.TabIndex = 16;
+            // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(txtDescription);
+            panel3.Controls.Add(lblDescription);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 76);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(242, 39);
+            panel3.TabIndex = 1;
+            // 
+            // panel4
+            // 
+            panel4.BorderStyle = BorderStyle.FixedSingle;
+            panel4.Controls.Add(comboBoxCategory);
+            panel4.Controls.Add(lblCategory);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(0, 39);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(242, 37);
+            panel4.TabIndex = 2;
+            // 
+            // panel5
+            // 
+            panel5.BorderStyle = BorderStyle.FixedSingle;
+            panel5.Controls.Add(txtQuantity);
+            panel5.Controls.Add(label4);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(242, 39);
+            panel5.TabIndex = 3;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = SystemColors.ControlLight;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.Controls.Add(panel1, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 420F));
+            tableLayoutPanel1.Size = new Size(800, 420);
+            tableLayoutPanel1.TabIndex = 15;
+            // 
             // formCreateStockProduct
             // 
             AcceptButton = btnConfirm;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
-            Controls.Add(chkEnabled);
-            Controls.Add(lblUnitName);
-            Controls.Add(txtUnitName);
-            Controls.Add(btnCancel);
-            Controls.Add(btnConfirm);
-            Controls.Add(txtDescription);
-            Controls.Add(lblDescription);
-            Controls.Add(txtQuantity);
-            Controls.Add(chkManageQtyAsInteger);
-            Controls.Add(txtProductName);
-            Controls.Add(comboBoxCategory);
-            Controls.Add(label4);
-            Controls.Add(lblCategory);
-            Controls.Add(lblProductName);
+            ClientSize = new Size(800, 420);
+            Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formCreateStockProduct";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Manage Product";
+            Text = "Gestionar Producto";
             Load += formCreateStockProduct_Load;
+            panel1.ResumeLayout(false);
+            panel8.ResumeLayout(false);
+            panel8.PerformLayout();
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -210,5 +366,15 @@
         private TextBox txtUnitName;
         private Label lblUnitName;
         private CheckBox chkEnabled;
+        private Panel panel1;
+        private Panel panel5;
+        private Panel panel4;
+        private Panel panel3;
+        private Panel panel2;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel6;
+        private Panel panel7;
+        private Label lblHeader;
+        private Panel panel8;
     }
 }

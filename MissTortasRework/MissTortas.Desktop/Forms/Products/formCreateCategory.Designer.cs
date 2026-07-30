@@ -33,71 +33,142 @@
             chkFinalCategory = new CheckBox();
             btnConfirm = new Button();
             btnCancel = new Button();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            label1 = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblCategoryName
             // 
             lblCategoryName.AutoSize = true;
-            lblCategoryName.Location = new Point(279, 87);
+            lblCategoryName.Dock = DockStyle.Top;
+            lblCategoryName.Location = new Point(0, 0);
             lblCategoryName.Name = "lblCategoryName";
-            lblCategoryName.Size = new Size(117, 15);
+            lblCategoryName.Size = new Size(52, 16);
             lblCategoryName.TabIndex = 0;
-            lblCategoryName.Text = "New Category Name";
+            lblCategoryName.Text = "Nombre";
             // 
             // txtCategoryName
             // 
-            txtCategoryName.Location = new Point(417, 84);
+            txtCategoryName.BorderStyle = BorderStyle.None;
+            txtCategoryName.Dock = DockStyle.Bottom;
+            txtCategoryName.Location = new Point(0, 23);
             txtCategoryName.Name = "txtCategoryName";
-            txtCategoryName.Size = new Size(100, 23);
+            txtCategoryName.Size = new Size(173, 16);
             txtCategoryName.TabIndex = 1;
             // 
             // chkFinalCategory
             // 
             chkFinalCategory.AutoSize = true;
-            chkFinalCategory.Location = new Point(417, 168);
+            chkFinalCategory.Location = new Point(138, 228);
             chkFinalCategory.Name = "chkFinalCategory";
-            chkFinalCategory.Size = new Size(102, 19);
+            chkFinalCategory.Size = new Size(211, 52);
             chkFinalCategory.TabIndex = 2;
-            chkFinalCategory.Text = "Final Category";
+            chkFinalCategory.Text = "Categoria Final\r\n(Esto habilitara a la \r\nCategoria a contener productos)";
             chkFinalCategory.UseVisualStyleBackColor = true;
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(304, 256);
+            btnConfirm.BackColor = Color.White;
+            btnConfirm.FlatAppearance.BorderColor = Color.Black;
+            btnConfirm.FlatStyle = FlatStyle.Flat;
+            btnConfirm.Location = new Point(149, 329);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(75, 23);
+            btnConfirm.Size = new Size(75, 24);
             btnConfirm.TabIndex = 3;
-            btnConfirm.Text = "Confirm";
-            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Text = "Confirmar";
+            btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(427, 256);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(247, 329);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(75, 24);
             btnCancel.TabIndex = 4;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(btnCancel);
+            panel1.Controls.Add(btnConfirm);
+            panel1.Controls.Add(chkFinalCategory);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(163, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(474, 474);
+            panel1.TabIndex = 5;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.Transparent;
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(txtCategoryName);
+            panel2.Controls.Add(lblCategoryName);
+            panel2.Location = new Point(148, 118);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(175, 41);
+            panel2.TabIndex = 6;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(148, 45);
+            label1.Name = "label1";
+            label1.Size = new Size(175, 16);
+            label1.TabIndex = 5;
+            label1.Text = "Cree una nueva categoria";
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = SystemColors.ControlLight;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.Controls.Add(panel1, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(800, 480);
+            tableLayoutPanel1.TabIndex = 6;
             // 
             // formCreateCategory
             // 
             AcceptButton = btnConfirm;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
-            Controls.Add(btnCancel);
-            Controls.Add(btnConfirm);
-            Controls.Add(chkFinalCategory);
-            Controls.Add(txtCategoryName);
-            Controls.Add(lblCategoryName);
+            ClientSize = new Size(800, 480);
+            Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Name = "formCreateCategory";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Create Category";
+            Text = "Crear Categoria";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -107,5 +178,9 @@
         private CheckBox chkFinalCategory;
         private Button btnConfirm;
         private Button btnCancel;
+        private Panel panel1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label1;
+        private Panel panel2;
     }
 }

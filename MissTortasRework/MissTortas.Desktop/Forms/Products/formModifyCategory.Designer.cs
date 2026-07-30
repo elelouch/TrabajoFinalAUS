@@ -35,89 +35,184 @@
             comboMoveParent = new ComboBox();
             lblSelectParent = new Label();
             chkEnabled = new CheckBox();
+            panel1 = new Panel();
+            panel4 = new Panel();
+            lblModifyCategory = new Label();
+            panel3 = new Panel();
+            panel2 = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            panel1.SuspendLayout();
+            panel4.SuspendLayout();
+            panel3.SuspendLayout();
+            panel2.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblCategoryName
             // 
             lblCategoryName.AutoSize = true;
-            lblCategoryName.Location = new Point(237, 95);
+            lblCategoryName.Dock = DockStyle.Top;
+            lblCategoryName.Location = new Point(0, 0);
             lblCategoryName.Name = "lblCategoryName";
-            lblCategoryName.Size = new Size(90, 15);
+            lblCategoryName.Size = new Size(52, 16);
             lblCategoryName.TabIndex = 0;
-            lblCategoryName.Text = "Category Name";
+            lblCategoryName.Text = "Nombre";
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(281, 276);
+            btnConfirm.BackColor = SystemColors.ControlLightLight;
+            btnConfirm.FlatStyle = FlatStyle.Flat;
+            btnConfirm.Location = new Point(139, 339);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(75, 23);
+            btnConfirm.Size = new Size(75, 25);
             btnConfirm.TabIndex = 1;
-            btnConfirm.Text = "Confirm";
-            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Text = "Confirmar";
+            btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(426, 276);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(265, 339);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(75, 25);
             btnCancel.TabIndex = 2;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtCategoryName
             // 
-            txtCategoryName.Location = new Point(363, 92);
+            txtCategoryName.Dock = DockStyle.Bottom;
+            txtCategoryName.Location = new Point(0, 25);
             txtCategoryName.Name = "txtCategoryName";
-            txtCategoryName.Size = new Size(121, 23);
+            txtCategoryName.Size = new Size(201, 23);
             txtCategoryName.TabIndex = 3;
             // 
             // comboMoveParent
             // 
+            comboMoveParent.Dock = DockStyle.Bottom;
             comboMoveParent.FormattingEnabled = true;
-            comboMoveParent.Location = new Point(363, 158);
+            comboMoveParent.Location = new Point(0, 24);
             comboMoveParent.Name = "comboMoveParent";
-            comboMoveParent.Size = new Size(121, 23);
+            comboMoveParent.Size = new Size(201, 24);
             comboMoveParent.TabIndex = 4;
             // 
             // lblSelectParent
             // 
             lblSelectParent.AutoSize = true;
-            lblSelectParent.Location = new Point(237, 158);
+            lblSelectParent.Dock = DockStyle.Top;
+            lblSelectParent.Location = new Point(0, 0);
             lblSelectParent.Name = "lblSelectParent";
-            lblSelectParent.Size = new Size(74, 15);
+            lblSelectParent.Size = new Size(136, 16);
             lblSelectParent.TabIndex = 5;
-            lblSelectParent.Text = "Move Parent";
+            lblSelectParent.Text = "Nueva categoria padre";
             // 
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
-            chkEnabled.Location = new Point(363, 227);
+            chkEnabled.Location = new Point(174, 287);
             chkEnabled.Name = "chkEnabled";
-            chkEnabled.Size = new Size(68, 19);
+            chkEnabled.Size = new Size(130, 20);
             chkEnabled.TabIndex = 6;
-            chkEnabled.Text = "Enabled";
+            chkEnabled.Text = "Habilitar categoria";
             chkEnabled.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.WhiteSmoke;
+            panel1.Controls.Add(panel4);
+            panel1.Controls.Add(panel3);
+            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(chkEnabled);
+            panel1.Controls.Add(btnConfirm);
+            panel1.Controls.Add(btnCancel);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(163, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(474, 474);
+            panel1.TabIndex = 7;
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(lblModifyCategory);
+            panel4.Location = new Point(136, 42);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(205, 36);
+            panel4.TabIndex = 10;
+            // 
+            // lblModifyCategory
+            // 
+            lblModifyCategory.Dock = DockStyle.Fill;
+            lblModifyCategory.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblModifyCategory.Location = new Point(0, 0);
+            lblModifyCategory.Name = "lblModifyCategory";
+            lblModifyCategory.Size = new Size(205, 36);
+            lblModifyCategory.TabIndex = 7;
+            lblModifyCategory.Text = "label1";
+            // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(lblSelectParent);
+            panel3.Controls.Add(comboMoveParent);
+            panel3.Location = new Point(138, 192);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(203, 50);
+            panel3.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(lblCategoryName);
+            panel2.Controls.Add(txtCategoryName);
+            panel2.Location = new Point(138, 106);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(203, 50);
+            panel2.TabIndex = 8;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = SystemColors.ControlLight;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.Controls.Add(panel1, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 480F));
+            tableLayoutPanel1.Size = new Size(800, 480);
+            tableLayoutPanel1.TabIndex = 8;
             // 
             // formModifyCategory
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AcceptButton = btnConfirm;
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(chkEnabled);
-            Controls.Add(lblSelectParent);
-            Controls.Add(comboMoveParent);
-            Controls.Add(txtCategoryName);
-            Controls.Add(btnCancel);
-            Controls.Add(btnConfirm);
-            Controls.Add(lblCategoryName);
+            CancelButton = btnCancel;
+            ClientSize = new Size(800, 480);
+            Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formModifyCategory";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += formModifyCategory_Load;
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -129,5 +224,11 @@
         private ComboBox comboMoveParent;
         private Label lblSelectParent;
         private CheckBox chkEnabled;
+        private Panel panel1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label lblModifyCategory;
+        private Panel panel2;
+        private Panel panel3;
+        private Panel panel4;
     }
 }

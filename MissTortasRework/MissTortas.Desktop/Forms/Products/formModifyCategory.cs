@@ -13,7 +13,9 @@ namespace MissTortas.Desktop.Forms.Products
             InitializeComponent();
             this.productCategory = productCategory;
             this.productService = productService;
-            this.Text = $"Modifying {productCategory.Name} category";
+            this.Text = $"Modificando categoría '{productCategory.Name}'";
+            this.lblModifyCategory.Text = $"Modificar categoría: '{productCategory.Name}' ({productCategory.ProductCategoryId})";
+            this.chkEnabled.Checked = productCategory.Enabled;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -27,7 +29,7 @@ namespace MissTortas.Desktop.Forms.Products
             var newName = txtCategoryName.Text;
             if (string.IsNullOrEmpty(newName) || newName.Length < 3 || newName.Length > 256)
             {
-                MessageBox.Show("Name must have a length between 3 and 255 characters");
+                MessageBox.Show("El nombre debe tener una longitud entre 3 y 255 caracteres");
                 return;
             }
             newPc.Name = newName;
@@ -40,7 +42,7 @@ namespace MissTortas.Desktop.Forms.Products
             try
             {
                 var categories = await productService.GetCategoriesAsync();
-                categories.Insert(0, new ProductCategory { ProductCategoryId = 0, Name = "-- Select Category --" });
+                categories.Insert(0, new ProductCategory { ProductCategoryId = 0, Name = "-- Seleccionar Categoria --" });
                 comboMoveParent.DataSource = categories;
                 comboMoveParent.DisplayMember = "Name";
                 comboMoveParent.ValueMember = "ProductCategoryId";
