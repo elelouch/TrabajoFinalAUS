@@ -91,21 +91,5 @@ namespace MissTortas.Desktop.Forms.Users
         {
             this.Dispose();
         }
-
-        private void btnFilter_Click(object sender, EventArgs e)
-        {
-            if (filtered)
-            {
-                shownUsers = new(users);
-                dgvUsers.DataSource = shownUsers;
-                filtered = false;
-            }
-            else
-            {
-                shownUsers = new([.. shownUsers.Where(u => u.Enabled)]);
-                dgvUsers.DataSource = shownUsers;
-                filtered = true;
-            }
-        }
     }
 }

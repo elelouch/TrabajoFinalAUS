@@ -42,8 +42,8 @@
             productBindingSource = new BindingSource(components);
             panel2 = new Panel();
             btnRefresh = new Button();
-            btnAddProduct = new Button();
             btnModifyProduct = new Button();
+            btnAddProduct = new Button();
             tlpProductsFromCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
@@ -174,19 +174,6 @@
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
             // 
-            // btnAddProduct
-            // 
-            btnAddProduct.BackColor = SystemColors.ControlLightLight;
-            btnAddProduct.Dock = DockStyle.Top;
-            btnAddProduct.FlatStyle = FlatStyle.Flat;
-            btnAddProduct.Location = new Point(0, 0);
-            btnAddProduct.Name = "btnAddProduct";
-            btnAddProduct.Size = new Size(154, 29);
-            btnAddProduct.TabIndex = 0;
-            btnAddProduct.Text = "Agregar Producto";
-            btnAddProduct.UseVisualStyleBackColor = false;
-            btnAddProduct.Click += btnAddProduct_Click;
-            // 
             // btnModifyProduct
             // 
             btnModifyProduct.BackColor = SystemColors.ControlLightLight;
@@ -200,6 +187,19 @@
             btnModifyProduct.UseVisualStyleBackColor = false;
             btnModifyProduct.Click += btnModifyProduct_Click;
             // 
+            // btnAddProduct
+            // 
+            btnAddProduct.BackColor = SystemColors.ControlLightLight;
+            btnAddProduct.Dock = DockStyle.Top;
+            btnAddProduct.FlatStyle = FlatStyle.Flat;
+            btnAddProduct.Location = new Point(0, 0);
+            btnAddProduct.Name = "btnAddProduct";
+            btnAddProduct.Size = new Size(154, 29);
+            btnAddProduct.TabIndex = 0;
+            btnAddProduct.Text = "Agregar Producto";
+            btnAddProduct.UseVisualStyleBackColor = false;
+            btnAddProduct.Click += btnAddProduct_Click;
+            // 
             // formProductsFromCategory
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -207,6 +207,7 @@
             ClientSize = new Size(800, 420);
             Controls.Add(tlpProductsFromCategory);
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "formProductsFromCategory";
             Text = "Productos";
             Load += formProductsFromCategory_Load;
