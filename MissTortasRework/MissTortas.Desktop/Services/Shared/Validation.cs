@@ -6,7 +6,7 @@
         {
             if (string.IsNullOrEmpty(str) || str.Length < lo || str.Length > hi)
             {
-                throw new FormatException($"Input: {str} is not valid. Must have a length between {lo} and {hi}");
+                throw new FormatException($"Entrada: {str} no es valida. Debe tener un largo entre {lo} y {hi}.");
             }
             return str.Trim();
         }

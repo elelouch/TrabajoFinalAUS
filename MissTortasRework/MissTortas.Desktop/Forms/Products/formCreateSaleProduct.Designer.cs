@@ -60,8 +60,8 @@
             panel8 = new Panel();
             label1 = new Label();
             panel10 = new Panel();
-            panel11 = new Panel();
             lblHeader = new Label();
+            panel11 = new Panel();
             panel6.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -108,24 +108,27 @@
             // comboBoxCategory
             // 
             comboBoxCategory.Dock = DockStyle.Bottom;
+            comboBoxCategory.FlatStyle = FlatStyle.Flat;
             comboBoxCategory.FormattingEnabled = true;
-            comboBoxCategory.Location = new Point(0, 22);
+            comboBoxCategory.Location = new Point(0, 14);
             comboBoxCategory.Name = "comboBoxCategory";
-            comboBoxCategory.Size = new Size(274, 22);
+            comboBoxCategory.Size = new Size(272, 22);
             comboBoxCategory.TabIndex = 2;
             // 
             // txtProductName
             // 
+            txtProductName.BorderStyle = BorderStyle.None;
             txtProductName.Dock = DockStyle.Bottom;
-            txtProductName.Location = new Point(0, 15);
+            txtProductName.Location = new Point(0, 20);
             txtProductName.Name = "txtProductName";
-            txtProductName.Size = new Size(274, 22);
+            txtProductName.Size = new Size(272, 15);
             txtProductName.TabIndex = 0;
             // 
             // chkManageQtyAsInteger
             // 
             chkManageQtyAsInteger.AutoSize = true;
             chkManageQtyAsInteger.Dock = DockStyle.Bottom;
+            chkManageQtyAsInteger.FlatStyle = FlatStyle.Flat;
             chkManageQtyAsInteger.Location = new Point(0, 312);
             chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
             chkManageQtyAsInteger.Size = new Size(274, 18);
@@ -135,10 +138,11 @@
             // 
             // txtQuantity
             // 
+            txtQuantity.BorderStyle = BorderStyle.None;
             txtQuantity.Dock = DockStyle.Bottom;
-            txtQuantity.Location = new Point(0, 27);
+            txtQuantity.Location = new Point(0, 14);
             txtQuantity.Name = "txtQuantity";
-            txtQuantity.Size = new Size(274, 22);
+            txtQuantity.Size = new Size(272, 15);
             txtQuantity.TabIndex = 3;
             // 
             // lblDescription
@@ -154,9 +158,9 @@
             // txtDescription
             // 
             txtDescription.Dock = DockStyle.Bottom;
-            txtDescription.Location = new Point(0, 19);
+            txtDescription.Location = new Point(0, 14);
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(274, 22);
+            txtDescription.Size = new Size(272, 22);
             txtDescription.TabIndex = 1;
             // 
             // btnConfirm
@@ -187,10 +191,11 @@
             // 
             // txtUnitName
             // 
+            txtUnitName.BorderStyle = BorderStyle.None;
             txtUnitName.Dock = DockStyle.Bottom;
-            txtUnitName.Location = new Point(0, 26);
+            txtUnitName.Location = new Point(0, 14);
             txtUnitName.Name = "txtUnitName";
-            txtUnitName.Size = new Size(274, 22);
+            txtUnitName.Size = new Size(272, 15);
             txtUnitName.TabIndex = 4;
             // 
             // lblUnitName
@@ -207,6 +212,7 @@
             // 
             chkEnabled.AutoSize = true;
             chkEnabled.Dock = DockStyle.Bottom;
+            chkEnabled.FlatStyle = FlatStyle.Flat;
             chkEnabled.Location = new Point(0, 294);
             chkEnabled.Name = "chkEnabled";
             chkEnabled.Size = new Size(274, 18);
@@ -252,10 +258,11 @@
             // 
             // txtPrice
             // 
+            txtPrice.BorderStyle = BorderStyle.None;
             txtPrice.Dock = DockStyle.Bottom;
-            txtPrice.Location = new Point(0, 23);
+            txtPrice.Location = new Point(0, 17);
             txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(274, 22);
+            txtPrice.Size = new Size(272, 15);
             txtPrice.TabIndex = 5;
             // 
             // lblPrice
@@ -270,62 +277,68 @@
             // 
             // panel6
             // 
+            panel6.BorderStyle = BorderStyle.FixedSingle;
             panel6.Controls.Add(txtPrice);
             panel6.Controls.Add(lblPrice);
             panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 219);
+            panel6.Location = new Point(0, 175);
             panel6.Name = "panel6";
-            panel6.Size = new Size(274, 45);
+            panel6.Size = new Size(274, 34);
             panel6.TabIndex = 1;
             // 
             // panel1
             // 
+            panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(txtProductName);
             panel1.Controls.Add(lblProductName);
             panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 182);
+            panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(274, 37);
             panel1.TabIndex = 0;
             // 
             // panel2
             // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(txtDescription);
             panel2.Controls.Add(lblDescription);
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 141);
+            panel2.Location = new Point(0, 37);
             panel2.Name = "panel2";
-            panel2.Size = new Size(274, 41);
+            panel2.Size = new Size(274, 38);
             panel2.TabIndex = 1;
             // 
             // panel3
             // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
             panel3.Controls.Add(comboBoxCategory);
             panel3.Controls.Add(lblCategory);
             panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(0, 97);
+            panel3.Location = new Point(0, 137);
             panel3.Name = "panel3";
-            panel3.Size = new Size(274, 44);
+            panel3.Size = new Size(274, 38);
             panel3.TabIndex = 2;
             // 
             // panel4
             // 
+            panel4.BorderStyle = BorderStyle.FixedSingle;
             panel4.Controls.Add(txtQuantity);
             panel4.Controls.Add(label4);
             panel4.Dock = DockStyle.Top;
-            panel4.Location = new Point(0, 0);
+            panel4.Location = new Point(0, 75);
             panel4.Name = "panel4";
-            panel4.Size = new Size(274, 49);
+            panel4.Size = new Size(274, 31);
             panel4.TabIndex = 3;
             // 
             // panel5
             // 
+            panel5.BorderStyle = BorderStyle.FixedSingle;
             panel5.Controls.Add(txtUnitName);
             panel5.Controls.Add(lblUnitName);
             panel5.Dock = DockStyle.Top;
-            panel5.Location = new Point(0, 49);
+            panel5.Location = new Point(0, 106);
             panel5.Name = "panel5";
-            panel5.Size = new Size(274, 48);
+            panel5.Size = new Size(274, 31);
             panel5.TabIndex = 4;
             // 
             // tableLayoutPanel1
@@ -368,13 +381,13 @@
             // 
             panel9.BackColor = Color.WhiteSmoke;
             panel9.Controls.Add(panel6);
-            panel9.Controls.Add(panel1);
             panel9.Controls.Add(chkEnabled);
-            panel9.Controls.Add(panel2);
             panel9.Controls.Add(chkManageQtyAsInteger);
             panel9.Controls.Add(panel3);
             panel9.Controls.Add(panel5);
             panel9.Controls.Add(panel4);
+            panel9.Controls.Add(panel2);
+            panel9.Controls.Add(panel1);
             panel9.Dock = DockStyle.Fill;
             panel9.Location = new Point(83, 45);
             panel9.Name = "panel9";
@@ -413,6 +426,16 @@
             panel10.Size = new Size(634, 36);
             panel10.TabIndex = 23;
             // 
+            // lblHeader
+            // 
+            lblHeader.Dock = DockStyle.Fill;
+            lblHeader.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblHeader.Location = new Point(0, 0);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(634, 36);
+            lblHeader.TabIndex = 0;
+            lblHeader.Text = "label2";
+            // 
             // panel11
             // 
             panel11.BackColor = Color.WhiteSmoke;
@@ -421,16 +444,6 @@
             panel11.Name = "panel11";
             panel11.Size = new Size(74, 330);
             panel11.TabIndex = 24;
-            // 
-            // lblHeader
-            // 
-            lblHeader.AutoSize = true;
-            lblHeader.Dock = DockStyle.Top;
-            lblHeader.Location = new Point(0, 0);
-            lblHeader.Name = "lblHeader";
-            lblHeader.Size = new Size(38, 14);
-            lblHeader.TabIndex = 0;
-            lblHeader.Text = "label2";
             // 
             // formCreateSaleProduct
             // 
@@ -465,7 +478,6 @@
             panel8.ResumeLayout(false);
             panel8.PerformLayout();
             panel10.ResumeLayout(false);
-            panel10.PerformLayout();
             ResumeLayout(false);
         }
 

@@ -24,6 +24,7 @@ namespace MissTortas.Desktop.Forms.Products
             if(product != null)
             {
                 this.lblHeader.Text = $"Modificando producto {product.Name} ({product.Id}).";
+                this.chkEnabled.Checked = product.Enabled;
             }
             else
             {
@@ -54,14 +55,14 @@ namespace MissTortas.Desktop.Forms.Products
 
                 if (productToModify != null)
                 {
-                    this.Text = $"Modify stock product: {productToModify.Id}";
+                    this.Text = $"Modificando producto: {productToModify.Id}";
                     this.chkEnabled.Visible = true;
                     this.chkManageQtyAsInteger.Visible = false;
                     ProductToForm(productToModify);
                 }
                 else
                 {
-                    this.Text = "Create new stock product";
+                    this.Text = "Creando producto.";
                     this.chkEnabled.Visible = false;
                     this.chkManageQtyAsInteger.Visible = true;
                 }
@@ -105,14 +106,14 @@ namespace MissTortas.Desktop.Forms.Products
                 {
                     var retrieveProduct = await productService.CreateProductAsync(product);
                     RaiseOnStockProductCreated(retrieveProduct);
-                    MessageBox.Show("Product created successfully", "Product created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Producto creado exitosamente", "Producto creado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     product.Id = productToModify.Id;
                     var retrieveProduct = await productService.ModifyProductAsync(product);
                     RaiseOnStockProductModified(retrieveProduct);
-                    MessageBox.Show("Product modified successfully", "Product modified", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Producto modificado exitosamente", "Producto modificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 Dispose();
             }
@@ -126,7 +127,7 @@ namespace MissTortas.Desktop.Forms.Products
             }
             catch (FormatException exc)
             {
-                MessageBox.Show($"{exc.Message}", "Couldn't create product, check inputs.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{exc.Message}", "No se pudo crear el producto, verifica los datos ingresados.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -168,7 +169,7 @@ namespace MissTortas.Desktop.Forms.Products
         public static decimal ParseQuantity(string input, bool manageQuantityAsInteger)
         {
             if (!decimal.TryParse(input, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal quantity))
-                throw new FormatException($"'{input}' is not a valid quantity.");
+                throw new FormatException($"'{input}' no es una cantidad valida.");
 
             return manageQuantityAsInteger
                 ? Math.Round(quantity, 0, MidpointRounding.AwayFromZero)

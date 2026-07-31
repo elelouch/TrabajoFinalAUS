@@ -95,6 +95,7 @@
             // comboMoveParent
             // 
             comboMoveParent.Dock = DockStyle.Bottom;
+            comboMoveParent.FlatStyle = FlatStyle.Flat;
             comboMoveParent.FormattingEnabled = true;
             comboMoveParent.Location = new Point(0, 24);
             comboMoveParent.Name = "comboMoveParent";
@@ -114,9 +115,10 @@
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
+            chkEnabled.FlatStyle = FlatStyle.Flat;
             chkEnabled.Location = new Point(174, 287);
             chkEnabled.Name = "chkEnabled";
-            chkEnabled.Size = new Size(130, 20);
+            chkEnabled.Size = new Size(127, 20);
             chkEnabled.TabIndex = 6;
             chkEnabled.Text = "Habilitar categoria";
             chkEnabled.UseVisualStyleBackColor = true;

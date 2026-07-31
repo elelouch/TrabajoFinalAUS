@@ -40,103 +40,108 @@
             unitDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             Enabled = new DataGridViewCheckBoxColumn();
             productBindingSource = new BindingSource(components);
-            tableLayoutPanel1 = new TableLayoutPanel();
+            panel2 = new Panel();
+            btnRefresh = new Button();
             btnAddProduct = new Button();
             btnModifyProduct = new Button();
-            btnRefresh = new Button();
             tlpProductsFromCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // tlpProductsFromCategory
             // 
-            tlpProductsFromCategory.ColumnCount = 3;
-            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112F));
+            tlpProductsFromCategory.ColumnCount = 2;
+            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tlpProductsFromCategory.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tlpProductsFromCategory.Controls.Add(dgvProducts, 0, 0);
-            tlpProductsFromCategory.Controls.Add(tableLayoutPanel1, 2, 0);
+            tlpProductsFromCategory.Controls.Add(panel2, 1, 0);
             tlpProductsFromCategory.Dock = DockStyle.Fill;
             tlpProductsFromCategory.Location = new Point(0, 0);
             tlpProductsFromCategory.Name = "tlpProductsFromCategory";
-            tlpProductsFromCategory.RowCount = 2;
+            tlpProductsFromCategory.RowCount = 1;
             tlpProductsFromCategory.RowStyles.Add(new RowStyle(SizeType.Percent, 61.77778F));
-            tlpProductsFromCategory.RowStyles.Add(new RowStyle(SizeType.Percent, 38.22222F));
-            tlpProductsFromCategory.Size = new Size(800, 450);
+            tlpProductsFromCategory.Size = new Size(800, 420);
             tlpProductsFromCategory.TabIndex = 0;
             // 
             // dgvProducts
             // 
             dgvProducts.AllowUserToAddRows = false;
             dgvProducts.AllowUserToDeleteRows = false;
+            dgvProducts.AllowUserToOrderColumns = true;
             dgvProducts.AutoGenerateColumns = false;
+            dgvProducts.BackgroundColor = SystemColors.ControlLight;
+            dgvProducts.BorderStyle = BorderStyle.None;
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProducts.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, quantityDataGridViewTextBoxColumn, categoryIdDataGridViewTextBoxColumn, manageQuantityAsIntegerDataGridViewCheckBoxColumn, unitDataGridViewTextBoxColumn, Enabled });
-            tlpProductsFromCategory.SetColumnSpan(dgvProducts, 2);
             dgvProducts.DataSource = productBindingSource;
             dgvProducts.Dock = DockStyle.Fill;
+            dgvProducts.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dgvProducts.GridColor = SystemColors.Window;
+            dgvProducts.ImeMode = ImeMode.Disable;
             dgvProducts.Location = new Point(3, 3);
+            dgvProducts.MultiSelect = false;
             dgvProducts.Name = "dgvProducts";
             dgvProducts.ReadOnly = true;
-            tlpProductsFromCategory.SetRowSpan(dgvProducts, 2);
-            dgvProducts.Size = new Size(682, 444);
+            dgvProducts.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Sunken;
+            dgvProducts.Size = new Size(634, 414);
             dgvProducts.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
             // 
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             idDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            nameDataGridViewTextBoxColumn.HeaderText = "Nombre";
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // descriptionDataGridViewTextBoxColumn
             // 
             descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            descriptionDataGridViewTextBoxColumn.HeaderText = "Descripcion";
             descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
             descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // quantityDataGridViewTextBoxColumn
             // 
             quantityDataGridViewTextBoxColumn.DataPropertyName = "Quantity";
-            quantityDataGridViewTextBoxColumn.HeaderText = "Quantity";
+            quantityDataGridViewTextBoxColumn.HeaderText = "Cantidad Disponible";
             quantityDataGridViewTextBoxColumn.Name = "quantityDataGridViewTextBoxColumn";
             quantityDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // categoryIdDataGridViewTextBoxColumn
             // 
             categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-            categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
+            categoryIdDataGridViewTextBoxColumn.HeaderText = "Identificador de Categoria";
             categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
             categoryIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // manageQuantityAsIntegerDataGridViewCheckBoxColumn
             // 
             manageQuantityAsIntegerDataGridViewCheckBoxColumn.DataPropertyName = "ManageQuantityAsInteger";
-            manageQuantityAsIntegerDataGridViewCheckBoxColumn.HeaderText = "ManageQuantityAsInteger";
+            manageQuantityAsIntegerDataGridViewCheckBoxColumn.HeaderText = "Gestionar cantidad como entero";
             manageQuantityAsIntegerDataGridViewCheckBoxColumn.Name = "manageQuantityAsIntegerDataGridViewCheckBoxColumn";
             manageQuantityAsIntegerDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // unitDataGridViewTextBoxColumn
             // 
             unitDataGridViewTextBoxColumn.DataPropertyName = "Unit";
-            unitDataGridViewTextBoxColumn.HeaderText = "Unit";
+            unitDataGridViewTextBoxColumn.HeaderText = "Unidad";
             unitDataGridViewTextBoxColumn.Name = "unitDataGridViewTextBoxColumn";
             unitDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // Enabled
             // 
             Enabled.DataPropertyName = "Enabled";
-            Enabled.HeaderText = "Enabled";
+            Enabled.HeaderText = "Habilitado";
             Enabled.Name = "Enabled";
             Enabled.ReadOnly = true;
             // 
@@ -144,69 +149,71 @@
             // 
             productBindingSource.DataSource = typeof(Model.Product);
             // 
-            // tableLayoutPanel1
+            // panel2
             // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(btnAddProduct, 0, 0);
-            tableLayoutPanel1.Controls.Add(btnModifyProduct, 0, 1);
-            tableLayoutPanel1.Controls.Add(btnRefresh, 0, 2);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(691, 3);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(106, 272);
-            tableLayoutPanel1.TabIndex = 1;
+            panel2.BackColor = Color.WhiteSmoke;
+            panel2.Controls.Add(btnRefresh);
+            panel2.Controls.Add(btnModifyProduct);
+            panel2.Controls.Add(btnAddProduct);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(643, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(154, 414);
+            panel2.TabIndex = 3;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.BackColor = SystemColors.ControlLightLight;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Location = new Point(0, 59);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(154, 29);
+            btnRefresh.TabIndex = 2;
+            btnRefresh.Text = "Refrescar";
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // btnAddProduct
             // 
+            btnAddProduct.BackColor = SystemColors.ControlLightLight;
             btnAddProduct.Dock = DockStyle.Top;
-            btnAddProduct.Location = new Point(3, 3);
+            btnAddProduct.FlatStyle = FlatStyle.Flat;
+            btnAddProduct.Location = new Point(0, 0);
             btnAddProduct.Name = "btnAddProduct";
-            btnAddProduct.Size = new Size(100, 23);
+            btnAddProduct.Size = new Size(154, 29);
             btnAddProduct.TabIndex = 0;
-            btnAddProduct.Text = "Add Product";
-            btnAddProduct.UseVisualStyleBackColor = true;
+            btnAddProduct.Text = "Agregar Producto";
+            btnAddProduct.UseVisualStyleBackColor = false;
             btnAddProduct.Click += btnAddProduct_Click;
             // 
             // btnModifyProduct
             // 
+            btnModifyProduct.BackColor = SystemColors.ControlLightLight;
             btnModifyProduct.Dock = DockStyle.Top;
-            btnModifyProduct.Location = new Point(3, 32);
+            btnModifyProduct.FlatStyle = FlatStyle.Flat;
+            btnModifyProduct.Location = new Point(0, 29);
             btnModifyProduct.Name = "btnModifyProduct";
-            btnModifyProduct.Size = new Size(100, 23);
+            btnModifyProduct.Size = new Size(154, 30);
             btnModifyProduct.TabIndex = 1;
-            btnModifyProduct.Text = "Modify Product";
-            btnModifyProduct.UseVisualStyleBackColor = true;
+            btnModifyProduct.Text = "Modificar Producto";
+            btnModifyProduct.UseVisualStyleBackColor = false;
             btnModifyProduct.Click += btnModifyProduct_Click;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Dock = DockStyle.Top;
-            btnRefresh.Location = new Point(3, 61);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(100, 23);
-            btnRefresh.TabIndex = 2;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
-            btnRefresh.Click += btnRefresh_Click;
             // 
             // formProductsFromCategory
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 420);
             Controls.Add(tlpProductsFromCategory);
+            Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formProductsFromCategory";
-            Text = "Products from Category";
+            Text = "Productos";
             Load += formProductsFromCategory_Load;
             tlpProductsFromCategory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -222,10 +229,10 @@
         private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn manageQuantityAsIntegerDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn unitDataGridViewTextBoxColumn;
-        private TableLayoutPanel tableLayoutPanel1;
+        private DataGridViewCheckBoxColumn Enabled;
+        private Panel panel2;
+        private Button btnRefresh;
         private Button btnAddProduct;
         private Button btnModifyProduct;
-        private DataGridViewCheckBoxColumn Enabled;
-        private Button btnRefresh;
     }
 }

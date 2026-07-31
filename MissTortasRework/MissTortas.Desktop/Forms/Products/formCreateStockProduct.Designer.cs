@@ -113,11 +113,12 @@
             // chkManageQtyAsInteger
             // 
             chkManageQtyAsInteger.AutoSize = true;
+            chkManageQtyAsInteger.FlatStyle = FlatStyle.Flat;
             chkManageQtyAsInteger.Location = new Point(1, 203);
             chkManageQtyAsInteger.Name = "chkManageQtyAsInteger";
-            chkManageQtyAsInteger.Size = new Size(175, 18);
+            chkManageQtyAsInteger.Size = new Size(211, 18);
             chkManageQtyAsInteger.TabIndex = 5;
-            chkManageQtyAsInteger.Text = "Manage quantity as integer";
+            chkManageQtyAsInteger.Text = "Gestionar cantidades como entero";
             chkManageQtyAsInteger.UseVisualStyleBackColor = true;
             // 
             // txtQuantity
@@ -193,11 +194,12 @@
             // chkEnabled
             // 
             chkEnabled.AutoSize = true;
+            chkEnabled.FlatStyle = FlatStyle.Flat;
             chkEnabled.Location = new Point(0, 226);
             chkEnabled.Name = "chkEnabled";
-            chkEnabled.Size = new Size(62, 18);
+            chkEnabled.Size = new Size(65, 18);
             chkEnabled.TabIndex = 6;
-            chkEnabled.Text = "Enable";
+            chkEnabled.Text = "Habilitar";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
             // panel1
@@ -234,13 +236,13 @@
             // 
             // panel7
             // 
-            panel7.Controls.Add(panel2);
             panel7.Controls.Add(panel6);
             panel7.Controls.Add(chkManageQtyAsInteger);
             panel7.Controls.Add(chkEnabled);
-            panel7.Controls.Add(panel3);
             panel7.Controls.Add(panel4);
             panel7.Controls.Add(panel5);
+            panel7.Controls.Add(panel3);
+            panel7.Controls.Add(panel2);
             panel7.Location = new Point(124, 56);
             panel7.Name = "panel7";
             panel7.Size = new Size(242, 284);
@@ -252,7 +254,7 @@
             panel2.Controls.Add(txtProductName);
             panel2.Controls.Add(lblProductName);
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 151);
+            panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(242, 37);
             panel2.TabIndex = 0;
@@ -263,7 +265,7 @@
             panel6.Controls.Add(txtUnitName);
             panel6.Controls.Add(lblUnitName);
             panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 115);
+            panel6.Location = new Point(0, 152);
             panel6.Name = "panel6";
             panel6.Size = new Size(242, 36);
             panel6.TabIndex = 16;
@@ -274,7 +276,7 @@
             panel3.Controls.Add(txtDescription);
             panel3.Controls.Add(lblDescription);
             panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(0, 76);
+            panel3.Location = new Point(0, 37);
             panel3.Name = "panel3";
             panel3.Size = new Size(242, 39);
             panel3.TabIndex = 1;
@@ -285,7 +287,7 @@
             panel4.Controls.Add(comboBoxCategory);
             panel4.Controls.Add(lblCategory);
             panel4.Dock = DockStyle.Top;
-            panel4.Location = new Point(0, 39);
+            panel4.Location = new Point(0, 115);
             panel4.Name = "panel4";
             panel4.Size = new Size(242, 37);
             panel4.TabIndex = 2;
@@ -296,7 +298,7 @@
             panel5.Controls.Add(txtQuantity);
             panel5.Controls.Add(label4);
             panel5.Dock = DockStyle.Top;
-            panel5.Location = new Point(0, 0);
+            panel5.Location = new Point(0, 76);
             panel5.Name = "panel5";
             panel5.Size = new Size(242, 39);
             panel5.TabIndex = 3;

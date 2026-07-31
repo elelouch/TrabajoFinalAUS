@@ -26,14 +26,14 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 if (productCategory != null)
                 {
-                    this.Text = $"Products from ({productCategory.ProductCategoryId}) - {productCategory.Name}";
+                    this.Text = $"Productos de la categoria: '{productCategory.Name}'({productCategory.ProductCategoryId}) -" ;
                     var products = await productService.GetProductsFromCategoryAsync(productCategory.ProductCategoryId);
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
                 }
                 else
                 {
-                    this.Text = $"Products";
+                    this.Text = $"Productos";
                     var products = await productService.GetAllProductsAsync();
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
@@ -72,7 +72,7 @@ namespace MissTortas.Desktop.Forms.Products
         {
             if (dgvProducts.SelectedRows.Count <= 0)
             {
-                MessageBox.Show("Please, select a product", "Select a product");
+                MessageBox.Show("Por favor, seleccione un producto.", "Seleccione un producto.");
                 return;
             }
             if (dgvProducts.SelectedRows[0].DataBoundItem is not Product product)
