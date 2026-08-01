@@ -40,5 +40,10 @@ namespace MissTortas.Desktop.Forms.Products
             this.tabSaleProducts.Controls.Add(saleProducts);
             saleProducts.Show();
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Dispose();
+        }
     }
 }

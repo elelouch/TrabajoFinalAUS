@@ -31,16 +31,16 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             dgvUsers = new DataGridView();
-            userBindingSource = new BindingSource(components);
-            panel1 = new Panel();
-            btnAddUser = new Button();
-            btnEditUser = new Button();
-            btnRefresh = new Button();
-            btnCancel = new Button();
             emailDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             Username = new DataGridViewTextBoxColumn();
             UserId = new DataGridViewTextBoxColumn();
             Enabled = new DataGridViewCheckBoxColumn();
+            userBindingSource = new BindingSource(components);
+            panel1 = new Panel();
+            btnRefresh = new Button();
+            btnCancel = new Button();
+            btnEditUser = new Button();
+            btnAddUser = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
@@ -71,7 +71,6 @@
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.BackgroundColor = Color.WhiteSmoke;
             dgvUsers.BorderStyle = BorderStyle.None;
-            dgvUsers.CellBorderStyle = DataGridViewCellBorderStyle.Sunken;
             dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUsers.Columns.AddRange(new DataGridViewColumn[] { emailDataGridViewTextBoxColumn, Username, UserId, Enabled });
             dgvUsers.DataSource = userBindingSource;
@@ -81,76 +80,6 @@
             dgvUsers.ReadOnly = true;
             dgvUsers.Size = new Size(634, 414);
             dgvUsers.TabIndex = 0;
-            // 
-            // userBindingSource
-            // 
-            userBindingSource.DataSource = typeof(Model.User);
-            // 
-            // panel1
-            // 
-            panel1.BackColor = SystemColors.ControlLight;
-            panel1.Controls.Add(btnRefresh);
-            panel1.Controls.Add(btnCancel);
-            panel1.Controls.Add(btnEditUser);
-            panel1.Controls.Add(btnAddUser);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(643, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(154, 414);
-            panel1.TabIndex = 1;
-            // 
-            // btnAddUser
-            // 
-            btnAddUser.BackColor = SystemColors.ControlLightLight;
-            btnAddUser.Dock = DockStyle.Top;
-            btnAddUser.FlatStyle = FlatStyle.Flat;
-            btnAddUser.Location = new Point(0, 0);
-            btnAddUser.Name = "btnAddUser";
-            btnAddUser.Size = new Size(154, 35);
-            btnAddUser.TabIndex = 8;
-            btnAddUser.Text = "Agregar";
-            btnAddUser.UseVisualStyleBackColor = false;
-            btnAddUser.Click += btnAddUser_Click;
-            // 
-            // btnEditUser
-            // 
-            btnEditUser.BackColor = SystemColors.ControlLightLight;
-            btnEditUser.Dock = DockStyle.Top;
-            btnEditUser.Location = new Point(0, 35);
-            btnEditUser.Name = "btnEditUser";
-            btnEditUser.Size = new Size(154, 35);
-            btnEditUser.TabIndex = 11;
-            btnEditUser.Text = "Modificar";
-            btnEditUser.UseVisualStyleBackColor = false;
-            btnEditUser.Click += btnEditUser_Click;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.BackColor = SystemColors.ControlLightLight;
-            btnRefresh.Dock = DockStyle.Top;
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Location = new Point(0, 70);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(154, 35);
-            btnRefresh.TabIndex = 7;
-            btnRefresh.Text = "Refrescar";
-            btnRefresh.UseVisualStyleBackColor = false;
-            btnRefresh.Click += btnRefreshUsers_Click;
-            // 
-            // btnCancel
-            // 
-            btnCancel.BackColor = Color.Red;
-            btnCancel.Dock = DockStyle.Bottom;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCancel.ForeColor = SystemColors.ControlLightLight;
-            btnCancel.Location = new Point(0, 393);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(154, 21);
-            btnCancel.TabIndex = 9;
-            btnCancel.Text = "Cancelar";
-            btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
             // 
             // emailDataGridViewTextBoxColumn
             // 
@@ -180,6 +109,78 @@
             Enabled.Name = "Enabled";
             Enabled.ReadOnly = true;
             // 
+            // userBindingSource
+            // 
+            userBindingSource.DataSource = typeof(Model.User);
+            // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(btnRefresh);
+            panel1.Controls.Add(btnCancel);
+            panel1.Controls.Add(btnEditUser);
+            panel1.Controls.Add(btnAddUser);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(643, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(154, 414);
+            panel1.TabIndex = 1;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.BackColor = SystemColors.ControlLightLight;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Location = new Point(0, 70);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(154, 35);
+            btnRefresh.TabIndex = 7;
+            btnRefresh.Text = "Refrescar";
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefreshUsers_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.BackColor = Color.Red;
+            btnCancel.Dock = DockStyle.Bottom;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(0, 393);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(154, 21);
+            btnCancel.TabIndex = 9;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // btnEditUser
+            // 
+            btnEditUser.BackColor = SystemColors.ControlLightLight;
+            btnEditUser.Dock = DockStyle.Top;
+            btnEditUser.FlatStyle = FlatStyle.Flat;
+            btnEditUser.Location = new Point(0, 35);
+            btnEditUser.Name = "btnEditUser";
+            btnEditUser.Size = new Size(154, 35);
+            btnEditUser.TabIndex = 11;
+            btnEditUser.Text = "Modificar";
+            btnEditUser.UseVisualStyleBackColor = false;
+            btnEditUser.Click += btnEditUser_Click;
+            // 
+            // btnAddUser
+            // 
+            btnAddUser.BackColor = SystemColors.ControlLightLight;
+            btnAddUser.Dock = DockStyle.Top;
+            btnAddUser.FlatStyle = FlatStyle.Flat;
+            btnAddUser.Location = new Point(0, 0);
+            btnAddUser.Name = "btnAddUser";
+            btnAddUser.Size = new Size(154, 35);
+            btnAddUser.TabIndex = 8;
+            btnAddUser.Text = "Agregar";
+            btnAddUser.UseVisualStyleBackColor = false;
+            btnAddUser.Click += btnAddUser_Click;
+            // 
             // formUsers
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -191,7 +192,6 @@
             Name = "formUsers";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Usuarios";
-            WindowState = FormWindowState.Maximized;
             Load += formUsers_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();

@@ -46,11 +46,12 @@
             // 
             // mainMenuStrip
             // 
-            mainMenuStrip.BackColor = SystemColors.ControlLightLight;
+            mainMenuStrip.BackColor = Color.White;
             mainMenuStrip.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             mainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, securityToolStripMenuItem, productsToolStripMenuItem, ordersToolStripMenuItem });
             mainMenuStrip.Location = new Point(0, 0);
             mainMenuStrip.Name = "mainMenuStrip";
+            mainMenuStrip.RenderMode = ToolStripRenderMode.Professional;
             mainMenuStrip.Size = new Size(800, 24);
             mainMenuStrip.TabIndex = 1;
             mainMenuStrip.Text = "menuStrip1";
@@ -120,6 +121,7 @@
             // 
             // ordersToolStripMenuItem
             // 
+            ordersToolStripMenuItem.BackColor = Color.Transparent;
             ordersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { orderManagementToolStripMenuItem, preparationsToolStripMenuItem });
             ordersToolStripMenuItem.ImageTransparentColor = Color.Black;
             ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
@@ -153,6 +155,7 @@
             Name = "formMain";
             Text = "MissTortas";
             WindowState = FormWindowState.Maximized;
+            Load += formMain_Load;
             Shown += formMain_Shown;
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();

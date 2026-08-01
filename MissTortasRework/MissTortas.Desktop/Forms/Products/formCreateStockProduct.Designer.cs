@@ -46,20 +46,20 @@
             panel8 = new Panel();
             lblHeader = new Label();
             panel7 = new Panel();
-            panel2 = new Panel();
             panel6 = new Panel();
-            panel3 = new Panel();
             panel4 = new Panel();
             panel5 = new Panel();
+            panel3 = new Panel();
+            panel2 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1.SuspendLayout();
             panel8.SuspendLayout();
             panel7.SuspendLayout();
-            panel2.SuspendLayout();
             panel6.SuspendLayout();
-            panel3.SuspendLayout();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
+            panel3.SuspendLayout();
+            panel2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -248,17 +248,6 @@
             panel7.Size = new Size(242, 284);
             panel7.TabIndex = 17;
             // 
-            // panel2
-            // 
-            panel2.BorderStyle = BorderStyle.FixedSingle;
-            panel2.Controls.Add(txtProductName);
-            panel2.Controls.Add(lblProductName);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(242, 37);
-            panel2.TabIndex = 0;
-            // 
             // panel6
             // 
             panel6.BorderStyle = BorderStyle.FixedSingle;
@@ -269,17 +258,6 @@
             panel6.Name = "panel6";
             panel6.Size = new Size(242, 36);
             panel6.TabIndex = 16;
-            // 
-            // panel3
-            // 
-            panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Controls.Add(txtDescription);
-            panel3.Controls.Add(lblDescription);
-            panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(0, 37);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(242, 39);
-            panel3.TabIndex = 1;
             // 
             // panel4
             // 
@@ -302,6 +280,28 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(242, 39);
             panel5.TabIndex = 3;
+            // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(txtDescription);
+            panel3.Controls.Add(lblDescription);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 37);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(242, 39);
+            panel3.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(txtProductName);
+            panel2.Controls.Add(lblProductName);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(242, 37);
+            panel2.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -338,16 +338,16 @@
             panel8.PerformLayout();
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }

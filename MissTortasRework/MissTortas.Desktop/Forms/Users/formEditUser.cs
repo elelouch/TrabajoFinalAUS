@@ -142,18 +142,23 @@ namespace MissTortas.Desktop.Forms.Users
 
         private void btnUserPermissions_Click(object sender, EventArgs e)
         {
-            if(userFetched == null)
+            if (userFetched == null)
             {
                 MessageBox.Show("User not not fetched yet to read its permissions.");
                 return;
             }
-            if(permissionService == null)
+            if (permissionService == null)
             {
                 MessageBox.Show("Permissions service not available.");
                 return;
             }
             var formPermissions = new formUserPermission(userService, permissionService, userFetched);
             formPermissions.ShowDialog();
+        }
+
+        private void lblPassword_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

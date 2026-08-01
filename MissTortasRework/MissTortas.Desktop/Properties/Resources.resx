@@ -121,4 +121,7 @@
   <data name="Hanis-Bakery-interior" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hanis-Bakery-interior.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Hanis-Bakery-interior1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hanis-Bakery-interior1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

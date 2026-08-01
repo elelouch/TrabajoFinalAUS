@@ -454,7 +454,7 @@
             ClientSize = new Size(800, 420);
             Controls.Add(tableLayoutPanel1);
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "formCreateSaleProduct";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestionar Producto";

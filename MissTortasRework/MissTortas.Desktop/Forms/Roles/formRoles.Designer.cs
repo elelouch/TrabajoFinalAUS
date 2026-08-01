@@ -37,9 +37,8 @@
             panel1 = new Panel();
             btnRefresh = new Button();
             btnCancel = new Button();
-            btnRemove = new Button();
-            btnAdd = new Button();
             btnEditRole = new Button();
+            btnAdd = new Button();
             userBindingSource = new BindingSource(components);
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRoles).BeginInit();
@@ -60,7 +59,7 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.Size = new Size(800, 420);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // dgvRoles
@@ -69,6 +68,8 @@
             dgvRoles.AllowUserToDeleteRows = false;
             dgvRoles.AllowUserToOrderColumns = true;
             dgvRoles.AutoGenerateColumns = false;
+            dgvRoles.BackgroundColor = Color.WhiteSmoke;
+            dgvRoles.BorderStyle = BorderStyle.None;
             dgvRoles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvRoles.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn });
             dgvRoles.DataSource = roleBindingSource;
@@ -76,20 +77,20 @@
             dgvRoles.Location = new Point(3, 3);
             dgvRoles.Name = "dgvRoles";
             dgvRoles.ReadOnly = true;
-            dgvRoles.Size = new Size(634, 444);
+            dgvRoles.Size = new Size(634, 414);
             dgvRoles.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
             // 
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             idDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            nameDataGridViewTextBoxColumn.HeaderText = "Nombre";
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -99,65 +100,71 @@
             // 
             // panel1
             // 
+            panel1.BackColor = SystemColors.ControlLight;
             panel1.Controls.Add(btnRefresh);
             panel1.Controls.Add(btnCancel);
-            panel1.Controls.Add(btnRemove);
-            panel1.Controls.Add(btnAdd);
             panel1.Controls.Add(btnEditRole);
+            panel1.Controls.Add(btnAdd);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(643, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(154, 444);
+            panel1.Size = new Size(154, 414);
             panel1.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(13, 9);
+            btnRefresh.BackColor = SystemColors.ControlLightLight;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Location = new Point(0, 50);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(75, 23);
+            btnRefresh.Size = new Size(154, 25);
             btnRefresh.TabIndex = 14;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Text = "Refrescar";
+            btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefreshUsers_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(13, 38);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.Dock = DockStyle.Bottom;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(0, 393);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(154, 21);
             btnCancel.TabIndex = 15;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
-            // 
-            // btnRemove
-            // 
-            btnRemove.Location = new Point(13, 67);
-            btnRemove.Name = "btnRemove";
-            btnRemove.Size = new Size(75, 23);
-            btnRemove.TabIndex = 18;
-            btnRemove.Text = "Remove";
-            btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // btnAdd
-            // 
-            btnAdd.Location = new Point(13, 96);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 23);
-            btnAdd.TabIndex = 16;
-            btnAdd.Text = "Add";
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
             // 
             // btnEditRole
             // 
-            btnEditRole.Location = new Point(13, 125);
+            btnEditRole.BackColor = SystemColors.ControlLightLight;
+            btnEditRole.Dock = DockStyle.Top;
+            btnEditRole.FlatStyle = FlatStyle.Flat;
+            btnEditRole.Location = new Point(0, 25);
             btnEditRole.Name = "btnEditRole";
-            btnEditRole.Size = new Size(75, 23);
+            btnEditRole.Size = new Size(154, 25);
             btnEditRole.TabIndex = 17;
             btnEditRole.Text = "Edit";
-            btnEditRole.UseVisualStyleBackColor = true;
+            btnEditRole.UseVisualStyleBackColor = false;
             btnEditRole.Click += btnEditRole_Click;
+            // 
+            // btnAdd
+            // 
+            btnAdd.BackColor = SystemColors.ControlLightLight;
+            btnAdd.Dock = DockStyle.Top;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Location = new Point(0, 0);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(154, 25);
+            btnAdd.TabIndex = 0;
+            btnAdd.Text = "Agregar";
+            btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnAdd_Click;
             // 
             // userBindingSource
             // 
@@ -165,15 +172,15 @@
             // 
             // formRoles
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 420);
             Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formRoles";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Roles";
-            WindowState = FormWindowState.Maximized;
             Load += formRoles_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRoles).EndInit();
@@ -191,13 +198,12 @@
         private BindingSource userBindingSource;
         private BindingSource roleBindingSource;
         private DataGridView dgvRoles;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private Panel panel1;
         private Button btnRefresh;
         private Button btnCancel;
-        private Button btnRemove;
         private Button btnAdd;
         private Button btnEditRole;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
     }
 }

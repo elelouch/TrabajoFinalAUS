@@ -204,5 +204,9 @@ namespace MissTortas.Desktop.Forms
         {
             formPreparations = null;
         }
+
+        private void formMain_Load(object sender, EventArgs e)
+        {
+        }
     }
 }

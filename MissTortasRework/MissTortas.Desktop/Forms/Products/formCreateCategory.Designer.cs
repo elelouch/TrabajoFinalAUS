@@ -159,7 +159,7 @@
             ClientSize = new Size(800, 480);
             Controls.Add(tableLayoutPanel1);
             Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "formCreateCategory";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Crear Categoria";

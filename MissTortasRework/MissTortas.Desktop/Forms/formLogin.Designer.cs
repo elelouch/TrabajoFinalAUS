@@ -86,7 +86,7 @@
             txtUsername.Location = new Point(23, 24);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(295, 23);
-            txtUsername.TabIndex = 3;
+            txtUsername.TabIndex = 0;
             // 
             // txtPassword
             // 
@@ -95,7 +95,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(295, 23);
-            txtPassword.TabIndex = 4;
+            txtPassword.TabIndex = 1;
             // 
             // loginButton
             // 
@@ -109,7 +109,7 @@
             loginButton.Location = new Point(461, 321);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(91, 26);
-            loginButton.TabIndex = 5;
+            loginButton.TabIndex = 2;
             loginButton.Text = "INGRESO";
             loginButton.UseVisualStyleBackColor = false;
             loginButton.Click += loginButton_Click;
@@ -121,7 +121,7 @@
             btnCancel.Location = new Point(481, 12);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(34, 26);
-            btnCancel.TabIndex = 6;
+            btnCancel.TabIndex = 3;
             btnCancel.Text = "X";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -190,6 +190,7 @@
             Name = "formLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MissTortas";
+            Load += formLogin_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);

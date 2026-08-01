@@ -38,7 +38,12 @@ namespace MissTortas.Desktop.Forms.Products
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
                 }
-
+                if (products.Count > 0)
+                {
+                    var firstRow = dgvProducts.Rows[0];
+                    firstRow.Selected = true;
+                    dgvProducts.CurrentCell = firstRow.Cells[0];
+                }
             }
             catch (ApiException exc)
             {

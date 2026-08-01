@@ -38,5 +38,9 @@ namespace MissTortas.Desktop.Forms
             }
         }
 
+        private void formLogin_Load(object sender, EventArgs e)
+        {
+            this.ActiveControl = this.txtUsername;
+        }
     }
 }

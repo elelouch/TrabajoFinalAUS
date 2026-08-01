@@ -45,6 +45,7 @@
             btnCancel = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
+            label1 = new Label();
             panel8 = new Panel();
             panel7 = new Panel();
             panel6 = new Panel();
@@ -52,7 +53,6 @@
             panel5 = new Panel();
             panel3 = new Panel();
             panel2 = new Panel();
-            label1 = new Label();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             panel8.SuspendLayout();
@@ -109,7 +109,7 @@
             // 
             txtFirstName.BorderStyle = BorderStyle.None;
             txtFirstName.Dock = DockStyle.Bottom;
-            txtFirstName.Location = new Point(0, 26);
+            txtFirstName.Location = new Point(0, 28);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(196, 15);
             txtFirstName.TabIndex = 0;
@@ -118,7 +118,7 @@
             // 
             txtLastName.BorderStyle = BorderStyle.None;
             txtLastName.Dock = DockStyle.Bottom;
-            txtLastName.Location = new Point(0, 30);
+            txtLastName.Location = new Point(0, 28);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(196, 15);
             txtLastName.TabIndex = 1;
@@ -127,16 +127,16 @@
             // 
             txtUsername.BorderStyle = BorderStyle.None;
             txtUsername.Dock = DockStyle.Bottom;
-            txtUsername.Location = new Point(0, 37);
+            txtUsername.Location = new Point(0, 28);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(196, 15);
-            txtUsername.TabIndex = 2;
+            txtUsername.TabIndex = 3;
             // 
             // txtPassword
             // 
             txtPassword.BorderStyle = BorderStyle.None;
             txtPassword.Dock = DockStyle.Bottom;
-            txtPassword.Location = new Point(0, 32);
+            txtPassword.Location = new Point(0, 28);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(196, 15);
@@ -146,10 +146,10 @@
             // 
             txtRepeatPassword.BorderStyle = BorderStyle.None;
             txtRepeatPassword.Dock = DockStyle.Bottom;
-            txtRepeatPassword.Location = new Point(0, 33);
+            txtRepeatPassword.Location = new Point(0, 31);
             txtRepeatPassword.Name = "txtRepeatPassword";
             txtRepeatPassword.PasswordChar = '*';
-            txtRepeatPassword.Size = new Size(198, 15);
+            txtRepeatPassword.Size = new Size(196, 15);
             txtRepeatPassword.TabIndex = 5;
             // 
             // lblRepeatPassword
@@ -169,7 +169,7 @@
             btnConfirm.Location = new Point(3, 314);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(75, 26);
-            btnConfirm.TabIndex = 10;
+            btnConfirm.TabIndex = 6;
             btnConfirm.Text = "Confirmar";
             btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
@@ -188,10 +188,10 @@
             // 
             txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Dock = DockStyle.Bottom;
-            txtEmail.Location = new Point(0, 25);
+            txtEmail.Location = new Point(0, 28);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(196, 15);
-            txtEmail.TabIndex = 3;
+            txtEmail.TabIndex = 2;
             // 
             // btnCancel
             // 
@@ -203,7 +203,7 @@
             btnCancel.Location = new Point(123, 314);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 29);
-            btnCancel.TabIndex = 12;
+            btnCancel.TabIndex = 7;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnClose_Click;
@@ -236,6 +236,16 @@
             panel1.Size = new Size(474, 414);
             panel1.TabIndex = 14;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(175, 19);
+            label1.Name = "label1";
+            label1.Size = new Size(107, 14);
+            label1.TabIndex = 20;
+            label1.Text = "Creando usuario";
+            // 
             // panel8
             // 
             panel8.Controls.Add(panel7);
@@ -253,10 +263,11 @@
             // 
             // panel7
             // 
+            panel7.BorderStyle = BorderStyle.FixedSingle;
             panel7.Controls.Add(lblRepeatPassword);
             panel7.Controls.Add(txtRepeatPassword);
             panel7.Dock = DockStyle.Top;
-            panel7.Location = new Point(0, 235);
+            panel7.Location = new Point(0, 225);
             panel7.Name = "panel7";
             panel7.Size = new Size(198, 48);
             panel7.TabIndex = 18;
@@ -267,9 +278,9 @@
             panel6.Controls.Add(label4);
             panel6.Controls.Add(txtPassword);
             panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 186);
+            panel6.Location = new Point(0, 180);
             panel6.Name = "panel6";
-            panel6.Size = new Size(198, 49);
+            panel6.Size = new Size(198, 45);
             panel6.TabIndex = 17;
             // 
             // panel4
@@ -278,9 +289,9 @@
             panel4.Controls.Add(txtUsername);
             panel4.Controls.Add(label3);
             panel4.Dock = DockStyle.Top;
-            panel4.Location = new Point(0, 132);
+            panel4.Location = new Point(0, 135);
             panel4.Name = "panel4";
-            panel4.Size = new Size(198, 54);
+            panel4.Size = new Size(198, 45);
             panel4.TabIndex = 15;
             // 
             // panel5
@@ -291,7 +302,7 @@
             panel5.Dock = DockStyle.Top;
             panel5.Location = new Point(0, 90);
             panel5.Name = "panel5";
-            panel5.Size = new Size(198, 42);
+            panel5.Size = new Size(198, 45);
             panel5.TabIndex = 16;
             // 
             // panel3
@@ -300,9 +311,9 @@
             panel3.Controls.Add(lblLastName);
             panel3.Controls.Add(txtLastName);
             panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(0, 43);
+            panel3.Location = new Point(0, 45);
             panel3.Name = "panel3";
-            panel3.Size = new Size(198, 47);
+            panel3.Size = new Size(198, 45);
             panel3.TabIndex = 1;
             // 
             // panel2
@@ -313,18 +324,8 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(198, 43);
+            panel2.Size = new Size(198, 45);
             panel2.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(175, 19);
-            label1.Name = "label1";
-            label1.Size = new Size(107, 14);
-            label1.TabIndex = 20;
-            label1.Text = "Creando usuario";
             // 
             // formCreateUser
             // 
@@ -336,7 +337,7 @@
             Controls.Add(tableLayoutPanel1);
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formCreateUser";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Crear Usuario";
             tableLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);

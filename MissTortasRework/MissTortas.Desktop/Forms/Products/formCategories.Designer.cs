@@ -149,8 +149,7 @@
             FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Name = "formCategories";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Categories";
-            WindowState = FormWindowState.Maximized;
+            Text = "Categorias";
             Load += formCategories_Load;
             tableLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);

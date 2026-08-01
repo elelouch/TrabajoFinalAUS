@@ -70,8 +70,9 @@
             dgvProducts.AllowUserToAddRows = false;
             dgvProducts.AllowUserToDeleteRows = false;
             dgvProducts.AutoGenerateColumns = false;
-            dgvProducts.BackgroundColor = SystemColors.ControlLight;
+            dgvProducts.BackgroundColor = Color.WhiteSmoke;
             dgvProducts.BorderStyle = BorderStyle.None;
+            dgvProducts.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProducts.Columns.AddRange(new DataGridViewColumn[] { Id, SaleProductName, descriptionDataGridViewTextBoxColumn, quantityDataGridViewTextBoxColumn, salePriceDataGridViewTextBoxColumn, stockProductIdDataGridViewTextBoxColumn });
             dgvProducts.DataSource = saleProductBindingSource;
@@ -130,7 +131,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.WhiteSmoke;
+            panel1.BackColor = SystemColors.ControlLight;
             panel1.Controls.Add(btnRefresh);
             panel1.Controls.Add(btnModifyProduct);
             panel1.Controls.Add(btnAddProduct);
@@ -145,9 +146,9 @@
             btnRefresh.BackColor = SystemColors.ControlLightLight;
             btnRefresh.Dock = DockStyle.Top;
             btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Location = new Point(0, 62);
+            btnRefresh.Location = new Point(0, 60);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(154, 31);
+            btnRefresh.Size = new Size(154, 30);
             btnRefresh.TabIndex = 2;
             btnRefresh.Text = "Refrescar";
             btnRefresh.UseVisualStyleBackColor = false;
@@ -158,7 +159,7 @@
             btnModifyProduct.BackColor = SystemColors.ControlLightLight;
             btnModifyProduct.Dock = DockStyle.Top;
             btnModifyProduct.FlatStyle = FlatStyle.Flat;
-            btnModifyProduct.Location = new Point(0, 32);
+            btnModifyProduct.Location = new Point(0, 30);
             btnModifyProduct.Name = "btnModifyProduct";
             btnModifyProduct.Size = new Size(154, 30);
             btnModifyProduct.TabIndex = 1;
@@ -173,7 +174,7 @@
             btnAddProduct.FlatStyle = FlatStyle.Flat;
             btnAddProduct.Location = new Point(0, 0);
             btnAddProduct.Name = "btnAddProduct";
-            btnAddProduct.Size = new Size(154, 32);
+            btnAddProduct.Size = new Size(154, 30);
             btnAddProduct.TabIndex = 0;
             btnAddProduct.Text = "Agregar Producto";
             btnAddProduct.UseVisualStyleBackColor = false;
@@ -190,8 +191,9 @@
             ClientSize = new Size(800, 420);
             Controls.Add(tlpProductsFromCategory);
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "formSaleProductsFromCategory";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Productos a la venta";
             Load += formProductsFromCategory_Load;
             tlpProductsFromCategory.ResumeLayout(false);

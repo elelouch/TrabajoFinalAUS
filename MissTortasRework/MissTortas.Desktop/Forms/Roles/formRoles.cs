@@ -34,6 +34,12 @@ namespace MissTortas.Desktop.Forms.Roles
                 roles = allRoles;
                 showRoles = new(allRoles);
                 dgvRoles.DataSource = showRoles;
+                if (showRoles.Count > 0)
+                {
+                    var firstRow = dgvRoles.Rows[0];
+                    firstRow.Selected = true;
+                    dgvRoles.CurrentCell = firstRow.Cells[0];
+                }
             }
             catch (ApiException exc)
             {
