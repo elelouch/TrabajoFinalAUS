@@ -199,12 +199,11 @@
             // 
             // lblHeader
             // 
-            lblHeader.AutoSize = true;
             lblHeader.Dock = DockStyle.Fill;
             lblHeader.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblHeader.Location = new Point(0, 0);
             lblHeader.Name = "lblHeader";
-            lblHeader.Size = new Size(43, 14);
+            lblHeader.Size = new Size(227, 43);
             lblHeader.TabIndex = 0;
             lblHeader.Text = "label2";
             // 
@@ -281,7 +280,6 @@
             tableLayoutPanel1.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel7.ResumeLayout(false);
-            panel7.PerformLayout();
             panel5.ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel4.PerformLayout();

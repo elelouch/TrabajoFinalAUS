@@ -1,0 +1,177 @@
+.cart-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.cart-search {
+    width: 280px;
+    max-width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ADC8F7;
+    border-radius: 999px;
+    outline: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    font-size: 0.9rem;
+}
+
+    .cart-search:focus {
+        border-color: #ADF7DC;
+        box-shadow: 0 0 0 3px rgba(173, 247, 220, 0.45);
+    }
+
+/* Wrapper handles the rounded corners + elevation, since border-radius
+   on <table> alone won't clip cell borders in most browsers */
+.cart-table-wrapper {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+    background: #fff;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+    .cart-table thead th {
+        background: linear-gradient(135deg, #F7DCAD, #F7B7AD);
+        color: #4a3b2e;
+        text-align: left;
+        padding: 0.85rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background 0.2s ease;
+    }
+
+        .cart-table thead th:hover {
+            background: linear-gradient(135deg, #F7ADC8, #F7B7AD);
+        }
+
+.sort-icon {
+    display: inline-block;
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+    color: #6b5a4d;
+}
+
+.cart-table tbody td {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.cart-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+    .cart-table tbody tr:hover {
+        background: rgba(173, 247, 220, 0.18);
+    }
+
+.cart-total {
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+/* Shared elevate/hover transition for all cart buttons.
+   Remove button keeps Bootstrap's btn-danger red, it just also gets the lift. */
+.cart-btn {
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+    .cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .cart-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    }
+
+.cart-btn-primary {
+    background: #ADC8F7;
+    color: #1e2a4a;
+}
+
+    .cart-btn-primary:hover {
+        background: #92b3f2;
+        color: #1e2a4a;
+    }
+
+.cart-btn-secondary {
+    background: #F7ADC8;
+    color: #4a1e33;
+}
+
+    .cart-btn-secondary:hover {
+        background: #f591b6;
+        color: #4a1e33;
+    }
+
+
+.cart-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    animation: cart-fade-in 0.15s ease;
+}
+
+.cart-modal {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    width: 360px;
+    max-width: 90vw;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    border-top: 4px solid #F7ADC8;
+    animation: cart-pop-in 0.18s ease;
+}
+
+    .cart-modal h5 {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .cart-modal p {
+        margin-bottom: 1.25rem;
+        color: #444;
+    }
+
+.cart-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+@keyframes cart-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes cart-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}

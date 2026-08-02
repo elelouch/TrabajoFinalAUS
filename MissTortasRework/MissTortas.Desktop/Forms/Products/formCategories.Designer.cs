@@ -103,11 +103,11 @@
             btnModifyCategory.BackColor = SystemColors.ControlLightLight;
             btnModifyCategory.Dock = DockStyle.Top;
             btnModifyCategory.FlatStyle = FlatStyle.Flat;
-            btnModifyCategory.Location = new Point(0, 64);
+            btnModifyCategory.Location = new Point(0, 70);
             btnModifyCategory.Name = "btnModifyCategory";
-            btnModifyCategory.Size = new Size(237, 31);
+            btnModifyCategory.Size = new Size(237, 35);
             btnModifyCategory.TabIndex = 2;
-            btnModifyCategory.Text = "Modificar Categoria";
+            btnModifyCategory.Text = "Modificar categoria";
             btnModifyCategory.UseVisualStyleBackColor = false;
             btnModifyCategory.Click += btnModifyCategory_Click;
             // 
@@ -116,12 +116,12 @@
             btnUnselect.BackColor = SystemColors.ControlLightLight;
             btnUnselect.Dock = DockStyle.Top;
             btnUnselect.FlatStyle = FlatStyle.Flat;
-            btnUnselect.Location = new Point(0, 33);
+            btnUnselect.Location = new Point(0, 35);
             btnUnselect.Name = "btnUnselect";
             btnUnselect.Padding = new Padding(1);
-            btnUnselect.Size = new Size(237, 31);
+            btnUnselect.Size = new Size(237, 35);
             btnUnselect.TabIndex = 1;
-            btnUnselect.Text = "Deseleccionar Categoria";
+            btnUnselect.Text = "Deseleccionar categoria";
             btnUnselect.UseVisualStyleBackColor = false;
             btnUnselect.Click += btnDeseleccionar_Click;
             // 
@@ -132,9 +132,9 @@
             btnCreateCategory.FlatStyle = FlatStyle.Flat;
             btnCreateCategory.Location = new Point(0, 0);
             btnCreateCategory.Name = "btnCreateCategory";
-            btnCreateCategory.Size = new Size(237, 33);
+            btnCreateCategory.Size = new Size(237, 35);
             btnCreateCategory.TabIndex = 0;
-            btnCreateCategory.Text = "Crear Categoria";
+            btnCreateCategory.Text = "Crear categoria";
             btnCreateCategory.UseVisualStyleBackColor = false;
             btnCreateCategory.Click += btnAddChild_Click;
             // 

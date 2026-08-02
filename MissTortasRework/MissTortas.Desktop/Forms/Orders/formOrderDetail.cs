@@ -23,7 +23,7 @@ namespace MissTortas.Desktop.Forms.Orders
             InitializeComponent();
             this.orderService = orderService;
             this.orderId = orderId;
-            this.Text = $"Order {orderId} details";
+            this.Text = $"Detalles de orden: {orderId}";
             this.saleProductsAsked = [];
             this.preparations = [];
             this.dgvPreparations.DataSource = preparations;
@@ -84,6 +84,18 @@ namespace MissTortas.Desktop.Forms.Orders
             foreach (var spa in order.SaleProducts)
             {
                 saleProductsAsked.Add(spa);
+            }
+            if (preparations.Count > 0)
+            {
+                var firstRow = dgvPreparations.Rows[0];
+                firstRow.Selected = true;
+                dgvPreparations.CurrentCell = firstRow.Cells[0];
+            }
+            if (saleProductsAsked.Count > 0)
+            {
+                var firstRow = dgvAskedSaleProducts.Rows[0];
+                firstRow.Selected = true;
+                dgvAskedSaleProducts.CurrentCell = firstRow.Cells[0];
             }
         }
         private void formOrderDetail_Load(object sender, EventArgs e)

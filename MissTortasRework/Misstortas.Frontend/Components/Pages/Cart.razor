@@ -3,10 +3,10 @@
 @using Misstortas.Frontend.Services.Order
 @using Misstortas.Frontend.Components.Checkout
 @using System.Security.Claims
+@using System.Linq
 @using Microsoft.AspNetCore.Components.Authorization
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-
 
 @page "/cart"
 
@@ -16,43 +16,83 @@
 @inject IOrderService OrderService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<h3>Shopping Cart</h3>
+<h3>Mis compras</h3>
+
 @if (!CartService.Items.Any())
 {
-    <p>Your cart is empty.</p>
+    <p>No hay productos por aquí...</p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Subtotal</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in CartService.Items)
-            {
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td>@item.QuantityAsked</td>
-                    <td>$@item.Product.SalePrice</td>
-                    <td>$@(item.QuantityAsked * (decimal)item.Product.SalePrice)</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm"
-                                @onclick="() => Remove(item.Product.Id)">
-                            Remove
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="cart-toolbar">
+        <input class="cart-search"
+               type="text"
+               placeholder="Buscar por nombre de producto..."
+               value="@searchTerm"
+               @oninput="OnSearchChanged" />
+    </div>
 
-    <h5>Total: $@CartService.TotalPrice</h5>
+    <div class="cart-table-wrapper">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th @onclick='() => SortBy("Product")'>
+                        Producto <span class="sort-icon">@SortIcon("Product")</span>
+                    </th>
+                    <th @onclick='() => SortBy("Qty")'>
+                        Cantidad <span class="sort-icon">@SortIcon("Qty")</span>
+                    </th>
+                    <th @onclick='() => SortBy("UnitPrice")'>
+                        Precio Unitario <span class="sort-icon">@SortIcon("UnitPrice")</span>
+                    </th>
+                    <th @onclick='() => SortBy("Subtotal")'>
+                        Subtotal <span class="sort-icon">@SortIcon("Subtotal")</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ApplyFilterAndSort(
+                    CartService.Items,
+                    i => i.Product.Name,
+                    i => (decimal)i.QuantityAsked,
+                    i => (decimal)i.Product.SalePrice))
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.QuantityAsked</td>
+                        <td>$@item.Product.SalePrice</td>
+                        <td>$@(item.QuantityAsked * (decimal)item.Product.SalePrice)</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm cart-btn"
+                                    @onclick="() => RequestRemove(item.Product.Id, item.Product.Name)">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (showRemoveConfirm)
+        {
+            <div class="cart-modal-overlay" @onclick="CancelRemove">
+                <div class="cart-modal" @onclick:stopPropagation="true">
+                    <h5>Confirmar eliminación</h5>
+                    <p>¿Querés eliminar <strong>@pendingRemoveProductName</strong> del carrito?</p>
+                    <div class="cart-modal-actions">
+                        <button class="btn cart-btn cart-btn-secondary" @onclick="CancelRemove">
+                            Cancelar
+                        </button>
+                        <button class="btn btn-danger cart-btn" @onclick="ConfirmRemove">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h5 class="cart-total">Total: $@CartService.TotalPrice</h5>
 
     @if (!showCheckout)
     {
@@ -65,13 +105,13 @@ else
                         <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
                     </div>
                 }
-                <button class="btn btn-primary mt-3" @onclick="ShowCheckout">
-                    Pay Order
+                <button class="btn cart-btn cart-btn-primary mt-3" @onclick="ShowCheckout">
+                    Pagar Pedido
                 </button>
             </Authorized>
             <NotAuthorized>
-                <a href="/signin" class="btn btn-primary mt-3">
-                    Sign In to Pay
+                <a href="/signin" class="btn cart-btn cart-btn-secondary mt-3">
+                    Iniciar sesión para pagar
                 </a>
             </NotAuthorized>
         </AuthorizeView>
@@ -87,6 +127,14 @@ else
     private bool showCheckout = false;
     private long createdOrderId = 0;
     private string? errorMessage;
+
+    private string searchTerm = string.Empty;
+    private string sortColumn = "Product";
+    private bool sortAscending = true;
+
+    private long? pendingRemoveProductId;
+    private string? pendingRemoveProductName;
+    private bool showRemoveConfirm = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,9 +159,88 @@ else
         _ = InvokeAsync(StateHasChanged);
     }
 
-    private async Task Remove(long productId)
+    private void OnSearchChanged(ChangeEventArgs e)
     {
-        await CartService.Remove(productId);
+        searchTerm = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void SortBy(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+    }
+
+    private string SortIcon(string column)
+    {
+        if (sortColumn != column) return string.Empty;
+        return sortAscending ? "▲" : "▼";
+    }
+
+    // Generic so it works regardless of the concrete type CartService.Items returns.
+    private IEnumerable<T> ApplyFilterAndSort<T>(
+        IEnumerable<T> items,
+        Func<T, string> nameSelector,
+        Func<T, decimal> qtySelector,
+        Func<T, decimal> priceSelector)
+    {
+        var result = items;
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            result = result.Where(i =>
+                nameSelector(i).Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        }
+
+        result = sortColumn switch
+        {
+            "Qty" => sortAscending
+                ? result.OrderBy(qtySelector)
+                : result.OrderByDescending(qtySelector),
+            "UnitPrice" => sortAscending
+                ? result.OrderBy(priceSelector)
+                : result.OrderByDescending(priceSelector),
+            "Subtotal" => sortAscending
+                ? result.OrderBy(i => qtySelector(i) * priceSelector(i))
+                : result.OrderByDescending(i => qtySelector(i) * priceSelector(i)),
+            _ => sortAscending
+                ? result.OrderBy(nameSelector)
+                : result.OrderByDescending(nameSelector),
+        };
+
+        return result;
+    }
+
+    private void RequestRemove(long productId, string productName)
+    {
+        pendingRemoveProductId = productId;
+        pendingRemoveProductName = productName;
+        showRemoveConfirm = true;
+    }
+
+    private void CancelRemove()
+    {
+        pendingRemoveProductId = null;
+        pendingRemoveProductName = null;
+        showRemoveConfirm = false;
+    }
+
+    private async Task ConfirmRemove()
+    {
+        if (pendingRemoveProductId is long productId)
+        {
+            await CartService.Remove(productId);
+        }
+
+        showRemoveConfirm = false;
+        pendingRemoveProductId = null;
+        pendingRemoveProductName = null;
     }
 
     private async Task ShowCheckout()
@@ -133,7 +260,7 @@ else
         catch (Exception ex)
         {
             // Log ex if you have a logger.
-            errorMessage = "Something went wrong while creating your order. Please try again.";
+            errorMessage = "Algo salió mal al crear tu pedido. Por favor, inténtalo de nuevo.";
         }
     }
 

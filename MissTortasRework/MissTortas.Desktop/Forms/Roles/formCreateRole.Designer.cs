@@ -131,13 +131,12 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
             label1.FlatStyle = FlatStyle.Flat;
             label1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(120, 14);
+            label1.Size = new Size(200, 41);
             label1.TabIndex = 0;
             label1.Text = "Creando nuevo rol";
             // 
@@ -175,7 +174,6 @@
             tableLayoutPanel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel4.ResumeLayout(false);
-            panel4.PerformLayout();
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

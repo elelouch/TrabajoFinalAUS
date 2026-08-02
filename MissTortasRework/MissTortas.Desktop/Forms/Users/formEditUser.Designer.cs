@@ -493,9 +493,9 @@
             lblPassword.Dock = DockStyle.Top;
             lblPassword.Location = new Point(0, 0);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(68, 14);
+            lblPassword.Size = new Size(105, 14);
             lblPassword.TabIndex = 11;
-            lblPassword.Text = "Contraseña";
+            lblPassword.Text = "Nueva contraseña";
             lblPassword.Click += lblPassword_Click;
             // 
             // txtPassword

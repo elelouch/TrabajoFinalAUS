@@ -36,7 +36,7 @@ namespace MissTortas.Desktop.Forms.Orders
             {
                 var newPrep = FromFormToCreateRequest();
                 var prep = await orderService.CreateOrderPreparationAsync(newPrep);
-                MessageBox.Show("New preparation created successfully.");
+                MessageBox.Show("Tarea creada exitosamente.");
                 RaisePreparationUpdate(prep);
             }
             catch (ApiException exc)
@@ -56,7 +56,7 @@ namespace MissTortas.Desktop.Forms.Orders
             {
                 var newPrep = FromFormToUpdateRequest();
                 var prep = await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
-                MessageBox.Show("Preparation updated successfully.");
+                MessageBox.Show("Tarea actualizada exitosamente.");
                 RaisePreparationUpdate(prep);
             }
             catch (ApiException exc)
@@ -115,7 +115,7 @@ namespace MissTortas.Desktop.Forms.Orders
             try
             {
                 var users = await this.userService.GetAllUsersAsync();
-                var newUsers = users.Prepend(new User { Username = "-- Select a user --" }).ToList();
+                var newUsers = users.Prepend(new User { Username = "-- Seleccione un usuario --" }).ToList();
                 this.comboAssignee.DataSource = newUsers;
                 comboAssignee.DisplayMember = nameof(User.Username);
                 comboAssignee.ValueMember = nameof(User.UserId);

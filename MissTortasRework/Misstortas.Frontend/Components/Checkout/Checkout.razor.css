@@ -1,0 +1,120 @@
+/* CSS for Checkout component */
+.checkout-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1060;
+    animation: checkout-fade-in 0.15s ease;
+}
+
+.checkout-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    width: 420px;
+    max-width: 92vw;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28), 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid transparent;
+    border-image: linear-gradient(90deg, #F7ADC8, #F7B7AD, #F7DCAD, #ADF7DC, #ADC8F7) 1;
+    animation: checkout-pop-in 0.18s ease;
+    position: relative;
+}
+
+.checkout-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+    .checkout-modal-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+.checkout-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+    .checkout-close-btn:hover {
+        color: #F7ADC8;
+        transform: scale(1.1);
+    }
+
+.checkout-select {
+    border-radius: 10px;
+    border: 1px solid #ADC8F7;
+    padding: 0.5rem 0.75rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+    .checkout-select:focus {
+        border-color: #ADF7DC;
+        box-shadow: 0 0 0 3px rgba(173, 247, 220, 0.45);
+        outline: none;
+    }
+
+.checkout-pay-btn {
+    background: #ADF7DC;
+    color: #1e4a3a;
+    border: none;
+    width: 100%;
+    padding: 0.65rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+    .checkout-pay-btn:hover:not(:disabled) {
+        background: #8ef2c7;
+        color: #1e4a3a;
+    }
+
+    .checkout-pay-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+.checkout-success {
+    text-align: center;
+    padding: 1rem 0 0.5rem;
+    animation: checkout-fade-in 0.2s ease;
+}
+
+.checkout-success-icon {
+    color: #2fa876;
+    margin-bottom: 0.75rem;
+}
+
+@keyframes checkout-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes checkout-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
