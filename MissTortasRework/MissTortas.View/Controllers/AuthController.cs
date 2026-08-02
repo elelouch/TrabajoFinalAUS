@@ -17,6 +17,7 @@ namespace MissTortas.View.Controllers
     [ApiController]
     public class AuthController(ISecurityService securityService, IUserService userServices, IValidator<MissTortasRegisterRequest> registerRequestValidator) : ControllerBase
     {
+        [AllowAnonymous]
         [HttpPost("signout")]
         public async Task<ActionResult> SignOutUser()
         {

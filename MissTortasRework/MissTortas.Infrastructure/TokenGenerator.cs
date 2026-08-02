@@ -35,7 +35,8 @@ namespace MissTortas.Infrastructure
             var tokenClaims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Sub, userId)
+                new(JwtRegisteredClaimNames.Sub, userId),
+                new(JwtRegisteredClaimNames.Name, "Roberto")
             };
 
             tokenClaims.AddRange(userPrincipal.Claims.Where(c => c.Type == Permission.ClaimName));

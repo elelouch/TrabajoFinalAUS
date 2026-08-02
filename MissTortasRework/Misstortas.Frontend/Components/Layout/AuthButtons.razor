@@ -1,12 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Misstortas.Frontend.Services.Auth
 
+@rendermode InteractiveServer
+
 @inject IAuthService AuthService
 
 <AuthorizeView>
     <Authorized>
         <div class="auth-buttons">
-            <span class="user-greeting">Hello, @context.User.Identity?.Name</span>
+            <span class="user-greeting">Hola!</span>
             <button class="btn btn-sm btn-outline-light" @onclick="SignOut">
                 <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Salir
             </button>
@@ -31,6 +33,6 @@
     private async Task SignOut()
     {
         await AuthService.SignOut();
-        NavigationManager.NavigateTo("/", forceLoad: true);
+        NavigationManager.NavigateTo("/signin", forceLoad: true);
     }
 }

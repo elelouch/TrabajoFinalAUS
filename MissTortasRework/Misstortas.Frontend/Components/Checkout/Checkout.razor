@@ -118,12 +118,12 @@
 
             await PaymentService.PayOrderAsync(payOrder);
             await CartService.Clear();
-            // await OnPaymentSuccess.InvokeAsync();
+            await OnPaymentSuccess.InvokeAsync();
 
             showSuccessModal = true;
             StateHasChanged();
             await Task.Delay(2500);  // Let the user read the message
-            // NavigationManager.NavigateTo("/products");
+            NavigationManager.NavigateTo("/products");
         }
         catch (HttpRequestException ex)
         {

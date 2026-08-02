@@ -346,5 +346,12 @@ namespace MissTortas.Services
             await orderRepository.SaveChangesAsync();
             return orderMapper.OrderToDTO(order);
         }
+
+        public async Task<List<OrderDTO>> GetOrdersByClientIdAsync(long clientId)
+        {
+            var orders = await orderRepository.GetOrdersByClientIdAsync(clientId);
+            var ret = orderMapper.OrderToDTO(orders);
+            return ret;
+        }
     }
 }

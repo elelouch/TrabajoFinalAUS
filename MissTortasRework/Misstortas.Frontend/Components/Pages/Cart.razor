@@ -118,7 +118,9 @@ else
     }
     else
     {
-        <Checkout OrderId="createdOrderId" OnPaymentSuccess="HandlePaymentSuccess" />
+        <Checkout OrderId="createdOrderId"
+                  OnPaymentSuccess="HandlePaymentSuccess"
+                  OnClose="() => showCheckout = false" />
     }
 }
 

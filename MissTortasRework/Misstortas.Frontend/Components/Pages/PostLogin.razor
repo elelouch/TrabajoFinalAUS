@@ -7,6 +7,9 @@
 @code {
     [SupplyParameterFromQuery]
     private string? Token { get; set; }
+    [SupplyParameterFromQuery]
+    private string? RefreshToken { get; set; }
+
 
     protected override void OnInitialized()
     {
@@ -18,6 +21,7 @@
         {
             HttpContextAccessor.HttpContext!.Response.Cookies.Append(AuthConstants.CookieAccessToken, Token, new CookieOptions { Expires = DateTimeOffset.Now.AddMinutes(5), HttpOnly = true, Secure = true});
             HttpContextAccessor.HttpContext!.Response.Headers.Append("Authentication", $"Bearer: {Token}");
+            HttpContextAccessor.HttpContext!.Response.Cookies.Append(AuthConstants.CookieRefreshToken, Token, new CookieOptions { Expires = DateTimeOffset.Now.AddMinutes(5), HttpOnly = true, Secure = true });
         }
         NavigationManager.NavigateTo("/", forceLoad: true);
     }

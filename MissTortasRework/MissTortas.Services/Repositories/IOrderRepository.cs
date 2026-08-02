@@ -21,6 +21,7 @@ namespace MissTortas.Services.Repositories
         public Task<List<OrderPreparation>> GetUserOrderPreparationsAsync(long userId);
         public Task<List<OrderDADto>> GetAllOrdersAsync();
         public Task<OrderDADto?> GetDetailedOrderAsync(long id);
+        public Task<List<Order>> GetOrdersByClientIdAsync(long clientId);
         public Task EndAllOrderPreparationsAsync(long orderId);
         public Task<bool> IsOrderAssigneeAsync(long userId,long orderId);
     }

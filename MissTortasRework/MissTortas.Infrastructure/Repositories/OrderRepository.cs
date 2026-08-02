@@ -127,5 +127,10 @@ namespace MissTortas.Infrastructure.Repositories
         {
             await orderPreparationsSet.AddAsync(orderPreparation);
         }
+
+        public Task<List<Order>> GetOrdersByClientIdAsync(long clientId)
+        {
+            return orderSet.Where(o => o.Consultancy.ClientId == clientId).ToListAsync();
+        }
     }
 }

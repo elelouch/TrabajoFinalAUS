@@ -12,6 +12,7 @@ using MissTortas.Services.Interfaces;
 using MissTortas.Services.Repositories.DTO;
 using MissTortas.View.DTO.Orders;
 using MissTortas.View.Mappers;
+using System.Security.Claims;
 
 
 
@@ -23,17 +24,31 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         IValidator<CreateOrderRequest> createOrderValidator,
         IOrderService orderService,
-        IPresentationOrderMapper orderMapper
+        IPresentationOrderMapper orderMapper,
+        UserManager<ApplicationUser> userManager
         ) : ControllerBase
     {
-        [Authorize(Policy = PolicyName.ManageOrders)]
         [HttpGet]
         public async Task<ActionResult<List<OrderResponse>>> GetAllOrders()
         {
-            var orders = await orderService.GetAllOrdersAsync();
-            var ret = await orderMapper.FromOrderDTOToResponse(orders);
-            return Ok(ret);
+            var authRes = await authorizationService.AuthorizeAsync(User, PolicyName.ManageOrders);
+            if (authRes.Succeeded)
+            {
+                var allOrders = await orderService.GetAllOrdersAsync();
+                var retAllOrders = await orderMapper.FromOrderDTOToResponse(allOrders);
+                return Ok(retAllOrders);
+            }
+
+            var appUser = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+            if (appUser == null)
+            {
+                return Unauthorized();
+            }
+            var userOrders = await orderService.GetOrdersByClientIdAsync(appUser.UserId);
+            var retUserOrders = await orderMapper.FromOrderDTOToResponse(userOrders);
+            return Ok(retUserOrders);
         }
+            
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderResponse>> GetOrder(long id)
@@ -63,7 +78,7 @@ namespace MissTortas.View.Controllers
             if (dto.AlreadyPaid)
             {
                 var manageOrder = await authorizationService.AuthorizeAsync(User, PolicyName.ManageOrders);
-                if(!manageOrder.Succeeded)
+                if (!manageOrder.Succeeded)
                 {
                     return Forbid();
                 }
@@ -84,7 +99,7 @@ namespace MissTortas.View.Controllers
                 return Ok();
             }
             var manageOrder = await authorizationService.AuthorizeAsync(User, PolicyName.ManageOrders);
-            if(!manageOrder.Succeeded)
+            if (!manageOrder.Succeeded)
             {
                 return Forbid();
             }
