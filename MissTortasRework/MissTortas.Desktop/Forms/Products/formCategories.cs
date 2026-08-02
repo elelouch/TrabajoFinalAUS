@@ -36,6 +36,11 @@ namespace MissTortas.Desktop.Forms.Products
 
         private async void formCategories_Load(object sender, EventArgs e)
         {
+            await LoadCategories();
+        }
+
+        private async Task LoadCategories()
+        {
             try
             {
                 tvCategories.BeginUpdate();
@@ -53,7 +58,6 @@ namespace MissTortas.Desktop.Forms.Products
                     Dispose();
                 }
             }
-
         }
 
         private void TvCategories_MouseMove(object? sender, MouseEventArgs e)
@@ -99,16 +103,14 @@ namespace MissTortas.Desktop.Forms.Products
                 ForeColor = category.IsFinal ? Color.Black : Color.Gray
             };
             treeMap.Add(category.ProductCategoryId, node);
-            // Add child categories (recursive)
             foreach (var child in category.Children)
             {
                 node.Nodes.Add(CreateCategoryNode(child));
             }
 
-            // Add products belonging to this category
             foreach (var product in category.Products)
             {
-                var productNode = new TreeNode(product.Name) // adjust to your Product properties
+                var productNode = new TreeNode(product.Name)
                 {
                     Tag = product
                 };
@@ -188,6 +190,13 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 tvCategories.SelectedNode = null;
             }
+        }
+
+        private async void btnRefresh_Click(object sender, EventArgs e)
+        {
+            treeMap.Clear();
+            tvCategories.Nodes.Clear();
+            await LoadCategories();
         }
     }
 }

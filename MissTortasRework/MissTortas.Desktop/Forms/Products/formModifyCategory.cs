@@ -23,7 +23,7 @@ namespace MissTortas.Desktop.Forms.Products
             Dispose();
         }
 
-        private void btnConfirm_Click(object sender, EventArgs e)
+        private async void btnConfirm_Click(object sender, EventArgs e)
         {
             var newPc = (ProductCategory)this.productCategory.Clone();
             var newName = txtCategoryName.Text;
@@ -34,7 +34,24 @@ namespace MissTortas.Desktop.Forms.Products
             }
             newPc.Name = newName;
             newPc.Enabled = chkEnabled.Checked;
-            //newPc.ProductCategoryId;
+            if(comboMoveParent.SelectedItem is ProductCategory selectedParent && selectedParent.ProductCategoryId != 0)
+            {
+                newPc.ParentId = selectedParent.ProductCategoryId;
+            }
+            try
+            {
+                await productService.UpdateProductCategoryAsync(newPc);
+                MessageBox.Show("Categoria actualizada correctamente. Vuelva a cargar las categorias para ver los cambios.", "Operación exitosa.", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                Dispose();
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == System.Net.HttpStatusCode.Forbidden || exc.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Dispose();
+                }
+            }
         }
 
         private async void formModifyCategory_Load(object sender, EventArgs e)
