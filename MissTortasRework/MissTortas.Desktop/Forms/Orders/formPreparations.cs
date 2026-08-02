@@ -1,17 +1,7 @@
-﻿using MissTortas.Desktop.Forms.Products;
-using MissTortas.Desktop.Model;
+﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.OrdersService;
-using MissTortas.Desktop.Services.PermissionService;
-using MissTortas.Desktop.Services.ProductService;
-using MissTortas.Desktop.Services.RoleService;
 using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Orders
 {
@@ -78,6 +68,12 @@ namespace MissTortas.Desktop.Forms.Orders
                 {
                     preparations.Add(prep);
                 }
+                if (preparations.Count > 0)
+                {
+                    var firstRow = dgvPreparations.Rows[0];
+                    firstRow.Selected = true;
+                    dgvPreparations.CurrentCell = firstRow.Cells[0];
+                }
             }
             catch (ApiException exc)
             {
@@ -91,7 +87,7 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private void btnOrderDetail_Click(object sender, EventArgs e)
         {
-            if(dgvPreparations.SelectedRows.Count <= 0)
+            if (dgvPreparations.SelectedRows.Count <= 0)
             {
                 MessageBox.Show("Please, select a row");
                 return;

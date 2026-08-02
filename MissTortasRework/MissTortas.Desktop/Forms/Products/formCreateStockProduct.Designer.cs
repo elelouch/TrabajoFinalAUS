@@ -163,7 +163,7 @@
             // 
             btnCancel.BackColor = Color.Red;
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = SystemColors.ControlLightLight;
             btnCancel.Location = new Point(253, 346);
             btnCancel.Name = "btnCancel";

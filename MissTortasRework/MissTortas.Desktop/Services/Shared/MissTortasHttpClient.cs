@@ -221,62 +221,62 @@ namespace MissTortas.Desktop.Services.Shared
             return request;
         }
 
-    //    public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
-    //ExecuteWithRetry<T>(() => SendFormDataAsync(endpoint, data, files));
+        //    public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
+        //ExecuteWithRetry<T>(() => SendFormDataAsync(endpoint, data, files));
 
-    //    private async Task<HttpResponseMessage> SendFormDataAsync(
-    //            string endpoint,
-    //            object data,
-    //            List<(Stream stream, string fileName)> files
-    //        )
-    //    {
-    //        using var content = new MultipartFormDataContent();
+        //    private async Task<HttpResponseMessage> SendFormDataAsync(
+        //            string endpoint,
+        //            object data,
+        //            List<(Stream stream, string fileName)> files
+        //        )
+        //    {
+        //        using var content = new MultipartFormDataContent();
 
-    //        // Add form fields
-    //        if (data != null)
-    //        {
-    //            var properties = data.GetType().GetProperties();
-    //            foreach (var prop in properties)
-    //            {
-    //                var value = prop.GetValue(data);
-    //                if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
-    //                {
-    //                    content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
-    //                }
-    //            }
-    //        }
+        //        // Add form fields
+        //        if (data != null)
+        //        {
+        //            var properties = data.GetType().GetProperties();
+        //            foreach (var prop in properties)
+        //            {
+        //                var value = prop.GetValue(data);
+        //                if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
+        //                {
+        //                    content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
+        //                }
+        //            }
+        //        }
 
-    //        if (files != null)
-    //        {
-    //            foreach (var (stream, fileName) in files)
-    //            {
-    //                var streamContent = new StreamContent(stream);
-    //                content.Add(streamContent, "files", fileName);
-    //            }
-    //        }
+        //        if (files != null)
+        //        {
+        //            foreach (var (stream, fileName) in files)
+        //            {
+        //                var streamContent = new StreamContent(stream);
+        //                content.Add(streamContent, "files", fileName);
+        //            }
+        //        }
 
-    //        // Temporarily remove the Accept header for this multipart request
-    //        var acceptHeader = httpClient.DefaultRequestHeaders.Accept.FirstOrDefault();
-    //        httpClient.DefaultRequestHeaders.Accept.Clear();
+        //        // Temporarily remove the Accept header for this multipart request
+        //        var acceptHeader = httpClient.DefaultRequestHeaders.Accept.FirstOrDefault();
+        //        httpClient.DefaultRequestHeaders.Accept.Clear();
 
-    //        try
-    //        {
-    //            return await httpClient.PostAsync(endpoint, content);
-    //        }
-    //        finally
-    //        {
-    //            // Restore the Accept header
-    //            if (acceptHeader != null)
-    //            {
-    //                httpClient.DefaultRequestHeaders.Accept.Add(acceptHeader);
-    //            }
-    //            else
-    //            {
-    //                httpClient.DefaultRequestHeaders.Accept.Add(
-    //                    new MediaTypeWithQualityHeaderValue("application/json")
-    //                );
-    //            }
-    //        }
-    //    }
+        //        try
+        //        {
+        //            return await httpClient.PostAsync(endpoint, content);
+        //        }
+        //        finally
+        //        {
+        //            // Restore the Accept header
+        //            if (acceptHeader != null)
+        //            {
+        //                httpClient.DefaultRequestHeaders.Accept.Add(acceptHeader);
+        //            }
+        //            else
+        //            {
+        //                httpClient.DefaultRequestHeaders.Accept.Add(
+        //                    new MediaTypeWithQualityHeaderValue("application/json")
+        //                );
+        //            }
+        //        }
+        //    }
     }
 }

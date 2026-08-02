@@ -108,15 +108,15 @@
             // categoriesToolStripMenuItem
             // 
             categoriesToolStripMenuItem.Name = "categoriesToolStripMenuItem";
-            categoriesToolStripMenuItem.Size = new Size(199, 22);
-            categoriesToolStripMenuItem.Text = "Gestion de Categorias";
+            categoriesToolStripMenuItem.Size = new Size(197, 22);
+            categoriesToolStripMenuItem.Text = "Gestion de categorias";
             categoriesToolStripMenuItem.Click += categoriesToolStripMenuItem_Click;
             // 
             // productsToolStripMenuItem1
             // 
             productsToolStripMenuItem1.Name = "productsToolStripMenuItem1";
-            productsToolStripMenuItem1.Size = new Size(199, 22);
-            productsToolStripMenuItem1.Text = "Gestion de Productos";
+            productsToolStripMenuItem1.Size = new Size(197, 22);
+            productsToolStripMenuItem1.Text = "Gestion de productos";
             productsToolStripMenuItem1.Click += productsToolStripMenuItem1_Click;
             // 
             // ordersToolStripMenuItem
@@ -131,15 +131,15 @@
             // orderManagementToolStripMenuItem
             // 
             orderManagementToolStripMenuItem.Name = "orderManagementToolStripMenuItem";
-            orderManagementToolStripMenuItem.Size = new Size(186, 22);
-            orderManagementToolStripMenuItem.Text = "Gestion de Ordenes";
+            orderManagementToolStripMenuItem.Size = new Size(195, 22);
+            orderManagementToolStripMenuItem.Text = "Gestion de ordenes";
             orderManagementToolStripMenuItem.Click += orderManagementToolStripMenuItem_Click;
             // 
             // preparationsToolStripMenuItem
             // 
             preparationsToolStripMenuItem.Name = "preparationsToolStripMenuItem";
-            preparationsToolStripMenuItem.Size = new Size(186, 22);
-            preparationsToolStripMenuItem.Text = "Tareas";
+            preparationsToolStripMenuItem.Size = new Size(195, 22);
+            preparationsToolStripMenuItem.Text = "Ver tareas asignadas";
             preparationsToolStripMenuItem.Click += preparationsToolStripMenuItem_Click;
             // 
             // formMain

@@ -1,9 +1,6 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MissTortas.Desktop.Services.OrdersService
 {
@@ -13,7 +10,7 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public OrderService(IMissTortasHttpClient httpClient)
         {
-            this.httpClient = httpClient;            
+            this.httpClient = httpClient;
         }
 
         public async Task<Order> GetOrderByIdAsync(long id)
@@ -40,7 +37,7 @@ namespace MissTortas.Desktop.Services.OrdersService
 
         public async Task EndOrderPreparationAsync(long orderPreparationId)
         {
-            await httpClient.PatchAsync<object>($"orderpreparations/{orderPreparationId}", new {Status = "end"});
+            await httpClient.PatchAsync<object>($"orderpreparations/{orderPreparationId}", new { Status = "end" });
         }
 
         public async Task<List<Preparation>> GetUserPreparationsAsync()

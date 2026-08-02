@@ -1,7 +1,6 @@
 ﻿using MissTortas.Desktop.Model;
 using MissTortas.Desktop.Services.ProductService;
 using MissTortas.Desktop.Services.Shared;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MissTortas.Desktop.Forms.Products
 {
@@ -15,9 +14,9 @@ namespace MissTortas.Desktop.Forms.Products
             this.productService = productService;
             this.treeMap = [];
 
-            tvCategories.FullRowSelect = true;             
-            tvCategories.ShowLines = false;                 
-            tvCategories.ShowPlusMinus = false;             
+            tvCategories.FullRowSelect = true;
+            tvCategories.ShowLines = false;
+            tvCategories.ShowPlusMinus = false;
             tvCategories.HideSelection = false;
             // Opcional: ajustar altura y espaciado
             tvCategories.ItemHeight = 25;

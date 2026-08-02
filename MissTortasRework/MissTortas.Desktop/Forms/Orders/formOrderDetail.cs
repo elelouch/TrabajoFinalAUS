@@ -2,14 +2,8 @@
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Net;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Orders
 {
@@ -70,7 +64,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 ErrorDisplay.Show(this, exc);
                 if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    MessageBox.Show("Unauthorized");
+                    MessageBox.Show("No autorizado.");
                     this.Dispose();
                 }
             }

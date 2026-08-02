@@ -2,13 +2,7 @@
 using MissTortas.Desktop.Services.PermissionService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Users
 {

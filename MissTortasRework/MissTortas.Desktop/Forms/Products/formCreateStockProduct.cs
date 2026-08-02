@@ -21,7 +21,7 @@ namespace MissTortas.Desktop.Forms.Products
             this.productService = productService;
             this.productCategory = pc;
             this.productToModify = product;
-            if(product != null)
+            if (product != null)
             {
                 this.lblHeader.Text = $"Modificando producto {product.Name} ({product.Id}).";
                 this.chkEnabled.Checked = product.Enabled;

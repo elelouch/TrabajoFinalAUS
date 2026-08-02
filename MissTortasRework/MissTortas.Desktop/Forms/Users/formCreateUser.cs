@@ -30,8 +30,8 @@ namespace MissTortas.Desktop.Forms
             if (txtRepeatPassword.Text != txtPassword.Text)
             {
                 MessageBox.Show(
-                    "Passwords don't match",
-                    "Wrong password",
+                    "Las contraseñas no coinciden",
+                    "Contraseña incorrecta",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
@@ -52,8 +52,8 @@ namespace MissTortas.Desktop.Forms
                 };
                 var userId = await _authService.SignUpAsync(signUpRequest);
                 MessageBox.Show(
-                    "User successfully registered.",
-                    "Success",
+                    "Usuario registrado exitosamente.",
+                    "Éxito",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
@@ -73,8 +73,8 @@ namespace MissTortas.Desktop.Forms
             catch (FormatException)
             {
                 MessageBox.Show(
-                    "Email is not valid",
-                    "EmailNotValid",
+                    "El correo electrónico no es válido",
+                    "Correo no válido",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );

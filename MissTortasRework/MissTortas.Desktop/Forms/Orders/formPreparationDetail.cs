@@ -4,14 +4,7 @@ using MissTortas.Desktop.Services.DTO;
 using MissTortas.Desktop.Services.OrdersService;
 using MissTortas.Desktop.Services.Shared;
 using MissTortas.Desktop.Services.UserService;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Net;
-using System.Text;
-using System.Windows.Forms;
 
 namespace MissTortas.Desktop.Forms.Orders
 {
@@ -51,7 +44,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 ErrorDisplay.Show(this, exc);
                 if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    MessageBox.Show("Unauthorized");
+                    MessageBox.Show("No autorizado");
                     this.Dispose();
                 }
             }
@@ -71,7 +64,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 ErrorDisplay.Show(this, exc);
                 if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    MessageBox.Show("Unauthorized");
+                    MessageBox.Show("No autorizado.");
                     this.Dispose();
                 }
             }
@@ -100,7 +93,6 @@ namespace MissTortas.Desktop.Forms.Orders
                 {
                     UpdatePreparation();
                 }
-                Dispose();
 
             }
             catch (ApiException ex)
@@ -123,15 +115,16 @@ namespace MissTortas.Desktop.Forms.Orders
             try
             {
                 var users = await this.userService.GetAllUsersAsync();
-                var newUsers = users.Prepend(new User {Username = "-- Select a user --" }).ToList();
+                var newUsers = users.Prepend(new User { Username = "-- Select a user --" }).ToList();
                 this.comboAssignee.DataSource = newUsers;
                 comboAssignee.DisplayMember = nameof(User.Username);
                 comboAssignee.ValueMember = nameof(User.UserId);
-                
+
                 if (preparationId == 0)
                 {
                     this.txtOrderId.Text = orderId.ToString();
                     this.txtPrepararationId.Text = preparationId.ToString();
+                    this.lblHeader.Text = "Creando nueva tarea.";
                 }
                 else
                 {
@@ -139,6 +132,7 @@ namespace MissTortas.Desktop.Forms.Orders
                     var userFound = newUsers.Find(u => u.Username == preparation.AssigneeId);
                     comboAssignee.SelectedIndex = userFound == null ? 0 : newUsers.IndexOf(userFound);
                     FromPreparationToForm(preparation);
+                    this.lblHeader.Text = $"Modificando tarea con identificador: {preparation.Id}.";
                 }
             }
             catch (ApiException ex)
@@ -178,7 +172,10 @@ namespace MissTortas.Desktop.Forms.Orders
                 OrderId = int.Parse(this.txtOrderId.Text),
                 AssigneeId = ((Guid)(this.comboAssignee.SelectedValue ?? "")).ToString(),
             };
-
+            if(dto.AssigneeId.DefaultIfEmpty() == null)
+            {
+                MessageBox.Show("No se designo un responsable de la tarea.");
+            }
             return dto;
         }
     }

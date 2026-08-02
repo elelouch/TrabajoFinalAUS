@@ -62,7 +62,7 @@ namespace MissTortas.Desktop.Forms.Users
                 {
                     shownUsers.Add(user);
                 }
-                if(shownUsers.Count > 0)
+                if (shownUsers.Count > 0)
                 {
                     var firstRow = dgvUsers.Rows[0];
                     firstRow.Selected = true;

@@ -26,7 +26,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 if (productCategory != null)
                 {
-                    this.Text = $"Productos de la categoria: '{productCategory.Name}'({productCategory.ProductCategoryId}) -" ;
+                    this.Text = $"Productos de la categoria: '{productCategory.Name}'({productCategory.ProductCategoryId}) -";
                     var products = await productService.GetProductsFromCategoryAsync(productCategory.ProductCategoryId);
                     this.products = [.. products];
                     dgvProducts.DataSource = this.products;
