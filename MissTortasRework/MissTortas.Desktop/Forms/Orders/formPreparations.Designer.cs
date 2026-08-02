@@ -36,10 +36,10 @@
             Detail = new DataGridViewTextBoxColumn();
             doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             preparationBindingSource = new BindingSource(components);
+            btnRefresh = new Button();
             btnOrderDetail = new Button();
             btnCancel = new Button();
             btnEndPreparation = new Button();
-            btnRefresh = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -119,6 +119,19 @@
             // 
             preparationBindingSource.DataSource = typeof(Model.Preparation);
             // 
+            // btnRefresh
+            // 
+            btnRefresh.BackColor = SystemColors.ControlLightLight;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Location = new Point(0, 70);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(146, 35);
+            btnRefresh.TabIndex = 3;
+            btnRefresh.Text = "Refrescar";
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
             // btnOrderDetail
             // 
             btnOrderDetail.BackColor = SystemColors.ControlLightLight;
@@ -140,9 +153,9 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = SystemColors.ControlLightLight;
-            btnCancel.Location = new Point(0, 397);
+            btnCancel.Location = new Point(0, 385);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(146, 23);
+            btnCancel.Size = new Size(146, 35);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
@@ -158,19 +171,6 @@
             btnEndPreparation.Text = "Finalizar tarea";
             btnEndPreparation.UseVisualStyleBackColor = true;
             btnEndPreparation.Click += btnEndPreparation_Click;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.BackColor = SystemColors.ControlLightLight;
-            btnRefresh.Dock = DockStyle.Top;
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Location = new Point(0, 70);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(146, 35);
-            btnRefresh.TabIndex = 3;
-            btnRefresh.Text = "Refrescar";
-            btnRefresh.UseVisualStyleBackColor = false;
-            btnRefresh.Click += btnRefresh_Click;
             // 
             // formPreparations
             // 

@@ -137,7 +137,7 @@
             btnCancel.ForeColor = SystemColors.ControlLightLight;
             btnCancel.Location = new Point(150, 259);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 30);
+            btnCancel.Size = new Size(78, 30);
             btnCancel.TabIndex = 7;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;

@@ -39,6 +39,7 @@
             panel1 = new Panel();
             btnCancel = new Button();
             btnDetails = new Button();
+            btnRefresh = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)orderBindingSource).BeginInit();
@@ -113,6 +114,7 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(btnRefresh);
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnDetails);
             panel1.Dock = DockStyle.Fill;
@@ -129,9 +131,9 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = SystemColors.ControlLightLight;
-            btnCancel.Location = new Point(0, 393);
+            btnCancel.Location = new Point(0, 379);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(154, 21);
+            btnCancel.Size = new Size(154, 35);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
@@ -149,6 +151,18 @@
             btnDetails.Text = "Ver detalle";
             btnDetails.UseVisualStyleBackColor = false;
             btnDetails.Click += btnDetails_Click;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.BackColor = SystemColors.ControlLightLight;
+            btnRefresh.Dock = DockStyle.Top;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Location = new Point(0, 30);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(154, 35);
+            btnRefresh.TabIndex = 2;
+            btnRefresh.Text = "Refrescar";
+            btnRefresh.UseVisualStyleBackColor = false;
             // 
             // formOrders
             // 
@@ -181,5 +195,6 @@
         private DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn statusIdDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn clientUserIdDataGridViewTextBoxColumn;
+        private Button btnRefresh;
     }
 }
