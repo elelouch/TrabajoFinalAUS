@@ -131,9 +131,9 @@
             btnRefresh.BackColor = SystemColors.ControlLightLight;
             btnRefresh.Dock = DockStyle.Top;
             btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Location = new Point(0, 70);
+            btnRefresh.Location = new Point(0, 60);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(154, 35);
+            btnRefresh.Size = new Size(154, 30);
             btnRefresh.TabIndex = 7;
             btnRefresh.Text = "Refrescar";
             btnRefresh.UseVisualStyleBackColor = false;
@@ -160,9 +160,9 @@
             btnEditUser.BackColor = SystemColors.ControlLightLight;
             btnEditUser.Dock = DockStyle.Top;
             btnEditUser.FlatStyle = FlatStyle.Flat;
-            btnEditUser.Location = new Point(0, 35);
+            btnEditUser.Location = new Point(0, 30);
             btnEditUser.Name = "btnEditUser";
-            btnEditUser.Size = new Size(154, 35);
+            btnEditUser.Size = new Size(154, 30);
             btnEditUser.TabIndex = 11;
             btnEditUser.Text = "Modificar";
             btnEditUser.UseVisualStyleBackColor = false;
@@ -175,7 +175,7 @@
             btnAddUser.FlatStyle = FlatStyle.Flat;
             btnAddUser.Location = new Point(0, 0);
             btnAddUser.Name = "btnAddUser";
-            btnAddUser.Size = new Size(154, 35);
+            btnAddUser.Size = new Size(154, 30);
             btnAddUser.TabIndex = 8;
             btnAddUser.Text = "Agregar";
             btnAddUser.UseVisualStyleBackColor = false;

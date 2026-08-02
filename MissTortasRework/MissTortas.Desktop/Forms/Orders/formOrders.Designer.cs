@@ -57,7 +57,7 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(800, 450);
+            tableLayoutPanel1.Size = new Size(800, 420);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // dgvOrders
@@ -65,6 +65,9 @@
             dgvOrders.AllowUserToAddRows = false;
             dgvOrders.AllowUserToDeleteRows = false;
             dgvOrders.AutoGenerateColumns = false;
+            dgvOrders.BackgroundColor = Color.WhiteSmoke;
+            dgvOrders.BorderStyle = BorderStyle.None;
+            dgvOrders.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
             dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvOrders.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, statusDataGridViewTextBoxColumn, statusIdDataGridViewTextBoxColumn, clientUserIdDataGridViewTextBoxColumn });
             dgvOrders.DataSource = orderBindingSource;
@@ -72,34 +75,34 @@
             dgvOrders.Location = new Point(3, 3);
             dgvOrders.Name = "dgvOrders";
             dgvOrders.ReadOnly = true;
-            dgvOrders.Size = new Size(634, 444);
+            dgvOrders.Size = new Size(634, 414);
             dgvOrders.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
             // 
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             idDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // statusDataGridViewTextBoxColumn
             // 
             statusDataGridViewTextBoxColumn.DataPropertyName = "Status";
-            statusDataGridViewTextBoxColumn.HeaderText = "Status";
+            statusDataGridViewTextBoxColumn.HeaderText = "Estado";
             statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
             statusDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // statusIdDataGridViewTextBoxColumn
             // 
             statusIdDataGridViewTextBoxColumn.DataPropertyName = "StatusId";
-            statusIdDataGridViewTextBoxColumn.HeaderText = "StatusId";
+            statusIdDataGridViewTextBoxColumn.HeaderText = "Identificador Estado";
             statusIdDataGridViewTextBoxColumn.Name = "statusIdDataGridViewTextBoxColumn";
             statusIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // clientUserIdDataGridViewTextBoxColumn
             // 
             clientUserIdDataGridViewTextBoxColumn.DataPropertyName = "ClientUserId";
-            clientUserIdDataGridViewTextBoxColumn.HeaderText = "ClientUserId";
+            clientUserIdDataGridViewTextBoxColumn.HeaderText = "Identificador del cliente";
             clientUserIdDataGridViewTextBoxColumn.Name = "clientUserIdDataGridViewTextBoxColumn";
             clientUserIdDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -109,43 +112,55 @@
             // 
             // panel1
             // 
+            panel1.BackColor = SystemColors.ControlLight;
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnDetails);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(643, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(154, 444);
+            panel1.Size = new Size(154, 414);
             panel1.TabIndex = 1;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(18, 9);
+            btnCancel.BackColor = Color.Red;
+            btnCancel.Dock = DockStyle.Bottom;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = SystemColors.ControlLightLight;
+            btnCancel.Location = new Point(0, 393);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(92, 23);
+            btnCancel.Size = new Size(154, 21);
             btnCancel.TabIndex = 1;
-            btnCancel.Text = "Cancel";
-            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Text = "Cancelar";
+            btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
             // 
             // btnDetails
             // 
-            btnDetails.Location = new Point(18, 50);
+            btnDetails.BackColor = SystemColors.ControlLightLight;
+            btnDetails.Dock = DockStyle.Top;
+            btnDetails.FlatStyle = FlatStyle.Flat;
+            btnDetails.Location = new Point(0, 0);
             btnDetails.Name = "btnDetails";
-            btnDetails.Size = new Size(92, 23);
+            btnDetails.Size = new Size(154, 30);
             btnDetails.TabIndex = 0;
-            btnDetails.Text = "Detail";
-            btnDetails.UseVisualStyleBackColor = true;
+            btnDetails.Text = "Ver detalle";
+            btnDetails.UseVisualStyleBackColor = false;
             btnDetails.Click += btnDetails_Click;
             // 
             // formOrders
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 420);
             Controls.Add(tableLayoutPanel1);
+            Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formOrders";
-            Text = "formOrders";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Listado de ordenes";
             Load += formOrders_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
@@ -158,13 +173,13 @@
 
         private TableLayoutPanel tableLayoutPanel1;
         private DataGridView dgvOrders;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn statusIdDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn clientUserIdDataGridViewTextBoxColumn;
         private BindingSource orderBindingSource;
         private Panel panel1;
         private Button btnDetails;
         private Button btnCancel;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn statusIdDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn clientUserIdDataGridViewTextBoxColumn;
     }
 }

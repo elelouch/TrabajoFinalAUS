@@ -149,7 +149,7 @@
             btnEditRole.Name = "btnEditRole";
             btnEditRole.Size = new Size(154, 25);
             btnEditRole.TabIndex = 17;
-            btnEditRole.Text = "Edit";
+            btnEditRole.Text = "Modificar";
             btnEditRole.UseVisualStyleBackColor = false;
             btnEditRole.Click += btnEditRole_Click;
             // 

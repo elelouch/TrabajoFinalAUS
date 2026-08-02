@@ -107,18 +107,18 @@ namespace MissTortas.Desktop.Forms.Orders
             try
             {
                 var res = MessageBox.Show(
-                    "You're gonna be finishig an Order, this implies that the status will be 'Finished' and the products will be discounted from the correspondent inventory. Press 'OK' to continue or 'Cancel' otherwise.",
-                    "Finishing Order",
+                    "Vas a finalizar una Orden, esto implica que el estado pasará a 'Finalizado' y los productos se descontarán del inventario correspondiente. Presiona 'Aceptar' para continuar o 'Cancelar' en caso contrario.",
+                    "Finalizando Orden",
                     MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Warning
-                    );
+                );
                 if (res != DialogResult.OK)
                 {
                     return;
                 }
 
                 await orderService.EndOrderAsync(orderId);
-                MessageBox.Show("Order finished correctly", "Order finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Orden finalizada correctamente.", "Orden finalizada", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }
             catch (ApiException exc)
@@ -136,9 +136,9 @@ namespace MissTortas.Desktop.Forms.Orders
             try
             {
                 var res = MessageBox.Show(
-                    "You're gonna be canceling an Order, this implies that the status will be 'Canceled' and the products will be removed from reservation and NOT be discounted from the correspondent inventory. Press 'OK' to continue or 'Cancel' otherwise.",
-                    "Finishing Order",
-                     MessageBoxButtons.OKCancel,
+                    "Vas a cancelar una Orden, esto implica que el estado pasará a 'Cancelado', los productos se removerán de la reserva y NO se descontarán del inventario correspondiente. Presiona 'Aceptar' para continuar o 'Cancelar' en caso contrario.",
+                    "Cancelando Orden",
+                    MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Warning
                 );
                 if (res != DialogResult.OK)
@@ -146,7 +146,7 @@ namespace MissTortas.Desktop.Forms.Orders
                     return;
                 }
                 await orderService.CancelOrderAsync(orderId);
-                MessageBox.Show("Order canceled correctly", "Order canceled", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Orden cancelada correctamente", "Orden cancelada", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }
             catch (ApiException exc)
@@ -163,7 +163,7 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             if (userService == null)
             {
-                MessageBox.Show("User service not available.");
+                MessageBox.Show("User service no esta disponible.");
                 return;
             }
 
@@ -176,7 +176,7 @@ namespace MissTortas.Desktop.Forms.Orders
         {
             var newPrep = e.Preparation;
             var aux = preparations.FirstOrDefault(p => p.Id == newPrep.Id);
-            if(aux == null)
+            if (aux == null)
             {
                 preparations.Add(newPrep);
             }
@@ -195,9 +195,9 @@ namespace MissTortas.Desktop.Forms.Orders
                 return;
             }
 
-            if(userService == null)
+            if (userService == null)
             {
-                MessageBox.Show("User service not available.");
+                MessageBox.Show("User service no esta disponible.");
                 return;
             }
 
@@ -210,5 +210,6 @@ namespace MissTortas.Desktop.Forms.Orders
             formPreparationDetail.OnPreparationUpdate += FormPreparationDetail_OnPreparationUpdate;
             formPreparationDetail.ShowDialog();
         }
+
     }
 }

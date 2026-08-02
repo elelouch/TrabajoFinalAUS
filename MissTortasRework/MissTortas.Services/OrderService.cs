@@ -309,7 +309,7 @@ namespace MissTortas.Services
             OrderStatus[] validOrderStatus = [OrderStatus.Pending, OrderStatus.InProgress];
             if (!validOrderStatus.Contains(order.OrderStatus))
             {
-                throw new InvalidStateException("The order must be Pending or In Progress to add preparations");
+                throw new InvalidOrderStateException("The order must be Pending or In Progress to add preparations");
             }
             var newOrderPreparation = new OrderPreparation
             {

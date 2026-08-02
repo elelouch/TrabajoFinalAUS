@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
@@ -38,18 +39,43 @@ namespace MissTortas.Desktop.Forms.Orders
 
         private async void CreatePreparation()
         {
-            var newPrep = FromFormToCreateRequest();
-            var prep = await orderService.CreateOrderPreparationAsync(newPrep);
-            MessageBox.Show("New preparation created successfully.");
-            RaisePreparationUpdate(prep);
+            try
+            {
+                var newPrep = FromFormToCreateRequest();
+                var prep = await orderService.CreateOrderPreparationAsync(newPrep);
+                MessageBox.Show("New preparation created successfully.");
+                RaisePreparationUpdate(prep);
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    MessageBox.Show("Unauthorized");
+                    this.Dispose();
+                }
+            }
         }
 
         private async void UpdatePreparation()
         {
-            var newPrep = FromFormToUpdateRequest();
-            var prep = await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
-            MessageBox.Show("Preparation updated successfully.");
-            RaisePreparationUpdate(prep);
+            try
+            {
+                var newPrep = FromFormToUpdateRequest();
+                var prep = await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
+                MessageBox.Show("Preparation updated successfully.");
+                RaisePreparationUpdate(prep);
+            }
+            catch (ApiException exc)
+            {
+                ErrorDisplay.Show(this, exc);
+                if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    MessageBox.Show("Unauthorized");
+                    this.Dispose();
+                }
+            }
+
         }
 
         private void RaisePreparationUpdate(Preparation prep)

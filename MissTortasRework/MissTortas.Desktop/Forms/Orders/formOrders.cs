@@ -40,6 +40,12 @@ namespace MissTortas.Desktop.Forms.Orders
                 {
                     this.orders.Add(order);
                 }
+                if (orders.Count > 0)
+                {
+                    var firstRow = dgvOrders.Rows[0];
+                    firstRow.Selected = true;
+                    dgvOrders.CurrentCell = firstRow.Cells[0];
+                }
             }
             catch (ApiException exc)
             {
