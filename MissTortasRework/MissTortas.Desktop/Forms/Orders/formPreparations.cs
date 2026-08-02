@@ -100,5 +100,14 @@ namespace MissTortas.Desktop.Forms.Orders
             var orderDetail = new formOrderDetail(orderService, prep.OrderId, true);
             orderDetail.ShowDialog();
         }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            if(preparations != null)
+            {
+                preparations.Clear();
+                LoadPreparations();
+            }
+        }
     }
 }

@@ -39,13 +39,21 @@ namespace MissTortas.View.Mappers
 
         public async Task<OrderResponse> FromOrderDTOToResponse(OrderDTO dto)
         {
-            var dict = await securityService.UserDomainIdToUsernameAsync([dto.ClientId, dto.OrderMangerId]);
+            var clientIds = dto.ClientId;
+            var orderManagerIds = dto.OrderMangerId;
+            var assigneeIds = dto.Preparations.Select(p => p.AssigneeId);
+            var dict = await securityService.UserDomainIdToUsernameAsync([dto.ClientId, dto.OrderMangerId, ..assigneeIds]);
             return await FromOrderDTOToResponse(dto, dict);
         }
 
 
         public async Task<OrderResponse> FromOrderDTOToResponse(OrderDTO dto, Dictionary<long, string>? usernamesDictionary)
         {
+            var nameFetched = "";
+            if(usernamesDictionary != null && usernamesDictionary.TryGetValue(dto.ClientId, out var val))
+            {
+                nameFetched = val;
+            }
             var ret = new OrderResponse
             {
                 Id = dto.Id,
@@ -54,33 +62,28 @@ namespace MissTortas.View.Mappers
                 Status = dto.Status,
                 SaleProducts = FromSaleProductAskedDTOToResponse(dto.SaleProducts),
                 CreatedAt = dto.Creation,
-                PaymentStatus = dto.PaymentStatus
+                PaymentStatus = dto.PaymentStatus,
+                ClientUserId = nameFetched
             };
             return ret;
-        } 
+        }
         public async Task<List<OrderResponse>> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos)
         {
             var clientIds = dtos.Select(o => o.ClientId);
             var orderManagerIds = dtos.Select(o => o.OrderMangerId);
-            var dict = await securityService.UserDomainIdToUsernameAsync([..orderManagerIds.Union(clientIds)]);
-            var ret = await FromOrderDTOToResponse(dtos, null);
+            var assigneeIds = dtos.SelectMany(o => o.Preparations.Select(p => p.AssigneeId));
+            var dict = await securityService.UserDomainIdToUsernameAsync([.. orderManagerIds.Union(clientIds).Union(assigneeIds)]);
+            var ret = await FromOrderDTOToResponse(dtos, dict);
             return ret;
         }
 
         public async Task<List<OrderResponse>> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAlias)
         {
             List<OrderResponse> ret = [];
-            if(domainIdToAlias != null)
+            foreach (var dto in dtos)
             {
-                foreach (var dto in dtos)
-                {
-                    var orderDto = await FromOrderDTOToResponse(dto, domainIdToAlias);
-                    if (domainIdToAlias.TryGetValue(dto.ClientId, out var val))
-                    {
-                        orderDto.ClientUserId = val;
-                        ret.Add(orderDto);
-                    }
-                }
+                var orderDto = await FromOrderDTOToResponse(dto, domainIdToAlias);
+                ret.Add(orderDto);
             }
             return ret;
         }
@@ -108,7 +111,7 @@ namespace MissTortas.View.Mappers
 
         public async Task<List<OrderPreparationResponse>> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
         {
-            var dict = await securityService.UserDomainIdToUsernameAsync([..dtos.Select(p => p.AssigneeId)]);
+            var dict = await securityService.UserDomainIdToUsernameAsync([.. dtos.Select(p => p.AssigneeId)]);
             return await FromOrderPreparationDTOToResponse(dtos, dict);
         }
 
@@ -119,7 +122,7 @@ namespace MissTortas.View.Mappers
 
         public List<SaleProductAskedResponse> FromSaleProductAskedDTOToResponse(IEnumerable<SaleProductAskedDTO> dtos)
         {
-            return [..dtos.Select(FromSaleProductAskedDTOToResponse)];
+            return [.. dtos.Select(FromSaleProductAskedDTOToResponse)];
         }
 
         public SaleProductAskedResponse FromSaleProductAskedDTOToResponse(SaleProductAskedDTO dto)

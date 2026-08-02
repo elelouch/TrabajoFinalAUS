@@ -31,7 +31,6 @@ namespace MissTortas.View.Controllers
         public async Task<ActionResult<List<OrderResponse>>> GetAllOrders()
         {
             var orders = await orderService.GetAllOrdersAsync();
-            var userids = orders.Select(order => order.ClientId);
             var ret = await orderMapper.FromOrderDTOToResponse(orders);
             return Ok(ret);
         }
