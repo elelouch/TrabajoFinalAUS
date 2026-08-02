@@ -34,9 +34,6 @@
             tabPage1 = new TabPage();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             preparationBindingSource = new BindingSource(components);
             btnModifyPreparation = new Button();
             btnAddPreparation = new Button();
@@ -70,6 +67,9 @@
             btnCancel = new Button();
             btnCancelOrder = new Button();
             btnFinishOrder = new Button();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            assigneeIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -171,27 +171,6 @@
             dgvPreparations.ReadOnly = true;
             dgvPreparations.Size = new Size(659, 255);
             dgvPreparations.TabIndex = 0;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // assigneeIdDataGridViewTextBoxColumn
-            // 
-            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
-            assigneeIdDataGridViewTextBoxColumn.HeaderText = "Usuario asignado";
-            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
-            assigneeIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // doneDataGridViewCheckBoxColumn
-            // 
-            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
-            doneDataGridViewCheckBoxColumn.HeaderText = "Listo";
-            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
-            doneDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // preparationBindingSource
             // 
@@ -533,6 +512,27 @@
             btnFinishOrder.UseVisualStyleBackColor = false;
             btnFinishOrder.Click += btnFinishOrder_Click;
             // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // assigneeIdDataGridViewTextBoxColumn
+            // 
+            assigneeIdDataGridViewTextBoxColumn.DataPropertyName = "AssigneeId";
+            assigneeIdDataGridViewTextBoxColumn.HeaderText = "Usuario asignado";
+            assigneeIdDataGridViewTextBoxColumn.Name = "assigneeIdDataGridViewTextBoxColumn";
+            assigneeIdDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // doneDataGridViewCheckBoxColumn
+            // 
+            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
+            doneDataGridViewCheckBoxColumn.HeaderText = "Finalizada";
+            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
+            doneDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
             // formOrderDetail
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -614,8 +614,8 @@
         private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn quantityAskedDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn detailDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn assigneeIdDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn doneDataGridViewCheckBoxColumn;
     }

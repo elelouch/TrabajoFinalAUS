@@ -181,6 +181,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 var formModify = new formModifyCategory(productCategory, productService);
                 formModify.ShowDialog();
+                formModify.Dispose();
             }
         }
 

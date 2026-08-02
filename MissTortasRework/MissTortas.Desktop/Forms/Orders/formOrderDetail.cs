@@ -215,6 +215,7 @@ namespace MissTortas.Desktop.Forms.Orders
             var formPreparationDetail = new formPreparationDetail(userService, orderService, orderId, prep.Id);
             formPreparationDetail.OnPreparationUpdate += FormPreparationDetail_OnPreparationUpdate;
             formPreparationDetail.ShowDialog();
+            formPreparationDetail.Dispose();
         }
 
     }

@@ -38,6 +38,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 var prep = await orderService.CreateOrderPreparationAsync(newPrep);
                 MessageBox.Show("Tarea creada exitosamente.");
                 RaisePreparationUpdate(prep);
+                Dispose();
             }
             catch (ApiException exc)
             {
@@ -45,7 +46,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 if (exc.StatusCode == HttpStatusCode.Forbidden || exc.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     MessageBox.Show("No autorizado");
-                    this.Dispose();
+                    Dispose();
                 }
             }
         }

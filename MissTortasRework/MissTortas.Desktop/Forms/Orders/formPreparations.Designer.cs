@@ -31,14 +31,14 @@
             components = new System.ComponentModel.Container();
             splitContainer1 = new SplitContainer();
             dgvPreparations = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            OrderId = new DataGridViewTextBoxColumn();
-            Detail = new DataGridViewTextBoxColumn();
-            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             preparationBindingSource = new BindingSource(components);
             btnOrderDetail = new Button();
             btnCancel = new Button();
             btnEndPreparation = new Button();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            OrderId = new DataGridViewTextBoxColumn();
+            Detail = new DataGridViewTextBoxColumn();
+            doneDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -85,34 +85,6 @@
             dgvPreparations.Size = new Size(650, 420);
             dgvPreparations.TabIndex = 0;
             // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // OrderId
-            // 
-            OrderId.DataPropertyName = "OrderId";
-            OrderId.HeaderText = "Identificador de orden";
-            OrderId.Name = "OrderId";
-            OrderId.ReadOnly = true;
-            // 
-            // Detail
-            // 
-            Detail.DataPropertyName = "Detail";
-            Detail.HeaderText = "Detalle";
-            Detail.Name = "Detail";
-            Detail.ReadOnly = true;
-            // 
-            // doneDataGridViewCheckBoxColumn
-            // 
-            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
-            doneDataGridViewCheckBoxColumn.HeaderText = "Listo";
-            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
-            doneDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
             // preparationBindingSource
             // 
             preparationBindingSource.DataSource = typeof(Model.Preparation);
@@ -157,6 +129,34 @@
             btnEndPreparation.UseVisualStyleBackColor = true;
             btnEndPreparation.Click += btnEndPreparation_Click;
             // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Identificador";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // OrderId
+            // 
+            OrderId.DataPropertyName = "OrderId";
+            OrderId.HeaderText = "Identificador de orden";
+            OrderId.Name = "OrderId";
+            OrderId.ReadOnly = true;
+            // 
+            // Detail
+            // 
+            Detail.DataPropertyName = "Detail";
+            Detail.HeaderText = "Detalle";
+            Detail.Name = "Detail";
+            Detail.ReadOnly = true;
+            // 
+            // doneDataGridViewCheckBoxColumn
+            // 
+            doneDataGridViewCheckBoxColumn.DataPropertyName = "Done";
+            doneDataGridViewCheckBoxColumn.HeaderText = "Finalizada";
+            doneDataGridViewCheckBoxColumn.Name = "doneDataGridViewCheckBoxColumn";
+            doneDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
             // formPreparations
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -167,7 +167,7 @@
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "formPreparations";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "My Preparations";
+            Text = "Mis tareas";
             Load += formPreparations_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
