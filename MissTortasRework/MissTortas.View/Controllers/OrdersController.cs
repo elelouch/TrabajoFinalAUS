@@ -23,8 +23,7 @@ namespace MissTortas.View.Controllers
         IAuthorizationService authorizationService,
         IValidator<CreateOrderRequest> createOrderValidator,
         IOrderService orderService,
-        IPresentationOrderMapper orderMapper,
-        ISecurityService securityService
+        IPresentationOrderMapper orderMapper
         ) : ControllerBase
     {
         [Authorize(Policy = PolicyName.ManageOrders)]
@@ -33,8 +32,7 @@ namespace MissTortas.View.Controllers
         {
             var orders = await orderService.GetAllOrdersAsync();
             var userids = orders.Select(order => order.ClientId);
-            var dictionaryId = await securityService.UserDomainIdToUsernameAsync(userids);
-            var ret = orderMapper.FromOrderDTOToResponse(orders, dictionaryId);
+            var ret = await orderMapper.FromOrderDTOToResponse(orders);
             return Ok(ret);
         }
 
@@ -52,9 +50,7 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound();
             }
-            var preparationsAssignees = orderDTO.Preparations.Select(p => p.AssigneeId);
-            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([orderDTO.ClientId, ..preparationsAssignees]);
-            var ret = orderMapper.FromOrderDTOToResponse([orderDTO], dictionaryId).First();
+            var ret = await orderMapper.FromOrderDTOToResponse(orderDTO);
             return Ok(ret);
         }
 
@@ -75,8 +71,7 @@ namespace MissTortas.View.Controllers
                 var placeOrderDTO = new PlaceOrderDTO { OrderId = newOrder.Id };
                 await orderService.PlaceOrderAsync(placeOrderDTO);
             }
-            var dictionaryId = await securityService.UserDomainIdToUsernameAsync([newOrder.ClientId]);
-            var ret = orderMapper.FromOrderDTOToResponse([newOrder], dictionaryId).First();
+            var ret = await orderMapper.FromOrderDTOToResponse(newOrder);
             return Ok(ret);
         }
 

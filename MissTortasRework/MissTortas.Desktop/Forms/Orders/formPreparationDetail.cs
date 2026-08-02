@@ -59,6 +59,7 @@ namespace MissTortas.Desktop.Forms.Orders
                 var prep = await orderService.UpdateOrderPreparationAsync(preparationId, newPrep);
                 MessageBox.Show("Tarea actualizada exitosamente.");
                 RaisePreparationUpdate(prep);
+                Dispose();
             }
             catch (ApiException exc)
             {

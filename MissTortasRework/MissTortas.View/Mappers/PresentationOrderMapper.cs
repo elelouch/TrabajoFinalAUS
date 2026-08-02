@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MissTortas.Domain.Orders;
 using MissTortas.Infrastructure.Security.Identity;
+using MissTortas.Infrastructure.Security.Interface;
 using MissTortas.Services.DTO.Orders;
 using MissTortas.Services.DTO.Products;
 using MissTortas.Services.Repositories.DTO;
@@ -8,7 +10,10 @@ using MissTortas.View.DTO.Orders;
 
 namespace MissTortas.View.Mappers
 {
-    public class PresentationOrderMapper(UserManager<ApplicationUser> userManager) : IPresentationOrderMapper
+    public class PresentationOrderMapper(
+        UserManager<ApplicationUser> userManager,
+        ISecurityService securityService
+    ) : IPresentationOrderMapper
     {
         public async Task<SetupOrderDTO> FromCreateOrderToSetupOrderAsync(CreateOrderRequest createOrder)
         {
@@ -32,18 +37,19 @@ namespace MissTortas.View.Mappers
             return placeOrder;
         }
 
-        public OrderResponse FromOrderDTOToResponse(OrderDTO dto)
+        public async Task<OrderResponse> FromOrderDTOToResponse(OrderDTO dto)
         {
-            return FromOrderDTOToResponse(dto, null);
+            var dict = await securityService.UserDomainIdToUsernameAsync([dto.ClientId, dto.OrderMangerId]);
+            return await FromOrderDTOToResponse(dto, dict);
         }
 
 
-        public OrderResponse FromOrderDTOToResponse(OrderDTO dto, Dictionary<long, string>? usernamesDictionary)
+        public async Task<OrderResponse> FromOrderDTOToResponse(OrderDTO dto, Dictionary<long, string>? usernamesDictionary)
         {
             var ret = new OrderResponse
             {
                 Id = dto.Id,
-                Preparations = FromOrderPreparationDTOToResponse(dto.Preparations, usernamesDictionary),
+                Preparations = await FromOrderPreparationDTOToResponse(dto.Preparations, usernamesDictionary),
                 StatusId = dto.StatusId,
                 Status = dto.Status,
                 SaleProducts = FromSaleProductAskedDTOToResponse(dto.SaleProducts),
@@ -52,20 +58,23 @@ namespace MissTortas.View.Mappers
             };
             return ret;
         } 
-        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos)
+        public async Task<List<OrderResponse>> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos)
         {
-            var ret = FromOrderDTOToResponse(dtos, null);
+            var clientIds = dtos.Select(o => o.ClientId);
+            var orderManagerIds = dtos.Select(o => o.OrderMangerId);
+            var dict = await securityService.UserDomainIdToUsernameAsync([..orderManagerIds.Union(clientIds)]);
+            var ret = await FromOrderDTOToResponse(dtos, null);
             return ret;
         }
 
-        public List<OrderResponse> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAlias)
+        public async Task<List<OrderResponse>> FromOrderDTOToResponse(IEnumerable<OrderDTO> dtos, Dictionary<long, string>? domainIdToAlias)
         {
             List<OrderResponse> ret = [];
             if(domainIdToAlias != null)
             {
                 foreach (var dto in dtos)
                 {
-                    var orderDto = FromOrderDTOToResponse(dto, domainIdToAlias);
+                    var orderDto = await FromOrderDTOToResponse(dto, domainIdToAlias);
                     if (domainIdToAlias.TryGetValue(dto.ClientId, out var val))
                     {
                         orderDto.ClientUserId = val;
@@ -76,9 +85,10 @@ namespace MissTortas.View.Mappers
             return ret;
         }
 
-        public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto)
+        public async Task<OrderPreparationResponse> FromOrderPreparationDTOToResponse(OrderPreparationDTO dto)
         {
-            return FromOrderPreparationDTOToResponse(dto, null);
+            var dict = await securityService.UserDomainIdToUsernameAsync([dto.AssigneeId]);
+            return FromOrderPreparationDTOToResponse(dto, dict);
         }
         public OrderPreparationResponse FromOrderPreparationDTOToResponse(OrderPreparationDTO dto, Dictionary<long, string>? domainIdToAlias)
         {
@@ -96,12 +106,13 @@ namespace MissTortas.View.Mappers
             return ret;
         }
 
-        public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
+        public async Task<List<OrderPreparationResponse>> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos)
         {
-            return FromOrderPreparationDTOToResponse(dtos, null);
+            var dict = await securityService.UserDomainIdToUsernameAsync([..dtos.Select(p => p.AssigneeId)]);
+            return await FromOrderPreparationDTOToResponse(dtos, dict);
         }
 
-        public List<OrderPreparationResponse> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos, Dictionary<long, string>? domainIdToAlias)
+        public async Task<List<OrderPreparationResponse>> FromOrderPreparationDTOToResponse(IEnumerable<OrderPreparationDTO> dtos, Dictionary<long, string>? domainIdToAlias)
         {
             return [.. dtos.Select(op => FromOrderPreparationDTOToResponse(op, domainIdToAlias))];
         }
@@ -113,7 +124,7 @@ namespace MissTortas.View.Mappers
 
         public SaleProductAskedResponse FromSaleProductAskedDTOToResponse(SaleProductAskedDTO dto)
         {
-            return new SaleProductAskedResponse
+            var ret = new SaleProductAskedResponse
             {
                 Id = dto.Id,
                 Description = dto.Description,
@@ -121,6 +132,7 @@ namespace MissTortas.View.Mappers
                 Price = dto.SalePrice,
                 QuantityAsked = dto.SaleQuantity
             };
+            return ret;
         }
 
     }

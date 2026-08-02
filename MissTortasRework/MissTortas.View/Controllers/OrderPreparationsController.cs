@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MissTortas.Domain.Orders;
 using MissTortas.Infrastructure.Security;
 using MissTortas.Infrastructure.Security.Identity;
 using MissTortas.Infrastructure.Security.Interface;
@@ -20,8 +21,7 @@ namespace MissTortas.View.Controllers
         IOrderService orderService,
         IAuthorizationService authorizationService,
         UserManager<ApplicationUser> userManager,
-        IPresentationOrderMapper presentationOrderMapper,
-        ISecurityService securityService
+        IPresentationOrderMapper presentationOrderMapper
     ) : ControllerBase
     {
         [HttpGet]
@@ -39,7 +39,7 @@ namespace MissTortas.View.Controllers
                 return Unauthorized();
             }
             var userPreparations = await orderService.GetUserOrderPreparationsAsync(appUser.UserId);
-            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparations);
+            var ret = await presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparations);
             return Ok(ret);
         }
 
@@ -57,8 +57,7 @@ namespace MissTortas.View.Controllers
             {
                 return NotFound("Preparation not found");
             }
-            var dict = await securityService.UserDomainIdToUsernameAsync([userPreparation.AssigneeId]);
-            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparation, dict);
+            var ret = await presentationOrderMapper.FromOrderPreparationDTOToResponse(userPreparation);
             return Ok(ret);
         }
 
@@ -80,7 +79,7 @@ namespace MissTortas.View.Controllers
             };
 
             var orderPreparation = await orderService.CreateOrderPreparationAsync(createPreparationDTO);
-            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(orderPreparation);
+            var ret = await presentationOrderMapper.FromOrderPreparationDTOToResponse(orderPreparation);
             return ret;
         }
 
@@ -112,7 +111,7 @@ namespace MissTortas.View.Controllers
                 };
                 preparation = await orderService.UpdateOrderPreparationAsync(updateOrderPreparation);
             }
-            var ret = presentationOrderMapper.FromOrderPreparationDTOToResponse(preparation);
+            var ret = await presentationOrderMapper.FromOrderPreparationDTOToResponse(preparation);
             return Ok(ret);
         }
     }
