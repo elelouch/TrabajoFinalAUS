@@ -15,12 +15,11 @@ namespace MissTortas.Desktop.Forms.Products
             this.treeMap = [];
 
             tvCategories.FullRowSelect = true;
-            tvCategories.ShowLines = false;
+            tvCategories.ShowLines = true;
             tvCategories.ShowPlusMinus = false;
             tvCategories.HideSelection = false;
-            // Opcional: ajustar altura y espaciado
             tvCategories.ItemHeight = 25;
-            tvCategories.Indent = 15;
+            tvCategories.Indent = 20;
         }
 
         private void tvCategories_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -137,7 +136,7 @@ namespace MissTortas.Desktop.Forms.Products
             {
                 if (currentPc.IsFinal)
                 {
-                    MessageBox.Show("La categoría seleccionada está marcada como final. Solo se pueden agregar productos.", "No se puede agregar categoría", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La categoría seleccionada está marcada como final. Solo se pueden agregar productos realizando doble click sobre la misma.", "No se puede agregar categoría", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 var createCategoryForm = new formCreateCategory(currentPc, productService);

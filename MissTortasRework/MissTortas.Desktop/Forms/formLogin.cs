@@ -28,8 +28,6 @@ namespace MissTortas.Desktop.Forms
             }
             catch (ApiException ex) when (ex.Problem.Code == "USR2F1")
             {
-                // requires two-factor — handle distinctly from a generic error
-                // e.g. open a 2FA form here instead of showing a message box
                 ErrorDisplay.Show(this, ex);
             }
             catch (Exception ex)

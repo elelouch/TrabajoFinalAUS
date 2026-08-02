@@ -243,7 +243,6 @@
             label1.Size = new Size(180, 40);
             label1.TabIndex = 0;
             label1.Text = "Editando rol";
-            label1.TextAlign = ContentAlignment.TopCenter;
             // 
             // panel5
             // 

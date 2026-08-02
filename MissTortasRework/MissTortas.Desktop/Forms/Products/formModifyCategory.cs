@@ -46,6 +46,7 @@ namespace MissTortas.Desktop.Forms.Products
                 comboMoveParent.DataSource = categories;
                 comboMoveParent.DisplayMember = "Name";
                 comboMoveParent.ValueMember = "ProductCategoryId";
+                this.txtCategoryName.Text = productCategory.Name;
             }
             catch (ApiException exc)
             {

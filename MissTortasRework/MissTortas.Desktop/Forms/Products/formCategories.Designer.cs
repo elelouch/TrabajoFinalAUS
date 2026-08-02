@@ -43,6 +43,7 @@
             // 
             tvCategories.BackColor = SystemColors.Window;
             tvCategories.BorderStyle = BorderStyle.None;
+            tvCategories.Cursor = Cursors.Hand;
             tvCategories.Dock = DockStyle.Fill;
             tvCategories.Font = new Font("Tahoma", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tvCategories.ForeColor = SystemColors.Window;
