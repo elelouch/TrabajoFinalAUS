@@ -4,23 +4,26 @@
 @inject IToastService ToastService
 
 
-<div class="toast-container position-fixed top-0 end-0 p-3">
+<div class="toast-container-custom position-fixed top-0 end-0 p-3">
 
     @foreach (var toast in Toasts)
     {
-        <div class="toast show mb-2 @toast.BackgroundClass">
-            <div class="toast-header @toast.BackgroundClass">
-                <strong class="me-auto @toast.TextClass">
+        <div class="toast-custom show mb-2 @GetToastClass(toast)">
+            <div class="toast-custom-header">
+                <span class="toast-custom-icon">@GetToastIcon(toast)</span>
+                <strong class="toast-custom-title">
                     @toast.Type
                 </strong>
 
                 <button type="button"
-                        class="btn-close"
+                        class="toast-custom-close"
+                        aria-label="Cerrar"
                         @onclick="() => DismissToast(toast)">
+                    &times;
                 </button>
             </div>
 
-            <div class="toast-body @toast.TextClass">
+            <div class="toast-custom-body">
                 @toast.Message
             </div>
         </div>
@@ -45,7 +48,7 @@
 
         _ = RemoveLater(toast);
     }
-    
+
     private async Task RemoveLater(ToastMessage toast)
     {
         await Task.Delay(toast.DurationMs);
@@ -67,5 +70,29 @@
         {
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    private static string GetToastClass(ToastMessage toast)
+    {
+        return toast.Type.ToString() switch
+        {
+            "Success" => "toast-custom-success",
+            "Error" => "toast-custom-error",
+            "Warning" => "toast-custom-warning",
+            "Info" => "toast-custom-info",
+            _ => "toast-custom-info",
+        };
+    }
+
+    private static string GetToastIcon(ToastMessage toast)
+    {
+        return toast.Type.ToString() switch
+        {
+            "Success" => "✔",
+            "Error" => "✖",
+            "Warning" => "⚠",
+            "Info" => "ℹ",
+            _ => "ℹ",
+        };
     }
 }

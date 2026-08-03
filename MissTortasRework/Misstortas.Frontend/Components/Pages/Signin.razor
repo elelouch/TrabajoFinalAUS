@@ -13,30 +13,42 @@
             <ValidationSummary />
 
             <div class="mb-3">
-                <label>Usuario o Correo</label>
-                <InputText class="form-control"
+                <label class="form-label">Usuario o Correo</label>
+                <InputText class="form-control signin-input"
                            @bind-Value="userSignin.Email" />
             </div>
 
             <div class="mb-3">
-                <label>Contraseña</label>
+                <label class="form-label">Contraseña</label>
                 <InputText type="password"
-                           class="form-control"
+                           class="form-control signin-input"
                            @bind-Value="userSignin.Password" />
             </div>
 
             <button type="submit"
-                    class="btn btn-signin w-100"
+                    class="btn signin-btn signin-btn-primary w-100 mt-2"
                     disabled="@isLoading">
-                @(isLoading ? "Ingresando..." : "Ingrese")
+                @if (isLoading)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <span>Ingresando...</span>
+                }
+                else
+                {
+                    <span>Ingrese</span>
+                }
             </button>
 
             @if (!string.IsNullOrWhiteSpace(errorMessage))
             {
-                <p class="text-danger mt-2">@errorMessage</p>
+                <p class="signin-error mt-2">@errorMessage</p>
             }
 
         </EditForm>
+
+        <p class="signin-signup-link">
+            ¿No tenés cuenta? <a href="/signup">Registrate</a>
+        </p>
     </div>
 </div>
 

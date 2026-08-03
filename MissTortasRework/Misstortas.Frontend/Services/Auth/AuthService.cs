@@ -22,7 +22,7 @@ namespace Misstortas.Frontend.Services.Auth
 
         public async Task<SignupResponseDTO> SignUpUserAsync(UserSignup userSignup)
         {
-            var body = await missTortasClient.PostAsync<SignupResponseDTO>("/auth/signin", userSignup);
+            var body = await missTortasClient.PostAsync<SignupResponseDTO>("/auth/signup", userSignup);
             return body!;
         }
     }

@@ -1,0 +1,191 @@
+﻿@page "/signup"
+@rendermode InteractiveServer
+
+@using System.Text.RegularExpressions
+@using Misstortas.Frontend.Models
+@using Misstortas.Frontend.Services.Auth
+@using Misstortas.Frontend.Services.Shared
+
+@inject IAuthService AuthService
+@inject IToastService ToastService
+
+<div class="signup-page">
+    <div class="signup-card">
+        <h3>Crear cuenta</h3>
+        <p class="signup-subtitle">Completá tus datos para registrarte</p>
+
+        <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
+            <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <input class="form-control signup-input" type="email" @bind="formModel.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nombre de usuario</label>
+                <input class="form-control signup-input" type="text" @bind="formModel.Username" />
+            </div>
+
+            <div class="signup-row">
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control signup-input" type="text" @bind="formModel.FirstName" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input class="form-control signup-input" type="text" @bind="formModel.LastName" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input class="form-control signup-input" type="password" @bind="formModel.Password" />
+                <small class="signup-hint">
+                    Mínimo 10 caracteres, con una mayúscula, un número y un símbolo especial.
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Repetir contraseña</label>
+                <input class="form-control signup-input" type="password" @bind="formModel.RepeatPassword" />
+            </div>
+
+            <button type="submit" class="btn signup-btn signup-btn-primary mt-2" disabled="@isSubmitting">
+                @if (isSubmitting)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <span>Registrando...</span>
+                }
+                else
+                {
+                    <span>Registrarme</span>
+                }
+            </button>
+        </EditForm>
+
+        <p class="signup-signin-link">
+            ¿Ya tenés cuenta? <a href="/signin">Iniciá sesión</a>
+        </p>
+    </div>
+</div>
+
+@if (showSuccessModal)
+{
+    <div class="signup-modal-overlay">
+        <div class="signup-modal">
+            <div class="signup-modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                </svg>
+            </div>
+            <h4>¡Registro exitoso!</h4>
+            <p class="text-muted">Tu cuenta fue creada correctamente.</p>
+            <button class="btn signup-btn signup-btn-primary" @onclick="GoToSignIn">
+                Iniciar sesión
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    private readonly SignupFormModel formModel = new();
+    private bool isSubmitting;
+    private bool showSuccessModal;
+
+    private static readonly Regex EmailRegex = new(
+        @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
+
+    private static readonly Regex UppercaseRegex = new(@"[A-Z]", RegexOptions.Compiled);
+    private static readonly Regex DigitRegex = new(@"[0-9]", RegexOptions.Compiled);
+    private static readonly Regex SpecialCharRegex = new(@"[^a-zA-Z0-9]", RegexOptions.Compiled);
+
+    private async Task HandleSubmit()
+    {
+        if (!ValidateForm())
+            return;
+
+        isSubmitting = true;
+
+        try
+        {
+            var userSignup = new UserSignup
+            {
+                Email = formModel.Email,
+                Username = formModel.Username,
+                Password = formModel.Password,
+                FirstName = formModel.FirstName,
+                LastName = formModel.LastName
+            };
+
+            await AuthService.SignUpUserAsync(userSignup);
+            showSuccessModal = true;
+        }
+        catch (HttpRequestException ex)
+        {
+            ToastService.Error(ex.Message ?? "No se pudo completar el registro. Intentalo de nuevo.");
+        }
+        catch (Exception)
+        {
+            ToastService.Error("Algo salió mal al registrarte. Por favor, intentalo de nuevo.");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private bool ValidateForm()
+    {
+        var isValid = true;
+
+        if (string.IsNullOrWhiteSpace(formModel.Email) || !EmailRegex.IsMatch(formModel.Email))
+        {
+            ToastService.Warning("Ingresá un correo electrónico válido.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(formModel.Username))
+        {
+            ToastService.Warning("El nombre de usuario es obligatorio.");
+            isValid = false;
+        }
+
+        if (!IsPasswordValid(formModel.Password))
+        {
+            ToastService.Warning("La contraseña debe tener al menos 10 caracteres, una mayúscula, un número y un símbolo especial.");
+            isValid = false;
+        }
+        else if (formModel.Password != formModel.RepeatPassword)
+        {
+            ToastService.Warning("Las contraseñas no coinciden.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private static bool IsPasswordValid(string password)
+    {
+        if (string.IsNullOrEmpty(password) || password.Length < 10)
+            return false;
+
+        return UppercaseRegex.IsMatch(password)
+            && DigitRegex.IsMatch(password)
+            && SpecialCharRegex.IsMatch(password);
+    }
+
+    private void GoToSignIn()
+    {
+        showSuccessModal = false;
+    }
+
+    private class SignupFormModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string RepeatPassword { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+    }
+}

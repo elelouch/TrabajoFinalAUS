@@ -1,60 +1,105 @@
-/* CSS for Signin component */
 .signin-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 1rem;
+    padding: 2.5rem 1rem;
 }
 
 .signin-card {
-    background-color: #FAE7DA;
-    border: 2px solid black;
-    border-radius: 0.5rem;
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    width: 420px;
+    max-width: 100%;
+    padding: 2rem 2.25rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 3px 8px rgba(0, 0, 0, 0.06);
+    border-top: 5px solid transparent;
+    border-image: linear-gradient(90deg, #F7ADC8, #F7B7AD, #F7DCAD, #ADF7DC, #ADC8F7) 1;
 }
 
 .signin-title {
-    color: black;
-    text-align: center;
     margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.signin-input {
+    border-radius: 10px;
+    border: 1px solid #ADC8F7;
+    padding: 0.55rem 0.85rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+    .signin-input:focus {
+        border-color: #ADF7DC;
+        box-shadow: 0 0 0 3px rgba(173, 247, 220, 0.45);
+        outline: none;
+    }
+
+.signin-btn {
+    border: none;
+    padding: 0.65rem;
+    border-radius: 10px;
     font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-.signin-card label {
-    color: black;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-    display: block;
-}
-
-.signin-card .form-control {
-    border: 1px solid black;
-}
-
-    .signin-card .form-control:focus {
-        border-color: black;
-        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+    .signin-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
     }
 
-.btn-signin {
-    background-color: #FADAED;
-    color: white;
-    border: 1px solid black;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-    .btn-signin:hover:not(:disabled) {
-        background-color: white;
-        color: black;
-        border: 1px solid black;
+    .signin-btn:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
     }
 
-    .btn-signin:disabled {
+    .signin-btn:disabled {
         opacity: 0.7;
         cursor: not-allowed;
+        transform: none;
     }
+
+.signin-btn-primary {
+    background: #ADC8F7;
+    color: #1e2a4a;
+}
+
+    .signin-btn-primary:hover:not(:disabled) {
+        background: #92b3f2;
+        color: #1e2a4a;
+    }
+
+.signin-error {
+    color: #c62828;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.signin-signup-link {
+    text-align: center;
+    margin-top: 1.25rem;
+    color: #555;
+}
+
+    .signin-signup-link a {
+        color: #6d8fd9;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .signin-signup-link a:hover {
+            text-decoration: underline;
+        }
+
+::deep .validation-message {
+    color: #c62828;
+    font-size: 0.85rem;
+}
+
+::deep .validation-summary {
+    color: #c62828;
+    font-size: 0.9rem;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+}
