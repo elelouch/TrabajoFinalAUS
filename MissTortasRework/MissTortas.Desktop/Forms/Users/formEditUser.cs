@@ -59,7 +59,7 @@ namespace MissTortas.Desktop.Forms.Users
                 var user = await userService.FindUserByIdAsync(userId);
                 if (user == null)
                 {
-                    MessageBox.Show("User not found. Or error during fetching.");
+                    MessageBox.Show("El usuario no fue encontrado.");
                     this.Dispose();
                     return;
                 }
@@ -105,7 +105,7 @@ namespace MissTortas.Desktop.Forms.Users
             var repeatPasswordNotEmpty = !string.IsNullOrEmpty(newPassword);
             if ((newPasswordNotEmpty || repeatPasswordNotEmpty) && newPassword != repeatPassword)
             {
-                MessageBox.Show("Passwords don't match");
+                MessageBox.Show("Las contraseñas no coinciden.");
                 return;
             }
             var user = new UserModificationDTO
@@ -122,7 +122,7 @@ namespace MissTortas.Desktop.Forms.Users
             try
             {
                 await userService.ModifyUserAsync(userId, user);
-                MessageBox.Show("Modification was successful.");
+                MessageBox.Show("La modificacion fue exitosa. Por favor, recargue la lista para ver los resultados reflejados.");
                 Dispose();
             }
             catch (ApiException exc)
@@ -144,12 +144,12 @@ namespace MissTortas.Desktop.Forms.Users
         {
             if (userFetched == null)
             {
-                MessageBox.Show("User not not fetched yet to read its permissions.");
+                MessageBox.Show("Usuario no encontrado.");
                 return;
             }
             if (permissionService == null)
             {
-                MessageBox.Show("Permissions service not available.");
+                MessageBox.Show("Servicio de permisos no disponibles.");
                 return;
             }
             var formPermissions = new formUserPermission(userService, permissionService, userFetched);

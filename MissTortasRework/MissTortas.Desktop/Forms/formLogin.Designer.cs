@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formLogin));
             welcomingLabel = new Label();
             emailLabel = new Label();
             passwordLabel = new Label();
@@ -139,7 +138,7 @@
             // 
             // panel5
             // 
-            panel5.BackgroundImage = (Image)resources.GetObject("panel5.BackgroundImage");
+            panel5.BackgroundImage = Properties.Resources.order;
             panel5.Location = new Point(33, 179);
             panel5.Name = "panel5";
             panel5.Size = new Size(207, 193);

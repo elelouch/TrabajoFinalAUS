@@ -22,7 +22,7 @@
     {
         <div class="d-flex justify-content-center align-items-center bg-light"
              style="height:220px;">
-            <span class="text-muted">No image</span>
+            <span class="text-muted">Sin imagen</span>
         </div>
     }
 
@@ -30,16 +30,10 @@
         <h5 class="card-title">@Product.Name</h5>
 
         <div>
-            <strong>Price:</strong>
+            <strong>Precio:</strong>
             @Product.SalePrice.ToString("C")
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(ValidationMessage))
-        {
-            <div class="alert alert-danger py-2 mt-2">
-                @ValidationMessage
-            </div>
-        }
         @if (Product.Quantity > 0)
         {
             <div class="mt-auto pt-3">
@@ -51,8 +45,7 @@
                         -
                     </button>
 
-                    <InputNumber
-                                @bind-Value="QuantityInput" min="0"
+                    <InputNumber @bind-Value="QuantityInput" min="0"
                                  class="form-control text-center"
                                  step="@Step" />
 
@@ -69,7 +62,7 @@
         {
             <div class="mt-auto pt-3">
                 <div class="alert alert-warning text-center mb-0">
-                    <strong>No stock available</strong>
+                    <strong>Sin stock disponible</strong>
                 </div>
             </div>
         }
@@ -80,17 +73,15 @@
 @code {
     [Parameter, EditorRequired]
     public SaleProduct Product { get; set; } = default!;
-    private string? ValidationMessage;
 
     private decimal _quantityInput;
 
     public decimal QuantityInput
     {
         get => _quantityInput;
-        set 
+        set
         {
             _quantityInput = Math.Max(0m, value);
-            ValidationMessage = null;
         }
     }
 
@@ -104,14 +95,15 @@
 
         if (newQuantity > Product.Quantity)
         {
-            ValidationMessage = $"Only {Product.Quantity} available in stock.";
+            var errorMessage = $"Solo hay {Product.Quantity} disponibles en stock.";
+            ToastService.Error(errorMessage);
             return;
         }
 
         var added = QuantityInput;
 
         await Cart.SetQuantity(Product, newQuantity);
-        ToastService.Success($"Added {added} {Product.Name} to cart. Current: {Cart.GetQuantityAsked(Product.Id)}");
+        ToastService.Success($"Se agregaron {added} {Product.Name} al carrito. Total actual: {Cart.GetQuantityAsked(Product.Id)}");
     }
 
     private async Task Decrease()
@@ -128,6 +120,6 @@
         }
 
         await Cart.SetQuantity(Product, newQuantity);
-        ToastService.Info($"Removed {removed} {Product.Name} from cart. Current: {Cart.GetQuantityAsked(Product.Id)}");
+        ToastService.Info($"Se quitaron {removed} {Product.Name} del carrito. Total actual: {Cart.GetQuantityAsked(Product.Id)}");
     }
 }

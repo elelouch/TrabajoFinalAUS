@@ -63,6 +63,16 @@ namespace MissTortas.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cross {
+            get {
+                object obj = ResourceManager.GetObject("cross", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Hanis_Bakery_interior {
             get {
                 object obj = ResourceManager.GetObject("Hanis-Bakery-interior", resourceCulture);
@@ -76,6 +86,16 @@ namespace MissTortas.Desktop.Properties {
         internal static System.Drawing.Bitmap Hanis_Bakery_interior1 {
             get {
                 object obj = ResourceManager.GetObject("Hanis-Bakery-interior1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap order {
+            get {
+                object obj = ResourceManager.GetObject("order", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
