@@ -1,6 +1,0 @@
-# Modelo de disenio
-## Artefactos que corresponden al modelo de disenio
-- Diagramas de interacción. Representan como colaboran los objetos para cumplir requisitos.
-	- Diagramas de Secuencia
-	- Diagramas de Colaboracion
-- 
