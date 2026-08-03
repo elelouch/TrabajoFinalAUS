@@ -1,6 +1,7 @@
 ﻿@using Misstortas.Frontend.Services.Payments
 @using Microsoft.AspNetCore.Components.Authorization
 @using Misstortas.Frontend.Services.Products
+@using Misstortas.Frontend.Services.Shared
 
 @rendermode InteractiveServer
 
@@ -8,6 +9,7 @@
 @inject ISaleProductCartService CartService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject IToastService ToastService
 
 <div class="checkout-modal-overlay">
     <div class="checkout-modal">
@@ -50,11 +52,6 @@
                             <span>Completar pago</span>
                         }
                     </button>
-
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <div class="alert alert-danger mt-2">@errorMessage</div>
-                    }
                 </EditForm>
             </Authorized>
         </AuthorizeView>
@@ -107,6 +104,7 @@
         {
             errorMessage = "Debés seleccionar un método de pago";
             isProcessing = false;
+            ToastService.Warning(errorMessage);
             return;
         }
 
@@ -127,7 +125,16 @@
         }
         catch (HttpRequestException ex)
         {
-            errorMessage = ex.Message ?? "El pago falló. Por favor, inténtalo de nuevo.";
+            var msg = ex.Message ?? "El pago falló. Por favor, inténtalo de nuevo.";
+            if(ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                ToastService.Warning($"El usuario no esta autorizado, solicite los permisos a su administrador. {msg}");
+            }
+            else
+            {
+                ToastService.Error($"Error inesperado. {msg}");
+            }
+            
         }
         finally
         {

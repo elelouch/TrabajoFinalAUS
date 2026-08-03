@@ -2,6 +2,6 @@
 {
     public class SignupResponseDTO
     {
-        public long UserId { get; set; }
+        public required string UserId { get; init; }
     }
 }

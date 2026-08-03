@@ -124,9 +124,9 @@
         {
             ToastService.Error(ex.Message ?? "No se pudo completar el registro. Intentalo de nuevo.");
         }
-        catch (Exception)
+        catch (Exception exc)
         {
-            ToastService.Error("Algo salió mal al registrarte. Por favor, intentalo de nuevo.");
+            ToastService.Error($"Algo salió mal al registrarte. Por favor, intentalo de nuevo. {exc.Message}");
         }
         finally
         {

@@ -5,6 +5,7 @@
 @using System.Security.Claims
 @using System.Linq
 @using Microsoft.AspNetCore.Components.Authorization
+@using Misstortas.Frontend.Services.Shared
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
@@ -15,6 +16,7 @@
 @inject ISaleProductCartService CartService
 @inject IOrderService OrderService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IToastService ToastService
 
 <h3>Mi pedido</h3>
 
@@ -98,13 +100,6 @@ else
     {
         <AuthorizeView>
             <Authorized>
-                @if (!string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        @errorMessage
-                        <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
-                    </div>
-                }
                 <button class="btn cart-btn cart-btn-primary mt-3" @onclick="ShowCheckout">
                     Pagar Pedido
                 </button>
@@ -257,12 +252,20 @@ else
         }
         catch (HttpRequestException ex)
         {
-            errorMessage = ex.Message;
+            var msg = ex.Message ?? "El pago falló. Por favor, inténtalo de nuevo.";
+            if (ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                ToastService.Warning($"El usuario no esta autorizado, solicite los permisos a su administrador. {msg}");
+            }
+            else
+            {
+                ToastService.Error($"Error inesperado. {msg}");
+            }
         }
         catch (Exception ex)
         {
-            // Log ex if you have a logger.
-            errorMessage = "Algo salió mal al crear tu pedido. Por favor, inténtalo de nuevo.";
+            errorMessage = $"Algo salió mal al crear tu pedido. Por favor, inténtalo de nuevo.{ex.Message}";
+            ToastService.Error(errorMessage);
         }
     }
 

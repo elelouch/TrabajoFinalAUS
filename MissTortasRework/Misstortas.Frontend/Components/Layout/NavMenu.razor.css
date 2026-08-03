@@ -196,4 +196,7 @@
     flex-wrap: wrap;
 }
 
+.bi-bag-dash-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' class='bi bi-bag-check' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z'/%3E%3Cpath d='M6 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V1h1.5A1.5 1.5 0 0 1 13 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H4V.5zM4 2h8v-.5a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0-.5.5V2zM3 5a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5H3z'/%3E%3C/svg%3E");
+}
 /* Rest of your existing CSS remains the same */
