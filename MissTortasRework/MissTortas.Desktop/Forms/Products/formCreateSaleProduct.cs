@@ -155,7 +155,7 @@ namespace MissTortas.Desktop.Forms.Products
             var qty = ParseQuantity(txtQuantity.Text, manageQtyAsInteger);
             var name = Validation.ValidateAndSanitize(txtProductName.Text, 3, 256);
             var description = Validation.ValidateAndSanitize(txtDescription.Text, 3, 256);
-            var unit = Validation.ValidateAndSanitize(txtUnitName.Text, 3, 256);
+            var unit = Validation.ValidateAndSanitize(txtUnitName.Text, 0, 256);
             var price = ParseQuantity(txtPrice.Text, null);
             if (comboBoxCategory.SelectedItem is not ProductCategory selected)
             {

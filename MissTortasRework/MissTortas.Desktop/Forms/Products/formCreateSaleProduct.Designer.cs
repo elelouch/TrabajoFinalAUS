@@ -113,7 +113,7 @@
             comboBoxCategory.Location = new Point(0, 14);
             comboBoxCategory.Name = "comboBoxCategory";
             comboBoxCategory.Size = new Size(272, 22);
-            comboBoxCategory.TabIndex = 2;
+            comboBoxCategory.TabIndex = 0;
             // 
             // txtProductName
             // 
@@ -161,7 +161,7 @@
             txtDescription.Location = new Point(0, 14);
             txtDescription.Name = "txtDescription";
             txtDescription.Size = new Size(272, 22);
-            txtDescription.TabIndex = 1;
+            txtDescription.TabIndex = 0;
             // 
             // btnConfirm
             // 
@@ -170,7 +170,7 @@
             btnConfirm.Location = new Point(193, 2);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(81, 25);
-            btnConfirm.TabIndex = 8;
+            btnConfirm.TabIndex = 0;
             btnConfirm.Text = "Confirmar";
             btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
@@ -184,7 +184,7 @@
             btnCancel.Location = new Point(360, 2);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(81, 25);
-            btnCancel.TabIndex = 9;
+            btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
@@ -196,7 +196,7 @@
             txtUnitName.Location = new Point(0, 14);
             txtUnitName.Name = "txtUnitName";
             txtUnitName.Size = new Size(272, 15);
-            txtUnitName.TabIndex = 4;
+            txtUnitName.TabIndex = 0;
             // 
             // lblUnitName
             // 
@@ -239,7 +239,7 @@
             btnUpload.Location = new Point(43, 281);
             btnUpload.Name = "btnUpload";
             btnUpload.Size = new Size(89, 32);
-            btnUpload.TabIndex = 10;
+            btnUpload.TabIndex = 0;
             btnUpload.Text = "Cargar";
             btnUpload.UseVisualStyleBackColor = false;
             btnUpload.Click += btnUpload_Click;
@@ -251,7 +251,7 @@
             btnRemove.Location = new Point(138, 281);
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(93, 32);
-            btnRemove.TabIndex = 11;
+            btnRemove.TabIndex = 1;
             btnRemove.Text = "Quitar";
             btnRemove.UseVisualStyleBackColor = false;
             btnRemove.Click += btnRemove_Click;
@@ -263,7 +263,7 @@
             txtPrice.Location = new Point(0, 17);
             txtPrice.Name = "txtPrice";
             txtPrice.Size = new Size(272, 15);
-            txtPrice.TabIndex = 5;
+            txtPrice.TabIndex = 0;
             // 
             // lblPrice
             // 

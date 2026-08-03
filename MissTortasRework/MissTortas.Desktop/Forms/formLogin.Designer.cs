@@ -67,7 +67,7 @@
             emailLabel.Location = new Point(23, 5);
             emailLabel.Name = "emailLabel";
             emailLabel.Size = new Size(104, 16);
-            emailLabel.TabIndex = 1;
+            emailLabel.TabIndex = 0;
             emailLabel.Text = "Usuario/Correo";
             // 
             // passwordLabel
@@ -77,7 +77,7 @@
             passwordLabel.Location = new Point(23, 9);
             passwordLabel.Name = "passwordLabel";
             passwordLabel.Size = new Size(82, 16);
-            passwordLabel.TabIndex = 2;
+            passwordLabel.TabIndex = 0;
             passwordLabel.Text = "Contraseña";
             // 
             // txtUsername
@@ -86,7 +86,7 @@
             txtUsername.Location = new Point(23, 24);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(295, 23);
-            txtUsername.TabIndex = 0;
+            txtUsername.TabIndex = 1;
             // 
             // txtPassword
             // 
@@ -121,7 +121,7 @@
             btnCancel.Location = new Point(481, 12);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(34, 26);
-            btnCancel.TabIndex = 3;
+            btnCancel.TabIndex = 0;
             btnCancel.Text = "X";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -135,7 +135,7 @@
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(264, 450);
-            panel1.TabIndex = 7;
+            panel1.TabIndex = 0;
             // 
             // panel5
             // 
@@ -143,7 +143,7 @@
             panel5.Location = new Point(33, 179);
             panel5.Name = "panel5";
             panel5.Size = new Size(207, 193);
-            panel5.TabIndex = 1;
+            panel5.TabIndex = 0;
             // 
             // panel2
             // 
@@ -152,7 +152,7 @@
             panel2.Location = new Point(291, 106);
             panel2.Name = "panel2";
             panel2.Size = new Size(407, 64);
-            panel2.TabIndex = 8;
+            panel2.TabIndex = 0;
             // 
             // panel3
             // 
@@ -161,7 +161,7 @@
             panel3.Location = new Point(291, 195);
             panel3.Name = "panel3";
             panel3.Size = new Size(407, 70);
-            panel3.TabIndex = 9;
+            panel3.TabIndex = 1;
             // 
             // panel4
             // 
@@ -170,7 +170,7 @@
             panel4.Location = new Point(264, 0);
             panel4.Name = "panel4";
             panel4.Size = new Size(536, 47);
-            panel4.TabIndex = 10;
+            panel4.TabIndex = 3;
             // 
             // formLogin
             // 

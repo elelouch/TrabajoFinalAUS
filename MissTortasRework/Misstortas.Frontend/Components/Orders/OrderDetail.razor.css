@@ -1,0 +1,175 @@
+.order-detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1070;
+    animation: order-detail-fade-in 0.15s ease;
+    padding: 1rem;
+}
+
+.order-detail-modal {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    width: 640px;
+    max-width: 95vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    border-top: 4px solid #F7ADC8;
+    animation: order-detail-pop-in 0.18s ease;
+}
+
+.order-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+    .order-detail-header h5 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+.order-detail-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+    .order-detail-close-btn:hover {
+        color: #F7ADC8;
+        transform: scale(1.1);
+    }
+
+.order-detail-section {
+    margin-bottom: 1.5rem;
+}
+
+    .order-detail-section h6 {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #4a3b2e;
+    }
+
+/* Preparations list */
+.order-detail-preparations-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    .order-detail-preparations-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.6rem 0.85rem;
+        border-radius: 10px;
+        background: #f8f8f8;
+    }
+
+.order-detail-prep-status {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.order-detail-prep-done {
+    background: rgba(173, 247, 220, 0.35);
+}
+
+    .order-detail-prep-done .order-detail-prep-status {
+        color: #1e4a3a;
+    }
+
+.order-detail-prep-pending .order-detail-prep-status {
+    color: #a08a6d;
+}
+
+.order-detail-prep-detail {
+    flex: 1;
+}
+
+.order-detail-prep-assignee {
+    font-size: 0.8rem;
+    color: #777;
+    white-space: nowrap;
+}
+
+/* Products table */
+.order-detail-table-wrapper {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+    background: #fff;
+}
+
+.order-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+    .order-detail-table thead th {
+        background: linear-gradient(135deg, #F7DCAD, #F7B7AD);
+        color: #4a3b2e;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background 0.2s ease;
+    }
+
+        .order-detail-table thead th:hover {
+            background: linear-gradient(135deg, #F7ADC8, #F7B7AD);
+        }
+
+    .order-detail-table tbody td {
+        padding: 0.65rem 1rem;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .order-detail-table tbody tr:hover {
+        background: rgba(173, 247, 220, 0.18);
+    }
+
+.order-detail-total {
+    margin-top: 0.85rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+@keyframes order-detail-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes order-detail-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}

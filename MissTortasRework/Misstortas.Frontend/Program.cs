@@ -5,7 +5,7 @@ using Misstortas.Frontend;
 using Misstortas.Frontend.Components;
 using Misstortas.Frontend.Services.Auth;
 using Misstortas.Frontend.Services.Files;
-using Misstortas.Frontend.Services.Order;
+using Misstortas.Frontend.Services.Orders;
 using Misstortas.Frontend.Services.Payments;
 using Misstortas.Frontend.Services.Products;
 using Misstortas.Frontend.Services.Shared;

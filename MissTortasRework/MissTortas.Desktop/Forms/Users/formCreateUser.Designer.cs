@@ -121,7 +121,7 @@
             txtLastName.Location = new Point(0, 18);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(196, 15);
-            txtLastName.TabIndex = 1;
+            txtLastName.TabIndex = 0;
             // 
             // txtUsername
             // 
@@ -130,7 +130,7 @@
             txtUsername.Location = new Point(0, 18);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(196, 15);
-            txtUsername.TabIndex = 1;
+            txtUsername.TabIndex = 0;
             // 
             // txtPassword
             // 
@@ -140,7 +140,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.Size = new Size(196, 15);
-            txtPassword.TabIndex = 1;
+            txtPassword.TabIndex = 0;
             // 
             // txtRepeatPassword
             // 
@@ -150,7 +150,7 @@
             txtRepeatPassword.Name = "txtRepeatPassword";
             txtRepeatPassword.PasswordChar = '*';
             txtRepeatPassword.Size = new Size(196, 15);
-            txtRepeatPassword.TabIndex = 1;
+            txtRepeatPassword.TabIndex = 0;
             // 
             // lblRepeatPassword
             // 
@@ -169,7 +169,7 @@
             btnConfirm.Location = new Point(3, 314);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(75, 26);
-            btnConfirm.TabIndex = 1;
+            btnConfirm.TabIndex = 6;
             btnConfirm.Text = "Confirmar";
             btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
@@ -191,7 +191,7 @@
             txtEmail.Location = new Point(0, 18);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(196, 15);
-            txtEmail.TabIndex = 1;
+            txtEmail.TabIndex = 0;
             // 
             // btnCancel
             // 
@@ -203,7 +203,7 @@
             btnCancel.Location = new Point(123, 314);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 29);
-            btnCancel.TabIndex = 1;
+            btnCancel.TabIndex = 7;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnClose_Click;
@@ -223,7 +223,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 420F));
             tableLayoutPanel1.Size = new Size(800, 420);
-            tableLayoutPanel1.TabIndex = 13;
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
             // 
@@ -234,7 +234,7 @@
             panel1.Location = new Point(163, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(474, 414);
-            panel1.TabIndex = 14;
+            panel1.TabIndex = 0;
             // 
             // label1
             // 
@@ -243,7 +243,7 @@
             label1.Location = new Point(132, 18);
             label1.Name = "label1";
             label1.Size = new Size(107, 14);
-            label1.TabIndex = 20;
+            label1.TabIndex = 0;
             label1.Text = "Creando usuario";
             // 
             // panel8
@@ -259,7 +259,7 @@
             panel8.Location = new Point(131, 52);
             panel8.Name = "panel8";
             panel8.Size = new Size(198, 343);
-            panel8.TabIndex = 19;
+            panel8.TabIndex = 1;
             // 
             // panel7
             // 
@@ -270,7 +270,7 @@
             panel7.Location = new Point(0, 175);
             panel7.Name = "panel7";
             panel7.Size = new Size(198, 35);
-            panel7.TabIndex = 18;
+            panel7.TabIndex = 5;
             // 
             // panel6
             // 
@@ -281,7 +281,7 @@
             panel6.Location = new Point(0, 140);
             panel6.Name = "panel6";
             panel6.Size = new Size(198, 35);
-            panel6.TabIndex = 17;
+            panel6.TabIndex = 4;
             // 
             // panel4
             // 
@@ -292,7 +292,7 @@
             panel4.Location = new Point(0, 105);
             panel4.Name = "panel4";
             panel4.Size = new Size(198, 35);
-            panel4.TabIndex = 15;
+            panel4.TabIndex = 3;
             // 
             // panel5
             // 
@@ -303,7 +303,7 @@
             panel5.Location = new Point(0, 70);
             panel5.Name = "panel5";
             panel5.Size = new Size(198, 35);
-            panel5.TabIndex = 16;
+            panel5.TabIndex = 2;
             // 
             // panel3
             // 

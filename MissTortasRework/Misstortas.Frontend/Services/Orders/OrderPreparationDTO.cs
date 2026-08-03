@@ -1,4 +1,4 @@
-﻿namespace Misstortas.Frontend.Services.Order
+﻿namespace Misstortas.Frontend.Services.Orders
 {
     public class OrderPreparationDTO
     {

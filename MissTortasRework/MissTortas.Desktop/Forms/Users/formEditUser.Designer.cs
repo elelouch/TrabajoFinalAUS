@@ -119,7 +119,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Size = new Size(394, 200);
-            tableLayoutPanel2.TabIndex = 0;
+            tableLayoutPanel2.TabIndex = 1;
             // 
             // btnRemoveRole
             // 
@@ -158,7 +158,7 @@
             txtAvailableRoles.Name = "txtAvailableRoles";
             txtAvailableRoles.ReadOnly = true;
             txtAvailableRoles.Size = new Size(151, 15);
-            txtAvailableRoles.TabIndex = 4;
+            txtAvailableRoles.TabIndex = 0;
             txtAvailableRoles.Text = "Roles disponibles";
             // 
             // txtAddedRole
@@ -184,7 +184,7 @@
             listBoxAvailableRoles.Name = "listBoxAvailableRoles";
             tableLayoutPanel2.SetRowSpan(listBoxAvailableRoles, 2);
             listBoxAvailableRoles.Size = new Size(151, 175);
-            listBoxAvailableRoles.TabIndex = 10;
+            listBoxAvailableRoles.TabIndex = 4;
             // 
             // listBoxAddedRoles
             // 
@@ -206,7 +206,7 @@
             panel9.Location = new Point(603, 3);
             panel9.Name = "panel9";
             panel9.Size = new Size(194, 208);
-            panel9.TabIndex = 11;
+            panel9.TabIndex = 1;
             // 
             // btnUserPermissions
             // 
@@ -265,7 +265,7 @@
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.Size = new Size(394, 208);
-            tableLayoutPanel3.TabIndex = 12;
+            tableLayoutPanel3.TabIndex = 0;
             // 
             // panel1
             // 
@@ -275,7 +275,7 @@
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(191, 202);
-            panel1.TabIndex = 9;
+            panel1.TabIndex = 0;
             // 
             // panel7
             // 
@@ -286,7 +286,7 @@
             panel7.Location = new Point(0, 76);
             panel7.Name = "panel7";
             panel7.Size = new Size(191, 45);
-            panel7.TabIndex = 7;
+            panel7.TabIndex = 2;
             // 
             // lblLastName
             // 
@@ -294,7 +294,7 @@
             lblLastName.Location = new Point(3, 0);
             lblLastName.Name = "lblLastName";
             lblLastName.Size = new Size(49, 14);
-            lblLastName.TabIndex = 10;
+            lblLastName.TabIndex = 0;
             lblLastName.Text = "Apellido";
             // 
             // txtLastName
@@ -304,7 +304,7 @@
             txtLastName.Location = new Point(0, 28);
             txtLastName.Name = "txtLastName";
             txtLastName.Size = new Size(189, 15);
-            txtLastName.TabIndex = 4;
+            txtLastName.TabIndex = 1;
             // 
             // panel3
             // 
@@ -324,7 +324,7 @@
             txtFirstName.Location = new Point(0, 24);
             txtFirstName.Name = "txtFirstName";
             txtFirstName.Size = new Size(189, 15);
-            txtFirstName.TabIndex = 1;
+            txtFirstName.TabIndex = 0;
             // 
             // lblFirstName
             // 
@@ -333,7 +333,7 @@
             lblFirstName.Location = new Point(0, 0);
             lblFirstName.Name = "lblFirstName";
             lblFirstName.Size = new Size(50, 14);
-            lblFirstName.TabIndex = 9;
+            lblFirstName.TabIndex = 1;
             lblFirstName.Text = "Nombre";
             // 
             // panel2
@@ -354,7 +354,7 @@
             txtUsername.Location = new Point(0, 18);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(189, 15);
-            txtUsername.TabIndex = 0;
+            txtUsername.TabIndex = 1;
             // 
             // lblUsername
             // 
@@ -363,7 +363,7 @@
             lblUsername.Location = new Point(0, 0);
             lblUsername.Name = "lblUsername";
             lblUsername.Size = new Size(46, 14);
-            lblUsername.TabIndex = 7;
+            lblUsername.TabIndex = 0;
             lblUsername.Text = "Usuario";
             // 
             // panel10
@@ -375,7 +375,7 @@
             panel10.Location = new Point(200, 3);
             panel10.Name = "panel10";
             panel10.Size = new Size(191, 202);
-            panel10.TabIndex = 10;
+            panel10.TabIndex = 1;
             // 
             // panel8
             // 
@@ -386,7 +386,7 @@
             panel8.Location = new Point(0, 76);
             panel8.Name = "panel8";
             panel8.Size = new Size(191, 45);
-            panel8.TabIndex = 10;
+            panel8.TabIndex = 2;
             // 
             // txtEmail
             // 
@@ -415,7 +415,7 @@
             panel6.Location = new Point(0, 35);
             panel6.Name = "panel6";
             panel6.Size = new Size(191, 41);
-            panel6.TabIndex = 3;
+            panel6.TabIndex = 1;
             // 
             // lblRepeatPassword
             // 
@@ -445,7 +445,7 @@
             chkEnabled.Location = new Point(6, 152);
             chkEnabled.Name = "chkEnabled";
             chkEnabled.Size = new Size(65, 18);
-            chkEnabled.TabIndex = 6;
+            chkEnabled.TabIndex = 3;
             chkEnabled.Text = "Habilitar";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
@@ -459,7 +459,7 @@
             panel4.Location = new Point(0, 0);
             panel4.Name = "panel4";
             panel4.Size = new Size(191, 35);
-            panel4.TabIndex = 2;
+            panel4.TabIndex = 0;
             // 
             // panel5
             // 

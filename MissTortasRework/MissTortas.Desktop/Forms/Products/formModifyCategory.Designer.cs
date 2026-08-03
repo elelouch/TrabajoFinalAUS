@@ -65,7 +65,7 @@
             btnConfirm.Location = new Point(139, 339);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(75, 25);
-            btnConfirm.TabIndex = 1;
+            btnConfirm.TabIndex = 3;
             btnConfirm.Text = "Confirmar";
             btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
@@ -79,7 +79,7 @@
             btnCancel.Location = new Point(265, 339);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 25);
-            btnCancel.TabIndex = 2;
+            btnCancel.TabIndex = 4;
             btnCancel.Text = "Cancelar";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
@@ -90,7 +90,7 @@
             txtCategoryName.Location = new Point(0, 25);
             txtCategoryName.Name = "txtCategoryName";
             txtCategoryName.Size = new Size(201, 23);
-            txtCategoryName.TabIndex = 3;
+            txtCategoryName.TabIndex = 1;
             // 
             // comboMoveParent
             // 
@@ -100,7 +100,7 @@
             comboMoveParent.Location = new Point(0, 24);
             comboMoveParent.Name = "comboMoveParent";
             comboMoveParent.Size = new Size(201, 24);
-            comboMoveParent.TabIndex = 4;
+            comboMoveParent.TabIndex = 0;
             // 
             // lblSelectParent
             // 
@@ -109,7 +109,7 @@
             lblSelectParent.Location = new Point(0, 0);
             lblSelectParent.Name = "lblSelectParent";
             lblSelectParent.Size = new Size(136, 16);
-            lblSelectParent.TabIndex = 5;
+            lblSelectParent.TabIndex = 0;
             lblSelectParent.Text = "Nueva categoria padre";
             // 
             // chkEnabled
@@ -119,7 +119,7 @@
             chkEnabled.Location = new Point(174, 287);
             chkEnabled.Name = "chkEnabled";
             chkEnabled.Size = new Size(127, 20);
-            chkEnabled.TabIndex = 6;
+            chkEnabled.TabIndex = 2;
             chkEnabled.Text = "Habilitar categoria";
             chkEnabled.UseVisualStyleBackColor = true;
             // 
@@ -136,7 +136,7 @@
             panel1.Location = new Point(163, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(474, 474);
-            panel1.TabIndex = 7;
+            panel1.TabIndex = 0;
             // 
             // panel4
             // 
@@ -153,7 +153,7 @@
             lblModifyCategory.Location = new Point(0, 0);
             lblModifyCategory.Name = "lblModifyCategory";
             lblModifyCategory.Size = new Size(205, 36);
-            lblModifyCategory.TabIndex = 7;
+            lblModifyCategory.TabIndex = 0;
             lblModifyCategory.Text = "label1";
             // 
             // panel3
@@ -164,7 +164,7 @@
             panel3.Location = new Point(138, 192);
             panel3.Name = "panel3";
             panel3.Size = new Size(203, 50);
-            panel3.TabIndex = 9;
+            panel3.TabIndex = 1;
             // 
             // panel2
             // 
@@ -174,7 +174,7 @@
             panel2.Location = new Point(138, 106);
             panel2.Name = "panel2";
             panel2.Size = new Size(203, 50);
-            panel2.TabIndex = 8;
+            panel2.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -191,7 +191,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 480F));
             tableLayoutPanel1.Size = new Size(800, 480);
-            tableLayoutPanel1.TabIndex = 8;
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // formModifyCategory
             // 

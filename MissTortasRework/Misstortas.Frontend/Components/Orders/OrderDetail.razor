@@ -1,0 +1,183 @@
+﻿@using Misstortas.Frontend.Models
+@using Misstortas.Frontend.Services.Orders
+@using System.Linq
+
+@inject IOrderService OrderService
+
+<div class="order-detail-overlay" @onclick="Close">
+    <div class="order-detail-modal" @onclick:stopPropagation="true">
+        <div class="order-detail-header">
+            <h5>Detalle del pedido #@OrderId</h5>
+            <button type="button" class="order-detail-close-btn" @onclick="Close" aria-label="Cerrar">
+                &times;
+            </button>
+        </div>
+
+        @if (isLoading)
+        {
+            <p>Cargando detalle del pedido...</p>
+        }
+        else if (loadError is not null)
+        {
+            <div class="alert alert-danger">@loadError</div>
+        }
+        else if (order is not null)
+        {
+            <section class="order-detail-section">
+                <h6>Tareas</h6>
+                @if (!order.Preparations.Any())
+                {
+                    <p>No hay tareas para este pedido.</p>
+                }
+                else
+                {
+                    <ul class="order-detail-preparations-list">
+                        @foreach (var prep in order.Preparations)
+                        {
+                            <li class="@(prep.Done ? "order-detail-prep-done" : "order-detail-prep-pending")">
+                                <span class="order-detail-prep-status">@(prep.Done ? "✔" : "◻")</span>
+                                <span class="order-detail-prep-detail">@prep.Detail</span>
+                                <span class="order-detail-prep-assignee">Asignado a: @prep.AssigneeId</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </section>
+
+            <section class="order-detail-section">
+                <h6>Productos pedidos</h6>
+
+                <div class="order-detail-table-wrapper">
+                    <table class="order-detail-table">
+                        <thead>
+                            <tr>
+                                <th @onclick='() => SortBy("Name")'>
+                                    Producto <span class="sort-icon">@SortIcon("Name")</span>
+                                </th>
+                                <th @onclick='() => SortBy("Quantity")'>
+                                    Cantidad <span class="sort-icon">@SortIcon("Quantity")</span>
+                                </th>
+                                <th @onclick='() => SortBy("SalePrice")'>
+                                    Precio unitario <span class="sort-icon">@SortIcon("SalePrice")</span>
+                                </th>
+                                <th @onclick='() => SortBy("Subtotal")'>
+                                    Subtotal <span class="sort-icon">@SortIcon("Subtotal")</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in SortedProducts())
+                            {
+                                <tr>
+                                    <td>@product.Name</td>
+                                    <td>@product.QuantityAsked</td>
+                                    <td>$@product.Price</td>
+                                    <td>$@(product.QuantityAsked * product.Price)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <h5 class="order-detail-total">
+                    Total: $@order.SaleProducts.Sum(p => p.QuantityAsked * p.Price)
+                </h5>
+            </section>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public long OrderId { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private Order? order;
+    private bool isLoading = true;
+    private string? loadError;
+    private long? loadedOrderId;
+
+    private string sortColumn = "Name";
+    private bool sortAscending = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (loadedOrderId == OrderId) return;
+
+        loadedOrderId = OrderId;
+        await LoadOrderAsync();
+    }
+
+    private async Task LoadOrderAsync()
+    {
+        isLoading = true;
+        loadError = null;
+
+        try
+        {
+            order = await OrderService.GetOrderByIdAsync(OrderId);
+        }
+        catch (Exception)
+        {
+            loadError = "No se pudo cargar el detalle del pedido. Por favor, inténtalo de nuevo.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task Close()
+    {
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync();
+        }
+    }
+
+    private void SortBy(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+    }
+
+    private string SortIcon(string column)
+    {
+        if (sortColumn != column) return string.Empty;
+        return sortAscending ? "▲" : "▼";
+    }
+
+    private IEnumerable<SaleProductAsked> SortedProducts()
+    {
+        if (order is null) return Enumerable.Empty<SaleProductAsked>();
+
+        IEnumerable<SaleProductAsked> result = order.SaleProducts;
+
+        result = sortColumn switch
+        {
+            "Quantity" => sortAscending
+                ? result.OrderBy(p => p.QuantityAsked)
+                : result.OrderByDescending(p => p.QuantityAsked),
+            "SalePrice" => sortAscending
+                ? result.OrderBy(p => p.Price)
+                : result.OrderByDescending(p => p.Price),
+            "Subtotal" => sortAscending
+                ? result.OrderBy(p => p.QuantityAsked * p.Price)
+                : result.OrderByDescending(p => p.QuantityAsked * p.Price),
+            _ => sortAscending
+                ? result.OrderBy(p => p.Name)
+                : result.OrderByDescending(p => p.Name),
+        };
+
+        return result;
+    }
+}

@@ -70,7 +70,7 @@
             lblProductName.Location = new Point(0, 0);
             lblProductName.Name = "lblProductName";
             lblProductName.Size = new Size(50, 14);
-            lblProductName.TabIndex = 0;
+            lblProductName.TabIndex = 1;
             lblProductName.Text = "Nombre";
             // 
             // lblCategory
@@ -151,7 +151,7 @@
             // 
             btnConfirm.BackColor = SystemColors.ControlLightLight;
             btnConfirm.FlatStyle = FlatStyle.Flat;
-            btnConfirm.Location = new Point(161, 346);
+            btnConfirm.Location = new Point(0, 258);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(86, 26);
             btnConfirm.TabIndex = 7;
@@ -165,7 +165,7 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = SystemColors.ControlLightLight;
-            btnCancel.Location = new Point(253, 346);
+            btnCancel.Location = new Point(159, 258);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(83, 26);
             btnCancel.TabIndex = 8;
@@ -207,13 +207,11 @@
             panel1.BackColor = Color.WhiteSmoke;
             panel1.Controls.Add(panel8);
             panel1.Controls.Add(panel7);
-            panel1.Controls.Add(btnConfirm);
-            panel1.Controls.Add(btnCancel);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(163, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(474, 414);
-            panel1.TabIndex = 14;
+            panel1.TabIndex = 1;
             // 
             // panel8
             // 
@@ -221,7 +219,7 @@
             panel8.Location = new Point(125, 10);
             panel8.Name = "panel8";
             panel8.Size = new Size(241, 40);
-            panel8.TabIndex = 19;
+            panel8.TabIndex = 1;
             // 
             // lblHeader
             // 
@@ -238,6 +236,8 @@
             // 
             panel7.Controls.Add(panel6);
             panel7.Controls.Add(chkManageQtyAsInteger);
+            panel7.Controls.Add(btnCancel);
+            panel7.Controls.Add(btnConfirm);
             panel7.Controls.Add(chkEnabled);
             panel7.Controls.Add(panel4);
             panel7.Controls.Add(panel5);
@@ -257,7 +257,7 @@
             panel6.Location = new Point(0, 152);
             panel6.Name = "panel6";
             panel6.Size = new Size(242, 36);
-            panel6.TabIndex = 16;
+            panel6.TabIndex = 4;
             // 
             // panel4
             // 
@@ -268,7 +268,7 @@
             panel4.Location = new Point(0, 115);
             panel4.Name = "panel4";
             panel4.Size = new Size(242, 37);
-            panel4.TabIndex = 2;
+            panel4.TabIndex = 3;
             // 
             // panel5
             // 
@@ -279,7 +279,7 @@
             panel5.Location = new Point(0, 76);
             panel5.Name = "panel5";
             panel5.Size = new Size(242, 39);
-            panel5.TabIndex = 3;
+            panel5.TabIndex = 2;
             // 
             // panel3
             // 
@@ -317,8 +317,15 @@
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 420F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(800, 420);
-            tableLayoutPanel1.TabIndex = 15;
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // formCreateStockProduct
             // 

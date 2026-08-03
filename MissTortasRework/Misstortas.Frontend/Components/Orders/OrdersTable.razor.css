@@ -1,0 +1,188 @@
+.orders-table-wrapper {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+    background: #fff;
+    margin-bottom: 1rem;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+    .orders-table thead th {
+        background: linear-gradient(135deg, #F7DCAD, #F7B7AD);
+        color: #4a3b2e;
+        text-align: left;
+        padding: 0.85rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background 0.2s ease;
+    }
+
+        .orders-table thead th:hover {
+            background: linear-gradient(135deg, #F7ADC8, #F7B7AD);
+        }
+
+.sort-icon {
+    display: inline-block;
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+    color: #6b5a4d;
+}
+
+.orders-table tbody td {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.orders-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+    .orders-table tbody tr:hover {
+        background: rgba(173, 247, 220, 0.18);
+    }
+
+.orders-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.orders-btn {
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+    .orders-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .orders-btn:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    }
+
+    .orders-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+.orders-btn-primary {
+    background: #ADC8F7;
+    color: #1e2a4a;
+}
+
+    .orders-btn-primary:hover:not(:disabled) {
+        background: #92b3f2;
+        color: #1e2a4a;
+    }
+
+.orders-btn-secondary {
+    background: #ADF7DC;
+    color: #1e4a3a;
+}
+
+    .orders-btn-secondary:hover:not(:disabled) {
+        background: #8ef2c7;
+        color: #1e4a3a;
+    }
+
+.orders-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1060;
+    animation: orders-fade-in 0.15s ease;
+    padding: 1rem;
+}
+
+.orders-modal {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    width: 380px;
+    max-width: 90vw;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    border-top: 4px solid #F7ADC8;
+    animation: orders-pop-in 0.18s ease;
+}
+
+    .orders-modal h5 {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .orders-modal p {
+        margin-bottom: 1.25rem;
+        color: #444;
+    }
+
+.orders-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+@keyframes orders-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes orders-pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+.orders-status-cancelled {
+    background: #ffebee;
+    color: #c62828;
+    font-weight: 600;
+}
+
+.orders-status-pending {
+    background: #e3f2fd;
+    color: #1565c0;
+    font-weight: 600;
+}
+
+.orders-status-done {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.orders-status-in-progress {
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: 600;
+}
+
+.orders-status-created {
+    background: #f3e5f5;
+    color: #6a1b9a;
+    font-weight: 600;
+}

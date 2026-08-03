@@ -1,0 +1,248 @@
+﻿@page "/orders"
+@rendermode InteractiveServer
+
+@using Misstortas.Frontend.Models
+@using Misstortas.Frontend.Services.Orders
+@using Misstortas.Frontend.Services.Shared
+@using System.Linq
+
+@inject IToastService ToastService
+@inject IOrderService OrderService
+
+<h3>Mis pedidos</h3>
+
+@if (orders is null)
+{
+    <p>Cargando pedidos...</p>
+}
+else if (!orders.Any())
+{
+    <p>No hay pedidos por aquí...</p>
+}
+else
+{
+    <div class="orders-table-wrapper">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th @onclick='() => SortBy("Id")'>
+                        Identificador <span class="sort-icon">@SortIcon("Id")</span>
+                    </th>
+                    <th @onclick='() => SortBy("Status")'>
+                        Estado <span class="sort-icon">@SortIcon("Status")</span>
+                    </th>
+                    <th @onclick='() => SortBy("ClientUserId")'>
+                        Identificador del cliente <span class="sort-icon">@SortIcon("ClientUserId")</span>
+                    </th>
+                    <th @onclick='() => SortBy("CreatedAt")'>
+                        Fecha de creación <span class="sort-icon">@SortIcon("CreatedAt")</span>
+                    </th>
+                    <th @onclick='() => SortBy("PaymentStatus")'>
+                        Estado del pago <span class="sort-icon">@SortIcon("PaymentStatus")</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in SortedOrders())
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td class="@GetStatusClass(order.Status)">@order.Status</td>
+                        <td>@order.ClientUserId</td>
+                        <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="@GetStatusClass(order.PaymentStatus)">@order.PaymentStatus</td>
+                        <td class="orders-actions">
+                            <button class="btn btn-danger btn-sm orders-btn" @onclick="() => RequestCancel(order)">
+                                Cancelar
+                            </button>
+                            <button class="btn orders-btn orders-btn-primary btn-sm" @onclick="() => ShowDetail(order.Id)">
+                                Ver detalles
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (showCancelConfirm && pendingCancelOrder is not null)
+{
+    <div class="orders-modal-overlay" @onclick="CancelCancel">
+        <div class="orders-modal" @onclick:stopPropagation="true">
+            <h5>Confirmar cancelación</h5>
+            <p>¿Querés cancelar el pedido <strong>#@pendingCancelOrder.Id</strong>?</p>
+            @if (!string.IsNullOrWhiteSpace(cancelError))
+            {
+                <div class="alert alert-danger">@cancelError</div>
+            }
+            <div class="orders-modal-actions">
+                <button class="btn orders-btn orders-btn-secondary" @onclick="CancelCancel" disabled="@isCancelling">
+                    Volver
+                </button>
+                <button class="btn btn-danger orders-btn" @onclick="ConfirmCancel" disabled="@isCancelling">
+                    @if (isCancelling)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        <span>Cancelando...</span>
+                    }
+                    else
+                    {
+                        <span>Cancelar pedido</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showDetailModal && selectedOrderId is not null)
+{
+    <OrderDetail OrderId="selectedOrderId.Value" OnClose="CloseDetail" />
+}
+
+@code {
+    private List<Order>? orders;
+
+    private string sortColumn = "CreatedAt";
+    private bool sortAscending = false;
+
+    private Order? pendingCancelOrder;
+    private bool showCancelConfirm;
+    private bool isCancelling;
+    private string? cancelError;
+
+    private long? selectedOrderId;
+    private bool showDetailModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            orders = await OrderService.GetOrdersAsync();
+        }
+        catch (Exception exc)
+        {
+            ToastService.Error($"Acceso no autorizado. Por favor, ingrese con sus credenciales. {exc.Message}");
+        }
+    }
+
+    // --- Main table sorting ---
+
+    private void SortBy(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+    }
+
+    private string SortIcon(string column)
+    {
+        if (sortColumn != column) return string.Empty;
+        return sortAscending ? "▲" : "▼";
+    }
+
+    private IEnumerable<Order> SortedOrders()
+    {
+        if (orders is null) return Enumerable.Empty<Order>();
+
+        IEnumerable<Order> result = orders;
+
+        result = sortColumn switch
+        {
+            "Status" => sortAscending
+                ? result.OrderBy(o => o.Status)
+                : result.OrderByDescending(o => o.Status),
+            "ClientUserId" => sortAscending
+                ? result.OrderBy(o => o.ClientUserId)
+                : result.OrderByDescending(o => o.ClientUserId),
+            "CreatedAt" => sortAscending
+                ? result.OrderBy(o => o.CreatedAt)
+                : result.OrderByDescending(o => o.CreatedAt),
+            "PaymentStatus" => sortAscending
+                ? result.OrderBy(o => o.PaymentStatus)
+                : result.OrderByDescending(o => o.PaymentStatus),
+            _ => sortAscending
+                ? result.OrderBy(o => o.Id)
+                : result.OrderByDescending(o => o.Id),
+        };
+
+        return result;
+    }
+
+    // --- Cancel flow ---
+
+    private void RequestCancel(Order order)
+    {
+        pendingCancelOrder = order;
+        cancelError = null;
+        showCancelConfirm = true;
+    }
+
+    private void CancelCancel()
+    {
+        if (isCancelling) return;
+
+        pendingCancelOrder = null;
+        cancelError = null;
+        showCancelConfirm = false;
+    }
+
+    private async Task ConfirmCancel()
+    {
+        if (pendingCancelOrder is null) return;
+
+        isCancelling = true;
+        cancelError = null;
+
+        try
+        {
+            await OrderService.CancelOrderByIdAsync(pendingCancelOrder.Id);
+            orders = await OrderService.GetOrdersAsync();
+
+            showCancelConfirm = false;
+            pendingCancelOrder = null;
+        }
+        catch (Exception)
+        {
+            cancelError = "No se pudo cancelar el pedido. Por favor, inténtalo de nuevo.";
+        }
+        finally
+        {
+            isCancelling = false;
+        }
+    }
+
+    // --- Detail popup ---
+
+    private void ShowDetail(long orderId)
+    {
+        selectedOrderId = orderId;
+        showDetailModal = true;
+    }
+
+    private void CloseDetail()
+    {
+        showDetailModal = false;
+        selectedOrderId = null;
+    }
+    private string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Cancelled" => "orders-status-cancelled",
+            "Pending" => "orders-status-pending",
+            "Finished" => "orders-status-done",
+            "InProgress" => "orders-status-in-progress",
+            "Created" => "orders-status-created",
+            _ => string.Empty,
+        };
+    }
+}

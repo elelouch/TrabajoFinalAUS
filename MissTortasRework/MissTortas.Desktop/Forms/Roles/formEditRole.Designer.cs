@@ -99,7 +99,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Size = new Size(394, 200);
-            tableLayoutPanel2.TabIndex = 0;
+            tableLayoutPanel2.TabIndex = 2;
             // 
             // btnRemovePermission
             // 
@@ -185,7 +185,7 @@
             panel3.Location = new Point(603, 3);
             panel3.Name = "panel3";
             panel3.Size = new Size(194, 208);
-            panel3.TabIndex = 10;
+            panel3.TabIndex = 2;
             // 
             // btnCancel
             // 
@@ -224,7 +224,7 @@
             panel4.Location = new Point(203, 3);
             panel4.Name = "panel4";
             panel4.Size = new Size(394, 208);
-            panel4.TabIndex = 11;
+            panel4.TabIndex = 0;
             // 
             // panel6
             // 
@@ -251,7 +251,7 @@
             panel5.Location = new Point(123, 73);
             panel5.Name = "panel5";
             panel5.Size = new Size(180, 94);
-            panel5.TabIndex = 12;
+            panel5.TabIndex = 0;
             // 
             // panel2
             // 

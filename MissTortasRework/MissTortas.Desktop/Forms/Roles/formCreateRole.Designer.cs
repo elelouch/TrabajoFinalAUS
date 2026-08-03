@@ -63,16 +63,16 @@
             txtRoleName.Location = new Point(0, 16);
             txtRoleName.Name = "txtRoleName";
             txtRoleName.Size = new Size(198, 15);
-            txtRoleName.TabIndex = 0;
+            txtRoleName.TabIndex = 1;
             // 
             // btnConfirm
             // 
             btnConfirm.BackColor = Color.White;
             btnConfirm.FlatStyle = FlatStyle.Flat;
-            btnConfirm.Location = new Point(134, 294);
+            btnConfirm.Location = new Point(3, 159);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(80, 30);
-            btnConfirm.TabIndex = 10;
+            btnConfirm.TabIndex = 0;
             btnConfirm.Text = "Confirm";
             btnConfirm.UseVisualStyleBackColor = false;
             btnConfirm.Click += btnConfirm_Click;
@@ -84,7 +84,7 @@
             btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = SystemColors.ControlLightLight;
-            btnClose.Location = new Point(254, 294);
+            btnClose.Location = new Point(117, 159);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(80, 30);
             btnClose.TabIndex = 11;
@@ -106,20 +106,18 @@
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(800, 420);
-            tableLayoutPanel1.TabIndex = 12;
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // panel2
             // 
             panel2.BackColor = Color.WhiteSmoke;
-            panel2.Controls.Add(btnClose);
             panel2.Controls.Add(panel4);
             panel2.Controls.Add(panel3);
-            panel2.Controls.Add(btnConfirm);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(163, 3);
             panel2.Name = "panel2";
             panel2.Size = new Size(474, 414);
-            panel2.TabIndex = 14;
+            panel2.TabIndex = 0;
             // 
             // panel4
             // 
@@ -142,7 +140,9 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(btnClose);
             panel3.Controls.Add(panel1);
+            panel3.Controls.Add(btnConfirm);
             panel3.Location = new Point(134, 99);
             panel3.Name = "panel3";
             panel3.Size = new Size(200, 189);
@@ -157,7 +157,7 @@
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(200, 33);
-            panel1.TabIndex = 13;
+            panel1.TabIndex = 0;
             // 
             // formCreateRole
             // 
