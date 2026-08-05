@@ -43,6 +43,17 @@ namespace MissTortas.View.Controllers
         }
 
         [Authorize(Policy = PolicyName.ManageProducts)]
+        [HttpPut("test/{saleProductId}")]
+        public async Task<ActionResult<SaleProductResponse>> PutSaleProduct(long saleProductId, [FromForm] UpdateSaleProductRequest updateSaleProductDTO, [FromForm] List<IFormFile> files)
+        {
+            var saleProductDto = presentationProductMapper.MapUpdateRequestToDto(saleProductId, updateSaleProductDTO);
+            var saleProduct = await productService.UpdateSaleProductAsync(saleProductDto);
+            var retFiles = await simpleStorage.SaveProductFileAsync(files, saleProduct.Id);
+            var ret = presentationProductMapper.MapDtoToResponse(saleProduct, [.. retFiles.Select(f => f.Path)]);
+            return ret;
+        }
+
+        [Authorize(Policy = PolicyName.ManageProducts)]
         [HttpPut("{saleProductId}")]
         public async Task<ActionResult<SaleProductResponse>> PutSaleProduct(long saleProductId, UpdateSaleProductRequest updateSaleProductDTO)
         {

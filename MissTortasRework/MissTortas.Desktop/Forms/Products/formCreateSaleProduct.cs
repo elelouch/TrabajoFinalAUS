@@ -48,7 +48,7 @@ namespace MissTortas.Desktop.Forms.Products
             Dispose();
         }
 
-        private async void formCreateStockProduct_Load(object sender, EventArgs e)
+        private async void formCreateSaleProduct_Load(object sender, EventArgs e)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace MissTortas.Desktop.Forms.Products
                 else
                 {
                     product.Id = productToModify.Id;
-                    var retrieveProduct = await productService.ModifySaleProductAsync(product);
+                    var retrieveProduct = await productService.ModifySaleProductAsync(product, FilesUploaded);
                     RaiseOnSaleProductModified(retrieveProduct);
                     MessageBox.Show("Producto modificado exitosamente", "Producto modificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

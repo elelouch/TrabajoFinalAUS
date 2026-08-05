@@ -5,9 +5,6 @@ namespace MissTortas.Desktop.Services
 {
     public static class ProductMapper
     {
-        /// <summary>
-        /// Maps a SaleProduct to a CreateSaleProductRequest
-        /// </summary>
         public static CreateSaleProductRequest ToCreateRequest(this SaleProduct saleProduct)
         {
             return new CreateSaleProductRequest

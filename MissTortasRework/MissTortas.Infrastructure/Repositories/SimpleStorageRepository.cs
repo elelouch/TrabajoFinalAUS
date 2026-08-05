@@ -33,5 +33,10 @@ namespace MissTortas.Infrastructure.Repositories
         {
             await productFiles.AddAsync(pf);
         }
+
+        public async Task RemoveFilesProductsAsync(long productId)
+        {
+            await productFiles.Where(pf => pf.ProductId == productId ).ExecuteDeleteAsync();
+        }
     }
 }

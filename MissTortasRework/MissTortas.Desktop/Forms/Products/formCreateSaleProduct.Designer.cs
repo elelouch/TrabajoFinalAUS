@@ -458,7 +458,7 @@
             Name = "formCreateSaleProduct";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestionar Producto";
-            Load += formCreateStockProduct_Load;
+            Load += formCreateSaleProduct_Load;
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             panel1.ResumeLayout(false);

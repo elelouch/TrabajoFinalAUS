@@ -74,6 +74,7 @@ namespace MissTortas.Infrastructure
         public async Task<List<ProductFile>> SaveProductFileAsync(IEnumerable<IFormFile> files, long productId)
         {
             List<ProductFile> ret = [];
+            await simpleStorageRepository.RemoveFilesProductsAsync(productId);
             foreach (var file in files)
             {
                 var res = await SaveProductFileAsync(file, productId);

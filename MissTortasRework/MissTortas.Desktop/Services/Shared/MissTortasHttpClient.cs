@@ -193,6 +193,9 @@ namespace MissTortas.Desktop.Services.Shared
         public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
     ExecuteWithRetry<T>(() => BuildFormDataRequest(endpoint, data, files));
 
+        public Task<T?> PutAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>
+ExecuteWithRetry<T>(() => BuildFormDataRequestPut(endpoint, data, files));
+
         private HttpRequestMessage BuildFormDataRequest(string endpoint, object data, List<(Stream stream, string fileName)> files)
         {
             var content = new MultipartFormDataContent();
@@ -219,6 +222,43 @@ namespace MissTortas.Desktop.Services.Shared
 
             var request = new HttpRequestMessage(HttpMethod.Post, endpoint) { Content = content };
             return request;
+        }
+        private HttpRequestMessage BuildFormDataRequestPut(string endpoint, object data, List<(Stream stream, string fileName)> files)
+        {
+            var content = new MultipartFormDataContent();
+
+            if (data != null)
+            {
+                foreach (var prop in data.GetType().GetProperties())
+                {
+                    var value = prop.GetValue(data);
+                    if (value != null && !(value is string str && string.IsNullOrEmpty(str)))
+                        content.Add(new StringContent(value.ToString() ?? ""), prop.Name);
+                }
+            }
+
+            if (files != null)
+            {
+                foreach (var (stream, fileName) in files)
+                {
+                    if (stream.CanSeek)
+                        stream.Position = 0; // buildRequest() runs twice on retry — rewind so the retry doesn't send an empty stream
+                    content.Add(new StreamContent(stream), "files", fileName);
+                }
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Put, endpoint) { Content = content };
+            return request;
+        }
+
+        public Task<T?> PutAsFormAsync<T>(string endpoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T?> PostAsFormAsync<T>(string endpoint)
+        {
+            throw new NotImplementedException();
         }
 
         //    public Task<T?> PostAsFormAsync<T>(string endpoint, object data, List<(Stream, string)> files = null) =>

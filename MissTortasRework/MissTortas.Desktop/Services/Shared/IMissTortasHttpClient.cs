@@ -7,5 +7,7 @@
         public Task<T?> PutAsync<T>(string endpoint, object? data = null);
         public Task<T?> PatchAsync<T>(string endpoint, object? data = null);
         public Task<T?> DeleteAsync<T>(string endpoint);
+        public Task<T?> PutAsFormAsync<T>(string endpoint);
+        public Task<T?> PostAsFormAsync<T>(string endpoint);
     }
 }
