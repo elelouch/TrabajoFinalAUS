@@ -18,11 +18,9 @@ y *grado de perdida* asociadas con el riesgo.
 - Riesgos de Proyecto: Riesgos que desplazan el calendario del proyecto y
 hacen que los costos aumenten. Estos identifican principalmente problemas 
 de presupuesto, calendario, personal, recursos, participantes y requisitos.
-- Riesgos Tecnicos: Riesgos que amenazan la calidad y temporalidad (tiempo de
-uso) del software que se va a producir. Cuando estos se vuelven realidad,
-la implementacion puede volverse dificil o imposible. Problemas
-de disenio, implementacion, interfaz, verificacion y mantenimiento, ambiguedad
-en la especificacion, obsolencia tecnica y tecnologia de punta.
+- Riesgos Tecnicos: Riesgos que amenazan la calidad y temporalidad (tiempo de uso) del software que se va a producir. 
+Cuando estos se vuelven realidad, la implementacion puede volverse dificil o imposible. 
+Problemas de disenio, implementacion, interfaz, verificacion y mantenimiento, ambiguedad en la especificacion, obsolencia tecnica y tecnologia de punta.
 - Riesgos Empresariales: Amenazan la viabilidad del software que se va a
 construir y ponen en peligro el proyecto o el producto. Se ramifican en varios mas.
 	1. Construir un producto excelente, que ya no se requiere. (Riesgo de mercado)
@@ -35,13 +33,13 @@ Ejemplos: Fechas de entregas irreales, falta de requisitos documentados o ambito
 - Predecibles: Se extrapolan de la experiencia en proyectos anteriores.
 Ejemplos: Rotacion de personal, pobre comunicacion con el cliente, disolucion de esfuerzo del personal conforme
 se atienden solicitudes de mantenimiento (hay que hacer cambios))
-- Impredecibles: No se pueden predecir. Comodin. 
+- Impredecibles: Simplemente no se pueden predecir. Comodin. 
 
 
 # Identificacion de riesgo
 Consejo: Pensar en, Que puede salir mal?
 Intento sistematico por especificar las amenazas al plan de proyecto,
-esto es, estimaciones, calendario, carga de recursos, etc.
+Las amenazas al proyecto incluyen, estimaciones, calendario, carga de recursos, etc.
 Se pueden aplicar metodos como listas para identificar los riesgos.
 
 
@@ -54,8 +52,7 @@ Responden a: Que caracteristicas especiales de este producto pueden amenazar el 
 
 ## Lista de identificacion del riesgo
 Metodo para identificacion del riesgos.
-Estas listas se pueden organizar de varias maneras, las preguntas pueden 
-variar con el proyecto de software.
+Estas listas se pueden organizar de varias maneras, las preguntas pueden variar con el proyecto de software.
 Una implementacion, por ejemplo, es la Software Component Verification Standard (SCVS).
 
 - Tamanio del producto: Riesgos asociados con el tamanio global del software que se va a construir o a modificar.
@@ -77,10 +74,8 @@ identifique los promotores de riesgos que afectan los componentes de riesgo
 de software: rendimiento, costo, apoyo y calendario.
 
 En el contexto de este analisis, los componentes de riesgo se definen en la forma siguiente:
-- Riesgo de rendimiento: Grado de incertidumbre de que el producto satisfara sus 
-requisitos y se ajustara al uso pretendido.
-- Riesgo de costo: Grado de incertidumbre de que el presupuesto del proyecto se 
-mantendra.
+- Riesgo de rendimiento: Grado de incertidumbre de que el producto satisfaga sus requisitos y se ajustara al uso pretendido.
+- Riesgo de costo: Grado de incertidumbre de que el presupuesto del proyecto se mantendra.
 - Riesgo de apoyo: grado de incertidumbre de que el software resultante sera facil de corregir, adaptar y mejorar.
 - Riesgo de calendario: Grado de incertidumbre de que el calendario del proyecto se mantendra y de que el producto se entregara a tiempo.
 El impacto de cada promotor de riesgo se divide en las siguientes categorias: Despreciable, Marginal, Critico o Catastrofico.
@@ -96,8 +91,6 @@ Pasos para realizar una proyeccion de riesgo:
 	4. Valorar la precision global de la proyeccion del riesgo de modo que no habra malos entendidos.
 El objetivo final es considerar los riesgos de manera que conduzcan 
 una *priorizacion* ya que los recursos *son limitados*.
-
-
 
 ## Tabla de riesgos, elaboracion
 Un metodo sencillo para poder proyectar riesgos es utilizar una tabla de riesgos.
@@ -147,10 +140,8 @@ Dado que <condicion> entonces hay preocupacion porque <consecuencia>.
 REFINAR EL EJEMPLO COMBINADO ANTERIOR UTILIZANDO CTC.
 
 Refinamiento por subcondiciones:
-1. Ciertos componentes reutilizables los desarrollo una 
-tercera persona sin conocimiento de los estandares de disenio internos.
-2. El estandar de disenio par ainterfaces de componente todavia no se consolidad y
-puede no apegarse a ciertos componentes reutilizables existentes.
+1. Ciertos componentes reutilizables los desarrollo una tercera persona sin conocimiento de los estandares de disenio internos.
+2. El estandar de disenio par ainterfaces de componente todavia no se consolidad y puede no apegarse a ciertos componentes reutilizables existentes.
 3. Ciertos componentes reutilizables se implementaron en un lenguaje que no se soporta en el entorno blanco.
 
 # Mitigacion, Monitoreo y Manejo de Riesgo (MMMR)
@@ -160,8 +151,8 @@ Una estrategia efectiva debe considerar:
 1. Evitar el riesgo (mitigar).
 2. Monitorear el riesgo.
 3. Manejar el riesgo.
-y Planificar la contingencia.
-Evitar el riesgo siempre es la mejor estrategia. Para esto se debe *desarrollar una estrategia*
+4. Planificar la contingencia.
+Evitar el riesgo siempre es la mejor estrategia. Para esto se debe *Desarrollar una Estrategia*
 Conforme avanza el proyecto, comienzan las actividades de *monitoreo* de riesgos.
 Por ejemplo, en caso de alta rotacion, la actitud general de los miembros del equipo, el grado en el que el equipo cuaja relaciones interpersonales,
 potenciales problemas de compensacion y beneficions, y la disponibilidad de empleos dentro y fuera de la compania.
