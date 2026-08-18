@@ -1,0 +1,10 @@
+- Template de riesgo [TODO]
+- Riesgos [TODO]
+- Vision [DONE]
+- Casos de Uso [TODO]
+- Casos de Testing [TODO]
+- Cronograma [TODO]
+- Plan de proyecto. [TODO]
+
+Cuando hay productos en falta, le dan prioridad a aquellos 
+que no se pudieron fabricar

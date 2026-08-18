@@ -1,0 +1,17 @@
+# Fase de Inicio: Comprension de Requisitos
+## Defn Requisitos
+Capacidades y condiciones con las cuales debe ser conforme  el sistema - y mas ampliamente - el proyecto.
+El UP, caracterizado por la adaptacion, acepta *Requisitos Cambiantes*.
+Los Requisitos se deben encontrar mediante la escritura de talleres de requisiti y CCUU.
+
+## Tipos de Requisitos (FURPS+)
+- Funcionales (Functional): Caracteristicas, capacidades, funcionalidad.
+- Usabilidad (Usability): Factores humanos, ayuda, documentacion.
+- Fiabilidad (Reliability): Frecuencia de fallos, capacidad de recuperacion y grado de prevision.
+- Rendimiento (Performance): Tiempos de respusetas, productividad, prevision, uso de los recursos.
+- Soporte (Support): Adaptabilidad, facilidad de mantenimiento, configurabilidad.
+- El mas (+): Implementacion, Interfaz, Operaciones, Empaquetamiento, Legales.\
+
+## Requisitos Funcionales y No Funcionales
+- Funcionales: Comportamiento. Que es lo que debe hacer el Sistema. Generalmente descritos por los Casos de Uso.
+- No Funcionales: Todo lo demas.

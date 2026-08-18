@@ -1,0 +1,13 @@
+# Casos de Uso
+- Definido en la Disciplina: Requisitos. Estos son requisitos (Generalmente, funcionales, existe una excepcion debido a la lista de tecnologias)
+- Modelo de Casos de Uso: Conjunto de todos los casos de uso, modelo de la funcionalidad y entorno.
+
+## Defn Actor
+Algo con comportamiento. Ej: Cajero, otro sistema, una persona (identificada por un rol).
+
+## Defn Escenario
+Secuencia especifica de acciones e interacciones entre los actores y el sistema objeto de estudio (SUD, system under discussion).
+Tambien denominado *Instancia de Caso de Uso*
+
+## Defn Caso de Uso
+Coleccion de escenarios con exito y fallo relacionado, que describe a los actores utilizando un sistema para satisfacer un objetivo.
