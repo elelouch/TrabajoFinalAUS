@@ -11,3 +11,103 @@ Tambien denominado *Instancia de Caso de Uso*
 
 ## Defn Caso de Uso
 Coleccion de escenarios con exito y fallo relacionado, que describe a los actores utilizando un sistema para satisfacer un objetivo.
+
+## Defn Caso de Uso RUP
+Conjunto de instancias de caso de uso donde cada instanca es una secuencia de acciones que un sistema ejecuta, 
+produciendo un resultado de valor observable para un actor particular.
+
+DATO: Si un CU lleva requisitos no funcionales, es mejor especificar estos en la Especificacion Complementaria
+
+## Secciones Casos de Uso
+### Prologo
+- Elementos opcionales: Deberian aclarar detalles del CU. Ej: Actor principal.
+- Personal Involucrado y Lista de Intereses: Lo mas importante.
+Responde la pregunta 'QUE DEBERIA HACER UN CASO DE USO?' SATISFACER INTERESES DEL PERSONAL INVOLUCRADO.
+
+### Precondiciones y Garantias de Exito
+- Precondiciones: Establecen lo que debe cumplirse *ANTES* de comenzar el caso de uso.
+- Postcondiciones: Establece lo que debe cumplirse *LUEGO* de finalizar el caso de uso.
+
+### Escenario principal de exito (Flujo basico)
+- Describe escenario que satisface los intereses del personal involucrado.
+- NO contiene bifucaciones, como mucho, bucles.
+Tipos de Escenario Principal:
+1. Interaccion entre actores.
+2. Validacion (normalmente, a cargo del SUD).
+3. Cambio de estado, realizado por el SUD.
+- El primer paso indica el evento que desencadena el escenario.
+
+### Extensiones (O Flujos alternativos)
+- Indican tanto escenarios de exito como de fracaso.
+- La combinacion del flujo basico y los flujos alternativos deben satisfacer 'casi' todos los intereses del personal involucrado.
+- Partes de una extension:
+	- Condicion: Notado con el numero del paso donde puede ocurrir, ej: 2A. Algo que puede ser detectado por el Sistema (SUD) o por un Actor.
+	- Manejo: Paso de la condicion.
+	
+### Requisitos Especiales (No Funcionales)
+- Util por si algun requisito esta fuertemente ligado a un caso de uso.
+
+### Lista de tecnologias y variaciones de datos
+- Restricciones tecnicas en como se debe hacer algo.
+
+## Objetivos y alcances de un caso de Uso.
+- Palabra claves: EBP
+- EBP Defn: Tarea realizada por una persona, en un lugar, en un instante; como respuesta a un evento del negocio, que aniade valor
+cuantificable al negocio y deja los datos en un estado consistente.
+
+
+## Granularidad
+- Los casos de uso pueden estar definido a nivel alto o bajo. Lo importante es encontrar un balance con esto.
+
+## Casos de uso y objetivos
+- Los casos de uso pueden tener
+- Los usuarios tienen Objetivos (y necesidades)
+- Utilizan aplicaciones para satisfacer esto.
+- Caso de uso nivel EBP = Caso de uso nivel 'Objetivo de Usuario'
+- IMPORTANTE:
+	1. Encontrar los objetivos de usuario.
+	2. Definir un caso de uso para cada objetivo de usuario.
+- Un objetivo nivel Empresa (por ejemplo, Evitar Robos) NO es un CU nivel EBP.
+
+## Casos de uso de subfuncion
+- Granularidad fina.
+- Solo justificable cuando se repite entre varios casos de uso. Ej: Autenticar Usuario.
+
+## Procedimiedimiento para descubrir actores principales, objetivos y CCUU
+1. Elegir los limites del sistema.
+2. Identificar los Actores Principales.
+	3. Para cada Actor Principal, identificar los objetivos de usuario.
+4. Definir los casos de uso que satisfagan los objetivos de usuario, nombrarlo de acuerdo a los objetivos (verbo infinitivo).
+Ej: Crear Usuario.
+
+## Ayudas para el procedimiento
+1. Definir que es lo externo primero (actores, sistemas,...) para definir los limites.
+2, 3. En talleres de requisitos, los objetivos pueden poner de manifiesto los Actores y viceversa. Preferir comenzar por Actores.
+4. Definir CU nivel EBP por cada objetivo de usuario. Ej: Gestionar<x> para el CRUD.
+
+## Actores
+- Como se definio, cualquier cosa con comportamiento, incluyendo el SUD.
+	- Actor principal: Objetivos de usuario que se satisfacen mediante el SUD.
+	- Actor secundario (de apoyo): Proporciona un servicio al SUD.
+	- Actor pasivo: Interesado en el CU, pero no es ni principal ni de apoyo.
+
+
+## Reemplazar lista de caracteristicas de bajo nivel con Casos de Uso. 
+
+## LOS CCUU NO SON ORIENTADOS A OBJETOS.
+
+## Ejemplo (Foto) de casos de uso en Etapa INICIO
+- Formato Breve
+	- Abrir Caja
+	- Cerrar Caja
+	- Gestionar Usuario
+	- Poner Marcha
+	- Suspender Operacion
+	- ...
+- Formato Informal
+	- Procesar Alquiler
+	- Analizar Actividades de Venta.
+	- Gestionar Seguridad
+- Formato Completo
+	- Procesar Venta.
+	- Gestionar Devoluciones.
