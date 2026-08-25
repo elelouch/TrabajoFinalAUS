@@ -1,18 +1,18 @@
-Resumen Riesgos
-Nota: Para el trabajo
-Mandar el template con 6 casos, donde 3 pasen la linea de corte y posean MMMR (Mitigacion, Monitoreo y Manejo de Riesgo)
-Ordenadas con una linea de corte.
+# Resumen Riesgos
 
 # Caracteristica de los Riesgos de Software
 Concepto que tiene dos caracteristicas:
 - Incertidumbre.
 - Perdida. Cuando este se vuelve realidad, ocurren consecuencias, como perdidas (de tiempo, dinero, conocimiento).
-Al analizar los riesgos es importante cuantificar el *nivel de incertidumbre* 
-y *grado de perdida* asociadas con el riesgo.
+Al analizar los riesgos es importante cuantificar el *nivel de incertidumbre* y *grado de perdida* asociadas con el riesgo.
 
 # Medidas del software a la hora de analizar riesgos
-- Componentes.
-- LOC
+Permite darle magnitud al riesgo basado en el origen.
+- Componentes de Software.
+- LOC.
+
+# Estrategia
+PROACTIVIDAD -> PLAN DE MITIGACION DE RIESGO
 
 # Categorias de riesgos
 - Riesgos de Proyecto: Riesgos que desplazan el calendario del proyecto y
@@ -37,7 +37,7 @@ se atienden solicitudes de mantenimiento (hay que hacer cambios))
 
 
 # Identificacion de riesgo
-Consejo: Pensar en, Que puede salir mal?
+Consejo: Pensar en; Que puede salir mal?
 Intento sistematico por especificar las amenazas al plan de proyecto,
 Las amenazas al proyecto incluyen, estimaciones, calendario, carga de recursos, etc.
 Se pueden aplicar metodos como listas para identificar los riesgos.
@@ -57,16 +57,11 @@ Una implementacion, por ejemplo, es la Software Component Verification Standard 
 
 - Tamanio del producto: Riesgos asociados con el tamanio global del software que se va a construir o a modificar.
 - Impacto empresarial: Riesgos asociados con las restricciones impuestas por administracion y el mercado.
-- Caracteristica de los participantes: Riesgos asociados con la sofisticacion de los participantes y con la habilidad de los desarrolladores para
-comunicarse con los participantes.
-- Definicion del proceso: Riesgos asociados con el grado (de fidelidad?, exactitud?) en el que se 
-definio el proceso de software.
-- Entorno de desarrollo: Riesgos asociados con la disponibilidad y calidad de las 
-herramientas por usar para construir el producto.
-- Tecnologia por construir: Riesgos asociados con la complejidad del sistema y 
-con lo "novedoso" de la tecnologia que se incluye.
+- Caracteristica de los participantes: Riesgos asociados con la sofisticacion de los participantes y con la habilidad de los desarrolladores para comunicarse con los participantes.
+- Definicion del proceso: Riesgos asociados con el grado (de fidelidad?, exactitud?) en el que se definio el proceso de software.
+- Entorno de desarrollo: Riesgos asociados con la disponibilidad y calidad de las herramientas por usar para construir el producto.
+- Tecnologia por construir: Riesgos asociados con la complejidad del sistema y con lo "novedoso" de la tecnologia que se incluye.
 - Tamanio y experiencia del personal.
-
 
 ### Componentes y promotores de riesgo
 Este enfoque para identificar riesgos requiere que el gerente del proyecto
@@ -82,15 +77,14 @@ El impacto de cada promotor de riesgo se divide en las siguientes categorias: De
 
 # Proyeccion del riesgo
 Tambien llamada, *estimacion del riesgo*, intenta calificar cada riesgo en dos formas:
-1. La posibilidad o probabilidad de que el riesgo ocurra.
+1. La posibilidad o probabilidad de que el riesgo ocurra (Probabilidad Ocurrencia PO).
 2. Las consecuencias de los problemas asociados con el riesgo.
 Pasos para realizar una proyeccion de riesgo:
 	1. Establecer una escala que refleje la probabilidad percibida de un riesgo.
 	2. Delinear las consecuencias del riesgo.
-	3. Estimar el impaco del riesgo sobre el proyecto y el producto.
+	3. Estimar el impacto del riesgo sobre el proyecto y el producto.
 	4. Valorar la precision global de la proyeccion del riesgo de modo que no habra malos entendidos.
-El objetivo final es considerar los riesgos de manera que conduzcan 
-una *priorizacion* ya que los recursos *son limitados*.
+El objetivo final es considerar los riesgos de manera que conduzcan una *priorizacion* ya que los recursos *son limitados*.
 
 ## Tabla de riesgos, elaboracion
 Un metodo sencillo para poder proyectar riesgos es utilizar una tabla de riesgos.
@@ -106,7 +100,8 @@ Pasos:
 	
 ## Valoracion de impacto del riesgo
 ### Factores que afectan las probables consecuencias si ocurre un riesgo
-- Naturaleza: problemas probables si ocurre. Interfaz definida pobremente en la interfaz del cliente impedira el disenio y pruebas tempranas y conducira a una integracion tardia.
+- Naturaleza: problemas probables si ocurre. 
+Interfaz definida pobremente en la interfaz del cliente impedira el disenio y pruebas tempranas y conducira a una integracion tardia.
 - Ambito: combina *severidad* con *distribucion global* (cuanto del proyecto queda afectado).
 - Temporizacion: cuando y por cuanto tiempo se sentira el impacto.
 
@@ -133,7 +128,7 @@ El costo global es de 100 * 18 * 140 = 25.200 USD
 
 
 # Refinamiento del riesgo
-## Enunciado de riesgo CTC
+## Enunciado de riesgo CTC (Condicion-Transicion-Consecuencia)
 Dado que <condicion> entonces hay preocupacion porque <consecuencia>.
 
 ## Ejemplo de refinado
