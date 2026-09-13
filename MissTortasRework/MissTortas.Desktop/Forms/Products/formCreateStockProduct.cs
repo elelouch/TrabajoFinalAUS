@@ -56,6 +56,7 @@ namespace MissTortas.Desktop.Forms.Products
                 if (productToModify != null)
                 {
                     this.Text = $"Modificando producto: {productToModify.Id}";
+                    this.txtProductName.ReadOnly = true ;
                     this.chkEnabled.Visible = true;
                     this.chkManageQtyAsInteger.Visible = false;
                     ProductToForm(productToModify);
